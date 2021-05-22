@@ -1,0 +1,1 @@
+Using MySQL -> Run SQL Script -> Schema name = 'db_ite1' -> Execute
