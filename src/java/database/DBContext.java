@@ -10,7 +10,7 @@ public class DBContext {
     //DO NOT EDIT THE BELOW METHOD, YOU MUST USE ONLY THIS ONE FOR YOUR DATABASE CONNECTION*/
     public Connection getConnection() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        String url = "jdbc:mysql://" + serverName + "/" + dbName;
+        String url = "jdbc:mysql://" + serverName + "/" + dbName + "?useSSL=false";
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -19,7 +19,7 @@ public class DBContext {
     private final String serverName = "localhost";
     private final String dbName = "db_ite1";
     private final String user = "root";
-    private final String password = ""; // password here
+    private final String password = "dinhkongthanh"; // password here
 
     public static void main(String[] args) {
         // Test connection
