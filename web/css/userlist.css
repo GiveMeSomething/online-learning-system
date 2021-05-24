@@ -1,0 +1,79 @@
+.button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : May 21, 2021, 3:10:58 PM
+    Author     : Asus
+*/
+
+html {
+    font-size: 1em;
+    padding: 2rem;
+}
+
+#user-list-title a{
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    font-weight: bold
+}
+
+
+
+.left{
+    border: 3px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100rem; 
+    float: left;
+    padding-right: 5rem;
+
+}
+.right
+{   
+    border: 2rem;
+    border-radius: 3px;
+    padding-left: 3rem;
+    width: 30rem; 
+}
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+    font-size: 22px;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+.container1{
+    display: flex;
+    width: 100%;
+    height: auto;
+}
