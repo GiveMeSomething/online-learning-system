@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <!--Filter Mapping-->
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>common.filters.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/auth</url-pattern>
+    </filter-mapping>
+    <!--Servlet Mapping-->
+    <servlet>
+        <servlet-name>AuthController</servlet-name>
+        <servlet-class>auth.AuthController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EmailController</servlet-name>
+        <servlet-class>email.EmailController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthController</servlet-name>
+        <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+    <!-- SMTP settings -->
+    <context-param>
+        <param-name>host</param-name>
+        <param-value>smtp.gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <param-name>port</param-name>
+        <param-value>587</param-value>
+    </context-param>
+    <context-param>
+        <param-name>email</param-name>
+        <param-value>olslearningplatform@gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <param-name>email_password</param-name>
+        <param-value>se1501team1</param-value>
+    </context-param>
+    <!-- Other Configurations -->
+    <servlet-mapping>
+        <servlet-name>EmailController</servlet-name>
+        <url-pattern>/email</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>
