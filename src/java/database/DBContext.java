@@ -18,17 +18,18 @@ public class DBContext {
     //Change/update information of your database connection, DO NOT change name of instance variables in this class
     private final String serverName = "localhost";
     private final String dbName = "db_ite1";
+    private final String portNumber = "1433";
     private final String user = "root";
-    private final String password = "dinhkongthanh"; // password here
+    private final String password = "root"; // password here
 
     public static void main(String[] args) {
         // Test connection
         try {
-            Connection test = new DBContext().getConnection();
-            PreparedStatement testStatement = test.prepareStatement("SELECT * FROM blog");
-            System.out.println(testStatement.execute());
+            System.out.println(new DBContext().getConnection());
+            System.out.println("thanh cong");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.out.println("loi");
         }
     }
 }

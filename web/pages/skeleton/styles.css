@@ -166,5 +166,84 @@ section {
     overflow-y: hidden
 }
 
+#setting-detail{
+    display: none;
+    position: absolute;
+    z-index: 1;
+    background: white;
+    margin-top: 0.5rem;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    padding: 6px 20px 10px 20px;
+    margin-left: 4rem;
+    width: 10rem   
+}
 
+#setting-detail div a{
+    padding-top: 20px;
+    padding-left: 10px;
+
+}
+
+
+/*setting-dropdown*/
+#setting-dropdown-ul {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    z-index: 2;
+    margin-left: 3rem
+}
+#setting-dropdown-ul li {display: block;}
+#setting-dropdown-ul li:hover {background: #fff;}
+#setting-dropdown-ul li:hover ul {display: block;}
+#setting-dropdown-ul li ul {
+    position: absolute;
+    width: 195px;
+    display: none;
+    margin-left: -5.5rem;
+    margin-top: 11px;
+    
+}
+
+#setting-dropdown-ul li a{
+    transition: 0.5s
+}
+
+#setting-dropdown-ul li a:hover{
+    background: beige;  
+}
+
+#shopping-cart{
+    transition: 0.5s
+}
+#shopping-cart:hover{
+    background: beige
+}
+
+
+
+#setting-dropdown-ul li ul #li-top { 
+    background: #fff; 
+    display: block; 
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    border-top: 1px solid lightgray;
+}
+#setting-dropdown-ul li ul #li-middle { 
+    background: #fff; 
+    display: block; 
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+}
+#setting-dropdown-ul li ul #li-bottom { 
+    background: #fff; 
+    display: block; 
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    border-bottom: 1px solid lightgray
+}
+#setting-dropdown-ul li ul li a {display:block !important;text-decoration: none; padding: 0px 20px 0px 20px;color: black} 
+#setting-dropdown-ul li ul li a:hover {background: rgba(211, 211, 211, 0.2);}
 

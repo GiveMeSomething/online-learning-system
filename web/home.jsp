@@ -4,7 +4,9 @@
     Author     : Admin
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,7 +24,7 @@
         <!--        fontawesome-->
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
-        <link rel="stylesheet" type="text/css" href="pages//skeleton/styles.css">
+        <link rel="stylesheet" type="text/css" href="pages/skeleton/styles.css">
 
     </head>
 
@@ -59,12 +61,34 @@
                                 <a class="nav-link active" aria-current="page" href="#">Courses</a>
                             </li>
                             <li class="nav-item gap-3">
-                                <button type="button" class="btn btn-outline-primary py-2 px-3 mx-2">
-                                    Log in
-                                </button>
-                                <button type="button" class="btn btn-secondary py-2 px-3 mx-2">
-                                    Sign in
-                                </button>
+                                <div style="margin-top: 4.5px">
+                                    <c:if test="${sessionScope.acc != null}">
+                                        <a type="button" class="btn btn-outline-primary py-2 px-3 mx-2">
+                                            Log in
+                                        </a>
+                                        <a type="button" class="btn btn-secondary py-2 px-3 mx-2">
+                                            Sign in
+                                        </a>
+                                    </c:if>
+                                </div>
+                                <div style="margin-top: 4.5px">
+                                    <c:if test="${sessionScope.acc == null}">
+                                        <a href="#" id="shopping-cart" style="border-radius: 25px; padding: 12px 12px;;color: lightslategray"><i class="fas fa-shopping-cart fa-lg"></i></a>                                                                              
+
+                                        <ul id="setting-dropdown-ul" >
+                                            <li id="setting-dropdown-li">
+                                                <a href="#" style="border-radius: 25px; padding: 12px 12px; color: lightslategray" id="setting"> <i class="fas fa-cog fa-lg"></i></a>
+                                                <ul id="setting-dropdown-sub-ul">
+                                                    <li id="li-top"><a href="#" style="padding-top: 5px; padding-bottom: 5px">My course</a></li>
+                                                    <li id="li-middle"><a href="#">Account setting</a></li>
+                                                    <li id="li-bottom"><a href="#" style="padding-bottom: 5px; padding-top: 5px">Log out</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+
+                                    </c:if>
+
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -430,7 +454,7 @@
 
                 <div id="myDIV">
                     <a class="btn2 " style="outline: none; font-weight: normal; font-size: 20px">Students are viewing</a>
-                    
+
                 </div>  
                 <!--                busines-->
                 <div id="it" style="display: block; margin-top: -2rem; margin-left: 5rem">
@@ -500,10 +524,97 @@
                     </div>
                 </div>
 
+
+
+                <div id="myDIV">
+                    <a class="btn2 " style="outline: none; font-weight: normal; font-size: 20px">Some of the best</a>
+
+                </div>  
+                <!--                busines-->
+                <div id="it" style="display: block; margin-top: -2rem; margin-left: 5rem">
+                    <div  class="row">
+                        <!--                        1-->
+                        <div class="col-sm-2 " >
+                            <div class="card " style="width: 13.5rem;">
+                                <img class="card-img-top" src="courseImg/courseBN3.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title my-0">The Complete 2021 Web Development Bootcamp</h5>
+                                    <span class="card-text">Dr. Angela Yu</span>
+                                    <div>
+                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
+                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
+                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
+                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
+                                        <i class="far fa-star fa-xs" style="color: #ffa805"></i>
+                                    </div>
+                                    <h5>$12.99</h5>
+                                    <a href="#" class="btn btn-danger">Read more</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                        2-->
+                        <div class="col-sm-2">
+                            <div class="card" style="width: 13.5rem;margin-left: 8rem">
+                                <img class="card-img-top" src="courseImg/courseMK1.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title my-0">React - The Complete Guide (Hooks, Redux)</h5>
+                                    <span class="card-text">Maximilian</span>
+                                    <div>
+                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
+                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
+                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
+                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
+                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
+                                    </div>
+                                    <h5>$12.99</h5>
+
+                                    <a href="#" class="btn btn-danger">Read more</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                        3-->
+                        <div class="col-sm-2">
+                            <div class="card" style="width: 13.5rem; margin-left: 16rem">
+                                <img class="card-img-top" src="courseImg/courseDS2.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title my-0">The Complete 2021 App Development Bootcamp</h5>
+                                    <span class="card-text">Dr. Angela Yu</span>
+                                    <div>
+                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
+                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
+                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
+                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
+                                        <i class="fas fa-star-half fa-xs" style="color: #ffa805"></i>
+                                    </div>
+                                    <h5>$12.99</h5>
+
+                                    <a href="#" class="btn btn-danger">Read more</a>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
             </div>
 
 
     </section>
+
+    <div class="container">
+        <div class="row">
+            <c:forEach items="${course}" var="o">
+                <div class="col-3">
+                    <p>${o.courseName}</p>
+                    <img src="${o.imageLink}"/>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
 
     <section id="page-footer" class="container-fluid mt-5 d-flex justify-content-between align-items-center">
         <div class="page-dummy-footer px-5">
