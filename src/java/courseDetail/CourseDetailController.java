@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package home;
+package courseDetail;
 
-import entities.Course;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-@WebServlet(name = "Home_Controller", urlPatterns = {"/Home_Controller"})
-public class HomeController extends HttpServlet {
+@WebServlet(name = "CourseDetailController", urlPatterns = {"/CourseDetailController"})
+public class CourseDetailController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,33 +29,36 @@ public class HomeController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-        private HomeService homeService;
-
-    @Override
-    public void init() throws ServletException {
-        homeService = new HomeService();
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet CourseDetailController</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet CourseDetailController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
-   
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       List<Course> itCourse =  homeService.getITCourse();
-       List<Course> bizCourse =  homeService.getBusinessCourse();
-       List<Course> marCourse =  homeService.getMarketingCourse();
-       List<Course> aiCourse =  homeService.getAICourse();
-       List<Course> iaCourse =  homeService.getIACourse();
-       List<Course> langCourse =  homeService.getLanguageCourse();
-       List<Course> studentsViewCourse =  homeService.getStudentAreViewingCourse();
-
-        request.setAttribute("itCourse", itCourse);
-        request.setAttribute("bizCourse", bizCourse);
-        request.setAttribute("marCourse", marCourse);
-        request.setAttribute("aiCourse", aiCourse);
-        request.setAttribute("iaCourse", iaCourse);
-        request.setAttribute("langCourse", langCourse);
-        request.setAttribute("studentsViewCourse", studentsViewCourse);
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -71,7 +72,7 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        processRequest(request, response);
     }
 
     /**

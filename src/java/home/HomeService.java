@@ -5,7 +5,7 @@
  */
 package home;
 
-import entities.Course1;
+import entities.Course;
 import java.util.List;
 
 /**
@@ -19,9 +19,112 @@ public class HomeService {
         this.homeRepository = new HomeRepository();
     }
 
-    public List<Course1> getCourse1() {
+    public List<Course> getITCourse() {
         try {
-            List<Course1> result = homeRepository.getAllCourse();
+            List<Course> result = homeRepository.getITCourse();
+
+            if (result == null) {
+                // redirect to 404
+                System.out.println("Something wrong");
+                return null;
+            }
+
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+    
+    public List<Course> getBusinessCourse() {
+        try {
+            List<Course> result = homeRepository.getBusinessCourse();
+
+            if (result == null) {
+                // redirect to 404
+                System.out.println("Something wrong");
+                return null;
+            }
+
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+    public List<Course> getMarketingCourse() {
+        try {
+            List<Course> result = homeRepository.getMarketingCourse();
+
+            if (result == null) {
+                // redirect to 404
+                System.out.println("Something wrong");
+                return null;
+            }
+
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+    public List<Course> getAICourse() {
+        try {
+            List<Course> result = homeRepository.getAICourse();
+
+            if (result == null) {
+                // redirect to 404
+                System.out.println("Something wrong");
+                return null;
+            }
+
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+    public List<Course> getIACourse() {
+        try {
+            List<Course> result = homeRepository.getIACourse();
+
+            if (result == null) {
+                // redirect to 404
+                System.out.println("Something wrong");
+                return null;
+            }
+
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+    public List<Course> getLanguageCourse() {
+        try {
+            List<Course> result = homeRepository.getLanguageCourse();
+
+            if (result == null) {
+                // redirect to 404
+                System.out.println("Something wrong");
+                return null;
+            }
+
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+    public List<Course> getStudentAreViewingCourse() {
+        try {
+            List<Course> result = homeRepository.getStudentAreViewingCourse();
 
             if (result == null) {
                 // redirect to 404

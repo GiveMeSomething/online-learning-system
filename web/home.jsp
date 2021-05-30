@@ -47,11 +47,12 @@
                             <li class="nav-item dropdown nav-hover">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Categories</a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Separated link</a>
+                                    <a class="dropdown-item" href="#">Software Engineering</a>
+                                    <a class="dropdown-item" href="#">Economy</a>
+                                    <a class="dropdown-item" href="#">Digital Marketing</a>
+                                    <a class="dropdown-item" href="#">Artificial Intelligence</a>
+                                    <a class="dropdown-item" href="#">Information Assurance</a>
+                                    <a class="dropdown-item" href="#">Language</a>
                                 </div>
                             </li>
                             <li class="nav-item nav-hover">
@@ -81,7 +82,11 @@
                                                 <ul id="setting-dropdown-sub-ul">
                                                     <li id="li-top"><a href="#" style="padding-top: 5px; padding-bottom: 5px">My course</a></li>
                                                     <li id="li-middle"><a href="#">Account setting</a></li>
-                                                    <li id="li-bottom"><a href="#" style="padding-bottom: 5px; padding-top: 5px">Log out</a></li>
+                                                    <li id="li-middle"><a href="#" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">Log out</a></li>
+
+                                                    <c:if test="${sessionScope.acc.isAdmin == true}">
+                                                        <li id="li-bottom"><a href="#" style="padding-bottom: 5px">Management</a></li>
+                                                        </c:if>
                                                 </ul>
                                             </li>
                                         </ul>
@@ -171,23 +176,28 @@
                 <h5>The nation's largest selection of courses</h5>
                 <p>Choose from over 100000 online video courses with new additions published every month</p>
             </div>
-            <div id="subject-course-list-right" class="col-lg-7">
-                <div id="myDIV">
-                    <button class="btn1 active1" onclick="businessOn()"style="outline: none">Business</button>
-                    <button class="btn1" onclick="designOn()"style="outline: none">Design</button>
+            <div id="subject-course-list-right" class="col-lg-7" style="margin-left: 4rem">
+                <div id="myDIV" style="margin-left:-0.5rem">
+                    <button class="btn1 active1" onclick="itOn()" style="outline: none">IT&Software</button>
+                    <button class="btn1 " onclick="businessOn()"style="outline: none">Business</button>
                     <button class="btn1" onclick="marketingOn()"style="outline: none">Marketing</button>
-                    <button class="btn1" onclick="itOn()" style="outline: none">IT&Software</button>
+                    <button class="btn1" onclick="aiOn()"style="outline: none">AI</button>
+                    <button class="btn1" onclick="iaOn()"style="outline: none">Information assurance</button>
+                    <button class="btn1" onclick="languageOn()"style="outline: none">Language</button>
+
+
                 </div>  
-                <!--                busines-->
-                <div id="business" style="display: block; margin-top: -2rem; margin-left: 5rem">
-                    <div  class="row">
+                <!--                it-->
+                <div id="it" style="display: block; margin-top: -2rem">
+                    <div  class="row" style="margin-left: -1.5rem">
                         <!--                        1-->
-                        <div class="col-sm-2 " >
-                            <div class="card " style="width: 13.5rem;">
-                                <img class="card-img-top" src="courseImg/courseBN1.jpg" alt="Card image cap">
+                        <c:forEach items="${itCourse}" var="o">
+                            <div class="col-4" style="height: max-content">
+                                <div class="card " style="width: 13rem">
+                                <img class="card-img-top" src="${o.imageLink}"  alt="Card image cap">
                                 <div class="card-body">
-                                    <h5 class="card-title my-0">Award Winning Business School Prof</h5>
-                                    <span class="card-text">Chris Haroun</span>
+                                    <h5 class="card-title my-0">${o.courseName}</h5>
+                                    <span class="card-text">#author</span>
                                     <div>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
@@ -195,67 +205,26 @@
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="far fa-star fa-xs" style="color: #ffa805"></i>
                                     </div>
-                                    <h5>$12.99</h5>
-                                    <a href="#" class="btn btn-danger">Read more</a>
+                                    <h5>$${o.price}</h5>
+                                    <a href="courseDetail?pid=${o.id}" class="btn btn-danger">Read more</a>
                                 </div>
                             </div>
                         </div>
-                        <!--                        2-->
-                        <div class="col-sm-2">
-                            <div class="card" style="width: 13.5rem;margin-left: 8rem">
-                                <img class="card-img-top" src="courseImg/courseBN2.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title my-0">Chief Financial Officer Leadership Program</h5>
-                                    <span class="card-text">Blair Cook CPA</span>
-                                    <div>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                    </div>
-                                    <h5>$12.99</h5>
-
-                                    <a href="#" class="btn btn-danger">Read more</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!--                        3-->
-                        <div class="col-sm-2">
-                            <div class="card" style="width: 13.5rem; margin-left: 16rem">
-                                <img class="card-img-top" src="courseImg/courseBN3.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title my-0">Sales and Persuasion Skills for Startups</h5>
-                                    <span class="card-text">Len Smith, Sean Kaye</span>
-                                    <div>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star-half fa-xs" style="color: #ffa805"></i>
-                                    </div>
-                                    <h5>$12.99</h5>
-
-                                    <a href="#" class="btn btn-danger">Read more</a>
-
-
-                                </div>
-                            </div>
-                        </div>
-
+                        </c:forEach>
                     </div>
                 </div>
-
-                <!--                design-->
-                <div id="design" style="display: none; margin-top: -2rem; margin-left: 5rem">
-                    <div  class="row">
+                
+                <!--                business-->
+                <div id="business" style="display: none; margin-top: -2rem">
+                    <div  class="row" style="margin-left: -1.5rem">
                         <!--                        1-->
-                        <div class="col-sm-2 " >
-                            <div class="card " style="width: 13.5rem;">
-                                <img class="card-img-top" src="courseImg/courseDS1.jpg" alt="Card image cap">
+                        <c:forEach items="${bizCourse}" var="o">
+                            <div class="col-4" style="height: max-content">
+                                <div class="card " style="width: 13rem">
+                                <img class="card-img-top" src="${o.imageLink}"  alt="Card image cap">
                                 <div class="card-body">
-                                    <h5 class="card-title my-0">The Ultimate Drawing Course</h5>
-                                    <span class="card-text">Jaysen Batchelor, Quinton Batchelor</span>
+                                    <h5 class="card-title my-0">${o.courseName}</h5>
+                                    <span class="card-text">#author</span>
                                     <div>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
@@ -263,67 +232,26 @@
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="far fa-star fa-xs" style="color: #ffa805"></i>
                                     </div>
-                                    <h5>$12.99</h5>
-                                    <a href="#" class="btn btn-danger">Read more</a>
+                                    <h5>$${o.price}</h5>
+                                    <a href="courseDetail?pid=${o.id}" class="btn btn-danger">Read more</a>
                                 </div>
                             </div>
                         </div>
-                        <!--                        2-->
-                        <div class="col-sm-2">
-                            <div class="card" style="width: 13.5rem;margin-left: 8rem">
-                                <img class="card-img-top" src="courseImg/courseDS2.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title my-0">Learn 3D Modelling for Beginners</h5>
-                                    <span class="card-text">Rick Davidson</span>
-                                    <div>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                    </div>
-                                    <h5>$12.99</h5>
-
-                                    <a href="#" class="btn btn-danger">Read more</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!--                        3-->
-                        <div class="col-sm-2">
-                            <div class="card" style="width: 13.5rem; margin-left: 16rem">
-                                <img class="card-img-top" src="courseImg/courseDS3.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title my-0">Complete Character Drawing Course</h5>
-                                    <span class="card-text">Scott Harris</span>
-                                    <div>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star-half fa-xs" style="color: #ffa805"></i>
-                                    </div>
-                                    <h5>$12.99</h5>
-
-                                    <a href="#" class="btn btn-danger">Read more</a>
-
-
-                                </div>
-                            </div>
-                        </div>
-
+                        </c:forEach>
                     </div>
                 </div>
-
+                
                 <!--                marketing-->
-                <div id="marketing" style="display: none; margin-top: -2rem; margin-left: 5rem">
-                    <div  class="row">
+                <div id="marketing" style="display: none; margin-top: -2rem">
+                    <div  class="row" style="margin-left: -1.5rem">
                         <!--                        1-->
-                        <div class="col-sm-2 " >
-                            <div class="card " style="width: 13.5rem;">
-                                <img class="card-img-top" src="courseImg/courseMK1.jpg" alt="Card image cap">
+                        <c:forEach items="${marCourse}" var="o">
+                            <div class="col-4" style="height: max-content">
+                                <div class="card " style="width: 13rem">
+                                <img class="card-img-top" src="${o.imageLink}"  alt="Card image cap">
                                 <div class="card-body">
-                                    <h5 class="card-title my-0">The Complete Digital Marketing Course</h5>
-                                    <span class="card-text">Rob Percival</span>
+                                    <h5 class="card-title my-0">${o.courseName}</h5>
+                                    <span class="card-text">#author</span>
                                     <div>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
@@ -331,67 +259,26 @@
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="far fa-star fa-xs" style="color: #ffa805"></i>
                                     </div>
-                                    <h5>$12.99</h5>
-                                    <a href="#" class="btn btn-danger">Read more</a>
+                                    <h5>$${o.price}</h5>
+                                    <a href="courseDetail?pid=${o.id}" class="btn btn-danger">Read more</a>
                                 </div>
                             </div>
                         </div>
-                        <!--                        2-->
-                        <div class="col-sm-2">
-                            <div class="card" style="width: 13.5rem;margin-left: 8rem">
-                                <img class="card-img-top" src="courseImg/courseMK2.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title my-0">Social Media Marketing MASTERY</h5>
-                                    <span class="card-text">COURSE ENVY</span>
-                                    <div>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                    </div>
-                                    <h5>$12.99</h5>
-
-                                    <a href="#" class="btn btn-danger">Read more</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!--                        3-->
-                        <div class="col-sm-2">
-                            <div class="card" style="width: 13.5rem; margin-left: 16rem">
-                                <img class="card-img-top" src="courseImg/courseMK3.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title my-0">Ultimate Google Ads Training 2020</h5>
-                                    <span class="card-text">Isaac Rudansky</span>
-                                    <div>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star-half fa-xs" style="color: #ffa805"></i>
-                                    </div>
-                                    <h5>$12.99</h5>
-
-                                    <a href="#" class="btn btn-danger">Read more</a>
-
-
-                                </div>
-                            </div>
-                        </div>
-
+                        </c:forEach>
                     </div>
                 </div>
-
-                <!--                it&software-->
-                <div id="it" style="display: none; margin-top: -2rem; margin-left: 5rem">
-                    <div  class="row">
+                
+                <!--                ai-->
+                <div id="ai" style="display: none; margin-top: -2rem">
+                    <div  class="row" style="margin-left: -1.5rem">
                         <!--                        1-->
-                        <div class="col-sm-2 " >
-                            <div class="card " style="width: 13.5rem;">
-                                <img class="card-img-top" src="courseImg/courseIT1.jpg" alt="Card image cap">
+                        <c:forEach items="${aiCourse}" var="o">
+                            <div class="col-4" style="height: max-content">
+                                <div class="card " style="width: 13rem">
+                                <img class="card-img-top" src="${o.imageLink}"  alt="Card image cap">
                                 <div class="card-body">
-                                    <h5 class="card-title my-0">The Complete 2021 Web Development Bootcamp</h5>
-                                    <span class="card-text">Dr. Angela Yu</span>
+                                    <h5 class="card-title my-0">${o.courseName}</h5>
+                                    <span class="card-text">#author</span>
                                     <div>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
@@ -399,73 +286,26 @@
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="far fa-star fa-xs" style="color: #ffa805"></i>
                                     </div>
-                                    <h5>$12.99</h5>
-                                    <a href="#" class="btn btn-danger">Read more</a>
+                                    <h5>$${o.price}</h5>
+                                    <a href="courseDetail?pid=${o.id}" class="btn btn-danger">Read more</a>
                                 </div>
                             </div>
                         </div>
-                        <!--                        2-->
-                        <div class="col-sm-2">
-                            <div class="card" style="width: 13.5rem;margin-left: 8rem">
-                                <img class="card-img-top" src="courseImg/courseIT2.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title my-0">React - The Complete Guide (Hooks, Redux)</h5>
-                                    <span class="card-text">Maximilian</span>
-                                    <div>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                    </div>
-                                    <h5>$12.99</h5>
-
-                                    <a href="#" class="btn btn-danger">Read more</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!--                        3-->
-                        <div class="col-sm-2">
-                            <div class="card" style="width: 13.5rem; margin-left: 16rem">
-                                <img class="card-img-top" src="courseImg/courseIT3.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title my-0">The Complete 2021 App Development Bootcamp</h5>
-                                    <span class="card-text">Dr. Angela Yu</span>
-                                    <div>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star-half fa-xs" style="color: #ffa805"></i>
-                                    </div>
-                                    <h5>$12.99</h5>
-
-                                    <a href="#" class="btn btn-danger">Read more</a>
-
-
-                                </div>
-                            </div>
-                        </div>
-
+                        </c:forEach>
                     </div>
                 </div>
-
-                <!--                second right screen-->
-
-                <div id="myDIV">
-                    <a class="btn2 " style="outline: none; font-weight: normal; font-size: 20px">Students are viewing</a>
-
-                </div>  
-                <!--                busines-->
-                <div id="it" style="display: block; margin-top: -2rem; margin-left: 5rem">
-                    <div  class="row">
+                
+                <!--                information assurance-->
+                <div id="ia" style="display: none; margin-top: -2rem">
+                    <div  class="row" style="margin-left: -1.5rem">
                         <!--                        1-->
-                        <div class="col-sm-2 " >
-                            <div class="card " style="width: 13.5rem;">
-                                <img class="card-img-top" src="courseImg/courseIT1.jpg" alt="Card image cap">
+                        <c:forEach items="${iaCourse}" var="o">
+                            <div class="col-4" style="height: max-content">
+                                <div class="card " style="width: 13rem">
+                                <img class="card-img-top" src="${o.imageLink}"  alt="Card image cap">
                                 <div class="card-body">
-                                    <h5 class="card-title my-0">The Complete 2021 Web Development Bootcamp</h5>
-                                    <span class="card-text">Dr. Angela Yu</span>
+                                    <h5 class="card-title my-0">${o.courseName}</h5>
+                                    <span class="card-text">#author</span>
                                     <div>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
@@ -473,73 +313,64 @@
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="far fa-star fa-xs" style="color: #ffa805"></i>
                                     </div>
-                                    <h5>$12.99</h5>
-                                    <a href="#" class="btn btn-danger">Read more</a>
+                                    <h5>$${o.price}</h5>
+                                    <a href="courseDetail?pid=${o.id}" class="btn btn-danger">Read more</a>
                                 </div>
                             </div>
                         </div>
-                        <!--                        2-->
-                        <div class="col-sm-2">
-                            <div class="card" style="width: 13.5rem;margin-left: 8rem">
-                                <img class="card-img-top" src="courseImg/courseIT2.jpg" alt="Card image cap">
+                        </c:forEach>
+                    </div>
+                </div>
+                
+                <!--                language-->
+                <div id="language" style="display: none; margin-top: -2rem">
+                    <div  class="row" style="margin-left: -1.5rem">
+                        <!--                        1-->
+                        <c:forEach items="${langCourse}" var="o">
+                            <div class="col-4" style="height: max-content">
+                                <div class="card " style="width: 13rem">
+                                <img class="card-img-top" src="${o.imageLink}"  alt="Card image cap">
                                 <div class="card-body">
-                                    <h5 class="card-title my-0">React - The Complete Guide (Hooks, Redux)</h5>
-                                    <span class="card-text">Maximilian</span>
+                                    <h5 class="card-title my-0">${o.courseName}</h5>
+                                    <span class="card-text">#author</span>
                                     <div>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
+                                        <i class="far fa-star fa-xs" style="color: #ffa805"></i>
                                     </div>
-                                    <h5>$12.99</h5>
-
-                                    <a href="#" class="btn btn-danger">Read more</a>
+                                    <h5>$${o.price}</h5>
+                                    <a href="courseDetail?pid=${o.id}" class="btn btn-danger">Read more</a>
                                 </div>
                             </div>
                         </div>
-                        <!--                        3-->
-                        <div class="col-sm-2">
-                            <div class="card" style="width: 13.5rem; margin-left: 16rem">
-                                <img class="card-img-top" src="courseImg/courseIT3.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title my-0">The Complete 2021 App Development Bootcamp</h5>
-                                    <span class="card-text">Dr. Angela Yu</span>
-                                    <div>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star-half fa-xs" style="color: #ffa805"></i>
-                                    </div>
-                                    <h5>$12.99</h5>
-
-                                    <a href="#" class="btn btn-danger">Read more</a>
-
-
-                                </div>
-                            </div>
-                        </div>
-
+                        </c:forEach>
                     </div>
                 </div>
 
+                
+        
+    
 
 
-                <div id="myDIV">
+
+                <div id="myDIV" style="margin-left: -0.5rem">
                     <a class="btn2 " style="outline: none; font-weight: normal; font-size: 20px">Some of the best</a>
 
                 </div>  
-                <!--                busines-->
-                <div id="it" style="display: block; margin-top: -2rem; margin-left: 5rem">
-                    <div  class="row">
+                <!--                students are viewing-->
+               
+                    <div id="it" style="display: block; margin-top: -2rem">
+                    <div  class="row" style="margin-left: -1.5rem">
                         <!--                        1-->
-                        <div class="col-sm-2 " >
-                            <div class="card " style="width: 13.5rem;">
-                                <img class="card-img-top" src="courseImg/courseBN3.jpg" alt="Card image cap">
+                        <c:forEach items="${studentsViewCourse}" var="o">
+                            <div class="col-4" style="height: max-content">
+                                <div class="card " style="width: 13rem">
+                                <img class="card-img-top" src="${o.imageLink}"  alt="Card image cap">
                                 <div class="card-body">
-                                    <h5 class="card-title my-0">The Complete 2021 Web Development Bootcamp</h5>
-                                    <span class="card-text">Dr. Angela Yu</span>
+                                    <h5 class="card-title my-0">${o.courseName}</h5>
+                                    <span class="card-text">#author</span>
                                     <div>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
@@ -547,56 +378,15 @@
                                         <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
                                         <i class="far fa-star fa-xs" style="color: #ffa805"></i>
                                     </div>
-                                    <h5>$12.99</h5>
-                                    <a href="#" class="btn btn-danger">Read more</a>
+                                    <h5>$${o.price}</h5>
+                                    <a href="courseDetail?pid=${o.id}" class="btn btn-danger">Read more</a>
                                 </div>
                             </div>
                         </div>
-                        <!--                        2-->
-                        <div class="col-sm-2">
-                            <div class="card" style="width: 13.5rem;margin-left: 8rem">
-                                <img class="card-img-top" src="courseImg/courseMK1.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title my-0">React - The Complete Guide (Hooks, Redux)</h5>
-                                    <span class="card-text">Maximilian</span>
-                                    <div>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                    </div>
-                                    <h5>$12.99</h5>
-
-                                    <a href="#" class="btn btn-danger">Read more</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!--                        3-->
-                        <div class="col-sm-2">
-                            <div class="card" style="width: 13.5rem; margin-left: 16rem">
-                                <img class="card-img-top" src="courseImg/courseDS2.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title my-0">The Complete 2021 App Development Bootcamp</h5>
-                                    <span class="card-text">Dr. Angela Yu</span>
-                                    <div>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                                        <i class="fas fa-star-half fa-xs" style="color: #ffa805"></i>
-                                    </div>
-                                    <h5>$12.99</h5>
-
-                                    <a href="#" class="btn btn-danger">Read more</a>
-
-
-                                </div>
-                            </div>
-                        </div>
-
+                        </c:forEach>
                     </div>
                 </div>
+                
 
 
 
@@ -605,16 +395,7 @@
 
     </section>
 
-    <div class="container">
-        <div class="row">
-            <c:forEach items="${course}" var="o">
-                <div class="col-3">
-                    <p>${o.courseName}</p>
-                    <img src="${o.imageLink}"/>
-                </div>
-            </c:forEach>
-        </div>
-    </div>
+    
 
     <section id="page-footer" class="container-fluid mt-5 d-flex justify-content-between align-items-center">
         <div class="page-dummy-footer px-5">
@@ -645,45 +426,101 @@ integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0
                         }
 
 //display and none
-                        function businessOn() {
-                            var business = document.getElementById('business');
-                            var design = document.getElementById('design');
-                            var marketing = document.getElementById('marketing');
-                            var it = document.getElementById('it');
-                            business.style.display = 'block';
-                            design.style.display = 'none';
-                            marketing.style.display = 'none';
-                            it.style.display = 'none';
-                        }
-                        function designOn() {
-                            var business = document.getElementById('business');
-                            var design = document.getElementById('design');
-                            var marketing = document.getElementById('marketing');
-                            var it = document.getElementById('it');
-                            business.style.display = 'none';
-                            design.style.display = 'block';
-                            marketing.style.display = 'none';
-                            it.style.display = 'none';
-                        }
-                        function marketingOn() {
-                            var business = document.getElementById('business');
-                            var design = document.getElementById('design');
-                            var marketing = document.getElementById('marketing');
-                            var it = document.getElementById('it');
-                            business.style.display = 'none';
-                            design.style.display = 'none';
-                            marketing.style.display = 'block';
-                            it.style.display = 'none';
-                        }
                         function itOn() {
-                            var business = document.getElementById('business');
-                            var design = document.getElementById('design');
-                            var marketing = document.getElementById('marketing');
                             var it = document.getElementById('it');
-                            business.style.display = 'none';
-                            design.style.display = 'none';
-                            marketing.style.display = 'none';
+                            var business = document.getElementById('business');
+                            var marketing = document.getElementById('marketing');
+                            var ai = document.getElementById('ai');
+                            var ia = document.getElementById('ia');
+                            var language = document.getElementById('language');
+
                             it.style.display = 'block';
+                            business.style.display = 'none';
+                            marketing.style.display = 'none';
+                            ai.style.display = 'none';
+                            ia.style.display = 'none';
+                            language.style.display = 'none';
                         }
+                        function businessOn() {
+                            var it = document.getElementById('it');
+                            var business = document.getElementById('business');
+                            var marketing = document.getElementById('marketing');
+                            var ai = document.getElementById('ai');
+                            var ia = document.getElementById('ia');
+                            var language = document.getElementById('language');
+
+                            it.style.display = 'none';
+                            business.style.display = 'block';
+                            marketing.style.display = 'none';
+                            ai.style.display = 'none';
+                            ia.style.display = 'none';
+                            language.style.display = 'none';
+                        }
+
+                        function marketingOn() {
+                            var it = document.getElementById('it');
+                            var business = document.getElementById('business');
+                            var marketing = document.getElementById('marketing');
+                            var ai = document.getElementById('ai');
+                            var ia = document.getElementById('ia');
+                            var language = document.getElementById('language');
+
+                            it.style.display = 'none';
+                            business.style.display = 'none';
+                            marketing.style.display = 'block';
+                            ai.style.display = 'none';
+                            ia.style.display = 'none';
+                            language.style.display = 'none';
+                        }
+
+                        function aiOn() {
+                            var it = document.getElementById('it');
+                            var business = document.getElementById('business');
+                            var marketing = document.getElementById('marketing');
+                            var ai = document.getElementById('ai');
+                            var ia = document.getElementById('ia');
+                            var language = document.getElementById('language');
+
+                            it.style.display = 'none';
+                            business.style.display = 'none';
+                            marketing.style.display = 'none';
+                            ai.style.display = 'block';
+                            ia.style.display = 'none';
+                            language.style.display = 'none';
+                        }
+
+                        function iaOn() {
+                            var it = document.getElementById('it');
+                            var business = document.getElementById('business');
+                            var marketing = document.getElementById('marketing');
+                            var ai = document.getElementById('ai');
+                            var ia = document.getElementById('ia');
+                            var language = document.getElementById('language');
+
+                            it.style.display = 'none';
+                            business.style.display = 'none';
+                            marketing.style.display = 'none';
+                            ai.style.display = 'none';
+                            ia.style.display = 'block';
+                            language.style.display = 'none';
+                        }
+
+                        function languageOn() {
+                            var it = document.getElementById('it');
+                            var business = document.getElementById('business');
+                            var marketing = document.getElementById('marketing');
+                            var ai = document.getElementById('ai');
+                            var ia = document.getElementById('ia');
+                            var language = document.getElementById('language');
+
+                            it.style.display = 'none';
+                            business.style.display = 'none';
+                            marketing.style.display = 'none';
+                            ai.style.display = 'none';
+                            ia.style.display = 'none';
+                            language.style.display = 'block';
+                        }
+
+
 </script>
 </html>

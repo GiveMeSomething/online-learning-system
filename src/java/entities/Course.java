@@ -10,23 +10,20 @@ package entities;
  * @author Admin
  */
 public class Course {
+
     private int id;
-    private String courseName;
-    private String subject;
-    private String author;
     private String imageLink;
+    private String courseName;
     private float price;
     private String description;
 
     public Course() {
     }
 
-    public Course(int id, String courseName, String subject, String author, String imageLink, float price, String description) {
+    public Course(int id, String imageLink, String courseName, float price, String description) {
         this.id = id;
-        this.courseName = courseName;
-        this.subject = subject;
-        this.author = author;
         this.imageLink = imageLink;
+        this.courseName = courseName;
         this.price = price;
         this.description = description;
     }
@@ -39,36 +36,20 @@ public class Course {
         this.id = id;
     }
 
-    public String getCourseName() {
-        return courseName;
-    }
-
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public String getImageLink() {
         return imageLink;
     }
 
     public void setImageLink(String imageLink) {
         this.imageLink = imageLink;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public float getPrice() {
@@ -89,7 +70,9 @@ public class Course {
 
     @Override
     public String toString() {
-        return "Product{" + "id=" + id + ", courseName=" + courseName + ", subject=" + subject + ", author=" + author + ", imageLink=" + imageLink + ", price=" + price + ", description=" + description + '}';
+        return "Course1{" + "id=" + id + ", imageLink=" + imageLink + ", courseName=" + courseName + ", price=" + price + ", description=" + description + '}';
     }
     
+    
+
 }
