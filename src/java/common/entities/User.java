@@ -14,23 +14,18 @@ public class User {
     private int id;
     private String image;
     private String name;
-    private boolean gender;
+    private Gender gender;
     private String email;
-    private int roleId;
     private String address;
-    private boolean status;
+    private Status status;
     private String mobile;
 
-    public User() {
-    }
-
-    public User(int id, String image, String name, boolean gender, String email, int roleId, String address, boolean status, String mobile) {
+    public User(int id, String image, String name, Gender gender, String email, String address, Status status, String mobile) {
         this.id = id;
         this.image = image;
         this.name = name;
         this.gender = gender;
         this.email = email;
-        this.roleId = roleId;
         this.address = address;
         this.status = status;
         this.mobile = mobile;
@@ -60,11 +55,11 @@ public class User {
         this.name = name;
     }
 
-    public boolean isGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
@@ -76,14 +71,6 @@ public class User {
         this.email = email;
     }
 
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -92,11 +79,11 @@ public class User {
         this.address = address;
     }
 
-    public boolean isStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -107,11 +94,5 @@ public class User {
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
-
-    @Override
-    public String toString() {
-        return "User{" + "id=" + id + ", image=" + image + ", name=" + name + ", gender=" + gender + ", email=" + email + ", roleId=" + roleId + ", address=" + address + ", status=" + status + ", mobile=" + mobile + '}';
-    }
-
 
 }

@@ -14,7 +14,7 @@ public class Repository {
 
     protected Connection connection;
 
-    protected void initConnection() {
+    protected void connectDatabase() {
         try {
             if (connection == null || connection.isClosed()) {
                 connection = new DBContext().getConnection();
@@ -24,7 +24,7 @@ public class Repository {
         }
     }
 
-    protected void disconnect() {
+    protected void disconnectDatabase() {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();

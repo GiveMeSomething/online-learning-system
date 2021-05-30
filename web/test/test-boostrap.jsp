@@ -11,14 +11,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Testing</title>
+        <title>Online Learning System</title>
         <link rel="stylesheet" type="text/css" href="${path}/bootstrap/css/bootstrap.min.css" />
-    </head>it s
+    </head>
     <body>
-        <div>
-            <button type="button" class="btn btn-primary">
-                Testing Testing
-            </button>
-        </div>
+        <h1>Hello World!</h1>
     </body>
+    <script src="${path}/bootstrap/js/bootstrap.min.js"></script>
 </html>

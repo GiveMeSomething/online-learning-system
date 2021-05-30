@@ -20,7 +20,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>AuthController</servlet-name>
-        <url-pattern>/auth</url-pattern>
+        <url-pattern>/authenticate</url-pattern>
     </servlet-mapping>
     <!-- SMTP settings -->
     <context-param>
