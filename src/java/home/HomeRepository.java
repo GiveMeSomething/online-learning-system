@@ -19,17 +19,12 @@ import utilities.Repository;
  *
  * @author Admin
  */
-//String sql = "SELECT u.id, u.image, u.fullname, u.gender, u.email, r.rolename, u.address, u.statusid, s.value, u.mobile "
-//                + "FROM user u INNER JOIN role r "
-//                + "ON u.roleid = r.id "
-//                + "INNER JOIN status s "
-//                + "ON u.statusid = s.id "
-//                + "WHERE u.id = ?";
+
 public class HomeRepository extends Repository {
 
     public List<Course> getITCourse() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price)\n"
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price)\n"
                 + "AS price from db_ite1_updated.course c\n"
                 + "INNER JOIN db_ite1_updated.course_package p\n"
                 + "on c.id = p.course_id\n"
@@ -50,7 +45,9 @@ public class HomeRepository extends Repository {
                         result.getString("thumbnail"),
                         result.getString("title"),
                         result.getFloat("price"),
-                        result.getString("description")
+                        result.getString("category_name"),
+                        result.getString("description"),
+                        result.getString("tag")
                 ));
 
             }
@@ -62,7 +59,7 @@ public class HomeRepository extends Repository {
 
     public List<Course> getBusinessCourse() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price)\n"
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price)\n"
                 + "AS price from db_ite1_updated.course c\n"
                 + "INNER JOIN db_ite1_updated.course_package p\n"
                 + "on c.id = p.course_id\n"
@@ -83,7 +80,9 @@ public class HomeRepository extends Repository {
                         result.getString("thumbnail"),
                         result.getString("title"),
                         result.getFloat("price"),
-                        result.getString("description")
+                        result.getString("category_name"),
+                        result.getString("description"),
+                        result.getString("tag")
                 ));
 
             }
@@ -92,10 +91,10 @@ public class HomeRepository extends Repository {
         }
         return null;
     }
-    
+
     public List<Course> getMarketingCourse() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price)\n"
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price)\n"
                 + "AS price from db_ite1_updated.course c\n"
                 + "INNER JOIN db_ite1_updated.course_package p\n"
                 + "on c.id = p.course_id\n"
@@ -116,7 +115,9 @@ public class HomeRepository extends Repository {
                         result.getString("thumbnail"),
                         result.getString("title"),
                         result.getFloat("price"),
-                        result.getString("description")
+                        result.getString("category_name"),
+                        result.getString("description"),
+                        result.getString("tag")
                 ));
 
             }
@@ -125,10 +126,10 @@ public class HomeRepository extends Repository {
         }
         return null;
     }
-    
+
     public List<Course> getAICourse() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price)\n"
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price)\n"
                 + "AS price from db_ite1_updated.course c\n"
                 + "INNER JOIN db_ite1_updated.course_package p\n"
                 + "on c.id = p.course_id\n"
@@ -136,7 +137,7 @@ public class HomeRepository extends Repository {
                 + "on p.package_id = pp.id\n"
                 + "INNER JOIN db_ite1_updated.category ca\n"
                 + "on ca.id = c.category_id\n"
-                + "where ca.category_name = 'Artificial Intelligence'\n"
+                + "where ca.category_name = 'Artificial Intelligence' and c.id > '43'\n"
                 + "GROUP BY c.id\n"
                 + "LIMIT 3";
 
@@ -149,7 +150,9 @@ public class HomeRepository extends Repository {
                         result.getString("thumbnail"),
                         result.getString("title"),
                         result.getFloat("price"),
-                        result.getString("description")
+                        result.getString("category_name"),
+                        result.getString("description"),
+                        result.getString("tag")
                 ));
 
             }
@@ -158,10 +161,10 @@ public class HomeRepository extends Repository {
         }
         return null;
     }
-    
+
     public List<Course> getIACourse() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price)\n"
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price)\n"
                 + "AS price from db_ite1_updated.course c\n"
                 + "INNER JOIN db_ite1_updated.course_package p\n"
                 + "on c.id = p.course_id\n"
@@ -182,7 +185,9 @@ public class HomeRepository extends Repository {
                         result.getString("thumbnail"),
                         result.getString("title"),
                         result.getFloat("price"),
-                        result.getString("description")
+                        result.getString("category_name"),
+                        result.getString("description"),
+                        result.getString("tag")
                 ));
 
             }
@@ -191,10 +196,10 @@ public class HomeRepository extends Repository {
         }
         return null;
     }
-    
+
     public List<Course> getLanguageCourse() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price)\n"
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price)\n"
                 + "AS price from db_ite1_updated.course c\n"
                 + "INNER JOIN db_ite1_updated.course_package p\n"
                 + "on c.id = p.course_id\n"
@@ -215,7 +220,9 @@ public class HomeRepository extends Repository {
                         result.getString("thumbnail"),
                         result.getString("title"),
                         result.getFloat("price"),
-                        result.getString("description")
+                        result.getString("category_name"),
+                        result.getString("description"),
+                        result.getString("tag")
                 ));
 
             }
@@ -224,10 +231,10 @@ public class HomeRepository extends Repository {
         }
         return null;
     }
-    
+
     public List<Course> getStudentAreViewingCourse() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,pp.list_price\n"
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,pp.list_price\n"
                 + "AS price from db_ite1_updated.course c\n"
                 + "INNER JOIN db_ite1_updated.course_package p\n"
                 + "on c.id = p.course_id\n"
@@ -235,7 +242,7 @@ public class HomeRepository extends Repository {
                 + "on p.package_id = pp.id\n"
                 + "INNER JOIN db_ite1_updated.category ca\n"
                 + "on ca.id = c.category_id\n"
-                + "where c.id > '30'"
+                + "where c.feature = '1' and c.id > '50'"
                 + "GROUP BY c.id\n"
                 + "LIMIT 3";
 
@@ -248,7 +255,9 @@ public class HomeRepository extends Repository {
                         result.getString("thumbnail"),
                         result.getString("title"),
                         result.getFloat("price"),
-                        result.getString("description")
+                        result.getString("category_name"),
+                        result.getString("description"),
+                        result.getString("tag")
                 ));
 
             }
@@ -257,17 +266,13 @@ public class HomeRepository extends Repository {
         }
         return null;
     }
-    
-    
-    
-    
-    
-    
+
+
     
     public static void main(String[] args) throws Exception {
         HomeRepository repo = new HomeRepository();
         try {
-            List<Course> list = repo.getStudentAreViewingCourse();
+            List<Course> list = repo.getAICourse();
             for (Course course : list) {
                 System.out.println(course);
             }

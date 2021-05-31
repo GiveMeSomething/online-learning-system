@@ -15,17 +15,21 @@ public class Course {
     private String imageLink;
     private String courseName;
     private float price;
+    private String category;
     private String description;
+    private String tag;
 
     public Course() {
     }
 
-    public Course(int id, String imageLink, String courseName, float price, String description) {
+    public Course(int id, String imageLink, String courseName, float price, String category, String description, String tag) {
         this.id = id;
         this.imageLink = imageLink;
         this.courseName = courseName;
         this.price = price;
+        this.category = category;
         this.description = description;
+        this.tag = tag;
     }
 
     public int getId() {
@@ -60,6 +64,14 @@ public class Course {
         this.price = price;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -67,12 +79,18 @@ public class Course {
     public void setDescription(String description) {
         this.description = description;
     }
+public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
 
     @Override
     public String toString() {
-        return "Course1{" + "id=" + id + ", imageLink=" + imageLink + ", courseName=" + courseName + ", price=" + price + ", description=" + description + '}';
+        return "Course{" + "id=" + id + ", imageLink=" + imageLink + ", courseName=" + courseName + ", price=" + price + ", category=" + category + ", description=" + description + ", tag=" + tag + '}';
     }
     
-    
-
+   
 }

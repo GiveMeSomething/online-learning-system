@@ -5,8 +5,11 @@
  */
 package courseDetail;
 
+import entities.Course;
+import home.HomeService;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-@WebServlet(name = "CourseDetailController", urlPatterns = {"/CourseDetailController"})
+@WebServlet(name = "CourseDetailController", urlPatterns = {"/courseDetail"})
 public class CourseDetailController extends HttpServlet {
 
     /**
@@ -29,21 +32,10 @@ public class CourseDetailController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CourseDetailController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CourseDetailController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+    private CourseDetailService courseDetailService;
+    @Override
+    public void init() throws ServletException{
+        courseDetailService = new CourseDetailService();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -58,7 +50,12 @@ public class CourseDetailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String id = request.getParameter("cid");
+        Course courseDetail = courseDetailService.getCourse(Integer.parseInt(id));
+        request.setAttribute("detail", courseDetail);
+        request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
+        
+        
     }
 
     /**
@@ -72,7 +69,7 @@ public class CourseDetailController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+     
     }
 
     /**

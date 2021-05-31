@@ -79,7 +79,7 @@ section {
 }
 .introduction-detail-left{
     margin-left: 3rem;
-    margin-top: -2rem;
+    margin-top: -2.5rem;
 }
 
 .introduction-primary{
@@ -250,4 +250,23 @@ section {
 #setting-dropdown-ul li ul li a:hover {background: rgba(211, 211, 211, 0.2);}
 
 
+
 /*course-detail-page*/
+#course-detail-category{
+    text-decoration: none; 
+}
+#course-detail-category:hover{
+    text-decoration: underline
+}
+
+#brief-content-upper{
+    background-image: url("https://www.wellnessretreatsindia.com/wp-content/uploads/2017/09/nature-banner-1.jpg");
+  background-color: #cccccc;
+  height: 200px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  background-blend-mode: overlay;
+}
+

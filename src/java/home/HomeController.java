@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-@WebServlet(name = "Home_Controller", urlPatterns = {"/Home_Controller"})
+@WebServlet(name = "Home_Controller", urlPatterns = {"/home"})
 public class HomeController extends HttpServlet {
 
     /**
