@@ -45,6 +45,7 @@
                                     <div>
                                         <label for="login-email">Email address</label>
                                         <input class="form-control"
+                                               name="email"
                                                type="email"
                                                id="login-email"
                                                placeholder="Enter email"
@@ -55,6 +56,7 @@
                                     <div>
                                         <label for="login-password">Password</label>
                                         <input class="form-control"
+                                               name="password"
                                                type="password"
                                                id="login-password"
                                                name="password"
@@ -96,6 +98,7 @@
                                     <div class="my-2">
                                         <label for="register-email">Email address</label>
                                         <input class="form-control"
+                                               name="email"
                                                type="email"
                                                id="register-email"
                                                placeholder="Enter email"
@@ -108,9 +111,9 @@
                                     <div class="my-2">
                                         <label for="register-password">Password</label>
                                         <input class="form-control"
+                                               name="password"
                                                type="password"
                                                id="register-password"
-                                               name="password"
                                                placeholder="Enter password"
                                                required
                                                data-value-missing="Can't be empty" />
@@ -122,6 +125,7 @@
                                     <div class="my-2">
                                         <label for="fullname">Full name</label>
                                         <input class="form-control"
+                                               name="fullname"
                                                type="text"
                                                id="fullname"
                                                placeholder="Enter full name"
@@ -130,12 +134,12 @@
                                         <div class="invalid-feedback"></div>
                                     </div>
                                     <div class="my-2">
-                                        <label for="fullname">Contact</label>
+                                        <label for="mobile">Contact</label>
                                         <input
                                             class="form-control"
+                                            name="mobile"
                                             type="text"
-                                            placeholder="Phone number"
-                                            name="phoneNum"
+                                            placeholder="Mobile number"
                                             required
                                             pattern="^\d{10}$"
                                             data-value-missing="Can't be empty"

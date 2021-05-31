@@ -1,7 +1,7 @@
 /**
  * 28/05/2021
  *
- * @author Admin
+ * @author Hoang Tien Minh
  */
 package auth;
 
@@ -47,18 +47,25 @@ public class AuthRepository extends Repository {
                     return userService.getUser(email);
                 }
             }
+
+            return null;
         } finally {
             this.disconnectDatabase();
         }
-        return null;
     }
 
     // Register new account and return token for user authorization
     public String register(Account account) throws SQLException {
         this.connectDatabase();
+
         Random randomer = new Random();
 
+        // Check email and return null if the email has already existed
         String email = account.getEmail();
+        if (isDuplicateAccount(email)) {
+            return null;
+        }
+
         int salt = randomer.nextInt(100);
         Role role = account.getRole();
 
@@ -66,7 +73,8 @@ public class AuthRepository extends Repository {
         String password = HashPassword.getHashPassword(account.getPassword(), salt);
         String token = HashToken.getToken(email, salt, role.toString());
 
-        String addAccount = "INSERT INTO account(user_email, password, role_id, salt, token) VALUES (?, ?, ?, ?, ?)";
+        String addAccount = "INSERT INTO account(user_email, password, role_id, salt, token) "
+                + "VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(addAccount)) {
             statement.setString(1, email);
             statement.setString(2, password);
@@ -78,14 +86,46 @@ public class AuthRepository extends Repository {
             if (statement.executeUpdate() > 0) {
                 return token;
             }
+
             return null;
         } finally {
             this.disconnectDatabase();
         }
     }
 
-    public boolean isDuplicateUser(String email) {
-        return false;
+    // Active user if get the right email and token
+    public boolean activeAccount(String email, String token) throws SQLException {
+        this.connectDatabase();
+
+        String checkToken = "SELECT * FROM account WHERE user_email=? AND token=?";
+        try (PreparedStatement statement = connection.prepareStatement(checkToken)) {
+            statement.setString(1, email);
+            statement.setString(2, token);
+
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                return userService.activeUser(email);
+            }
+
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
     }
 
+    private boolean isDuplicateAccount(String email) throws SQLException {
+        this.connectDatabase();
+
+        String checkEmail = "SELECT * FROM account WHERE user_email=?";
+        try (PreparedStatement statement = connection.prepareStatement(checkEmail)) {
+            statement.setString(1, email);
+
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                return true;
+            }
+
+            return false;
+        }
+    }
 }

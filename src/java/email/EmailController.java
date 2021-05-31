@@ -5,6 +5,7 @@
  */
 package email;
 
+import auth.AuthService;
 import common.utilities.Emailer;
 import java.io.IOException;
 import javax.servlet.ServletContext;
@@ -21,6 +22,7 @@ public class EmailController extends HttpServlet {
     private String password;
 
     private EmailService emailService;
+    private AuthService authService;
 
     public void init() {
         // reads SMTP server setting from web.xml file
@@ -32,32 +34,55 @@ public class EmailController extends HttpServlet {
 
         // Init Service
         emailService = new EmailService();
+        authService = new AuthService();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String operation = request.getParameter("work");
 
-        // Reads request data
-        String receiver = request.getParameter("receiver");
-        String subject = request.getParameter("subject");
-        String content = request.getParameter("content");
+        if (operation.equals("CONFIRM")) {
+            // Reads request data
+            String userEmail = request.getParameter("email");
+            String token = request.getParameter("token");
 
-        boolean isSent = emailService.sendEmail(
-                host, port, host, password,
-                receiver, subject, content
-        );
+            // Request to authService to active current user
+            boolean isActiveSuccess = authService.activeAccount(userEmail, token);
+            if (isActiveSuccess) {
+                response.sendRedirect("/home");
+            } else {
+                // Do something when active fail
+            }
 
-        if (isSent) {
-            // Do something
+        } else if (operation.equals("CHANGEPW")) {
+            // TODO: Duy Anh se implement phan nay
         } else {
-            // Do something else
+            response.sendRedirect("/home");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get operation from request
+        String operation = request.getParameter("work");
 
+        if (operation.equals("CONFIRM")) {
+            // Reads request data
+            String inputEmail = request.getParameter("receiver");
+            String token = request.getParameter("token");
+            boolean isSent = emailService.sendConfirmEmail(host, port, email, password, inputEmail, token);
+
+            if (isSent) {
+                // Do something
+                System.out.println("Email sent");
+            } else {
+                // Do something else
+                System.out.println("Can't send");
+            }
+        } else if (operation.equals("CHANGEPW")) {
+            // TODO: Duy Anh se implement phan nay
+        }
     }
 }

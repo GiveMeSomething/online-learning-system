@@ -12,14 +12,14 @@ public enum Status {
     ACTIVE,
     INACTIVE;
 
-    private static final Map<Role, Integer> STATUS_VALUE = new HashMap<>();
+    private static final Map<Status, Integer> STATUS_VALUE = new HashMap<>();
 
     static {
         STATUS_VALUE.put(INACTIVE, 0);
         STATUS_VALUE.put(ACTIVE, 1);
     }
 
-    public static Role valueOf(Status status) {
+    public static int valueOf(Status status) {
         return STATUS_VALUE.get(status);
     }
 

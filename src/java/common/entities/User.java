@@ -20,6 +20,14 @@ public class User {
     private Status status;
     private String mobile;
 
+    public User(String name, Gender gender, String email, Status status, String mobile) {
+        this.name = name;
+        this.gender = gender;
+        this.email = email;
+        this.status = status;
+        this.mobile = mobile;
+    }
+
     public User(int id, String image, String name, Gender gender, String email, String address, Status status, String mobile) {
         this.id = id;
         this.image = image;

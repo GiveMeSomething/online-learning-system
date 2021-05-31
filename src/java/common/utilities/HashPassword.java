@@ -7,15 +7,15 @@ package common.utilities;
 
 public class HashPassword {
 
-    public static String getHashPassword(String password, String salt) {
+    public static String getHashPassword(String password, int salt) {
         StringBuilder builder = new StringBuilder(Integer.toString(password.hashCode()));
 
-        builder.insert(builder.length() / 2, salt);
+        builder.insert(builder.length() / 2, Integer.toString(salt));
 
         return builder.toString();
     }
 
     public static boolean validatePassword(String password, String salt, String inputPassword) {
-        return password.equals(getHashPassword(inputPassword, salt));
+        return password.equals(getHashPassword(inputPassword, Integer.parseInt(salt)));
     }
 }

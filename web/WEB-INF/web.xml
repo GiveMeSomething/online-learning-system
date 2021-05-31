@@ -22,6 +22,10 @@
         <servlet-name>AuthController</servlet-name>
         <url-pattern>/authenticate</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EmailController</servlet-name>
+        <url-pattern>/email</url-pattern>
+    </servlet-mapping>
     <!-- SMTP settings -->
     <context-param>
         <param-name>host</param-name>

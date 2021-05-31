@@ -9,14 +9,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum Gender {
-    Male,
-    Female;
+    MALE,
+    FEMALE;
 
     private static final Map<Gender, Integer> GENDER_VALUE = new HashMap<>();
 
     static {
-        GENDER_VALUE.put(Male, 1);
-        GENDER_VALUE.put(Female, 0);
+        GENDER_VALUE.put(MALE, 1);
+        GENDER_VALUE.put(FEMALE, 0);
     }
 
     public static int valueOf(Gender gender) {
