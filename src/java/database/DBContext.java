@@ -1,5 +1,6 @@
 package database;
 
+import com.mysql.cj.protocol.Resultset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -18,28 +19,15 @@ public class DBContext {
     //Insert your other code right after this comment
     //Change/update information of your database connection, DO NOT change name of instance variables in this class
     private final String serverName = "localhost";
-    private final String dbName = "db_ite1";
+    private final String dbName = "db_ite2";
     private final String user = "root";
-    private final String password = "1m2i3n4h@1001"; // password here
+    private final String password = "root"; // password here
 
     public static void main(String[] args) {
         // Test connection
         try {
-            String sql = "SELECT u.id, u.image, u.fullname, u.gender, u.email, r.rolename, u.address, u.statusid, s.value, u.mobile "
-                    + "FROM user u INNER JOIN role r "
-                    + "ON u.roleid = r.id "
-                    + "INNER JOIN status s "
-                    + "ON u.statusid = s.id "
-                    + "WHERE u.id = ?";
-
-            Connection test = new DBContext().getConnection();
-            PreparedStatement testStatement = test.prepareStatement(sql);
-            testStatement.setInt(1, 1);
-            ResultSet result = testStatement.executeQuery();
-            result.next();
-            System.out.println(result.getString("fullname"));
+            System.out.println(new DBContext().getConnection());
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

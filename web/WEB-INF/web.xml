@@ -4,9 +4,25 @@
         <servlet-name>UserController</servlet-name>
         <servlet-class>features.user.UserController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BlogController</servlet-name>
+        <servlet-class>features.blog.BlogController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangePassController</servlet-name>
+        <servlet-class>features.common.ChangePassController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BlogController</servlet-name>
+        <url-pattern>/BlogController</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
         <url-pattern>/user</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePassController</servlet-name>
+        <url-pattern>/changePass</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
