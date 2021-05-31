@@ -5,35 +5,32 @@
  */
 package home;
 
-import entities.Course1;
+import entities.Category;
 import java.util.List;
 
 /**
  *
- * @author Admin
+ * @author Nguyen Khanh Toan
  */
 public class HomeService {
-   private final HomeRepository homeRepository;
+    private final HomeRepository homeRepository;
 
     public HomeService() {
         this.homeRepository = new HomeRepository();
     }
-
-    public List<Course1> getCourse1() {
+    
+    public List<Category> getAllCategory() {
         try {
-            List<Course1> result = homeRepository.getAllCourse();
-
+            List<Category> result = homeRepository.getAllCategory();
             if (result == null) {
                 // redirect to 404
                 System.out.println("Something wrong");
                 return null;
             }
-
             return result;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
         return null;
     }
 }

@@ -19,13 +19,13 @@ public class DBContext {
     private final String serverName = "localhost";
     private final String dbName = "db_ite1";
     private final String user = "root";
-    private final String password = "dinhkongthanh"; // password here
+    private final String password = "123456"; // password here
 
     public static void main(String[] args) {
         // Test connection
         try {
             Connection test = new DBContext().getConnection();
-            PreparedStatement testStatement = test.prepareStatement("SELECT * FROM blog");
+            PreparedStatement testStatement = test.prepareStatement("SELECT * FROM course");
             System.out.println(testStatement.execute());
         } catch (Exception e) {
             e.printStackTrace();

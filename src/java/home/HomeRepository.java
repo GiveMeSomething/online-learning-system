@@ -5,55 +5,38 @@
  */
 package home;
 
-import database.DBContext;
-import entities.Course;
-import entities.Course1;
-import java.sql.Connection;
+import entities.Category;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import utilities.Repository;
 
 /**
  *
- * @author Admin
+ * @author Nguyen Khanh Toan
  */
-public class HomeRepository extends Repository {
-
-    public List<Course1> getAllCourse() throws Exception {
+public class HomeRepository extends Repository{
+     //GET ALL CATEGORY
+    public List<Category> getAllCategory() throws Exception {
         this.connectDatabase();
-        String sql = "SELECT * FROM db_ite1.course";
-        List<Course1> list = new ArrayList<>();
+        String sql = "SELECT * FROM db_ite1.category;";
+        List<Category> list = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                list.add(
-                        new Course1(
-                                result.getInt("id"),
-                                result.getString("thumbnail"),
-                                result.getString("title"),
-                                result.getFloat("price"),
-                                result.getString("description")
-                        ));
-               
+                list.add(new Category(result.getInt("id"),result.getString("category_name")));
             }
-             return list;
+            return list;
         } catch (Exception e) {
         }
         return null;
     }
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception{
         HomeRepository repo = new HomeRepository();
-        try {
-            List<Course1> list = repo.getAllCourse();
-            for (Course1 course : list) {
-                System.out.println(course);
-            }
-        } catch (Exception e) {
+        List<Category> list = repo.getAllCategory();
+        for (Category o : list) {
+            System.out.println(o);
         }
-
     }
 }

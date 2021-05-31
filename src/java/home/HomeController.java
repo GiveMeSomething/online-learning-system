@@ -5,9 +5,8 @@
  */
 package home;
 
-import entities.Course1;
+import entities.Category;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "Home_Controller", urlPatterns = {"/Home_Controller"})
 public class HomeController extends HttpServlet {
 
+    private HomeService homeService;
+
+    @Override
+    public void init() throws ServletException {
+        homeService = new HomeService();
+    }
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,20 +37,11 @@ public class HomeController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-        private HomeService homeService;
-
-    @Override
-    public void init() throws ServletException {
-        homeService = new HomeService();
-    }
-
-   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       List<Course1> course =  homeService.getCourse1();
-
-        request.setAttribute("course", course);
+        List<Category> listC = homeService.getAllCategory();
+        request.setAttribute("listC", listC);
         request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 

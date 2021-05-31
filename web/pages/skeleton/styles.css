@@ -166,5 +166,33 @@ section {
     overflow-y: hidden
 }
 
+.page-item.active .page-link{
+   border: 1px solid black;
+}
+.course__list__paging:focus{
+    outline:none;
+    box-shadow: none;
+    border:1px solid black;
+}
 
+.page-item.active .page-link{
+    background-color:#426fc2;
+    color:white;
+}
 
+.page-item .page-link{
+    color:black;
+}
+
+/*COURSE LIST*/
+.btn-course-list{
+    border-radius: 0px;
+}
+
+.taolatoan{
+    vertical-align: middle;
+    border-style: none;
+    width: 100%;
+    height: auto;
+    max-width: 828px;
+}
