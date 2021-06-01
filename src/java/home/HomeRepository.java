@@ -19,7 +19,6 @@ import utilities.Repository;
  *
  * @author Admin
  */
-
 public class HomeRepository extends Repository {
 
     public List<Course> getITCourse() throws Exception {
@@ -267,15 +266,53 @@ public class HomeRepository extends Repository {
         return null;
     }
 
-
     
+    
+    public List<Course> getSiderCourseDetail() throws Exception {
+        this.connectDatabase();
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price)\n"
+                              +" AS price from db_ite1_updated.course c\n"
+				+"INNER JOIN db_ite1_updated.course_package p\n"
+                                +"on c.id = p.course_id\n"
+                                +"INNER JOIN db_ite1_updated.price_package pp\n"
+                               +"on p.package_id = pp.id\n"
+                                +"INNER JOIN db_ite1_updated.category ca\n"
+                               +"on ca.id = c.category_id\n"
+                               +"where c.feature =1\n" 
+                                +"GROUP BY c.id\n"
+                                +"ORDER BY RAND()\n" 
+                                +"limit 3 ";
+
+       List<Course> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                 list.add(new Course(
+                        result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getFloat("price"),
+                        result.getString("category_name"),
+                        result.getString("description"),
+                        result.getString("tag")
+                ));
+
+            }
+       return list;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     public static void main(String[] args) throws Exception {
         HomeRepository repo = new HomeRepository();
         try {
-            List<Course> list = repo.getAICourse();
+            List<Course> list = repo.getSiderCourseDetail();
             for (Course course : list) {
                 System.out.println(course);
             }
+                ;
+            
         } catch (Exception e) {
         }
 

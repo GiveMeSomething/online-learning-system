@@ -52,7 +52,10 @@ public class CourseDetailController extends HttpServlet {
             throws ServletException, IOException {
         String id = request.getParameter("cid");
         Course courseDetail = courseDetailService.getCourse(Integer.parseInt(id));
+        HomeService homeService = new HomeService();
+        List<Course> siderCourse = homeService.getSiderCourseDetail();
         request.setAttribute("detail", courseDetail);
+        request.setAttribute("siderDetail", siderCourse);
         request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
         
         

@@ -140,4 +140,22 @@ public class HomeService {
         return null;
     }
     
+    public List<Course> getSiderCourseDetail() {
+        try {
+            List<Course> result = homeRepository.getSiderCourseDetail();
+
+            if (result == null) {
+                // redirect to 404
+                System.out.println("Something wrong");
+                return null;
+            }
+
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+    
 }

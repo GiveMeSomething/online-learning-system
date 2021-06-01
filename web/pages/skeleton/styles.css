@@ -206,7 +206,7 @@ section {
     display: none;
     margin-left: -5.5rem;
     margin-top: 11px;
-    
+
 }
 
 #setting-dropdown-ul li a{
@@ -261,12 +261,96 @@ section {
 
 #brief-content-upper{
     background-image: url("https://www.wellnessretreatsindia.com/wp-content/uploads/2017/09/nature-banner-1.jpg");
-  background-color: #cccccc;
-  height: 200px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-  background-blend-mode: overlay;
+    background-color: #cccccc;
+    height: 200px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    background-blend-mode: overlay;
+}
+
+.what-you-learn-paragraph{
+    width: 100px
+}
+
+.sider-course-hover{
+    color: black;
+    text-decoration: none
+}
+.sider-course-hover:hover{
+    color: #007791
+}
+
+/*cardFlip*/
+.flip-card {
+    margin-top: 2rem;
+    background-color: transparent;
+    width: 380px;
+    height: 180px;
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+    position: relative;
+    height: 100%;
+    /*text-align: center;*/
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+    width: 380px;
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid lightgray;
+    background-color: #fff;
+    color: black;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* Style the back side */
+.flip-card-back {
+    margin-top: .3rem;
+    width: 380px;
+    color: black;
+    transform: rotateY(180deg);
+}
+
+#contact-link i{
+    margin-right: 1rem
+}
+#contact-link .fa-facebook:hover{
+    color: #3b5998;
+    cursor: pointer
+}
+#contact-link .fa-instagram:hover{
+    color: #8134AF;
+    cursor: pointer
+}
+#contact-link .fa-envelope:hover{
+    color: #4285F4;
+    cursor: pointer
+}
+#contact-link .fa-phone-square-alt:hover{
+    cursor: pointer
+}
+#contact-link .fa-twitter-square:hover{
+    color:#00ACEE;
+    cursor: pointer
 }
 
