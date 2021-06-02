@@ -43,7 +43,7 @@ public class AuthRepository extends Repository {
                 String salt = result.getString("salt");
 
                 // Check password then return user
-                if (HashPassword.validatePassword(password, salt, inputPassword)) {
+                if (HashPassword.validatePassword(email, password, salt, inputPassword)) {
                     return userService.getUser(email);
                 }
             }
@@ -70,7 +70,7 @@ public class AuthRepository extends Repository {
         Role role = account.getRole();
 
         // Get hash password and token
-        String password = HashPassword.getHashPassword(account.getPassword(), salt);
+        String password = HashPassword.getHashPassword(email, account.getPassword(), salt);
         String token = HashToken.getToken(email, salt, role.toString());
 
         String addAccount = "INSERT INTO account(user_email, password, role_id, salt, token) "

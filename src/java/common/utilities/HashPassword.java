@@ -7,19 +7,23 @@ package common.utilities;
 
 public class HashPassword {
 
-    public static String getHashPassword(String password, int salt) {
-        StringBuilder builder = new StringBuilder(Integer.toString(password.hashCode()));
+    // We need to include email to ensure that all hashPassword is different
+    public static String getHashPassword(String email, String password, int salt) {
+        StringBuilder builder = new StringBuilder(
+                Integer.toString(email.hashCode())
+                + Integer.toString(password.hashCode())
+        );
 
         builder.insert(builder.length() / 2, Integer.toString(salt));
 
         return builder.toString();
     }
 
-    public static boolean validatePassword(String password, String salt, String inputPassword) {
-        return password.equals(getHashPassword(inputPassword, Integer.parseInt(salt)));
+    public static boolean validatePassword(String email, String password, String salt, String inputPassword) {
+        return password.equals(getHashPassword(email, inputPassword, Integer.parseInt(salt)));
     }
 
     public static void main(String[] args) {
-        System.out.println(validatePassword("150689442", "68", "1234"));
+        System.out.println(getHashPassword("hioaUWHDfoiahwdoiahwdoIAUDFHOAIWHEFOAHWEOFwaoeipfd@gmail.com", "alsfhpowEIHFOPASHEFAOSEHJSAFOIAHPHFPOEWOFPAF", 20));
     }
 }
