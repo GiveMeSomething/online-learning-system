@@ -1,41 +1,108 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * May 28, 2021
+ *
+ * @author Hoang Tien Minh
  */
 package common.filters;
 
+import auth.AuthService;
+import common.entities.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author Admin
- */
 public class AuthFilter implements Filter {
+
+    private AuthService authService;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        authService = new AuthService();
     }
 
     @Override
     public void destroy() {
+
     }
 
-    public void doFilter(ServletRequest req, ServletResponse resp,
+    public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest pageRequest = (HttpServletRequest) request;
+        HttpServletResponse pageResponse = (HttpServletResponse) response;
+        HttpSession currentSession = pageRequest.getSession();
 
-        PrintWriter out = resp.getWriter();
-        out.print("filter is invoked before");
+        // To 'login' if user not yet logged in, else check token (authorization)
+        User currentUser = getUser(currentSession);
+        if (currentUser == null) {
+            pageResponse.sendRedirect("/nauth/auth/login.jsp");
+            return;
+        }
 
-        chain.doFilter(req, resp); // Sends request to next resource
+        String token = getToken(pageRequest, currentSession);
 
-        out.print("filter is invoked after");
+        // If no token is found, send confirm email
+        if (token == null || token.equals("")) {
+            String confirmEmailPath = "/email?work=AUTH&receiver=" + currentUser.getEmail();
+            request.getRequestDispatcher(confirmEmailPath).forward(request, response);
+        } else {
+            chain.doFilter(request, response);
+        }
     }
+
+    // Get token with logic (get from session or cookie)
+    private String getToken(HttpServletRequest request, HttpSession session) {
+        // Check if token is in session, else get from cookie and auth
+        User currentUser = (User) session.getAttribute("user");
+        String token;
+        try {
+            token = (String) session.getAttribute("ols-token");
+            if (token == null || token.equals("")) {
+                // Get token from cookie
+                token = getToken(request);
+                if (authService.isValidToken(currentUser.getEmail(), token)) {
+                    return token;
+                }
+
+                return null;
+            }
+        } catch (ClassCastException e) {
+            System.out.println(e.getMessage() + " at AuthFilter ");
+            return null;
+        }
+
+        return token;
+    }
+
+    // Get token from cookie
+    private String getToken(HttpServletRequest request) {
+        Cookie userCookies[] = request.getCookies();
+
+        // Get required token from user browser cookie
+        String requiredCookieName = "ols-token";
+        for (Cookie cookie : userCookies) {
+            if (cookie.getName().equals(requiredCookieName)) {
+                return cookie.getValue();
+            }
+        }
+
+        return null;
+    }
+
+    private User getUser(HttpSession currentSession) {
+        User currentUser = (User) currentSession.getAttribute("user");
+        if (currentUser != null && currentUser.getEmail() != null) {
+            return currentUser;
+        }
+
+        return null;
+    }
+
 }

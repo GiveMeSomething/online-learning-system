@@ -48,4 +48,14 @@ public class AuthService {
         return false;
     }
 
+    public boolean isValidToken(String email, String token) {
+        try {
+            return authRepository.isValidToken(email, token);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 }

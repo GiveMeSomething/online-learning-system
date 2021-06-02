@@ -11,13 +11,18 @@ public class Account {
     private Role role;
     private String token;
 
-    // Use this constructor when use register (without salt, token)
-    // Salt is not use anywhere in the system -> remove
-    // Token is use for authorize
+    // Use this constructor when use register
     public Account(String email, String password, Role role) {
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    // Use this constructor when use login
+    public Account(String email, String password, String token) {
+        this.email = email;
+        this.password = password;
+        this.token = token;
     }
 
     public String getEmail() {

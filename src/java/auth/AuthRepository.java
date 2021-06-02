@@ -33,7 +33,7 @@ public class AuthRepository extends Repository {
 
         String getAccount = "SELECT user_email, password FROM account WHERE user_email=?";
 
-        try (PreparedStatement statement = connection.prepareStatement(getAccount)) {
+        try (PreparedStatement statement = this.connection.prepareStatement(getAccount)) {
             statement.setString(1, email);
 
             ResultSet result = statement.executeQuery();
@@ -75,7 +75,7 @@ public class AuthRepository extends Repository {
 
         String addAccount = "INSERT INTO account(user_email, password, role_id, salt, token) "
                 + "VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(addAccount)) {
+        try (PreparedStatement statement = this.connection.prepareStatement(addAccount)) {
             statement.setString(1, email);
             statement.setString(2, password);
             statement.setInt(3, Role.valueOf(role));
@@ -95,16 +95,25 @@ public class AuthRepository extends Repository {
 
     // Active user if get the right email and token
     public boolean activeAccount(String email, String token) throws SQLException {
+        if (isValidToken(email, token)) {
+            return userService.activeUser(email);
+        }
+
+        return false;
+    }
+
+    // Validate user token
+    public boolean isValidToken(String email, String token) throws SQLException {
         this.connectDatabase();
 
         String checkToken = "SELECT * FROM account WHERE user_email=? AND token=?";
-        try (PreparedStatement statement = connection.prepareStatement(checkToken)) {
+        try (PreparedStatement statement = this.connection.prepareStatement(checkToken)) {
             statement.setString(1, email);
             statement.setString(2, token);
 
             ResultSet result = statement.executeQuery();
             if (result.next()) {
-                return userService.activeUser(email);
+                return true;
             }
 
             return false;
@@ -113,11 +122,12 @@ public class AuthRepository extends Repository {
         }
     }
 
+    // Check if email already registered
     private boolean isDuplicateAccount(String email) throws SQLException {
         this.connectDatabase();
 
         String checkEmail = "SELECT * FROM account WHERE user_email=?";
-        try (PreparedStatement statement = connection.prepareStatement(checkEmail)) {
+        try (PreparedStatement statement = this.connection.prepareStatement(checkEmail)) {
             statement.setString(1, email);
 
             ResultSet result = statement.executeQuery();

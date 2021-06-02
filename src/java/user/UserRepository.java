@@ -19,7 +19,7 @@ public class UserRepository extends Repository {
         this.connectDatabase();
 
         String getUser = "SELECT id, image, full_name, gender, email, address, status_id, mobile WHERE user_email=?";
-        try (PreparedStatement statement = connection.prepareStatement(getUser)) {
+        try (PreparedStatement statement = this.connection.prepareStatement(getUser)) {
             statement.setString(1, email);
 
             ResultSet result = statement.executeQuery();
@@ -69,7 +69,7 @@ public class UserRepository extends Repository {
         this.connectDatabase();
 
         String activeUser = "UPDATE user SET status_id=? WHERE email=?";
-        try (PreparedStatement statement = connection.prepareStatement(activeUser)) {
+        try (PreparedStatement statement = this.connection.prepareStatement(activeUser)) {
             statement.setInt(1, Status.valueOf(Status.ACTIVE));
             statement.setString(2, email);
 
