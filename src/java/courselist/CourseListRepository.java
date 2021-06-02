@@ -144,6 +144,50 @@ public class CourseListRepository extends Repository {
         }
         return null;
     }
+     
+    public List<Course> sortCoursePrice(int cateID,String price) throws Exception {
+        this.connectDatabase();
+        String sql = "";
+        if(price.equals("1")){
+            sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price)"
+                + " AS price from db_ite1.course c\n"
+                + "INNER JOIN db_ite1.course_package p\n"
+                + "on c.id = p.course_id\n"
+                + "INNER JOIN db_ite1.price_package pp\n"
+                + "on p.package_id = pp.id\n"
+                + "WHERE c.category_id = ?\n"
+                + "GROUP BY c.id\n ORDER BY MIN(pp.list_price) ASC LIMIT 8";
+        }else{
+            sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price)"
+                + " AS price from db_ite1.course c\n"
+                + "INNER JOIN db_ite1.course_package p\n"
+                + "on c.id = p.course_id\n"
+                + "INNER JOIN db_ite1.price_package pp\n"
+                + "on p.package_id = pp.id\n"
+                + "WHERE c.category_id = ?\n"
+                + "GROUP BY c.id\n ORDER BY MIN(pp.list_price) DESC LIMIT 8";
+        }
+                List<Course> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+            statement.setInt(1, cateID);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new Course(
+                        result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        result.getFloat("price"),
+                        result.getString("tag")
+                ));
+
+            }
+            return list;
+        } catch (Exception e) {
+    }
+        return null;
+    }
+        
 
     public static void main(String[] args) throws Exception {
         CourseListRepository repo = new CourseListRepository();

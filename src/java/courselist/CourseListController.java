@@ -10,6 +10,7 @@ import entities.Course;
 import home.HomeService;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -72,15 +73,15 @@ public class CourseListController extends HttpServlet {
             throws ServletException, IOException {
         int cateID = Integer.parseInt(request.getParameter("cID"));
         HttpSession ses = request.getSession();
-        ses.setAttribute("cateID",cateID);
+        ses.setAttribute("cateID", cateID);
         List<Course> course = courseListService.getCourseByCateID(cateID);
         List<Course> courseFeature = courseListService.courseFeature(cateID);
         String searchName = request.getParameter("searchCourse");
         int id = 0;
-        for(int i = 0; i < courseFeature.size();i++){
+        for (int i = 0; i < courseFeature.size(); i++) {
             id = courseFeature.get(0).getId();
         }
-        request.setAttribute("course", course);
+        request.setAttribute("course", course); //3
         switch (cateID) {
             case 1: {
                 request.setAttribute("title", "Software Enginneering");
@@ -126,16 +127,33 @@ public class CourseListController extends HttpServlet {
         List<Course> listCoursePaging = courseListService.pagingCourseList(cateID, indexPage);
         HomeService homeService = new HomeService();
         List<Category> listC = homeService.getAllCategory();
+        //FILTER PRICE
+
+        String price = request.getParameter("price");
+        if (price != null) {
+            List<Course> listPrice = new ArrayList<>();
+            if (price.equals("1")) {
+                listPrice = courseListService.sortCoursePrice(cateID, price);
+            } else {
+                listPrice = courseListService.sortCoursePrice(cateID, price);
+            }
+            request.setAttribute("course", listPrice); //1
+        } else {
+            request.setAttribute("course", listCoursePaging); //2
+        }
+        HttpSession sesPrice = request.getSession();
+        sesPrice.setAttribute("price", price);
         request.setAttribute("listC", listC);
         request.setAttribute("tag", index);
-        request.setAttribute("course", listCoursePaging);
+        request.setAttribute("price", price);
+
         request.setAttribute("end", endPage);
         request.setAttribute("cateID", cateID);
         request.setAttribute("courseFeature", courseFeature);
         HttpSession session = request.getSession();
         session.removeAttribute("searchName");
-//        request.setAttribute("course", courseSearched);
         request.setAttribute("id", id);
+        request.setAttribute("vaodauday", "TAO LÀ TOÀN");
         request.getRequestDispatcher("courselist.jsp").forward(request, response);
     }
 

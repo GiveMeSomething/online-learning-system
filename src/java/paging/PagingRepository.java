@@ -18,15 +18,35 @@ import utilities.Repository;
  */
 public class PagingRepository extends Repository {
 
-    public List<Course> pagingCourseList(int cateID,String searchName,int page) throws Exception {
+    public List<Course> pagingCourseList(int cateID,String searchName,int page,String price) throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
+        String sql = "";
+        if(price.equals("1")){
+           sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
                 + "INNER JOIN db_ite1.course_package p\n"
                 + "on c.id = p.course_id\n"
                 + "INNER JOIN db_ite1.price_package pp\n"
                 + "on p.package_id = pp.id\n"
                 + "WHERE c.category_id = ? AND title like ?\n"
-                + "GROUP BY c.id LIMIT 8 OFFSET ?";
+                + "GROUP BY c.id ORDER BY price asc LIMIT 8 OFFSET ?";  
+        }else if(price.equals("0")){
+           sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
+                + "INNER JOIN db_ite1.course_package p\n"
+                + "on c.id = p.course_id\n"
+                + "INNER JOIN db_ite1.price_package pp\n"
+                + "on p.package_id = pp.id\n"
+                + "WHERE c.category_id = ? AND title like ?\n"
+                + "GROUP BY c.id ORDER BY price desc LIMIT 8 OFFSET ? ";  
+        }else{
+            sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
+                + "INNER JOIN db_ite1.course_package p\n"
+                + "on c.id = p.course_id\n"
+                + "INNER JOIN db_ite1.price_package pp\n"
+                + "on p.package_id = pp.id\n"
+                + "WHERE c.category_id = ? AND title like ?\n"
+                + "GROUP BY c.id LIMIT 8 OFFSET ?";  
+        }
+       
         List<Course> list = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
             statement.setInt(1, cateID);
@@ -70,9 +90,9 @@ public class PagingRepository extends Repository {
     public static void main(String[] args) throws Exception {
         PagingRepository repo = new PagingRepository();
         try {
-            List<Course> list = repo.pagingCourseList(6,"English",1);
-            for (Course course : list) {
-                System.out.println(course);
+            List<Course> list = repo.pagingCourseList(1, "", 2, "1");
+            for (Course o : list) {
+                System.out.println(o);
             }
         } catch (Exception e) {
         }

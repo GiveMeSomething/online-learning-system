@@ -17,9 +17,9 @@ public class PagingService {
     public PagingService() {
         this.pagingRepository = new PagingRepository();
     }
-    public List<Course> pagingCourseList(int cateID,String searchName,int page) {
+    public List<Course> pagingCourseList(int cateID,String searchName,int page,String price) {
         try {
-            List<Course> result = pagingRepository.pagingCourseList(cateID,searchName,page);
+            List<Course> result = pagingRepository.pagingCourseList(cateID,searchName,page,price);
 
             if (result == null) {
                 // redirect to 404

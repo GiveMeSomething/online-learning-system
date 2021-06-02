@@ -94,6 +94,21 @@ public class CourseListService {
 
         return null;
     }
+    
+    public List<Course> sortCoursePrice(int cateID,String price) {
+        try {
+            List<Course> result = courseListRepository.sortCoursePrice(cateID,price);
+            if (result == null) {
+                // redirect to 404
+                System.out.println("Something wrong");
+                return null;
+            }
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
      
  
 }

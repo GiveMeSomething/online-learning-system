@@ -167,7 +167,7 @@ section {
 }
 
 .page-item.active .page-link{
-   border: 1px solid black;
+    border: 1px solid black;
 }
 .course__list__paging:focus{
     outline:none;
@@ -189,10 +189,11 @@ section {
     border-radius: 0px;
 }
 
-.taolatoan{
-    vertical-align: middle;
-    border-style: none;
-    width: 100%;
-    height: auto;
-    max-width: 828px;
+.buttonPrice:focus{
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: black;
 }

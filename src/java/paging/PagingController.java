@@ -15,7 +15,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -76,12 +75,15 @@ public class PagingController extends HttpServlet {
             }
 
         }
-        
+        String price = request.getParameter("price");
+//        if(price == null){
+//            price = "";
+//        }
         String searchName = request.getParameter("searchName");
         if (searchName == null) {
             searchName = "";
         }
-        List<Course> listCoursePaging = pagingService.pagingCourseList(cateID, searchName, indexPage);
+        List<Course> listCoursePaging = pagingService.pagingCourseList(cateID, searchName, indexPage,price);
         int total = pagingService.countingCourseList(cateID,searchName);
         int endPage = 0;
         if (total % 8 == 0) {
@@ -101,6 +103,7 @@ public class PagingController extends HttpServlet {
         request.setAttribute("id", id);
         request.setAttribute("tag", index);
         request.setAttribute("course", listCoursePaging);
+        
         request.setAttribute("end", endPage);
         request.setAttribute("cateID", cateID);
         request.getRequestDispatcher("courselist.jsp").forward(request, response);
