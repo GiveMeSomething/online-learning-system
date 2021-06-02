@@ -18,7 +18,7 @@ public class UserRepository extends Repository {
     public User getUser(String email) throws SQLException {
         this.connectDatabase();
 
-        String getUser = "SELECT id, image, full_name, gender, email, address, status_id, mobile WHERE user_email=?";
+        String getUser = "SELECT id, image, full_name, gender, email, address, status_id, mobile FROM user WHERE email=?";
         try (PreparedStatement statement = this.connection.prepareStatement(getUser)) {
             statement.setString(1, email);
 
@@ -31,7 +31,7 @@ public class UserRepository extends Repository {
                         result.getInt("gender") == 1 ? Gender.MALE : Gender.FEMALE,
                         result.getString("email"),
                         result.getString("address"),
-                        result.getInt("status") == 0 ? Status.INACTIVE : Status.ACTIVE,
+                        result.getInt("status_id") == 0 ? Status.INACTIVE : Status.ACTIVE,
                         result.getString("mobile")
                 );
             }

@@ -58,11 +58,14 @@ public class AuthController extends HttpServlet implements Controller {
 
             // Add new account and user. Then set token to user's browser's cookie
             userToken = addAccount(request, response, userAccount, user);
-            addTokenToCookie(response, userToken);
+            if (userToken != null) {
+                addTokenToCookie(response, userToken);
 
-            // Forward to send confirm email (using email and userToken)
-            String confirmEmailPath = "/email?work=CONFIRM&receiver=" + email + "&token=" + userToken;
-            request.getRequestDispatcher(confirmEmailPath).forward(request, response);
+                // Forward to send confirm email (using email and userToken)
+                String confirmEmailPath = "/email?work=CONFIRM&receiver=" + email + "&token=" + userToken;
+                request.getRequestDispatcher(confirmEmailPath).forward(request, response);
+            }
+
         } else {
             // Login
             // If no token is found, send confirm email else do normal login
@@ -71,10 +74,14 @@ public class AuthController extends HttpServlet implements Controller {
                 String confirmEmailPath = "/email?work=AUTH&receiver=" + email;
                 request.getRequestDispatcher(confirmEmailPath).forward(request, response);
             } else {
+                System.out.println(userToken);
+
                 Account userAccount = new Account(email, password, userToken);
                 User currentUser = authService.login(userAccount);
 
                 addUserToSession(request, response, currentUser);
+
+                response.sendRedirect("auth/auth-success.jsp");
             }
         }
     }
@@ -82,9 +89,11 @@ public class AuthController extends HttpServlet implements Controller {
     private String addAccount(HttpServletRequest request, HttpServletResponse response, Account userAccount, User user)
             throws ServletException, IOException {
         String token = authService.register(userAccount);
-        String forwardTo = (String) request.getAttribute("previousPage");
-
+        String forwardTo = request.getParameter("previousPage");
+        System.out.println(token);
+        System.out.println(forwardTo);
         if (token == null || token.equals("")) {
+            System.out.println("redirect to blah blah");
             this.forwardErrorMessage(request, response, "Register failed. Can't add account", forwardTo);
         } else {
             addUser(request, response, user);
@@ -93,9 +102,10 @@ public class AuthController extends HttpServlet implements Controller {
         return token;
     }
 
-    private void addUser(HttpServletRequest request, HttpServletResponse response, User user) {
+    private void addUser(HttpServletRequest request, HttpServletResponse response, User user)
+            throws ServletException, IOException {
         boolean isUserAdded = userService.addUser(user);
-        String forwardTo = (String) request.getAttribute("previousPage");
+        String forwardTo = request.getParameter("previousPage");
         if (!isUserAdded) {
             this.forwardErrorMessage(request, response, "Register failed. Can't add new user", forwardTo);
         }
@@ -107,9 +117,10 @@ public class AuthController extends HttpServlet implements Controller {
         response.addCookie(userCookie);
     }
 
-    private void addUserToSession(HttpServletRequest request, HttpServletResponse response, User currentUser) {
+    private void addUserToSession(HttpServletRequest request, HttpServletResponse response, User currentUser)
+            throws ServletException, IOException {
         HttpSession currentSession = request.getSession();
-        String forwardTo = (String) request.getAttribute("previousPage");
+        String forwardTo = request.getParameter("previousPage");
         if (currentUser == null || currentUser.getEmail() == null) {
             this.forwardErrorMessage(request, response, "Login failed", forwardTo);
         } else {

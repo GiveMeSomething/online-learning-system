@@ -7,7 +7,7 @@
     </filter>
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
-        <url-pattern>/auth</url-pattern>
+        <url-pattern>/auth/*</url-pattern>
     </filter-mapping>
     <!--Servlet Mapping-->
     <servlet>

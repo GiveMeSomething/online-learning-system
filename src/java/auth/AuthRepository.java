@@ -31,7 +31,7 @@ public class AuthRepository extends Repository {
         String email = account.getEmail();
         String inputPassword = account.getPassword();
 
-        String getAccount = "SELECT user_email, password FROM account WHERE user_email=?";
+        String getAccount = "SELECT user_email, password, salt FROM account WHERE user_email=?";
 
         try (PreparedStatement statement = this.connection.prepareStatement(getAccount)) {
             statement.setString(1, email);

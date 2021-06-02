@@ -42,7 +42,7 @@ public class AuthFilter implements Filter {
         // To 'login' if user not yet logged in, else check token (authorization)
         User currentUser = getUser(currentSession);
         if (currentUser == null) {
-            pageResponse.sendRedirect("/nauth/auth/login.jsp");
+            pageResponse.sendRedirect(pageRequest.getContextPath() + "/index.jsp");
             return;
         }
 
@@ -50,9 +50,10 @@ public class AuthFilter implements Filter {
 
         // If no token is found, send confirm email
         if (token == null || token.equals("")) {
-            String confirmEmailPath = "/email?work=AUTH&receiver=" + currentUser.getEmail();
+            String confirmEmailPath = pageRequest.getContextPath() + "/email?work=AUTH&receiver=" + currentUser.getEmail();
             request.getRequestDispatcher(confirmEmailPath).forward(request, response);
         } else {
+            System.out.println("If you see this line, it means it's all ok");
             chain.doFilter(request, response);
         }
     }
