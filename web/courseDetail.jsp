@@ -60,7 +60,7 @@ and open the template in the editor.
 
                         <img style="margin-right: 12rem; margin-top:1.5rem;width: 20rem; float: right; border-radius: 5px 5px 0px 0px;box-shadow: 1px 1px 7px black" src="${detail.imageLink}">
                         <div  style="width: 320px;height:217px; border-radius:0px 0px 5px 5px;background: black; margin-top: 50px;box-shadow: 1px 1px 7px black">
-                            <div style="margin-top: 2rem; margin-left: 5rem"><a href="#" class="btn px-sm-5 py-2" style="padding: 0.5rem 3.5rem!important; background: #007791; color: white; font-weight: bold; margin-top: 10px">Buy now</a></div>
+                            <div style="margin-top: 2rem; margin-left: 5rem"><a href="#" class="btn px-sm-5 py-2" style="padding: 0.5rem 3rem!important; background: #007791; color: white; font-weight: bold; margin-top: 10px">Buy now</a></div>
 
                         </div>
                     </div>

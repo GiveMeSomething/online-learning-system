@@ -23,16 +23,17 @@ public class HomeRepository extends Repository {
 
     public List<Course> getITCourse() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price)\n"
-                + "AS price from db_ite1_updated.course c\n"
-                + "INNER JOIN db_ite1_updated.course_package p\n"
-                + "on c.id = p.course_id\n"
-                + "INNER JOIN db_ite1_updated.price_package pp\n"
-                + "on p.package_id = pp.id\n"
-                + "INNER JOIN db_ite1_updated.category ca\n"
-                + "on ca.id = c.category_id\n"
-                + "where ca.category_name = 'Software Engineering'\n"
-                + "GROUP BY c.id\n"
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
+                + "AS price from db_ite1_updated.course c "
+                + "INNER JOIN db_ite1_updated.course_package p "
+                + "on c.id = p.course_id "
+                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "on p.package_id = pp.id "
+                + "INNER JOIN db_ite1_updated.category ca "
+                + "on ca.id = c.category_id "
+                + "where ca.category_name = 'Software Engineering' "
+                + "GROUP BY c.id "
+                +"ORDER BY RAND() " 
                 + "LIMIT 3";
 
         List<Course> list = new ArrayList<>();
@@ -58,16 +59,17 @@ public class HomeRepository extends Repository {
 
     public List<Course> getBusinessCourse() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price)\n"
-                + "AS price from db_ite1_updated.course c\n"
-                + "INNER JOIN db_ite1_updated.course_package p\n"
-                + "on c.id = p.course_id\n"
-                + "INNER JOIN db_ite1_updated.price_package pp\n"
-                + "on p.package_id = pp.id\n"
-                + "INNER JOIN db_ite1_updated.category ca\n"
-                + "on ca.id = c.category_id\n"
-                + "where ca.category_name = 'Economy'\n"
-                + "GROUP BY c.id\n"
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
+                + "AS price from db_ite1_updated.course c "
+                + "INNER JOIN db_ite1_updated.course_package p "
+                + "on c.id = p.course_id "
+                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "on p.package_id = pp.id "
+                + "INNER JOIN db_ite1_updated.category ca "
+                + "on ca.id = c.category_id "
+                + "where ca.category_name = 'Economy' "
+                + "GROUP BY c.id "
+                +"ORDER BY RAND() " 
                 + "LIMIT 3";
 
         List<Course> list = new ArrayList<>();
@@ -93,16 +95,17 @@ public class HomeRepository extends Repository {
 
     public List<Course> getMarketingCourse() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price)\n"
-                + "AS price from db_ite1_updated.course c\n"
-                + "INNER JOIN db_ite1_updated.course_package p\n"
-                + "on c.id = p.course_id\n"
-                + "INNER JOIN db_ite1_updated.price_package pp\n"
-                + "on p.package_id = pp.id\n"
-                + "INNER JOIN db_ite1_updated.category ca\n"
-                + "on ca.id = c.category_id\n"
-                + "where ca.category_name = 'Digital Marketing'\n"
-                + "GROUP BY c.id\n"
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
+                + "AS price from db_ite1_updated.course c "
+                + "INNER JOIN db_ite1_updated.course_package p "
+                + "on c.id = p.course_id "
+                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "on p.package_id = pp.id "
+                + "INNER JOIN db_ite1_updated.category ca "
+                + "on ca.id = c.category_id "
+                + "where ca.category_name = 'Digital Marketing' "
+                + "GROUP BY c.id "
+                +"ORDER BY RAND() " 
                 + "LIMIT 3";
 
         List<Course> list = new ArrayList<>();
@@ -128,16 +131,17 @@ public class HomeRepository extends Repository {
 
     public List<Course> getAICourse() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price)\n"
-                + "AS price from db_ite1_updated.course c\n"
-                + "INNER JOIN db_ite1_updated.course_package p\n"
-                + "on c.id = p.course_id\n"
-                + "INNER JOIN db_ite1_updated.price_package pp\n"
-                + "on p.package_id = pp.id\n"
-                + "INNER JOIN db_ite1_updated.category ca\n"
-                + "on ca.id = c.category_id\n"
-                + "where ca.category_name = 'Artificial Intelligence' and c.id > '43'\n"
-                + "GROUP BY c.id\n"
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
+                + "AS price from db_ite1_updated.course c "
+                + "INNER JOIN db_ite1_updated.course_package p "
+                + "on c.id = p.course_id "
+                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "on p.package_id = pp.id "
+                + "INNER JOIN db_ite1_updated.category ca "
+                + "on ca.id = c.category_id "
+                + "where ca.category_name = 'Artificial Intelligence' and c.id > '43' "
+                + "GROUP BY c.id "
+                +"ORDER BY RAND() " 
                 + "LIMIT 3";
 
         List<Course> list = new ArrayList<>();
@@ -163,16 +167,17 @@ public class HomeRepository extends Repository {
 
     public List<Course> getIACourse() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price)\n"
-                + "AS price from db_ite1_updated.course c\n"
-                + "INNER JOIN db_ite1_updated.course_package p\n"
-                + "on c.id = p.course_id\n"
-                + "INNER JOIN db_ite1_updated.price_package pp\n"
-                + "on p.package_id = pp.id\n"
-                + "INNER JOIN db_ite1_updated.category ca\n"
-                + "on ca.id = c.category_id\n"
-                + "where ca.category_name = 'Information Assurance'\n"
-                + "GROUP BY c.id\n"
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
+                + "AS price from db_ite1_updated.course c "
+                + "INNER JOIN db_ite1_updated.course_package p "
+                + "on c.id = p.course_id "
+                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "on p.package_id = pp.id "
+                + "INNER JOIN db_ite1_updated.category ca "
+                + "on ca.id = c.category_id "
+                + "where ca.category_name = 'Information Assurance' "
+                + "GROUP BY c.id "
+                +"ORDER BY RAND() " 
                 + "LIMIT 3";
 
         List<Course> list = new ArrayList<>();
@@ -198,16 +203,17 @@ public class HomeRepository extends Repository {
 
     public List<Course> getLanguageCourse() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price)\n"
-                + "AS price from db_ite1_updated.course c\n"
-                + "INNER JOIN db_ite1_updated.course_package p\n"
-                + "on c.id = p.course_id\n"
-                + "INNER JOIN db_ite1_updated.price_package pp\n"
-                + "on p.package_id = pp.id\n"
-                + "INNER JOIN db_ite1_updated.category ca\n"
-                + "on ca.id = c.category_id\n"
-                + "where ca.category_name = 'Language'\n"
-                + "GROUP BY c.id\n"
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
+                + "AS price from db_ite1_updated.course c "
+                + "INNER JOIN db_ite1_updated.course_package p "
+                + "on c.id = p.course_id "
+                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "on p.package_id = pp.id "
+                + "INNER JOIN db_ite1_updated.category ca "
+                + "on ca.id = c.category_id "
+                + "where ca.category_name = 'Language' "
+                + "GROUP BY c.id "
+                +"ORDER BY RAND() " 
                 + "LIMIT 3";
 
         List<Course> list = new ArrayList<>();
@@ -233,16 +239,17 @@ public class HomeRepository extends Repository {
 
     public List<Course> getStudentAreViewingCourse() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,pp.list_price\n"
-                + "AS price from db_ite1_updated.course c\n"
-                + "INNER JOIN db_ite1_updated.course_package p\n"
-                + "on c.id = p.course_id\n"
-                + "INNER JOIN db_ite1_updated.price_package pp\n"
-                + "on p.package_id = pp.id\n"
-                + "INNER JOIN db_ite1_updated.category ca\n"
-                + "on ca.id = c.category_id\n"
-                + "where c.feature = '1' and c.id > '50'"
-                + "GROUP BY c.id\n"
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,pp.list_price "
+                + "AS price from db_ite1_updated.course c "
+                + "INNER JOIN db_ite1_updated.course_package p "
+                + "on c.id = p.course_id "
+                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "on p.package_id = pp.id "
+                + "INNER JOIN db_ite1_updated.category ca "
+                + "on ca.id = c.category_id "
+                + "where c.feature = '1' and c.id > '50' "
+                + "GROUP BY c.id "
+                +"ORDER BY RAND() " 
                 + "LIMIT 3";
 
         List<Course> list = new ArrayList<>();
@@ -270,17 +277,17 @@ public class HomeRepository extends Repository {
     
     public List<Course> getSiderCourseDetail() throws Exception {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price)\n"
-                              +" AS price from db_ite1_updated.course c\n"
-				+"INNER JOIN db_ite1_updated.course_package p\n"
-                                +"on c.id = p.course_id\n"
-                                +"INNER JOIN db_ite1_updated.price_package pp\n"
-                               +"on p.package_id = pp.id\n"
-                                +"INNER JOIN db_ite1_updated.category ca\n"
-                               +"on ca.id = c.category_id\n"
-                               +"where c.feature =1\n" 
-                                +"GROUP BY c.id\n"
-                                +"ORDER BY RAND()\n" 
+        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
+                              +" AS price from db_ite1_updated.course c "
+				+"INNER JOIN db_ite1_updated.course_package p "
+                                +"on c.id = p.course_id "
+                                +"INNER JOIN db_ite1_updated.price_package pp "
+                               +"on p.package_id = pp.id "
+                                +"INNER JOIN db_ite1_updated.category ca "
+                               +"on ca.id = c.category_id "
+                               +"where c.feature =1 " 
+                                +"GROUP BY c.id "
+                                +"ORDER BY RAND() " 
                                 +"limit 3 ";
 
        List<Course> list = new ArrayList<>();
