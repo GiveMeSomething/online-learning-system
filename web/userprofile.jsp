@@ -24,7 +24,7 @@
         <!--        fontawesome-->
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
-        <link rel="stylesheet" type="text/css" href="pages//skeleton/styles.css">
+        <link rel="stylesheet" type="text/css" href="skeleton/styles.css">
     </head>
     <body>
         <jsp:include page="header.jsp"></jsp:include>
@@ -63,21 +63,21 @@
 
                     <div class="form-group" style="margin-bottom: -11px">
                         <label>Full Name</label> 
-                        <input value="${user.fullName}" name="fName" type="text" class="form-control" placeholder="Full Name"><br>
+                        <input value="${user.name}" name="fName" type="text" class="form-control" placeholder="Full Name"><br>
                     </div>
                     <div class="form-group">
                         <div class="d-flex align-items-center">
                             <p class="mb-0 mr-3">Gender</p> 
-                            <c:if test="${user.gender == 1}">
-                                <input checked type="radio" id="male" name="gender" value="1"> 
+                            <c:if test="${user.gender == 'MALE'}">
+                                <input checked type="radio" id="male" name="gender" value="MALE"> 
                                 <label style="margin-top: 5px" class="mr-3 ml-1" for="male">Male</label><br>
-                                <input type="radio" id="female" name="gender" value="0">
+                                <input type="radio" id="female" name="gender" value="FEMALE">
                                 <label style="margin-top: 5px" class="ml-1" for="female">Female</label><br>  
                             </c:if>
-                            <c:if test="${user.gender == 0}">
-                                <input type="radio" id="male" name="gender" value="1">  
+                            <c:if test="${user.gender == 'FEMALE'}">
+                                <input type="radio" id="male" name="gender" value="MALE">  
                                 <label style="margin-top: 5px" class="mr-3 ml-1" for="male">Male</label><br>
-                                <input checked type="radio" id="female" name="gender" value="0">
+                                <input checked type="radio" id="female" name="gender" value="FEMALE">
                                 <label style="margin-top: 5px" class="ml-1" for="female">Female</label><br>  
                             </c:if>
                         </div>
@@ -96,17 +96,17 @@
                     <div class="form-group">
                         <div class="d-flex align-items-center">
                             <p class="mb-0 mr-3">Status</p> 
-                            <c:if test="${user.status == 1}">
-                                <input checked type="radio" id="active" name="status" value="1">
+                            <c:if test="${user.status == 'ACTIVE'}">
+                                <input checked type="radio" id="active" name="status" value="ACTIVE">
                                 <label style="margin-top: 7px" class="mr-3 ml-1" for="male">Active</label><br>
-                                <input type="radio" id="inactive" name="status" value="0">
+                                <input type="radio" id="inactive" name="status" value="INACTIVE">
                                 <label style="margin-top: 7px" class="ml-1" for="female">Inactive</label><br>  
                             </c:if>
 
-                            <c:if test="${user.status == 0}">
-                                <input type="radio" id="active" name="status" value="1">
+                            <c:if test="${user.status == 'INACTIVE'}">
+                                <input type="radio" id="active" name="status" value="ACTIVE">
                                 <label style="margin-top: 7px" class="mr-3 ml-1" for="male">Active</label><br>
-                                <input checked type="radio" id="inactive" name="status" value="0">
+                                <input checked type="radio" id="inactive" name="status" value="INACTIVE">
                                 <label style="margin-top: 7px" class="ml-1" for="female">Inactive</label><br>  
                             </c:if>
                         </div>

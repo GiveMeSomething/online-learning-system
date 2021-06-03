@@ -5,12 +5,12 @@
  */
 package home;
 
-import entities.Category;
+import common.entities.Category;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import utilities.Repository;
+import common.utilities.Repository;
 
 /**
  *

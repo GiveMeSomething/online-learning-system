@@ -5,7 +5,7 @@
  */
 package paging;
 
-import entities.Course;
+import common.entities.Course;
 import java.util.List;
 
 /**

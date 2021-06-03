@@ -5,7 +5,7 @@
  */
 package home;
 
-import entities.Category;
+import common.entities.Category;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;

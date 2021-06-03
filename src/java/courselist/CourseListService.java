@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package courselist;
-import entities.Course;
+import common.entities.Course;
 import java.util.List;
 /**
  *

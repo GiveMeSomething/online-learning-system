@@ -5,8 +5,8 @@
  */
 package paging;
 
-import entities.Category;
-import entities.Course;
+import common.entities.Category;
+import common.entities.Course;
 import home.HomeService;
 import java.io.IOException;
 import java.util.List;

@@ -1,0 +1,23 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : May 30, 2021, 12:31:17 AM
+    Author     : Admin
+*/
+.container, .container-fluid{
+    padding: 0 !important;
+}
+
+/*Input warning text*/
+.access-denied{
+    color: red;
+    font-weight: 700;
+    font-style: italic;
+}
+
+.full-height-container {
+    height: 100vh;
+}

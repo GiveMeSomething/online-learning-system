@@ -5,7 +5,7 @@
  */
 package search;
 
-import entities.Course;
+import common.entities.Course;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
