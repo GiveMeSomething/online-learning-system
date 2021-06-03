@@ -6,7 +6,7 @@
 package home;
 
 import database.DBContext;
-import entities.Course;
+import common.entities.Course;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

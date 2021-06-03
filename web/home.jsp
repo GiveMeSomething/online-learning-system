@@ -31,7 +31,7 @@
     <body>
 
 
-        <jsp:include page="header.jsp"></jsp:include>
+        <jsp:include page="components/global/navbar.jsp"></jsp:include>
             <!--  Banner--> 
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
@@ -43,7 +43,7 @@
                                 <button class="btn btn-secondary">Learn more</button>
                             </div>
                         </div>
-                        <img class="d-block w-100" style="height: 388.72px" src="bannerImg/banner1.jpg" alt="First slide">
+                        <img class="d-block w-100" style="height: 388.72px" src="assets/bannerImg/banner1.jpg" alt="First slide">
                     </div>
                     <div class="carousel-item banner-margin-top">
                         <div class="banner-information bg-dark mx-lg-5">
@@ -53,7 +53,7 @@
                                 <button class="btn btn-secondary">Learn more</button>
                             </div>
                         </div>
-                        <img class="d-block w-100" src="bannerImg/banner2_1.jpg" alt="Second slide">
+                        <img class="d-block w-100" src="assets/bannerImg/banner2_1.jpg" alt="Second slide">
                     </div>
                     <div class="carousel-item banner-margin-top">
                         <div class="banner-information bg-dark mx-lg-5">
@@ -63,7 +63,7 @@
                                 <button class="btn btn-secondary">Learn more</button>
                             </div>
                         </div>
-                        <img class="d-block w-100" src="bannerImg/banner3_1.jpg" alt="Third slide">
+                        <img class="d-block w-100" src="assets/bannerImg/banner3_1.jpg" alt="Third slide">
                     </div>
                 </div>
                 <a class="carousel-control-prev banner-btn" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -121,32 +121,32 @@
                     </div>  
                     <!--                it-->
                     <div id="it" style="display: block; margin-top: -2rem">
-                       <jsp:include page="it.jsp"></jsp:include>
+                       <jsp:include page="components/home/it.jsp"></jsp:include>
                 </div>
 
                 <!--                business-->
                 <div id="business" style="display: none; margin-top: -2rem">
-                    <jsp:include page="business.jsp"></jsp:include>
+                    <jsp:include page="components/home/business.jsp"></jsp:include>
                 </div>
 
                 <!--                marketing-->
                 <div id="marketing" style="display: none; margin-top: -2rem">
-                    <jsp:include page="marketing.jsp"></jsp:include>
+                    <jsp:include page="components/home/marketing.jsp"></jsp:include>
                 </div>
 
                 <!--                ai-->
                 <div id="ai" style="display: none; margin-top: -2rem">
-                 <jsp:include page="ai.jsp"></jsp:include>
+                 <jsp:include page="components/home/ai.jsp"></jsp:include>
                 </div>
 
                 <!--                information assurance-->
                 <div id="ia" style="display: none; margin-top: -2rem">
-                   <jsp:include page="ia.jsp"></jsp:include>
+                   <jsp:include page="components/home/ia.jsp"></jsp:include>
                 </div>
 
                 <!--                language-->
                 <div id="language" style="display: none; margin-top: -2rem">
-                   <jsp:include page="language.jsp"></jsp:include>
+                   <jsp:include page="components/home/language.jsp"></jsp:include>
                 </div>
                 <div id="myDIV" style="margin-left: -0.5rem">
                     <a class="btn2 " style="outline: none; font-weight: normal; font-size: 20px">Some of the best</a>
@@ -155,7 +155,7 @@
                 <!--                students are viewing-->
 
                 <div  style="display: block; margin-top: -2rem">
-                <jsp:include page="featuredCourse.jsp"></jsp:include>
+                <jsp:include page="components/home/featuredCourse.jsp"></jsp:include>
                 </div>
 
 
@@ -166,7 +166,7 @@
 
     </section>
 
-    <jsp:include page="footer.jsp"></jsp:include>
+    <jsp:include page="components/global/footer.jsp"></jsp:include>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"

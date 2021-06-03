@@ -24,14 +24,11 @@ and open the template in the editor.
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="pages/skeleton/styles.css">
     </head>
 
     <body>
-        <jsp:include page="header.jsp"></jsp:include>
+        <jsp:include page="components/global/navbar.jsp"></jsp:include>
             <div>
                 <section id="brief-content">
                     <div id="brief-content-upper" class=" bg-dark d-flex" style="height: 19.5rem">
@@ -145,7 +142,7 @@ and open the template in the editor.
                         </section>
                         <section id="recommendation-course">
                             <div>
-                                <jsp:include page="oneFeaturedCourse.jsp"></jsp:include>
+                                <jsp:include page="components/courseDetail/oneFeaturedCourse.jsp"></jsp:include>
                                 </div>  
                             </section>
                                 <section id="contact-link">
@@ -165,7 +162,7 @@ and open the template in the editor.
                 </section>  
             </div>
 
-        <jsp:include page="footer.jsp"></jsp:include>
+        <jsp:include page="components/global/footer.jsp"></jsp:include>
     </body>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
