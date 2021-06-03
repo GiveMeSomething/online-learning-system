@@ -35,7 +35,10 @@
                           method="POST"
                           class="needs-validation"
                           novalidate>
-                        <input name="previousPage" value="index.jsp" hidden="true" />
+                        <div class="request-info">
+                            <input name="previousPage" value="index.jsp" hidden="true" />
+                            <div class="invalid-feedback"></div>
+                        </div>
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -89,7 +92,10 @@
                           method="POST"
                           class="needs-validation"
                           novalidate>
-                        <input name="previousPage" value="index.jsp" hidden="true" />
+                        <div class="request-info">
+                            <input name="previousPage" value="index.jsp" hidden="true" />
+                            <div class="invalid-feedback"></div>
+                        </div>
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
