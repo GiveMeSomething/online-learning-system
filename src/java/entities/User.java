@@ -8,23 +8,20 @@ package entities;
 public class User {
 
     private int id;
-    private String avatarURL;
+    private String image;
     private String fullName;
     private String gender;
     private String email;
-    private String role;
     private String address;
     private String status;
     private String phoneNumber;
 
-    public User(int id, String avatarURL, String fullName, String gender, String email,
-            String role, String address, String status, String phoneNumber) {
+    public User(int id, String avatarURL, String fullName, String gender, String email, String address, String status, String phoneNumber) {
         this.id = id;
-        this.avatarURL = avatarURL;
+        this.image = avatarURL;
         this.fullName = fullName;
         this.gender = gender;
         this.email = email;
-        this.role = role;
         this.address = address;
         this.status = status;
         this.phoneNumber = phoneNumber;
@@ -38,12 +35,12 @@ public class User {
         this.id = id;
     }
 
-    public String getAvatarURL() {
-        return avatarURL;
+    public String getImage() {
+        return image;
     }
 
-    public void setAvatarURL(String avatarURL) {
-        this.avatarURL = avatarURL;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getFullName() {
@@ -70,14 +67,6 @@ public class User {
         this.email = email;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -100,6 +89,11 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", image=" + image + ", fullName=" + fullName + ", gender=" + gender + ", email=" + email + ", address=" + address + ", status=" + status + ", phoneNumber=" + phoneNumber + '}';
     }
 
 }

@@ -40,14 +40,14 @@
                 <div class="col-lg-8">
                     <c:forEach var="o" items="${hmPost}">
                         <div class="blog">
-                            <a href="BlogController?id=${o.key}">
+                            <a href="BlogDetail?id=${o.postId}">
                                 <div class="row">
-                                    <h3>${o.value.title}</h3>
+                                    <h3>${o.title}</h3>
                                 </div>
                                 <div class="row">
-                                    <img src="${o.value.thumbnail}" class="col-4" alt="thumbnail" width="100" height="100">
+                                    <img src="${o.thumbnail}" class="col-4" alt="thumbnail" width="100" height="100">
                                     <div class="col-lg-8">
-                                        <p class="desc">${o.value.description}</p>
+                                        <p class="desc">${o.briefInfo}</p>
                                     </div>
                                 </div>
                             </a>
@@ -55,6 +55,21 @@
                     </c:forEach>
                 </div>
             </div>
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                    <c:forEach begin="1" end="${requestScope.nOfPage}" var="i">
+                        <li class="page-item ${curPage == i?"active":""}">
+                            <a class="page-link" href="BlogPagination?curPage=${i}">${i}</a>
+                        </li>
+                        </c:forEach>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </body>
 </html>

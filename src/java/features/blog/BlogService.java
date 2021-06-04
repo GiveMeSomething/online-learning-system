@@ -6,6 +6,7 @@
 package features.blog;
 
 import entities.Post;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -19,7 +20,8 @@ public class BlogService {
     public BlogService() {
         this.blogRepository = new BlogRepository();
     }
-    public HashMap<String, String> gethmCat(){
+
+    public HashMap<String, String> gethmCat() {
         try {
             HashMap<String, String> hmCat = blogRepository.gethmCat();
             return hmCat;
@@ -28,7 +30,8 @@ public class BlogService {
         }
         return null;
     }
-    public HashMap<String, Post> gethmPost(){
+
+    public HashMap<String, Post> gethmPost() {
         try {
             HashMap<String, Post> hmPost = blogRepository.gethmPost();
             return hmPost;
@@ -37,12 +40,48 @@ public class BlogService {
         }
         return null;
     }
-    public HashMap<String, Post> getLatestPost(){
+
+    public HashMap<String, Post> getLatestPost() {
         try {
-            HashMap<String, Post> hmPost = blogRepository.getLatestPost();
-            return hmPost;
+            HashMap<String, Post> hmLatestPost = blogRepository.getLatestPost();
+            return hmLatestPost;
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public Post getPostDetail(String id) {
+        try {
+            Post postDetail = blogRepository.getPostDetail(id);
+            return postDetail;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public HashMap<String, String> getUser() {
+        try {
+            HashMap<String, String> getUser = blogRepository.getUser();
+            return getUser;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+    public int getNumberOfPosts(){
+        try {
+            return blogRepository.getNumberOfPosts();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
+    public ArrayList<Post> getPost(int curPage, int postsPerPage){
+        try {
+            return blogRepository.getPost(curPage, postsPerPage);
+        } catch (Exception e) {
         }
         return null;
     }

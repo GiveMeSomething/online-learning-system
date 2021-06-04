@@ -14,7 +14,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>BlogController</servlet-name>
-        <url-pattern>/BlogController</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
