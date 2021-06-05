@@ -10,7 +10,7 @@ import common.entities.Role;
 import common.entities.User;
 import common.utilities.HashPassword;
 import common.utilities.HashToken;
-import common.common.utilities.Repository;
+import common.utilities.Repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -5,11 +5,14 @@
  */
 package user;
 
+import common.entities.Category;
 import common.entities.Gender;
 import common.entities.Status;
 import common.entities.User;
 import common.utilities.Controller;
+import home.HomeService;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +22,12 @@ import javax.servlet.http.HttpSession;
 public class UserController extends HttpServlet implements Controller {
 
     private UserService userService;
+    private HomeService homeService;
 
     @Override
     public void init() throws ServletException {
         userService = new UserService();
+        homeService = new HomeService();
     }
 
     @Override
@@ -35,6 +40,8 @@ public class UserController extends HttpServlet implements Controller {
 
         User user = userService.getUserProfile(id);
         request.setAttribute("user", user);
+        List<Category> listC = homeService.getAllCategory();
+        request.setAttribute("listC", listC);
         request.getRequestDispatcher("userprofile.jsp").forward(request, response);
     }
 

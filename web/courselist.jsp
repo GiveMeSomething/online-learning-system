@@ -26,7 +26,7 @@
         <link rel="stylesheet" type="text/css" href="skeleton/styles.css">
     </head>
     <body>
-        <jsp:include page="header.jsp"></jsp:include>
+        <jsp:include page="navbar.jsp"></jsp:include>
             <div class="container-fluid" style='width:85%;margin:0 auto'>
                 <h3 class="mb-4">${title}</h3>
             <!--FEATURED COURSE-->
@@ -45,18 +45,14 @@
                                         <div style="margin-top:10px;background-color: #fce59b;width:80px;height:35px;color:#2b1b13;border-radius: 10px;text-align: center;line-height:30px;align-items: center">Best seller</div>
                                     </span><br/>
                                     <div class="row">
-
                                         <a href="#" class="btn ml-3 mr-2"
                                            style="background-color: #f53f34;color:white;border-radius:0px">
                                             Check Out
                                         </a> 
-
-
                                         <a href="#" class="btn"
                                            style="background-color: #072b7d;color:white;border-radius:0px">
                                             Register
                                         </a>
-
                                     </div>
                                 </div>
                             </div>
@@ -82,8 +78,8 @@
                 <!--FILTER COURSE-->
                 <div class="col-2">
                     <h3>Filter</h3>
+                    <hr/>
                     <div>
-                        <form method="post">
                         <div class="accordion" id="accordionExample">
                             <div class="accordion-item">
                                 <h4 class="accordion-button"
@@ -91,20 +87,44 @@
                                     data-target="#collapseOne">
                                     Price<i class="fa fa-angle-down" style="margin-left:50%"></i></h4>
                                
-                                <div id="collapseOne" class="accordion-collapse collapse"
+                                <div id="collapseOne" class="accordion-collapse collapse show"
                                      data-parent="#accordionExample">
-                                    <input name="price" type='radio' value="1"/>
+                                    <input ${sessionScope.price == 1 ? "checked":""} name="price" type='radio' value="1"/>
                                     <div style='margin-top: -20px;margin-left:21px'>
                                         <span>Ascending Price</span>  
                                     </div>
-                                    <input name="price" type='radio' value="0">
+                                    <input ${sessionScope.price == 0 ? "checked":""} name="price" type='radio' value="0">
                                     <div style='margin-top: -20px;margin-left:21px'>
                                         <span>Descending Price</span>  
                                     </div>
                                 </div>
                             </div>
+                            
+                           
                         </div>
-                        </form>
+                        <hr/>
+                        <div class="accordion" id="filterAlpha">
+                            <div class="accordion-item">
+                                <h4 class="accordion-button"
+                                    type="button" data-toggle="collapse"
+                                    data-target="#filterA">
+                                    Alphabet<i class="fa fa-angle-down" style="margin-left:26%"></i></h4>
+                               
+                                <div id="filterA" class="accordion-collapse collapse show"
+                                     data-parent="#filterAlpha">
+                                    <input ${sessionScope.alpha == "ascAlpha" ? "checked":""} name="alpha" type='radio' value="ascAlpha"/>
+                                    <div style='margin-top: -20px;margin-left:21px'>
+                                        <span>A-Z</span>  
+                                    </div>
+                                    <input ${sessionScope.alpha == "descAlpha" ? "checked":""} name="alpha" type='radio' value="descAlpha">
+                                    <div style='margin-top: -20px;margin-left:21px'>
+                                        <span>Z-A</span>  
+                                    </div>
+                                </div>
+                            </div>
+                            
+                           
+                        </div>
 
 
 
@@ -163,7 +183,7 @@
                     <c:forEach begin="1" end="${end}" var="i">
                         <li class="page-item page-item-paging ${tag == i?"active":""}">
                             <a style=""
-                               href="paging?index=${i}&&cID=${cateID}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}"
+                               href="paging?index=${i}&&cID=${cateID}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
                                class="page-link course__list__paging">
                                 ${i}
                             </a>
@@ -186,10 +206,19 @@
                         var value = $(this).val();
                         if (value == 1) {
                             window.location.assign("CourseListController?cID=${cateID}&&price="+value);
-                        } else if (value == '0') {
+                        } else if (value == 0) {
                             window.location.assign("CourseListController?cID=${cateID}&&price="+value);
-                        } else if (value === 'bing') {
-                            window.location.assign("http://www.bing.com");
+                        }
+                    });
+                });
+                
+                $(function () {
+                    $("input[name$='alpha']").click(function () {
+                        var value = $(this).val();
+                        if (value === 'ascAlpha') {
+                            window.location.assign("CourseListController?cID=${cateID}&&alpha="+value);
+                        } else if (value === 'descAlpha') {
+                            window.location.assign("CourseListController?cID=${cateID}&&alpha="+value);
                         }
                     });
                 });

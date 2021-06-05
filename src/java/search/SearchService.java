@@ -15,46 +15,32 @@ import java.util.List;
 public class SearchService {
     private final SearchRepository searchRepository;
     public SearchService() {
-        this.searchRepository = new SearchRepository();
+        searchRepository = new SearchRepository();
     }
     public List<Course> searchCourse(int cateID,String searchName) {
         try {
-            List<Course> result = searchRepository.searchCourse(cateID,searchName);
-
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-            return result;
+            return searchRepository.searchCourse(cateID,searchName);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
     }
     
-    public List<Course> courseFeature(int cateID) {
+    public List<Course> getCourseFeature(int cateID) {
         try {
-            List<Course> result = searchRepository.courseFeature(cateID);
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-            return result;
+            return searchRepository.getCourseFeature(cateID);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }
     
     public int countingCourseListSearch(int cateID,String searchName) {
         try {
-            int result = searchRepository.countingCourseListSearch(cateID,searchName);
-            return result;
+            return searchRepository.countingCourseListSearch(cateID,searchName);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return 0;
     }

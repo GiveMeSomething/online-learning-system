@@ -8,7 +8,7 @@ public class DBContext {
     private final String serverName = "localhost";
     private final String dbName = "db_ite1";
     private final String userID = "root";
-    private final String password = "123456";
+    private final String password = "root";
 
     public Connection getConnection() throws Exception {
         String url = "jdbc:mysql://" + serverName + "/" + dbName + "?useSSL=false";

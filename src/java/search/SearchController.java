@@ -5,7 +5,9 @@
  */
 package search;
 
+import common.entities.Category;
 import common.entities.Course;
+import home.HomeService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -25,47 +27,14 @@ import javax.servlet.http.HttpSession;
 public class SearchController extends HttpServlet {
 
     private SearchService searchService;
+    private HomeService homeService;
 
     @Override
     public void init() throws ServletException {
         searchService = new SearchService();
+        homeService = new HomeService();
     }
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SearchController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SearchController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -74,14 +43,6 @@ public class SearchController extends HttpServlet {
         response.sendRedirect("CourseListController?cID="+cID);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -98,7 +59,9 @@ public class SearchController extends HttpServlet {
         }
         
         List<Course> list = searchService.searchCourse(cateID,searchName);
-        List<Course> courseFeature = searchService.courseFeature(cateID);
+        List<Course> courseFeature = searchService.getCourseFeature(cateID);
+        List<Category> listC = homeService.getAllCategory();
+        request.setAttribute("listC", listC);
         int id = 0;
         for (int i = 0; i < courseFeature.size(); i++) {
             id = courseFeature.get(0).getId();
@@ -110,15 +73,5 @@ public class SearchController extends HttpServlet {
         request.setAttribute("courseFeature", courseFeature);
         request.getRequestDispatcher("courselist.jsp").forward(request, response);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

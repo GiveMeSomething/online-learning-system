@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import common.utilities.Repository;
+import java.sql.SQLException;
 
 /**
  *
@@ -18,19 +19,19 @@ import common.utilities.Repository;
  */
 public class HomeRepository extends Repository{
      //GET ALL CATEGORY
-    public List<Category> getAllCategory() throws Exception {
+    public List<Category> getAllCategory() throws SQLException {
         this.connectDatabase();
-        String sql = "SELECT * FROM db_ite1.category;";
+        String getAllCategory = "SELECT * FROM db_ite1.category;";
         List<Category> list = new ArrayList<>();
-        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = this.connection.prepareStatement(getAllCategory)) {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 list.add(new Category(result.getInt("id"),result.getString("category_name")));
             }
             return list;
-        } catch (Exception e) {
+        } finally {
+            this.disconnectDatabase();
         }
-        return null;
     }
     public static void main(String[] args) throws Exception{
         HomeRepository repo = new HomeRepository();

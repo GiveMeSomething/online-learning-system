@@ -27,12 +27,12 @@
         <link rel="stylesheet" type="text/css" href="skeleton/styles.css">
     </head>
     <body>
-        <jsp:include page="header.jsp"></jsp:include>
+        <jsp:include page="navbar.jsp"></jsp:include>
             <div class="container">
                 <h2 class="text-center">User Profile</h2> 
                 <div class="row">
                     <div class="col-md-5">
-                        <div class="form-group w-75">
+                        <div class="w-75">
                             <img class="mb-3" style="width: 90%" 
                                  src="${user.image}" class="img-rounded img-responsive"><br>
                         <p class="text-center" style="color:#959fb2">
@@ -50,12 +50,12 @@
                 </div>
 
 
-                <form action="userProfile" method="post" class="col-md-7">
+                <form action="user" method="post" class="col-md-7">
                     <div class="form-group">
                         <label>Id</label>
                         <input disabled value="${user.id}" name="id" type="text" class="form-control" placeholder="Id">  
                     </div>
-                   
+
                     <div class="form-group">
                         <label>Image</label>
                         <input value="${user.image}" name="image" type="text" class="form-control" placeholder="Image url"> 
@@ -116,15 +116,17 @@
                         <input value="${user.mobile}" name="mobile" type="text" class="form-control" placeholder="Mobile"> 
                     </div>
                     <button type="submit" class="btn btn-success">Update Information</button><br>
-                    <br>
-                    </div>
-                    </div>
-                    </div>
-                    <jsp:include page="footer.jsp"></jsp:include>
+                </form>
+                <br>
+            </div>
+        </div>
+        <jsp:include page="footer.jsp"></jsp:include>
+    </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+</html>
 
 
-                    </body>
-                    </html>
-
-                    
-                    <!--https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZSt-J1nobJ_ElZN6XZdKh01z4u3zy7uUsIw&usqp=CAU-->
+<!--https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZSt-J1nobJ_ElZN6XZdKh01z4u3zy7uUsIw&usqp=CAU-->

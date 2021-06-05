@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import common.utilities.Repository;
+import java.sql.SQLException;
 
 /**
  *
@@ -18,9 +19,9 @@ import common.utilities.Repository;
  */
 public class SearchRepository extends Repository {
 
-    public List<Course> searchCourse(int cateID,String searchName) throws Exception {
+    public List<Course> searchCourse(int cateID,String searchName) throws SQLException {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price)\n"
+        String searchCourse = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price)\n"
                 + "AS price from db_ite1.course c\n"
                 + "INNER JOIN db_ite1.course_package p\n"
                 + "on c.id = p.course_id\n"
@@ -29,7 +30,7 @@ public class SearchRepository extends Repository {
                 + "WHERE c.category_id = ? AND title LIKE ?\n"
                 + "GROUP BY c.id LIMIT 8 OFFSET 0";
         List<Course> list = new ArrayList<>();
-        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
             statement.setInt(1, cateID);
             statement.setString(2, "%" + searchName + "%");
             ResultSet result = statement.executeQuery();
@@ -45,16 +46,16 @@ public class SearchRepository extends Repository {
 
             }
             return list;
-        } catch (Exception e) {
+        } finally {
+            this.disconnectDatabase();
         }
-        return null;
     }
 
-    public List<Course> courseFeature(int cateID) throws Exception {
+    public List<Course> getCourseFeature(int cateID) throws SQLException {
         this.connectDatabase();
-        String sql = "SELECT * FROM db_ite1.course where feature = 1 AND category_id = ?";
+        String getCourseFeature = "SELECT * FROM db_ite1.course where feature = 1 AND category_id = ?";
         List<Course> list = new ArrayList<>();
-        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = this.connection.prepareStatement(getCourseFeature)) {
             statement.setInt(1, cateID);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
@@ -69,12 +70,12 @@ public class SearchRepository extends Repository {
 
             }
             return list;
-        } catch (Exception e) {
+        } finally {
+            this.disconnectDatabase();
         }
-        return null;
     }
     
-    public int countingCourseListSearch(int cateID,String searchName) throws Exception {
+    public int countingCourseListSearch(int cateID,String searchName) throws SQLException {
         this.connectDatabase();
         String sql = "SELECT COUNT(*) AS count FROM db_ite1.course "
                 + "where category_id = ? AND title LIKE ?";
@@ -86,7 +87,8 @@ public class SearchRepository extends Repository {
                 return result.getInt("count");
             }
 
-        } catch (Exception e) {
+        } finally {
+            this.disconnectDatabase();
         }
         return 0;
     }

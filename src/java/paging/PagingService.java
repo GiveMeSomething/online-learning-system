@@ -15,47 +15,31 @@ import java.util.List;
 public class PagingService {
     private final PagingRepository pagingRepository;
     public PagingService() {
-        this.pagingRepository = new PagingRepository();
+        pagingRepository = new PagingRepository();
     }
-    public List<Course> pagingCourseList(int cateID,String searchName,int page,String price) {
+    public List<Course> pagingCourseList(int cateID,String searchName,int page,String price,String alpha) {
         try {
-            List<Course> result = pagingRepository.pagingCourseList(cateID,searchName,page,price);
-
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-
-            return result;
+            return pagingRepository.pagingCourseList(cateID,searchName,page,price,alpha);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
-
         return null;
     }
     
     public int countingCourseList(int cateID,String title) {
         try {
-            int result = pagingRepository.countingCourseList(cateID,title);
-            return result;
+            return pagingRepository.countingCourseList(cateID,title);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return 0;
     }
     
     public List<Course> courseFeature(int cateID) {
         try {
-            List<Course> result = pagingRepository.courseFeature(cateID);
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-            return result;
+            return pagingRepository.courseFeature(cateID);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }

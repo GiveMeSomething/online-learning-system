@@ -25,7 +25,7 @@
     </head>
 
     <body>
-        <jsp:include page="header.jsp"></jsp:include>
+        <jsp:include page="navbar.jsp"></jsp:include>
         <!--  Banner--> 
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">

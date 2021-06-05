@@ -16,20 +16,14 @@ public class HomeService {
     private final HomeRepository homeRepository;
 
     public HomeService() {
-        this.homeRepository = new HomeRepository();
+        homeRepository = new HomeRepository();
     }
     
     public List<Category> getAllCategory() {
         try {
-            List<Category> result = homeRepository.getAllCategory();
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-            return result;
+            return homeRepository.getAllCategory();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }

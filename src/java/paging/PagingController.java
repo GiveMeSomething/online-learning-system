@@ -30,18 +30,9 @@ public class PagingController extends HttpServlet {
         pagingService = new PagingService();
     }
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         String index = request.getParameter("index");
         if (index == null) {
             index = "1";
@@ -76,6 +67,7 @@ public class PagingController extends HttpServlet {
 
         }
         String price = request.getParameter("price");
+        String alpha = request.getParameter("alpha");
 //        if(price == null){
 //            price = "";
 //        }
@@ -83,7 +75,7 @@ public class PagingController extends HttpServlet {
         if (searchName == null) {
             searchName = "";
         }
-        List<Course> listCoursePaging = pagingService.pagingCourseList(cateID, searchName, indexPage,price);
+        List<Course> listCoursePaging = pagingService.pagingCourseList(cateID, searchName, indexPage,price,alpha);
         int total = pagingService.countingCourseList(cateID,searchName);
         int endPage = 0;
         if (total % 8 == 0) {
@@ -109,43 +101,9 @@ public class PagingController extends HttpServlet {
         request.getRequestDispatcher("courselist.jsp").forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+     
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

@@ -19,17 +19,9 @@ public class CourseListService {
     
     public List<Course> getCourseByCateID(int cateID) {
         try {
-            List<Course> result = courseListRepository.getCourseByCateID(cateID);
-
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-
-            return result;
+            return courseListRepository.getCourseByCateID(cateID);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
@@ -37,17 +29,9 @@ public class CourseListService {
     
     public List<Course> pagingCourseList(int cateID,int page) {
         try {
-            List<Course> result = courseListRepository.pagingCourseList(cateID,page);
-
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-
-            return result;
+            return courseListRepository.pagingCourseList(cateID,page);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
@@ -55,41 +39,27 @@ public class CourseListService {
     
      public int countingCourseList(int cateID) {
         try {
-            int result = courseListRepository.countingCourseList(cateID);
-            return result;
+            return courseListRepository.countingCourseList(cateID);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return 0;
     }
      
-     public List<Course> courseFeature(int cateID) {
+     public List<Course> getCourseFeature(int cateID) {
         try {
-            List<Course> result = courseListRepository.courseFeature(cateID);
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-            return result;
+            return courseListRepository.getCourseFeature(cateID);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }
      
     public List<Course> searchCourse(String searchName,int cateID) {
         try {
-            List<Course> result = courseListRepository.searchCourse(searchName,cateID);
-
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-            return result;
+            return courseListRepository.searchCourse(searchName,cateID);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
@@ -97,19 +67,21 @@ public class CourseListService {
     
     public List<Course> sortCoursePrice(int cateID,String price) {
         try {
-            List<Course> result = courseListRepository.sortCoursePrice(cateID,price);
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-            return result;
+            return courseListRepository.sortCoursePrice(cateID,price);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }
      
+     public List<Course> sortCourseAlpha(int cateID,String alpha) {
+        try {
+            return courseListRepository.sortCourseAlpha(cateID,alpha);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
  
 }
 

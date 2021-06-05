@@ -27,47 +27,14 @@ import javax.servlet.http.HttpSession;
 public class CourseListController extends HttpServlet {
 
     private CourseListService courseListService;
+    private HomeService homeService;
 
     @Override
     public void init() throws ServletException {
         courseListService = new CourseListService();
+        homeService = new HomeService();
     }
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CourseListController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CourseListController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -75,7 +42,7 @@ public class CourseListController extends HttpServlet {
         HttpSession ses = request.getSession();
         ses.setAttribute("cateID", cateID);
         List<Course> course = courseListService.getCourseByCateID(cateID);
-        List<Course> courseFeature = courseListService.courseFeature(cateID);
+        List<Course> courseFeature = courseListService.getCourseFeature(cateID);
         String searchName = request.getParameter("searchCourse");
         int id = 0;
         for (int i = 0; i < courseFeature.size(); i++) {
@@ -125,60 +92,38 @@ public class CourseListController extends HttpServlet {
         }
         int indexPage = Integer.parseInt(index);
         List<Course> listCoursePaging = courseListService.pagingCourseList(cateID, indexPage);
-        HomeService homeService = new HomeService();
         List<Category> listC = homeService.getAllCategory();
-        //FILTER PRICE
+        //FILTER PRICE,ALPHA
 
         String price = request.getParameter("price");
+        String alpha = request.getParameter("alpha");
         if (price != null) {
-            List<Course> listPrice = new ArrayList<>();
-            if (price.equals("1")) {
-                listPrice = courseListService.sortCoursePrice(cateID, price);
-            } else {
-                listPrice = courseListService.sortCoursePrice(cateID, price);
-            }
-            request.setAttribute("course", listPrice); //1
+            List<Course> listPrice = courseListService.sortCoursePrice(cateID, price);
+            request.setAttribute("course", listPrice);
+        } else if(alpha != null) {
+            List<Course> listAlpha = courseListService.sortCourseAlpha(cateID, alpha);
+            request.setAttribute("course", listAlpha);
         } else {
-            request.setAttribute("course", listCoursePaging); //2
+            request.setAttribute("course", listCoursePaging);
         }
-        HttpSession sesPrice = request.getSession();
-        sesPrice.setAttribute("price", price);
+
+        HttpSession currentSession = request.getSession();
+        currentSession.setAttribute("price", price);
+        currentSession.setAttribute("alpha", alpha); 
         request.setAttribute("listC", listC);
         request.setAttribute("tag", index);
         request.setAttribute("price", price);
-
         request.setAttribute("end", endPage);
         request.setAttribute("cateID", cateID);
         request.setAttribute("courseFeature", courseFeature);
-        HttpSession session = request.getSession();
-        session.removeAttribute("searchName");
+        currentSession.removeAttribute("searchName");
         request.setAttribute("id", id);
-        request.setAttribute("vaodauday", "TAO LÀ TOÀN");
         request.getRequestDispatcher("courselist.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }
