@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 
 public class DBContext {
     private final String serverName = "localhost";
-    private final String dbName = "db_ite1";
+    private final String dbName = "db_ite1_updated";
     private final String userID = "root";
     private final String password = "root";
 

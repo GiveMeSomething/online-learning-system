@@ -314,7 +314,7 @@ public class HomeRepository extends Repository {
     public static void main(String[] args) throws Exception {
         HomeRepository repo = new HomeRepository();
         try {
-            List<Course> list = repo.getSiderCourseDetail();
+            List<Course> list = repo.getStudentAreViewingCourse();
             for (Course course : list) {
                 System.out.println(course);
             }

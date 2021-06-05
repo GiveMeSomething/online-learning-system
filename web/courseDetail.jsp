@@ -24,7 +24,7 @@ and open the template in the editor.
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-        <link rel="stylesheet" type="text/css" href="pages/skeleton/styles.css">
+        <link rel="stylesheet" type="text/css" href="style/styles.css">
     </head>
 
     <body>
@@ -145,16 +145,16 @@ and open the template in the editor.
                                 <jsp:include page="components/courseDetail/oneFeaturedCourse.jsp"></jsp:include>
                                 </div>  
                             </section>
-                                <section id="contact-link">
-                                    <h4 style="font-weight: bolder; margin-bottom: 1rem">Contact us</h4>
-                                    <div class="d-flex">
-                                        <i class="fab fa-facebook fa-lg"></i>
-                                        <i class="fab fa-instagram fa-lg"></i>
-                                        <i class="fab fa-twitter-square fa-lg"></i>
-                                        <i class="fas fa-envelope fa-lg"></i>
-                                        <i class="fas fa-phone-square-alt fa-lg"></i>
-                                    </div>
-                                </section>
+                            <section id="contact-link">
+                                <h4 style="font-weight: bolder; margin-bottom: 1rem">Contact us</h4>
+                                <div class="d-flex">
+                                    <i class="fab fa-facebook fa-lg"></i>
+                                    <i class="fab fa-instagram fa-lg"></i>
+                                    <i class="fab fa-twitter-square fa-lg"></i>
+                                    <i class="fas fa-envelope fa-lg"></i>
+                                    <i class="fas fa-phone-square-alt fa-lg"></i>
+                                </div>
+                            </section>
                         </div>
                     </div>
 
