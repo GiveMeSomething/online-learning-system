@@ -13,7 +13,8 @@ import java.util.List;
  * @author Admin
  */
 public class HomeService {
-   private final HomeRepository homeRepository;
+
+    private final HomeRepository homeRepository;
 
     public HomeService() {
         this.homeRepository = new HomeRepository();
@@ -31,12 +32,12 @@ public class HomeService {
 
             return result;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
     }
-    
+
     public List<Course> getBusinessCourse() {
         try {
             List<Course> result = homeRepository.getBusinessCourse();
@@ -49,11 +50,12 @@ public class HomeService {
 
             return result;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
     }
+
     public List<Course> getMarketingCourse() {
         try {
             List<Course> result = homeRepository.getMarketingCourse();
@@ -66,11 +68,12 @@ public class HomeService {
 
             return result;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
     }
+
     public List<Course> getAICourse() {
         try {
             List<Course> result = homeRepository.getAICourse();
@@ -83,11 +86,12 @@ public class HomeService {
 
             return result;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
     }
+
     public List<Course> getIACourse() {
         try {
             List<Course> result = homeRepository.getIACourse();
@@ -100,11 +104,12 @@ public class HomeService {
 
             return result;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
     }
+
     public List<Course> getLanguageCourse() {
         try {
             List<Course> result = homeRepository.getLanguageCourse();
@@ -117,11 +122,12 @@ public class HomeService {
 
             return result;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
     }
+
     public List<Course> getStudentAreViewingCourse() {
         try {
             List<Course> result = homeRepository.getStudentAreViewingCourse();
@@ -134,12 +140,12 @@ public class HomeService {
 
             return result;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
     }
-    
+
     public List<Course> getSiderCourseDetail() {
         try {
             List<Course> result = homeRepository.getSiderCourseDetail();
@@ -152,10 +158,10 @@ public class HomeService {
 
             return result;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
     }
-    
+
 }

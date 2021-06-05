@@ -26,7 +26,7 @@ public class CourseRepository extends Repository {
 
         try (PreparedStatement statement = this.connection.prepareStatement(getCourse)) {
             statement.setInt(1, id);
-            
+
             ResultSet result = statement.executeQuery();
             if (result.next()) {
                 return new Course(
@@ -39,23 +39,10 @@ public class CourseRepository extends Repository {
                         result.getString("tag"));
 
             }
-            
+
             return null;
         } finally {
             this.disconnectDatabase();
         }
     }
-    
-    public static void main(String[] args) throws Exception {
-        CourseRepository repo = new CourseRepository();
-        try {
-            Course a = repo.getCourse(4);
-           
-                System.out.println(a);
-            
-        } catch (Exception e) {
-        }
-
-    }
-
 }

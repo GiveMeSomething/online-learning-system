@@ -2,14 +2,13 @@
  *
  * @author Dinh Kong Thanh
  */
-
 package course;
 
 import common.entities.Course;
 
-
 public class CourseService {
- private final CourseRepository courseRepository;
+
+    private final CourseRepository courseRepository;
 
     public CourseService() {
         this.courseRepository = new CourseRepository();
@@ -27,12 +26,10 @@ public class CourseService {
 
             return result;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
     }
-    
-    
-     
+
 }

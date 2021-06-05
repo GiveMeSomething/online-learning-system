@@ -70,16 +70,17 @@ public class AuthController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         // If no token is found, send confirm email else do normal login
         String userToken = getToken(request);
+        String forwardTo = request.getParameter("previousPage");
 
         if (userToken == null || userToken.equals("")) {
-            String confirmEmailPath = "/email?work=AUTH&receiver=" + email;
+            String confirmEmailPath = "/email?operation=AUTH&receiver=" + email;
             request.getRequestDispatcher(confirmEmailPath).forward(request, response);
         } else {
             Account userAccount = new Account(email, password, userToken);
             User currentUser = authService.login(userAccount);
 
             addUserToSession(request, response, currentUser);
-            response.sendRedirect("auth/auth-success.jsp");
+            response.sendRedirect(forwardTo);
         }
     }
 
@@ -91,7 +92,7 @@ public class AuthController extends HttpServlet implements Controller {
             addTokenToCookie(response, userToken);
 
             // Forward to send confirm email (using email and userToken)
-            String confirmEmailPath = "/email?work=CONFIRM&receiver=" + email + "&token=" + userToken;
+            String confirmEmailPath = "/email?operation=CONFIRM&receiver=" + userAccount.getEmail() + "&token=" + userToken;
             request.getRequestDispatcher(confirmEmailPath).forward(request, response);
         }
     }
@@ -100,10 +101,8 @@ public class AuthController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         String token = authService.register(userAccount);
         String forwardTo = request.getParameter("previousPage");
-        System.out.println(token);
-        System.out.println(forwardTo);
+
         if (token == null || token.equals("")) {
-            System.out.println("redirect to blah blah");
             this.forwardErrorMessage(request, response, "Register failed. Can't add account", forwardTo);
         } else {
             addUser(request, response, user);

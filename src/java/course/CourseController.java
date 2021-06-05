@@ -1,4 +1,3 @@
-
 package course;
 
 import common.entities.Course;
@@ -10,12 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 public class CourseController extends HttpServlet {
 
     private CourseService courseDetailService;
+
     @Override
-    public void init() throws ServletException{
+    public void init() throws ServletException {
         courseDetailService = new CourseService();
     }
 
@@ -28,13 +27,13 @@ public class CourseController extends HttpServlet {
         List<Course> siderCourse = homeService.getSiderCourseDetail();
         request.setAttribute("detail", courseDetail);
         request.setAttribute("siderDetail", siderCourse);
-        request.getRequestDispatcher("courseDetail.jsp").forward(request, response);          
+        request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-     
+
     }
 
 }
