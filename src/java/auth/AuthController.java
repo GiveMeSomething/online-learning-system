@@ -40,49 +40,60 @@ public class AuthController extends HttpServlet implements Controller {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Login info
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        // Register info
-        String name = request.getParameter("fullname");
-        String gender = request.getParameter("gender");
-        String mobile = request.getParameter("mobile");
-        String role = request.getParameter("role");
+        String operation = request.getParameter("operation");
 
-        String userToken;
+        if (operation.equals("LOGIN")) {
+            // Login info
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
 
-        // Register else Login
-        if (role != null && !role.equals("")) {
+            processLogin(request, response, email, password);
+        } else if (operation.equals("REGISTER")) {
+            // Register info
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String name = request.getParameter("fullname");
+            String gender = request.getParameter("gender");
+            String mobile = request.getParameter("mobile");
+            String role = request.getParameter("role");
+
             Account userAccount = new Account(email, password, Role.valueOf(role));
             User user = new User(name, Gender.valueOf(gender), email, Status.INACTIVE, mobile);
 
-            // Add new account and user. Then set token to user's browser's cookie
-            userToken = addAccount(request, response, userAccount, user);
-            if (userToken != null) {
-                addTokenToCookie(response, userToken);
+            processRegister(request, response, userAccount, user);
+        } else if (operation.equals("CHANGEPW")) {
 
-                // Forward to send confirm email (using email and userToken)
-                String confirmEmailPath = "/email?work=CONFIRM&receiver=" + email + "&token=" + userToken;
-                request.getRequestDispatcher(confirmEmailPath).forward(request, response);
-            }
+        }
+    }
 
+    private void processLogin(HttpServletRequest request, HttpServletResponse response, String email, String password)
+            throws ServletException, IOException {
+        // If no token is found, send confirm email else do normal login
+        String userToken = getToken(request);
+        String forwardTo = request.getParameter("previousPage");
+
+        if (userToken == null || userToken.equals("")) {
+            String confirmEmailPath = "/email?operation=AUTH&receiver=" + email;
+            request.getRequestDispatcher(confirmEmailPath).forward(request, response);
         } else {
-            // Login
-            // If no token is found, send confirm email else do normal login
-            userToken = getToken(request);
-            if (userToken == null || userToken.equals("")) {
-                String confirmEmailPath = "/email?work=AUTH&receiver=" + email;
-                request.getRequestDispatcher(confirmEmailPath).forward(request, response);
-            } else {
-                System.out.println(userToken);
+            Account userAccount = new Account(email, password, userToken);
+            User currentUser = authService.login(userAccount);
 
-                Account userAccount = new Account(email, password, userToken);
-                User currentUser = authService.login(userAccount);
+            addUserToSession(request, response, currentUser);
+            response.sendRedirect(forwardTo);
+        }
+    }
 
-                addUserToSession(request, response, currentUser);
+    private void processRegister(HttpServletRequest request, HttpServletResponse response, Account userAccount, User user)
+            throws ServletException, IOException {
+        // Add new account and user. Then set token to user's browser's cookie
+        String userToken = addAccount(request, response, userAccount, user);
+        if (userToken != null) {
+            addTokenToCookie(response, userToken);
 
-                response.sendRedirect("auth/auth-success.jsp");
-            }
+            // Forward to send confirm email (using email and userToken)
+            String confirmEmailPath = "/email?operation=CONFIRM&receiver=" + userAccount.getEmail() + "&token=" + userToken;
+            request.getRequestDispatcher(confirmEmailPath).forward(request, response);
         }
     }
 
@@ -90,10 +101,8 @@ public class AuthController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         String token = authService.register(userAccount);
         String forwardTo = request.getParameter("previousPage");
-        System.out.println(token);
-        System.out.println(forwardTo);
+
         if (token == null || token.equals("")) {
-            System.out.println("redirect to blah blah");
             this.forwardErrorMessage(request, response, "Register failed. Can't add account", forwardTo);
         } else {
             addUser(request, response, user);

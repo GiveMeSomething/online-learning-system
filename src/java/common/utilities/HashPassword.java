@@ -24,6 +24,6 @@ public class HashPassword {
     }
 
     public static void main(String[] args) {
-        System.out.println(getHashPassword("hioaUWHDfoiahwdoiahwdoIAUDFHOAIWHEFOAHWEOFwaoeipfd@gmail.com", "alsfhpowEIHFOPASHEFAOSEHJSAFOIAHPHFPOEWOFPAF", 20));
+        // For testing hashPassword method
     }
 }

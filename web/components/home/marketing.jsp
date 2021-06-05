@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : marketing
     Created on : May 31, 2021, 11:56:24 AM
     Author     : Admin
@@ -23,10 +23,10 @@
                             <div style="height:145px">
                                 <a href="course?cid=${o.id}" style="text-decoration: none; color: black"><h5 class="card-title" style="cursor: pointer">${o.courseName}</h5></a>
                                 <div class="d-flex">
-                                    <p style="text-decoration: line-through;color:#dd012d" class="card-text mr-2">$${o.price}</p>  
+                                    <p style="text-decoration: line-through;color:#dd012d" class="card-text mr-2">$${o.price}</p>
                                     <p class="card-text font-weight-bold">
                                         $<fmt:formatNumber type="number" maxFractionDigits="2" value="${o.price * 0.8}" />
-                                    </p> 
+                                    </p>
                                 </div>
                                 <div style="font-family: cursive;margin-top: -10px">
                                     ${o.tag}
@@ -35,21 +35,19 @@
 
                             <div class="row mt-5"  style="margin-left: -25.7px">
                                 <div class="col-6 mr-1">
-                                    <a href="#" class="btn"
-                                       style="background-color: #f53f34;color:white;border-radius:0px">
-                                        Check Out
-                                    </a> 
+                                    <a href="#" class="text-decoration-none">
+                                        <button class="btn btn-success">Checkout</button>
+                                    </a>
                                 </div>
                                 <div class="col-1">
-                                    <a href="#" class="btn"
-                                       style="background-color: #072b7d;color:white;border-radius:0px">
-                                        Register
+                                    <a href="#" class="text-decoration-none">
+                                        <button class="btn btn-primary">Register</button>
                                     </a>
                                 </div>
                             </div>
 
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </c:forEach>
         </div>

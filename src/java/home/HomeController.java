@@ -6,6 +6,7 @@
 package home;
 
 import common.entities.Course;
+import course.CourseService;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -30,24 +31,24 @@ public class HomeController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-        private HomeService homeService;
+        private CourseService courseService;
 
     @Override
     public void init() throws ServletException {
-        homeService = new HomeService();
+        courseService = new CourseService();
     }
 
    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       List<Course> itCourse =  homeService.getITCourse();
-       List<Course> bizCourse =  homeService.getBusinessCourse();
-       List<Course> marCourse =  homeService.getMarketingCourse();
-       List<Course> aiCourse =  homeService.getAICourse();
-       List<Course> iaCourse =  homeService.getIACourse();
-       List<Course> langCourse =  homeService.getLanguageCourse();
-       List<Course> studentsViewCourse =  homeService.getStudentAreViewingCourse();
+       List<Course> itCourse =  courseService.getITCourse();
+       List<Course> bizCourse =  courseService.getBusinessCourse();
+       List<Course> marCourse =  courseService.getMarketingCourse();
+       List<Course> aiCourse =  courseService.getAICourse();
+       List<Course> iaCourse =  courseService.getIACourse();
+       List<Course> langCourse =  courseService.getLanguageCourse();
+       List<Course> studentsViewCourse =  courseService.getFeaturedCourse();
 
         request.setAttribute("itCourse", itCourse);
         request.setAttribute("bizCourse", bizCourse);

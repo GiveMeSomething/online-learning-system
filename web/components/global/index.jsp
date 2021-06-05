@@ -38,6 +38,8 @@
                         <div class="request-info">
                             <input name="previousPage" value="index.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
+                            <input name="operation" value="LOGIN" hidden="true" />
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
@@ -94,6 +96,8 @@
                           novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="index.jsp" hidden="true" />
+                            <div class="invalid-feedback"></div>
+                            <input name="operation" value="REGISTER" hidden="true" />
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="modal-dialog modal-dialog-centered" role="document">
