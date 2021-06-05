@@ -8,6 +8,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -24,7 +25,7 @@
         <!--        fontawesome-->
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
-        <link rel="stylesheet" type="text/css" href="skeleton/styles.css">
+        <link rel="stylesheet" type="text/css" href="${path}/skeleton/styles.css">
     </head>
     <body>
         <jsp:include page="navbar.jsp"></jsp:include>
@@ -50,20 +51,48 @@
                 </div>
 
 
-                <form action="user" method="post" class="col-md-7">
-                    <div class="form-group">
-                        <label>Id</label>
-                        <input disabled value="${user.id}" name="id" type="text" class="form-control" placeholder="Id">  
+                <form action="${path}/user"
+                      method="POST"
+                      class="col-md-7 needs-validation"
+                      novalidate>
+                    <div class="request-info">
+                        <input name="previousPage" value="home" hidden="true" />
+                        <div class="invalid-feedback"></div>
+                        <input name="operation" value="changeUserProfile" hidden="true" />
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="form-group">
-                        <label>Image</label>
-                        <input value="${user.image}" name="image" type="text" class="form-control" placeholder="Image url"> 
+                        <label for="id">Id</label>
+                        <input class="form-control"
+                               name="id"
+                               type="text"
+                               id="id" disabled
+                               placeholder="Id"
+                               value="${user.id}"/>  
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input class="form-control"
+                               name="image"
+                               type="text"
+                               id="image"
+                               placeholder="Image url"
+                               value="${user.image}"/> 
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="form-group" style="margin-bottom: -11px">
-                        <label>Full Name</label> 
-                        <input value="${user.name}" name="fName" type="text" class="form-control" placeholder="Full Name"><br>
+                        <label for="fullName">Full Name</label> 
+                        <input class="form-control"
+                               name="fName"
+                               type="text"
+                               id="fullName"
+                               placeholder="Full Name"
+                               value="${user.name}"/><br>
+                        <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
                         <div class="d-flex align-items-center">
@@ -71,26 +100,42 @@
                             <c:if test="${user.gender == 'MALE'}">
                                 <input checked type="radio" id="male" name="gender" value="MALE"> 
                                 <label style="margin-top: 5px" class="mr-3 ml-1" for="male">Male</label><br>
+                                <div class="invalid-feedback"></div>
                                 <input type="radio" id="female" name="gender" value="FEMALE">
                                 <label style="margin-top: 5px" class="ml-1" for="female">Female</label><br>  
+                                <div class="invalid-feedback"></div>
                             </c:if>
                             <c:if test="${user.gender == 'FEMALE'}">
                                 <input type="radio" id="male" name="gender" value="MALE">  
                                 <label style="margin-top: 5px" class="mr-3 ml-1" for="male">Male</label><br>
+                                <div class="invalid-feedback"></div>
                                 <input checked type="radio" id="female" name="gender" value="FEMALE">
                                 <label style="margin-top: 5px" class="ml-1" for="female">Female</label><br>  
+                                <div class="invalid-feedback"></div>
                             </c:if>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Email</label>
-                        <input disabled value="${user.email}" name="email" type="text" class="form-control" placeholder="Email"> 
+                        <label for="email">Email</label>
+                        <input class="form-control"
+                               name="email"
+                               type="text"
+                               id="email" disabled
+                               placeholder="Email"
+                               value="${user.email}"/> 
+                        <div class="invalid-feedback"></div>
                     </div>
 
 
                     <div class="form-group">
-                        <label>Address</label>
-                        <input value="${user.address}" name="address" type="text" class="form-control" placeholder="Address">  
+                        <label for="address">Address</label>
+                        <input class="form-control"
+                               name="address"
+                               type="text"
+                               id="address"
+                               placeholder="Address"
+                               value="${user.address}"/>  
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="form-group">
@@ -99,21 +144,31 @@
                             <c:if test="${user.status == 'ACTIVE'}">
                                 <input checked type="radio" id="active" name="status" value="ACTIVE">
                                 <label style="margin-top: 7px" class="mr-3 ml-1" for="male">Active</label><br>
+                                <div class="invalid-feedback"></div>
                                 <input type="radio" id="inactive" name="status" value="INACTIVE">
                                 <label style="margin-top: 7px" class="ml-1" for="female">Inactive</label><br>  
+                                <div class="invalid-feedback"></div>
                             </c:if>
 
                             <c:if test="${user.status == 'INACTIVE'}">
                                 <input type="radio" id="active" name="status" value="ACTIVE">
                                 <label style="margin-top: 7px" class="mr-3 ml-1" for="male">Active</label><br>
+                                <div class="invalid-feedback"></div>
                                 <input checked type="radio" id="inactive" name="status" value="INACTIVE">
                                 <label style="margin-top: 7px" class="ml-1" for="female">Inactive</label><br>  
+                                <div class="invalid-feedback"></div>
                             </c:if>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Mobile</label>
-                        <input value="${user.mobile}" name="mobile" type="text" class="form-control" placeholder="Mobile"> 
+                        <label for="mobile">Mobile</label>
+                        <input class="form-control"
+                               name="mobile"
+                               type="text"
+                               id="mobile"
+                               placeholder="Mobile"
+                               value="${user.mobile}"/> 
+                        <div class="invalid-feedback"></div>
                     </div>
                     <button type="submit" class="btn btn-success">Update Information</button><br>
                 </form>
