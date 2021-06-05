@@ -44,4 +44,23 @@ public class UserService {
 
         return false;
     }
+    
+    public User getUserProfile(int id) {
+        try {
+            return userRepository.getUser(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public boolean updateUserProfile(User userUpdate) {
+        try {
+            return userRepository.updateUser(userUpdate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

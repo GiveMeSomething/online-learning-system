@@ -79,18 +79,12 @@ public class Course {
     public void setDescription(String description) {
         this.description = description;
     }
-public String getTag() {
+
+    public String getTag() {
         return tag;
     }
 
     public void setTag(String tag) {
         this.tag = tag;
     }
-
-    @Override
-    public String toString() {
-        return "Course{" + "id=" + id + ", imageLink=" + imageLink + ", courseName=" + courseName + ", price=" + price + ", category=" + category + ", description=" + description + ", tag=" + tag + '}';
-    }
-    
-   
 }

@@ -3,7 +3,11 @@
     Created on : May 22, 2021, 10:11:29 AM
     Author     : Admin
 --%>
+<<<<<<< HEAD
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+=======
+
+>>>>>>> 052f8397e646234245e7c331d5b357e9923a3854
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <c:set var="path" value="${pageContext.request.contextPath}" />
@@ -12,6 +16,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <<<<<<< HEAD
         <title>Online Learning System</title>
         <!--        Bootstrap-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
@@ -24,6 +29,7 @@
         <link rel="stylesheet" href="${path}/style/styles.css">
     </head>
     <body>
+        <<<<<<< HEAD
         <jsp:include page="components/global/navbar.jsp"/>
         <c:if test="${requestScope.errorMessage != null}">
             <div class="d-flex w-100 align-items-center justify-content-end">
@@ -146,6 +152,7 @@
                         <jsp:include page="components/home/featuredCourse.jsp"/>
                     </div>
                 </div>
+                <<<<<<< HEAD
         </section>
         <jsp:include page="components/global/footer.jsp"/>
     </body>
