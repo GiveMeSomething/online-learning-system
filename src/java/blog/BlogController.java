@@ -69,13 +69,13 @@ public class BlogController extends HttpServlet {
         String action = request.getServletPath();
         switch (action) {
             case "/BlogDetail":
-                blogDetail(request, response);
+                getBlogDetail(request, response);
                 break;
             case "/PostsByCate":
-                blogPaginationByCate(request, response);
+                getBlogPaginationByCate(request, response);
                 break;
             default:
-                blogPagination(request, response);
+                getBlogPagination(request, response);
                 break;
         }
     }
@@ -86,7 +86,7 @@ public class BlogController extends HttpServlet {
         doGet(request, response);
     }
 
-    private void blogPagination(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void getBlogPagination(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HashMap<String, String> hmCat = blogService.getHmCat();
         HashMap<String, Post> latestPost = blogService.getLatestPost();
 
@@ -116,7 +116,7 @@ public class BlogController extends HttpServlet {
         request.getRequestDispatcher("blog/blogList.jsp").forward(request, response);
     }
 
-    private void blogDetail(HttpServletRequest request, HttpServletResponse response)
+    private void getBlogDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id = request.getParameter("id");
         HashMap<String, String> hmCat = blogService.getHmCat();
@@ -130,7 +130,7 @@ public class BlogController extends HttpServlet {
         request.getRequestDispatcher("blog/blogDetail.jsp").forward(request, response);
     }
 
-    private void blogPaginationByCate(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void getBlogPaginationByCate(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HashMap<String, String> hmCat = blogService.getHmCat();
         HashMap<String, Post> latestPost = blogService.getLatestPost();
         String cateId = request.getParameter("cateId");

@@ -10,7 +10,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
         <title>JSP Page</title>
     </head>
     <body>
@@ -39,7 +41,7 @@
                 </div>
                 <div class="col-lg-8">
                     <c:forEach var="o" items="${hmPost}">
-                        <div class="blog">
+                        <div class="blog" ${o.statusId == 1?"":"style='display:none;'"}>
                             <a href="BlogDetail?id=${o.postId}">
                                 <div class="row">
                                     <h3>${o.title}</h3>
@@ -64,7 +66,7 @@
                         <li class="page-item ${curPage == i?"active":""}">
                             <a class="page-link" href="BlogPagination?curPage=${i}">${i}</a>
                         </li>
-                        </c:forEach>
+                    </c:forEach>
                     <li class="page-item">
                         <a class="page-link" href="#">Next</a>
                     </li>
