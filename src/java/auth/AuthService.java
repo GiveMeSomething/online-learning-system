@@ -17,8 +17,8 @@ public class AuthService {
         authRepository = new AuthRepository();
     }
 
-    // Login and get current user
-    public User login(Account account) {
+    // Login and return account token (if right)
+    public String login(Account account) {
         try {
             return authRepository.login(account);
         } catch (Exception e) {

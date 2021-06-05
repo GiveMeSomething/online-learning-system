@@ -1,8 +1,6 @@
 // JavaScript for disabling form submissions if there are invalid fields
 (function () {
-
     'use strict';
-
     // Form example - please follow the guide below when making form in this project
     /*
      <div>
@@ -24,24 +22,18 @@
      <div class="invalid-feedback"></div>
      </div>
      */
-
-
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     var forms = document.querySelectorAll('.needs-validation');
     var messageDisplayers = document.querySelectorAll('.invalid-feedback');
-
     // Loop over them and prevent submission
     forms.forEach(form => {
         form.addEventListener('submit', function (event) {
             if (!form.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
-
                 var ele = document.getElementsByTagName('input');
-
                 for (var i = 0; i < ele.length; i++) {
                     var reason = ele[i].validity;
-
                     if (reason.valueMissing) {
                         messageDisplayers[i].innerHTML = ele[i].getAttribute("data-value-missing");
                     } else if (reason.patternMismatch) {
@@ -57,8 +49,3 @@
         }, false);
     });
 })();
-
-
-
-
-

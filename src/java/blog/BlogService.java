@@ -5,7 +5,7 @@
  */
 package blog;
 
-import entities.Post;
+import common.entities.Post;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,11 +22,11 @@ public class BlogService {
         this.blogRepository = new BlogRepository();
     }
 
-    public HashMap<String, String> getHmCat() {
+    public HashMap<String, String> getHmCategory() {
         try {
-            return blogRepository.getHmCat();
+            return blogRepository.getHmCategory();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }
@@ -76,9 +76,9 @@ public class BlogService {
         return 0;
     }
 
-    public int getTotalPostsByCate(int id) {
+    public int getTotalPostsByCategory(int id) {
         try {
-            return blogRepository.getTotalPostsByCate(id);
+            return blogRepository.getTotalPostsByCategory(id);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -94,9 +94,9 @@ public class BlogService {
         return null;
     }
     
-    public ArrayList<Post> getPostsByCate(int cateId, int currentPage, int postsPerPage) {
+    public ArrayList<Post> getPostsByCategory(int cateId, int currentPage, int postsPerPage) {
         try {
-            return blogRepository.getPostsByCate(cateId, currentPage, postsPerPage);
+            return blogRepository.getPostsByCategory(cateId, currentPage, postsPerPage);
         } catch (SQLException e) {
             e.printStackTrace();
         }

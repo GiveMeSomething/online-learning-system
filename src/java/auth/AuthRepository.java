@@ -11,7 +11,6 @@ import common.entities.User;
 import common.utilities.HashPassword;
 import common.utilities.HashToken;
 import common.utilities.Repository;
-import database.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,13 +25,13 @@ public class AuthRepository extends Repository {
         userService = new UserService();
     }
 
-    public User login(Account account) throws SQLException {
+    public String login(Account account) throws SQLException {
         this.connectDatabase();
 
         String email = account.getEmail();
         String inputPassword = account.getPassword();
 
-        String getAccount = "SELECT user_email, password, salt FROM account WHERE user_email=?";
+        String getAccount = "SELECT user_email, password, salt, token FROM account WHERE user_email=?";
 
         try (PreparedStatement statement = this.connection.prepareStatement(getAccount)) {
             statement.setString(1, email);
@@ -42,10 +41,11 @@ public class AuthRepository extends Repository {
             if (result.next()) {
                 String password = result.getString("password");
                 String salt = result.getString("salt");
+                String token = result.getString("token");
 
                 // Check password then return user
                 if (HashPassword.validatePassword(email, password, salt, inputPassword)) {
-                    return userService.getUser(email);
+                    return token;
                 }
             }
 
@@ -143,11 +143,16 @@ public class AuthRepository extends Repository {
     public boolean changePassword(String userEmail, String password) throws SQLException {
         this.connectDatabase();
 
-        String changePassword = "UPDATE account SET password = ? WHERE user_email = ?";
+        Random randomer = new Random();
+        int salt = randomer.nextInt(100);
+        String newPassword = HashPassword.getHashPassword(userEmail, password, salt);
+
+        String changePassword = "UPDATE account SET password = ?, salt = ? WHERE user_email = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(changePassword)) {
-            statement.setString(1, password);
-            statement.setString(2, userEmail);
-            
+            statement.setString(1, newPassword);
+            statement.setInt(2, salt);
+            statement.setString(3, userEmail);
+
             return statement.executeUpdate() > 0;
         } finally {
             this.disconnectDatabase();
@@ -158,15 +163,18 @@ public class AuthRepository extends Repository {
         this.connectDatabase();
 
         String password;
-        String getCurrentPass = "SELECT password FROM account WHERE user_email = ?";
-        try (PreparedStatement ps = this.connection.prepareStatement(getCurrentPass)) {
-            ps.setString(1, userEmail);
-            ResultSet result = ps.executeQuery();
+        int salt;
+
+        String getCurrentPass = "SELECT password, salt FROM account WHERE user_email = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(getCurrentPass)) {
+            statement.setString(1, userEmail);
+
+            ResultSet result = statement.executeQuery();
             if (result.next()) {
                 password = result.getString("password");
-                if (password.equals(currentPassword)) {
-                    return true;
-                }
+                salt = result.getInt("salt");
+
+                return HashPassword.validatePassword(userEmail, password, Integer.toString(salt), currentPassword);
             }
             return false;
         } finally {

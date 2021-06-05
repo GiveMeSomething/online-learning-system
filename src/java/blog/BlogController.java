@@ -5,9 +5,8 @@
  */
 package blog;
 
-import entities.Post;
+import common.entities.Post;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.servlet.ServletException;
@@ -28,41 +27,6 @@ public class BlogController extends HttpServlet {
         blogService = new BlogService();
     }
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet BlogController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet BlogController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -83,85 +47,85 @@ public class BlogController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+
     }
 
     private void getBlogPagination(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        HashMap<String, String> hmCat = blogService.getHmCat();
+        HashMap<String, String> hmCategory = blogService.getHmCategory();
         HashMap<String, Post> latestPost = blogService.getLatestPost();
 
-        int numberOfPost = blogService.getTotalPosts();
+        int totalPosts = blogService.getTotalPosts();
         String curPage = request.getParameter("curPage");
         if (curPage == null) {
             curPage = 1 + "";
         }
-        int curPages = Integer.parseInt(curPage);
-        int postPerPage;
-        if (numberOfPost > 500) {
-            postPerPage = 20;
-        } else {
-            postPerPage = 4;
-        }
-        int nOfPages = numberOfPost / postPerPage;
-        if (nOfPages % postPerPage > 0) {
-            nOfPages++;
-        }
-        ArrayList<Post> hmPost = blogService.getPostsList(curPages, postPerPage);
-        request.setAttribute("nOfPage", nOfPages);
-        request.setAttribute("curPage", curPage);
-        request.setAttribute("hmCat", hmCat);
-        request.setAttribute("hmPost", hmPost);
-        request.setAttribute("latest", latestPost);
-
-        request.getRequestDispatcher("blog/blogList.jsp").forward(request, response);
-    }
-
-    private void getBlogDetail(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String id = request.getParameter("id");
-        HashMap<String, String> hmCat = blogService.getHmCat();
-        HashMap<String, String> hmUser = blogService.getUser();
-        HashMap<String, Post> latestPost = blogService.getLatestPost();
-        Post postDetail = blogService.getPostDetail(id);
-        request.setAttribute("hmCat", hmCat);
-        request.setAttribute("post", postDetail);
-        request.setAttribute("latest", latestPost);
-
-        request.getRequestDispatcher("blog/blogDetail.jsp").forward(request, response);
-    }
-
-    private void getBlogPaginationByCate(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        HashMap<String, String> hmCat = blogService.getHmCat();
-        HashMap<String, Post> latestPost = blogService.getLatestPost();
-        String cateId = request.getParameter("cateId");
-        if (cateId == null) {
-        }
-        // Pagination
-
-        int totalPosts = blogService.getTotalPostsByCate(Integer.parseInt(cateId));
-        String currentPage = request.getParameter("curPage");
-        if (currentPage == null) {
-            currentPage = 1 + "";
-        }
-        int curPages = Integer.parseInt(currentPage);
+        int currentPage = Integer.parseInt(curPage);
         int postsPerPage;
         if (totalPosts > 500) {
             postsPerPage = 20;
         } else {
             postsPerPage = 4;
         }
-        int nOfPages = totalPosts / postsPerPage;
-        if (nOfPages % postsPerPage > 0) {
-            nOfPages++;
+        int noOfPages = totalPosts / postsPerPage;
+        if (noOfPages % postsPerPage > 0) {
+            noOfPages++;
         }
-        ArrayList<Post> hmPost = blogService.getPostsByCate(Integer.parseInt(cateId), curPages, postsPerPage);
-
-        request.setAttribute("nOfPage", nOfPages);
-        request.setAttribute("curPage", currentPage);
-        request.setAttribute("hmCat", hmCat);
+        ArrayList<Post> hmPost = blogService.getPostsList(currentPage, postsPerPage);
+        request.setAttribute("nOfPage", noOfPages);
+        request.setAttribute("curPage", curPage);
+        request.setAttribute("hmCategory", hmCategory);
         request.setAttribute("hmPost", hmPost);
         request.setAttribute("latest", latestPost);
 
-        request.getRequestDispatcher("blog/blogList.jsp").forward(request, response);
+        request.getRequestDispatcher("auth/blogList.jsp").forward(request, response);
+    }
+
+    private void getBlogDetail(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String id = request.getParameter("id");
+        HashMap<String, String> hmCategory = blogService.getHmCategory();
+        HashMap<String, String> hmUser = blogService.getUser();
+        HashMap<String, Post> latestPost = blogService.getLatestPost();
+        Post postDetail = blogService.getPostDetail(id);
+        request.setAttribute("hmCategory", hmCategory);
+        request.setAttribute("post", postDetail);
+        request.setAttribute("latest", latestPost);
+
+        request.getRequestDispatcher("auth/blogDetail.jsp").forward(request, response);
+    }
+
+    private void getBlogPaginationByCate(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        HashMap<String, String> hmCategory = blogService.getHmCategory();
+        HashMap<String, Post> latestPost = blogService.getLatestPost();
+        String cateId = request.getParameter("cateId");
+        if (cateId == null) {
+        }
+        
+        // Pagination
+        int totalPosts = blogService.getTotalPostsByCategory(Integer.parseInt(cateId));
+        String page = request.getParameter("curPage");
+        if (page == null) {
+            page = 1 + "";
+        }
+        int currentPage = Integer.parseInt(page);
+        int postsPerPage;
+        if (totalPosts > 500) {
+            postsPerPage = 20;
+        } else {
+            postsPerPage = 4;
+        }
+        int noOfPage = totalPosts / postsPerPage;
+        if (noOfPage % postsPerPage > 0) {
+            noOfPage++;
+        }
+        ArrayList<Post> hmPost = blogService.getPostsByCategory(Integer.parseInt(cateId), currentPage, postsPerPage);
+
+        request.setAttribute("nOfPage", noOfPage);
+        request.setAttribute("curPage", currentPage);
+        request.setAttribute("hmCategory", hmCategory);
+        request.setAttribute("hmPost", hmPost);
+        request.setAttribute("latest", latestPost);
+
+        request.getRequestDispatcher("auth/blogList.jsp").forward(request, response);
     }
 }

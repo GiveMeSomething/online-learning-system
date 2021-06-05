@@ -1,21 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    <servlet>
-        <servlet-name>BlogController</servlet-name>
-        <servlet-class>blog.BlogController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ChangePassController</servlet-name>
-        <servlet-class>features.common.ChangePassController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>BlogController</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ChangePassController</servlet-name>
-        <url-pattern>/changePass</url-pattern>
-    </servlet-mapping>
+<web-app version="3.1"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <!--Filter Mapping-->
     <filter>
         <filter-name>AuthFilter</filter-name>
@@ -25,7 +12,7 @@
         <filter-name>AuthFilter</filter-name>
         <url-pattern>/auth/*</url-pattern>
     </filter-mapping>
-    <!--Servlet Mapping-->
+    <!--Servlet-->
     <servlet>
         <servlet-name>AuthController</servlet-name>
         <servlet-class>auth.AuthController</servlet-class>
@@ -34,6 +21,19 @@
         <servlet-name>EmailController</servlet-name>
         <servlet-class>email.EmailController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CourseController</servlet-name>
+        <servlet-class>course.CourseController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlogController</servlet-name>
+        <servlet-class>blog.BlogController</servlet-class>
+    </servlet>
+    <!--Servlet Mapping-->
+    <servlet-mapping>
+        <servlet-name>CourseController</servlet-name>
+        <url-pattern>/course</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AuthController</servlet-name>
         <url-pattern>/authenticate</url-pattern>
@@ -41,6 +41,10 @@
     <servlet-mapping>
         <servlet-name>EmailController</servlet-name>
         <url-pattern>/email</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogController</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <!-- SMTP settings -->
     <context-param>

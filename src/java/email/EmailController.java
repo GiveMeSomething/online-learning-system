@@ -39,7 +39,7 @@ public class EmailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String operation = request.getParameter("work");
+        String operation = request.getParameter("operation");
 
         if (operation.equals("CONFIRM")) {
             // Reads request data
@@ -65,12 +65,13 @@ public class EmailController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Get operation from request
-        String operation = request.getParameter("work");
+        String operation = request.getParameter("operation");
 
         if (operation.equals("CONFIRM")) {
             // Reads request data
             String inputEmail = request.getParameter("receiver");
             String token = request.getParameter("token");
+            String forwardTo = request.getParameter("previousPage");
             boolean isSent = emailService.sendConfirmEmail(host, port, email, password, inputEmail, token);
 
             if (isSent) {
@@ -80,6 +81,8 @@ public class EmailController extends HttpServlet {
                 // Do something else
                 System.out.println("Can't send");
             }
+
+            response.sendRedirect(forwardTo);
         } else if (operation.equals("CHANGEPW")) {
             // TODO: Duy Anh se implement phan nay
         }

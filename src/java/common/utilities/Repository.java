@@ -20,7 +20,7 @@ public class Repository {
                 connection = new DBContext().getConnection();
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -30,7 +30,7 @@ public class Repository {
                 connection.close();
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }
