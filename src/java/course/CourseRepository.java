@@ -9,19 +9,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import utilities.Repository;
+import common.utilities.Repository;
 
 public class CourseRepository extends Repository {
 
     public Course getCourse(int id) throws Exception {
         this.connectDatabase();
         String getCourse = "SELECT c.id, c.thumbnail, c.title, c.description, c.tag, ca.category_name, MIN(pp.list_price) "
-                + "AS price from db_ite1_updated.course c "
-                + "INNER JOIN db_ite1_updated.course_package p "
+                + "AS price from db_ite1.course c "
+                + "INNER JOIN db_ite1.course_package p "
                 + "ON c.id = p.course_id "
-                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "INNER JOIN db_ite1.price_package pp "
                 + "ON p.package_id = pp.id "
-                + "INNER JOIN db_ite1_updated.category ca "
+                + "INNER JOIN db_ite1.category ca "
                 + "ON ca.id = c.category_id "
                 + "WHERE c.id = ? "
                 + "GROUP BY c.id ";
@@ -47,16 +47,16 @@ public class CourseRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-    
+
     public List<Course> getITCourse() throws Exception {
         this.connectDatabase();
         String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
-                + "AS price from db_ite1_updated.course c "
-                + "INNER JOIN db_ite1_updated.course_package p "
+                + "AS price from db_ite1.course c "
+                + "INNER JOIN db_ite1.course_package p "
                 + "on c.id = p.course_id "
-                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "INNER JOIN db_ite1.price_package pp "
                 + "on p.package_id = pp.id "
-                + "INNER JOIN db_ite1_updated.category ca "
+                + "INNER JOIN db_ite1.category ca "
                 + "on ca.id = c.category_id "
                 + "where ca.category_name = 'Software Engineering' "
                 + "GROUP BY c.id "
@@ -87,12 +87,12 @@ public class CourseRepository extends Repository {
     public List<Course> getBusinessCourse() throws Exception {
         this.connectDatabase();
         String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
-                + "AS price from db_ite1_updated.course c "
-                + "INNER JOIN db_ite1_updated.course_package p "
+                + "AS price from db_ite1.course c "
+                + "INNER JOIN db_ite1.course_package p "
                 + "on c.id = p.course_id "
-                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "INNER JOIN db_ite1.price_package pp "
                 + "on p.package_id = pp.id "
-                + "INNER JOIN db_ite1_updated.category ca "
+                + "INNER JOIN db_ite1.category ca "
                 + "on ca.id = c.category_id "
                 + "where ca.category_name = 'Economy' "
                 + "GROUP BY c.id "
@@ -123,12 +123,12 @@ public class CourseRepository extends Repository {
     public List<Course> getMarketingCourse() throws Exception {
         this.connectDatabase();
         String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
-                + "AS price from db_ite1_updated.course c "
-                + "INNER JOIN db_ite1_updated.course_package p "
+                + "AS price from db_ite1.course c "
+                + "INNER JOIN db_ite1.course_package p "
                 + "on c.id = p.course_id "
-                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "INNER JOIN db_ite1.price_package pp "
                 + "on p.package_id = pp.id "
-                + "INNER JOIN db_ite1_updated.category ca "
+                + "INNER JOIN db_ite1.category ca "
                 + "on ca.id = c.category_id "
                 + "where ca.category_name = 'Digital Marketing' "
                 + "GROUP BY c.id "
@@ -159,12 +159,12 @@ public class CourseRepository extends Repository {
     public List<Course> getAICourse() throws Exception {
         this.connectDatabase();
         String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
-                + "AS price from db_ite1_updated.course c "
-                + "INNER JOIN db_ite1_updated.course_package p "
+                + "AS price from db_ite1.course c "
+                + "INNER JOIN db_ite1.course_package p "
                 + "on c.id = p.course_id "
-                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "INNER JOIN db_ite1.price_package pp "
                 + "on p.package_id = pp.id "
-                + "INNER JOIN db_ite1_updated.category ca "
+                + "INNER JOIN db_ite1.category ca "
                 + "on ca.id = c.category_id "
                 + "where ca.category_name = 'Artificial Intelligence' and c.id > '43' "
                 + "GROUP BY c.id "
@@ -195,12 +195,12 @@ public class CourseRepository extends Repository {
     public List<Course> getIACourse() throws Exception {
         this.connectDatabase();
         String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
-                + "AS price from db_ite1_updated.course c "
-                + "INNER JOIN db_ite1_updated.course_package p "
+                + "AS price from db_ite1.course c "
+                + "INNER JOIN db_ite1.course_package p "
                 + "on c.id = p.course_id "
-                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "INNER JOIN db_ite1.price_package pp "
                 + "on p.package_id = pp.id "
-                + "INNER JOIN db_ite1_updated.category ca "
+                + "INNER JOIN db_ite1.category ca "
                 + "on ca.id = c.category_id "
                 + "where ca.category_name = 'Information Assurance' "
                 + "GROUP BY c.id "
@@ -231,12 +231,12 @@ public class CourseRepository extends Repository {
     public List<Course> getLanguageCourse() throws Exception {
         this.connectDatabase();
         String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
-                + "AS price from db_ite1_updated.course c "
-                + "INNER JOIN db_ite1_updated.course_package p "
+                + "AS price from db_ite1.course c "
+                + "INNER JOIN db_ite1.course_package p "
                 + "on c.id = p.course_id "
-                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "INNER JOIN db_ite1.price_package pp "
                 + "on p.package_id = pp.id "
-                + "INNER JOIN db_ite1_updated.category ca "
+                + "INNER JOIN db_ite1.category ca "
                 + "on ca.id = c.category_id "
                 + "where ca.category_name = 'Language' "
                 + "GROUP BY c.id "
@@ -267,12 +267,12 @@ public class CourseRepository extends Repository {
     public List<Course> getFeaturedCourse() throws Exception {
         this.connectDatabase();
         String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,pp.list_price "
-                + "AS price from db_ite1_updated.course c "
-                + "INNER JOIN db_ite1_updated.course_package p "
+                + "AS price from db_ite1.course c "
+                + "INNER JOIN db_ite1.course_package p "
                 + "on c.id = p.course_id "
-                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "INNER JOIN db_ite1.price_package pp "
                 + "on p.package_id = pp.id "
-                + "INNER JOIN db_ite1_updated.category ca "
+                + "INNER JOIN db_ite1.category ca "
                 + "on ca.id = c.category_id "
                 + "where c.feature = '1' and c.id > '50' "
                 + "GROUP BY c.id "
@@ -301,12 +301,12 @@ public class CourseRepository extends Repository {
     public List<Course> getSiderCourseDetail() throws Exception {
         this.connectDatabase();
         String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
-                + " AS price from db_ite1_updated.course c "
-                + "INNER JOIN db_ite1_updated.course_package p "
+                + " AS price from db_ite1.course c "
+                + "INNER JOIN db_ite1.course_package p "
                 + "on c.id = p.course_id "
-                + "INNER JOIN db_ite1_updated.price_package pp "
+                + "INNER JOIN db_ite1.price_package pp "
                 + "on p.package_id = pp.id "
-                + "INNER JOIN db_ite1_updated.category ca "
+                + "INNER JOIN db_ite1.category ca "
                 + "on ca.id = c.category_id "
                 + "where c.feature =1 "
                 + "GROUP BY c.id "
@@ -328,7 +328,7 @@ public class CourseRepository extends Repository {
                 ));
 
             }
-       return list;
+            return list;
         } catch (Exception e) {
         }
         return null;

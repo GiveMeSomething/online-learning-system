@@ -25,13 +25,13 @@ public class AuthRepository extends Repository {
         userService = new UserService();
     }
 
-    public User login(Account account) throws SQLException {
+    public String login(Account account) throws SQLException {
         this.connectDatabase();
 
         String email = account.getEmail();
         String inputPassword = account.getPassword();
 
-        String getAccount = "SELECT user_email, password, salt FROM account WHERE user_email=?";
+        String getAccount = "SELECT user_email, password, salt, token FROM account WHERE user_email=?";
 
         try (PreparedStatement statement = this.connection.prepareStatement(getAccount)) {
             statement.setString(1, email);
@@ -41,10 +41,11 @@ public class AuthRepository extends Repository {
             if (result.next()) {
                 String password = result.getString("password");
                 String salt = result.getString("salt");
+                String token = result.getString("token");
 
                 // Check password then return user
                 if (HashPassword.validatePassword(email, password, salt, inputPassword)) {
-                    return userService.getUser(email);
+                    return token;
                 }
             }
 
@@ -134,8 +135,50 @@ public class AuthRepository extends Repository {
             if (result.next()) {
                 return true;
             }
-
             return false;
+        }
+    }
+
+    // Change Password
+    public boolean changePassword(String userEmail, String password) throws SQLException {
+        this.connectDatabase();
+
+        Random randomer = new Random();
+        int salt = randomer.nextInt(100);
+        String newPassword = HashPassword.getHashPassword(userEmail, password, salt);
+
+        String changePassword = "UPDATE account SET password = ?, salt = ? WHERE user_email = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(changePassword)) {
+            statement.setString(1, newPassword);
+            statement.setInt(2, salt);
+            statement.setString(3, userEmail);
+
+            return statement.executeUpdate() > 0;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean checkCurrentPass(String userEmail, String currentPassword) throws SQLException {
+        this.connectDatabase();
+
+        String password;
+        int salt;
+
+        String getCurrentPass = "SELECT password, salt FROM account WHERE user_email = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(getCurrentPass)) {
+            statement.setString(1, userEmail);
+
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                password = result.getString("password");
+                salt = result.getInt("salt");
+
+                return HashPassword.validatePassword(userEmail, password, Integer.toString(salt), currentPassword);
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
         }
     }
 }

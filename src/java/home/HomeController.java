@@ -31,24 +31,23 @@ public class HomeController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-        private CourseService courseService;
+    private CourseService courseService;
 
     @Override
     public void init() throws ServletException {
         courseService = new CourseService();
     }
 
-   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       List<Course> itCourse =  courseService.getITCourse();
-       List<Course> bizCourse =  courseService.getBusinessCourse();
-       List<Course> marCourse =  courseService.getMarketingCourse();
-       List<Course> aiCourse =  courseService.getAICourse();
-       List<Course> iaCourse =  courseService.getIACourse();
-       List<Course> langCourse =  courseService.getLanguageCourse();
-       List<Course> studentsViewCourse =  courseService.getFeaturedCourse();
+        List<Course> itCourse = courseService.getITCourse();
+        List<Course> bizCourse = courseService.getBusinessCourse();
+        List<Course> marCourse = courseService.getMarketingCourse();
+        List<Course> aiCourse = courseService.getAICourse();
+        List<Course> iaCourse = courseService.getIACourse();
+        List<Course> langCourse = courseService.getLanguageCourse();
+        List<Course> studentsViewCourse = courseService.getFeaturedCourse();
 
         request.setAttribute("itCourse", itCourse);
         request.setAttribute("bizCourse", bizCourse);
@@ -71,7 +70,7 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 
     /**

@@ -42,7 +42,7 @@ public class AuthFilter implements Filter {
         // To 'login' if user not yet logged in, else check token (authorization)
         User currentUser = getUser(currentSession);
         if (currentUser == null) {
-            pageResponse.sendRedirect(pageRequest.getContextPath() + "/index.jsp");
+            pageResponse.sendRedirect(pageRequest.getContextPath() + "/home");
             return;
         }
 
