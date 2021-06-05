@@ -7,6 +7,7 @@ package auth;
 
 import common.entities.Account;
 import common.entities.User;
+import java.sql.SQLException;
 
 public class AuthService {
 
@@ -55,6 +56,24 @@ public class AuthService {
             e.printStackTrace();
         }
 
+        return false;
+    }
+
+    public boolean changePassword(String userEmail, String password) {
+        try {
+            return authRepository.changePassword(userEmail, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean checkCurrentPass(String userEmail, String currentPassword) {
+        try {
+            return authRepository.checkCurrentPass(userEmail, currentPassword);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 

@@ -11,6 +11,7 @@ import common.entities.User;
 import common.utilities.HashPassword;
 import common.utilities.HashToken;
 import common.utilities.Repository;
+import database.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -134,8 +135,42 @@ public class AuthRepository extends Repository {
             if (result.next()) {
                 return true;
             }
-
             return false;
+        }
+    }
+
+    // Change Password
+    public boolean changePassword(String userEmail, String password) throws SQLException {
+        this.connectDatabase();
+
+        String changePassword = "UPDATE account SET password = ? WHERE user_email = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(changePassword)) {
+            statement.setString(1, password);
+            statement.setString(2, userEmail);
+            
+            return statement.executeUpdate() > 0;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean checkCurrentPass(String userEmail, String currentPassword) throws SQLException {
+        this.connectDatabase();
+
+        String password;
+        String getCurrentPass = "SELECT password FROM account WHERE user_email = ?";
+        try (PreparedStatement ps = this.connection.prepareStatement(getCurrentPass)) {
+            ps.setString(1, userEmail);
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                password = result.getString("password");
+                if (password.equals(currentPassword)) {
+                    return true;
+                }
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
         }
     }
 }

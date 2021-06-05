@@ -26,14 +26,14 @@
                         <h2>Category</h2>
                         <hr>
                         <c:forEach var="o" items="${hmCat}">
-                            <h6>${o.value}</h6>
+                            <a href="PostsByCate?cateId=${o.key}">${o.value}</a>
                         </c:forEach>
                     </div>
                     <div class="lastest-post">
                         <h2>Top 3 latest posts</h2>
                         <hr>
                         <c:forEach var="o" items="${latest}">
-                            <h6>${o.value.title}</h6>
+                            <a href="BlogDetail?id=${o.value.postId}">${o.value.title}</a>
                         </c:forEach>
                     </div>
                 </div>
