@@ -22,10 +22,10 @@
 
         <div id="main">
             <button class="openbtn" onclick="openNav()">&#9776; Open Sidebar</button>
-            <jsp:include page="components/global/navbar.jsp"></jsp:include> 
+           
                 <h2>Collapsed Sidebar</h2>
                 <p>Content...</p>
-            <jsp:include page="components/global/footer.jsp"></jsp:include>
+           
         </div>
 
         <script>
