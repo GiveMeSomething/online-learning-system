@@ -1,4 +1,3 @@
-
 /*home-page*/
 section {
     margin: 0;
@@ -59,7 +58,7 @@ section {
 }
 
 .banner-sub-information{
-    width: 28rem; 
+    width: 28rem;
 }
 .banner-information{
     position: absolute;
@@ -178,7 +177,7 @@ section {
     border-radius: 3px;
     padding: 6px 20px 10px 20px;
     margin-left: 4rem;
-    width: 10rem   
+    width: 10rem
 }
 
 #setting-detail div a{
@@ -214,7 +213,7 @@ section {
 }
 
 #setting-dropdown-ul li a:hover{
-    background: beige;  
+    background: beige;
 }
 
 #shopping-cart{
@@ -226,34 +225,34 @@ section {
 
 
 
-#setting-dropdown-ul li ul #li-top { 
-    background: #fff; 
-    display: block; 
+#setting-dropdown-ul li ul #li-top {
+    background: #fff;
+    display: block;
     border-left: 1px solid lightgray;
     border-right: 1px solid lightgray;
     border-top: 1px solid lightgray;
 }
-#setting-dropdown-ul li ul #li-middle { 
-    background: #fff; 
-    display: block; 
+#setting-dropdown-ul li ul #li-middle {
+    background: #fff;
+    display: block;
     border-left: 1px solid lightgray;
     border-right: 1px solid lightgray;
 }
-#setting-dropdown-ul li ul #li-bottom { 
-    background: #fff; 
-    display: block; 
+#setting-dropdown-ul li ul #li-bottom {
+    background: #fff;
+    display: block;
     border-left: 1px solid lightgray;
     border-right: 1px solid lightgray;
     border-bottom: 1px solid lightgray
 }
-#setting-dropdown-ul li ul li a {display:block !important;text-decoration: none; padding: 0px 20px 0px 20px;color: black} 
+#setting-dropdown-ul li ul li a {display:block !important;text-decoration: none; padding: 0px 20px 0px 20px;color: black}
 #setting-dropdown-ul li ul li a:hover {background: rgba(211, 211, 211, 0.2);}
 
 
 
 /*course-detail-page*/
 #course-detail-category{
-    text-decoration: none; 
+    text-decoration: none;
 }
 #course-detail-category:hover{
     text-decoration: underline
@@ -352,5 +351,37 @@ section {
 #contact-link .fa-twitter-square:hover{
     color:#00ACEE;
     cursor: pointer
+}
+
+.page-item.active .page-link{
+    border: 1px solid black;
+}
+.course__list__paging:focus{
+    outline:none;
+    box-shadow: none;
+    border:1px solid black;
+}
+
+.page-item.active .page-link{
+    background-color:#426fc2;
+    color:white;
+}
+
+.page-item .page-link{
+    color:black;
+}
+
+/*COURSE LIST*/
+.btn-course-list{
+    border-radius: 0px;
+}
+
+.buttonPrice:focus{
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: black;
 }
 

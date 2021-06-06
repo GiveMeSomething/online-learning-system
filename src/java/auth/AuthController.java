@@ -62,23 +62,37 @@ public class AuthController extends HttpServlet implements Controller {
 
             processRegister(request, response, userAccount, user);
         } else if (operation.equals("CHANGEPW")) {
+            String oldPassword = request.getParameter("current-password");
+            String newPassword = request.getParameter("new-password");
+            String confirmPassword = request.getParameter("confirm-password");
 
+            System.out.println("Run in AuthController");
+
+            processChangePassword(request, response, oldPassword, newPassword, confirmPassword);
         }
     }
 
     private void processLogin(HttpServletRequest request, HttpServletResponse response, String email, String password)
             throws ServletException, IOException {
-        // If no token is found, send confirm email else do normal login
-        String userToken = getToken(request);
+        // Get token from cookies
+        String cookieToken = getToken(request);
         String forwardTo = request.getParameter("previousPage");
 
-        if (userToken == null || userToken.equals("")) {
-            String confirmEmailPath = "/email?operation=AUTH&receiver=" + email;
-            request.getRequestDispatcher(confirmEmailPath).forward(request, response);
-        } else {
-            Account userAccount = new Account(email, password, userToken);
-            User currentUser = authService.login(userAccount);
+        Account userAccount = new Account(email, password);
+        String accountToken = authService.login(userAccount);
 
+        if (accountToken == null) {
+            System.out.println(forwardTo);
+            this.forwardErrorMessage(request, response, "Login failed", forwardTo);
+            return;
+        }
+
+        // Check if the user enter the right account but there is no token in cookie
+        if (cookieToken == null || !cookieToken.equals(accountToken)) {
+            String confirmEmailPath = "/email?operation=AUTH&receiver=" + email;
+            response.sendRedirect(confirmEmailPath);
+        } else {
+            User currentUser = userService.getUser(email);
             addUserToSession(request, response, currentUser);
             response.sendRedirect(forwardTo);
         }
@@ -94,6 +108,26 @@ public class AuthController extends HttpServlet implements Controller {
             // Forward to send confirm email (using email and userToken)
             String confirmEmailPath = "/email?operation=CONFIRM&receiver=" + userAccount.getEmail() + "&token=" + userToken;
             request.getRequestDispatcher(confirmEmailPath).forward(request, response);
+        }
+    }
+
+    private void processChangePassword(HttpServletRequest request, HttpServletResponse response,
+            String oldPassword, String newPassword, String confirmPassword) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User currentUser = (User) session.getAttribute("user");
+
+        String forwardTo = request.getParameter("previousPage");
+        boolean isChanged = false;
+        if (currentUser != null && newPassword.equals(confirmPassword)) {
+            if (authService.checkCurrentPass(currentUser.getEmail(), oldPassword)) {
+                isChanged = authService.changePassword(currentUser.getEmail(), newPassword);
+            }
+        }
+
+        if (isChanged) {
+            response.sendRedirect("home");
+        } else {
+            this.forwardErrorMessage(request, response, "Can't change password. Please check again later", forwardTo);
         }
     }
 
@@ -130,6 +164,7 @@ public class AuthController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         HttpSession currentSession = request.getSession();
         String forwardTo = request.getParameter("previousPage");
+
         if (currentUser == null || currentUser.getEmail() == null) {
             this.forwardErrorMessage(request, response, "Login failed", forwardTo);
         } else {

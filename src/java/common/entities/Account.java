@@ -19,10 +19,9 @@ public class Account {
     }
 
     // Use this constructor when use login
-    public Account(String email, String password, String token) {
+    public Account(String email, String password) {
         this.email = email;
         this.password = password;
-        this.token = token;
     }
 
     public String getEmail() {

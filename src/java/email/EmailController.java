@@ -39,7 +39,7 @@ public class EmailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String operation = request.getParameter("work");
+        String operation = request.getParameter("operation");
 
         if (operation.equals("CONFIRM")) {
             // Reads request data

@@ -16,12 +16,12 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
               integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
               crossorigin="anonymous">
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+              integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+              crossorigin="anonymous"/>
         <link rel="stylesheet" type="text/css" href="${path}/skeleton/styles.css">
-
     </head>
     <body>
-
         <section id="navbar">
             <div class="container-fluid d-flex justify-content-center my-3">
                 <nav class="navbar navbar-expand-xl navbar-light bg-light" style="margin: auto;">
@@ -206,7 +206,7 @@
                           class="needs-validation"
                           novalidate>
                         <div class="request-info">
-                            <input name="previousPage" value="index.jsp" hidden="true" />
+                            <input name="previousPage" value="home" hidden="true" />
                             <div class="invalid-feedback"></div>
                             <input name="operation" value="REGISTER" hidden="true" />
                             <div class="invalid-feedback"></div>
