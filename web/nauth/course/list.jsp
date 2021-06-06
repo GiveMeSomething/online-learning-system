@@ -1,5 +1,5 @@
 <%-- 
-    Document   : courselist
+    Document   : list
     Created on : May 27, 2021, 7:38:35 AM
     Author     : Nguyen Khanh Toan
 --%>
@@ -11,23 +11,22 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Course List</title>
         <!--        Bootstrap_Carousel-->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">      
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" 
+              integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" 
+              crossorigin="anonymous">    
         <!--        fontawesome-->
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" 
+              integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" 
+              crossorigin="anonymous"/>
 
         <link rel="stylesheet" type="text/css" href="${path}/style/styles.css">
     </head>
     <body>
-        <jsp:include page="component/global/navbar.jsp"></jsp:include>
+        <jsp:include page="/components/global/navbar.jsp"></jsp:include>
             <div class="container-fluid" style='width:85%;margin:0 auto'>
                 <h3 class="mb-4">${title}</h3>
             <!--FEATURED COURSE-->
@@ -62,7 +61,6 @@
                                  src="${o.imageLink}" alt="First slide">
                         </div>
                     </c:forEach>
-
                 </div>
                 <a class="carousel-control-prev banner-btn" href="#carouselExampleControls" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon " aria-hidden="true"></span>
@@ -73,8 +71,6 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
-
-
             <div class="row" style="justify-content: space-around">
                 <!--FILTER COURSE-->
                 <div class="col-2">
@@ -87,7 +83,6 @@
                                     type="button" data-toggle="collapse"
                                     data-target="#collapseOne">
                                     Price<i class="fa fa-angle-down" style="margin-left:50%"></i></h4>
-                               
                                 <div id="collapseOne" class="accordion-collapse collapse show"
                                      data-parent="#accordionExample">
                                     <input ${sessionScope.price == 1 ? "checked":""} name="price" type='radio' value="1"/>
@@ -100,8 +95,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                           
                         </div>
                         <hr/>
                         <div class="accordion" id="filterAlpha">
@@ -110,7 +103,6 @@
                                     type="button" data-toggle="collapse"
                                     data-target="#filterA">
                                     Alphabet<i class="fa fa-angle-down" style="margin-left:26%"></i></h4>
-                               
                                 <div id="filterA" class="accordion-collapse collapse show"
                                      data-parent="#filterAlpha">
                                     <input ${sessionScope.alpha == "ascAlpha" ? "checked":""} name="alpha" type='radio' value="ascAlpha"/>
@@ -123,12 +115,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                           
                         </div>
-
-
-
                     </div>
                 </div>
                 <div class="col-10">
@@ -136,11 +123,16 @@
                     <div class="row">
                         <c:forEach items="${course}" var="o">
                             <div class="col-3">
-                                <div class="card mb-3" style="width: 101%;height:360px">
-                                    <img style="cursor: pointer" src="${o.imageLink}" class="card-img-top" alt="...">
+                                <div class="card h-100" style="font-size: 1rem; ">
+                                    <a href="course?courseId=${o.id}">
+                                        <img style="cursor: pointer" src="${o.imageLink}" 
+                                             class="card-img-top" alt="...">
+                                    </a>
                                     <div class="card-body">
-                                        <div style="height:145px">
-                                            <h5 class="card-title">${o.courseName}</h5>
+                                        <div style="min-height: 27vh">
+                                            <a href="course?courseId=${o.id}" style="text-decoration: none; color: black">
+                                                <h5 class="card-title" style="cursor: pointer">${o.courseName}</h5>
+                                            </a>
                                             <div class="d-flex">
                                                 <p style="text-decoration: line-through;color:#dd012d" class="card-text mr-2">$${o.price}</p>  
                                                 <p class="card-text font-weight-bold">
@@ -151,31 +143,29 @@
                                                 ${o.tag}
                                             </div>
                                         </div>
-
                                         <div class="row">
-                                            <div class="col-6">
-                                                <a href="#" class="btn"
-                                                   style="background-color: #f53f34;color:white;border-radius:0px">
-                                                    Check Out
-                                                </a> 
-                                            </div>
-                                            <div class="col-6">
-                                                <a href="#" class="btn"
-                                                   style="background-color: #072b7d;color:white;border-radius:0px">
-                                                    Register
-                                                </a>
+                                            <div class="d-flex flex-column justify-content-end align-items-center">
+                                                <div class="row">
+                                                    <div class="col-5 m-1">
+                                                        <a href="#" class="text-decoration-none">
+                                                            <button class="btn btn-success">Checkout</button>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-5 m-1">
+                                                        <a href="#" class="text-decoration-none">
+                                                            <button class="btn btn-primary">Register</button>
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div> 
                             </div>
-
                         </c:forEach>
                     </div>
                 </div>
             </div>
-
             <div class="clearfix text-center">
                 <ul class="pagination justify-content-center mb-5">
                     <li class="page-item">
@@ -184,7 +174,7 @@
                     <c:forEach begin="1" end="${end}" var="i">
                         <li class="page-item page-item-paging ${tag == i?"active":""}">
                             <a style=""
-                               href="paging?index=${i}&&cID=${cateID}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
+                               href="course?index=${i}&&cID=${sessionScope.categoryId}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
                                class="page-link course__list__paging">
                                 ${i}
                             </a>
@@ -198,7 +188,7 @@
                 </ul>
             </div>
         </div>
-        <jsp:include page="component/global/footer.jsp"></jsp:include>
+        <jsp:include page="/components/global/footer.jsp"></jsp:include>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
             <script>
@@ -206,23 +196,33 @@
                     $("input[name$='price']").click(function () {
                         var value = $(this).val();
                         if (value == 1) {
-                            window.location.assign("CourseListController?cID=${cateID}&&price="+value);
+                            window.location.assign("course?index=${tag}&&cid=${cateID}&&searchName=${sessionScope.searchName}&&price=" + value + "&&alpha=${sessionScope.alpha}");
                         } else if (value == 0) {
-                            window.location.assign("CourseListController?cID=${cateID}&&price="+value);
+                            window.location.assign("course?index=${tag}&&cid=${cateID}&&searchName=${sessionScope.searchName}&&price=" + value + "&&alpha=${sessionScope.alpha}");
                         }
                     });
                 });
-                
+
                 $(function () {
                     $("input[name$='alpha']").click(function () {
                         var value = $(this).val();
                         if (value === 'ascAlpha') {
-                            window.location.assign("CourseListController?cID=${cateID}&&alpha="+value);
+                            window.location.assign("course?index=${tag}&&cid=${cateID}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=" + value);
                         } else if (value === 'descAlpha') {
-                            window.location.assign("CourseListController?cID=${cateID}&&alpha="+value);
+                            window.location.assign("course?index=${tag}&&cid=${cateID}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=" + value);
+
                         }
                     });
                 });
         </script>
     </body>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" 
+            ntegrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" 
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" 
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
+    crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.min.js" 
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
+    crossorigin="anonymous"></script>
 </html>

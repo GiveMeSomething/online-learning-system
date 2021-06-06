@@ -21,10 +21,10 @@
             <c:forEach items="${siderDetail}" var="o">
                 <div style="width: 500px; display: flex; margin-left: .8rem">
                     <div style=" margin-right: 10px;height: 45px; margin-bottom: 5px">
-                        <a href="course?cid=${o.id}"><img src="${o.imageLink}" style="width: 5rem; margin-right: 5px; margin-bottom: 10px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></a>
+                        <a href="course?courseId=${o.id}"><img src="${o.imageLink}" style="width: 5rem; margin-right: 5px; margin-bottom: 10px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></a>
                     </div>
-                    <div style="height: 45px; width: 250px"><a class="sider-course-hover" href="course?cid=${o.id}" style="margin-right: 5px">${o.courseName}</a></div>
-                    <div style="margin-top: 2px; margin-left: 5px"><a class="sider-course-hover" href="course?cid=${o.id}"><i class="far fa-arrow-alt-circle-right"></i></a></div>
+                    <div style="height: 45px; width: 250px"><a class="sider-course-hover" href="course?courseId=${o.id}" style="margin-right: 5px">${o.courseName}</a></div>
+                    <div style="margin-top: 2px; margin-left: 5px"><a class="sider-course-hover" href="course?courseId=${o.id}"><i class="far fa-arrow-alt-circle-right"></i></a></div>
                 </div>
                 <div>
                     <hr style="margin-left: .8rem; width: 380px">
