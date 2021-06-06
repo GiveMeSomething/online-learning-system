@@ -115,7 +115,6 @@ public class CourseListRepository extends Repository {
                         0,
                         result.getString("tag")
                 ));
-
             }
             return list;
         } finally {

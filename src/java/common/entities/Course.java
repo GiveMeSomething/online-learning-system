@@ -15,11 +15,24 @@ public class Course {
     private String imageLink;
     private String courseName;
     private float price;
-    private String category;
     private String description;
+    private int ownerId;
+    private Status status;
+    private String category;
+    private boolean feature;
     private String tag;
 
-    public Course() {
+    public Course(int id, String imageLink, String courseName, float price, String description, int ownerId, Status status, String category, boolean feature, String tag) {
+        this.id = id;
+        this.imageLink = imageLink;
+        this.courseName = courseName;
+        this.price = price;
+        this.description = description;
+        this.ownerId = ownerId;
+        this.status = status;
+        this.category = category;
+        this.feature = feature;
+        this.tag = tag;
     }
 
     public Course(int id, String imageLink, String courseName, float price, String category, String description, String tag) {
@@ -28,6 +41,15 @@ public class Course {
         this.courseName = courseName;
         this.price = price;
         this.category = category;
+        this.description = description;
+        this.tag = tag;
+    }
+
+    public Course(int id, String imageLink, String courseName, String description, float price, String tag) {
+        this.id = id;
+        this.imageLink = imageLink;
+        this.courseName = courseName;
+        this.price = price;
         this.description = description;
         this.tag = tag;
     }
@@ -64,6 +86,30 @@ public class Course {
         this.price = price;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public String getCategory() {
         return category;
     }
@@ -72,12 +118,12 @@ public class Course {
         this.category = category;
     }
 
-    public String getDescription() {
-        return description;
+    public boolean isFeature() {
+        return feature;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setFeature(boolean feature) {
+        this.feature = feature;
     }
 
     public String getTag() {
@@ -87,4 +133,5 @@ public class Course {
     public void setTag(String tag) {
         this.tag = tag;
     }
+
 }

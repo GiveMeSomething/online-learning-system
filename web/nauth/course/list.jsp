@@ -24,10 +24,10 @@
         <!--        fontawesome-->
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
-        <link rel="stylesheet" type="text/css" href="${path}/skeleton/styles.css">
+        <link rel="stylesheet" type="text/css" href="${path}/style/styles.css">
     </head>
     <body>
-        <jsp:include page="navbar.jsp"></jsp:include>
+        <jsp:include page="component/global/navbar.jsp"></jsp:include>
             <div class="container-fluid" style='width:85%;margin:0 auto'>
                 <h3 class="mb-4">${title}</h3>
             <!--FEATURED COURSE-->
@@ -198,7 +198,7 @@
                 </ul>
             </div>
         </div>
-        <jsp:include page="footer.jsp"></jsp:include>
+        <jsp:include page="component/global/footer.jsp"></jsp:include>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
             <script>

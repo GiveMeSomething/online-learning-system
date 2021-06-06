@@ -31,7 +31,7 @@ public class CourseController extends HttpServlet {
         
         request.setAttribute("detail", courseDetail);
         request.setAttribute("siderDetail", siderCourse);
-        request.getRequestDispatcher("courseDetail.jsp").forward(request, response);
+        request.getRequestDispatcher("nauth/course/detail.jsp").forward(request, response);
     }
 
     @Override

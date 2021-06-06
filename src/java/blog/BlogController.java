@@ -77,7 +77,7 @@ public class BlogController extends HttpServlet {
         request.setAttribute("hmPost", hmPost);
         request.setAttribute("latest", latestPost);
 
-        request.getRequestDispatcher("blog/blogList.jsp").forward(request, response);
+        request.getRequestDispatcher("nauth/blog/blogList.jsp").forward(request, response);
     }
 
     private void getBlogDetail(HttpServletRequest request, HttpServletResponse response)
@@ -91,7 +91,7 @@ public class BlogController extends HttpServlet {
         request.setAttribute("post", postDetail);
         request.setAttribute("latest", latestPost);
 
-        request.getRequestDispatcher("blog/blogDetail.jsp").forward(request, response);
+        request.getRequestDispatcher("nauth/blog/blogDetail.jsp").forward(request, response);
     }
 
     private void getBlogPaginationByCate(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -126,6 +126,6 @@ public class BlogController extends HttpServlet {
         request.setAttribute("hmPost", hmPost);
         request.setAttribute("latest", latestPost);
 
-        request.getRequestDispatcher("blog/blogList.jsp").forward(request, response);
+        request.getRequestDispatcher("nauth/blog/blogList.jsp").forward(request, response);
     }
 }
