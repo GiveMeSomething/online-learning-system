@@ -24,8 +24,8 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav d-flex align-items-center">
                             <li class="nav-item">
-                                <form action="searchController?cID=${sessionScope.cateID}" 
-                                      class="d-flex" method="post">
+                                <form action="course?index=${tag}&&cID=${sessionScope.categoryId}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
+                                      method="post">
                                     <input name="searchCourse" class="form-control py-2"
                                            type="search" placeholder="Search courses">
                                 </form>
@@ -41,7 +41,7 @@
                                     <c:forEach items="${listC}" var="o">
                                         <li>
                                             <a class="dropdown-item"
-                                               href="CourseListController?cID=${o.id}">
+                                               href="course?cID=${o.id}">
                                                 ${o.categoryName}
                                             </a>
                                         </li> 

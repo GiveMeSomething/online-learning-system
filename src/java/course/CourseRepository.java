@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package courselist;
+package course;
 
+import common.entities.Category;
 import common.entities.Course;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +18,7 @@ import java.sql.SQLException;
  *
  * @author Nguyen Khanh Toan
  */
-public class CourseListRepository extends Repository {
+public class CourseRepository extends Repository {
 
     public List<Course> getCourseByCateID(int cateID) throws SQLException {
         this.connectDatabase();
@@ -233,11 +234,144 @@ public class CourseListRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+    
+    public List<Course> pagingCourseList(int cateID,String searchName,int page,String price,String alpha) throws SQLException {
+        this.connectDatabase();
+        String pagingCourseList = "";
+        if(price.equals("1")){
+           pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
+                + "INNER JOIN db_ite1.course_package p\n"
+                + "on c.id = p.course_id\n"
+                + "INNER JOIN db_ite1.price_package pp\n"
+                + "on p.package_id = pp.id\n"
+                + "WHERE c.category_id = ? AND title like ?\n"
+                + "GROUP BY c.id ORDER BY price asc LIMIT 8 OFFSET ?";  
+        }else if(price.equals("0")){
+           pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
+                + "INNER JOIN db_ite1.course_package p\n"
+                + "on c.id = p.course_id\n"
+                + "INNER JOIN db_ite1.price_package pp\n"
+                + "on p.package_id = pp.id\n"
+                + "WHERE c.category_id = ? AND title like ?\n"
+                + "GROUP BY c.id ORDER BY price desc LIMIT 8 OFFSET ? ";  
+        }else if(alpha.equals("ascAlpha")){
+           pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
+                + "INNER JOIN db_ite1.course_package p\n"
+                + "on c.id = p.course_id\n"
+                + "INNER JOIN db_ite1.price_package pp\n"
+                + "on p.package_id = pp.id\n"
+                + "WHERE c.category_id = ? AND title like ?\n"
+                + "GROUP BY c.id ORDER BY c.title ASC LIMIT 8 OFFSET ? ";  
+        }else if(alpha.equals("descAlpha")){
+           pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
+                + "INNER JOIN db_ite1.course_package p\n"
+                + "on c.id = p.course_id\n"
+                + "INNER JOIN db_ite1.price_package pp\n"
+                + "on p.package_id = pp.id\n"
+                + "WHERE c.category_id = ? AND title like ?\n"
+                + "GROUP BY c.id ORDER BY c.title DESC LIMIT 8 OFFSET ? ";  
+        }else{
+            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
+                + "INNER JOIN db_ite1.course_package p\n"
+                + "on c.id = p.course_id\n"
+                + "INNER JOIN db_ite1.price_package pp\n"
+                + "on p.package_id = pp.id\n"
+                + "WHERE c.category_id = ? AND title like ?\n"
+                + "GROUP BY c.id LIMIT 8 OFFSET ?";  
+        }
+       
+        List<Course> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(pagingCourseList)) {
+            statement.setInt(1, cateID);            
+            statement.setString(2,"%"+searchName+"%");
+            statement.setInt(3, (page - 1) * 8);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new Course(
+                        result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        result.getFloat("price"),
+                        result.getString("tag")
+                ));
+
+            }
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+    
+    public int countingCourseListSearch(int cateID,String searchName) throws SQLException {
+        this.connectDatabase();
+        String sql = "SELECT COUNT(*) AS count FROM db_ite1.course "
+                + "where category_id = ? AND title LIKE ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+            statement.setInt(1, cateID);
+            statement.setString(2, "%"+searchName+"%");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("count");
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
+    }
+    
+    public List<Course> searchCourse(int cateID,String searchName) throws SQLException {
+        this.connectDatabase();
+        String searchCourse = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price)\n"
+                + "AS price from db_ite1.course c\n"
+                + "INNER JOIN db_ite1.course_package p\n"
+                + "on c.id = p.course_id\n"
+                + "INNER JOIN db_ite1.price_package pp\n"
+                + "on p.package_id = pp.id\n"
+                + "WHERE c.category_id = ? AND title LIKE ?\n"
+                + "GROUP BY c.id LIMIT 8 OFFSET 0";
+        List<Course> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
+            statement.setInt(1, cateID);
+            statement.setString(2, "%" + searchName + "%");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new Course(
+                        result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        result.getFloat("price"),
+                        result.getString("tag")
+                ));
+
+            }
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+    
+     public List<Category> getAllCategory() throws SQLException {
+        this.connectDatabase();
+        String getAllCategory = "SELECT * FROM db_ite1.category;";
+        List<Category> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(getAllCategory)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new Category(result.getInt("id"),result.getString("category_name")));
+            }
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
 
     public static void main(String[] args) throws Exception {
-        CourseListRepository repo = new CourseListRepository();
+        CourseRepository repo = new CourseRepository();
         try {
-            List<Course> list = repo.sortCourseAlpha(1, "ascAlpha");
+            List<Course> list = repo.pagingCourseList(1, 2);
             for (Course o : list) {
                 System.out.println(o);
             }

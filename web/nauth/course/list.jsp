@@ -1,5 +1,5 @@
 <%-- 
-    Document   : courselist
+    Document   : list
     Created on : May 27, 2021, 7:38:35 AM
     Author     : Nguyen Khanh Toan
 --%>
@@ -27,7 +27,7 @@
         <link rel="stylesheet" type="text/css" href="${path}/skeleton/styles.css">
     </head>
     <body>
-        <jsp:include page="navbar.jsp"></jsp:include>
+        <jsp:include page="/components/global/navbar.jsp"></jsp:include>
             <div class="container-fluid" style='width:85%;margin:0 auto'>
                 <h3 class="mb-4">${title}</h3>
             <!--FEATURED COURSE-->
@@ -87,7 +87,7 @@
                                     type="button" data-toggle="collapse"
                                     data-target="#collapseOne">
                                     Price<i class="fa fa-angle-down" style="margin-left:50%"></i></h4>
-                               
+
                                 <div id="collapseOne" class="accordion-collapse collapse show"
                                      data-parent="#accordionExample">
                                     <input ${sessionScope.price == 1 ? "checked":""} name="price" type='radio' value="1"/>
@@ -100,8 +100,8 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                           
+
+
                         </div>
                         <hr/>
                         <div class="accordion" id="filterAlpha">
@@ -110,7 +110,7 @@
                                     type="button" data-toggle="collapse"
                                     data-target="#filterA">
                                     Alphabet<i class="fa fa-angle-down" style="margin-left:26%"></i></h4>
-                               
+
                                 <div id="filterA" class="accordion-collapse collapse show"
                                      data-parent="#filterAlpha">
                                     <input ${sessionScope.alpha == "ascAlpha" ? "checked":""} name="alpha" type='radio' value="ascAlpha"/>
@@ -123,8 +123,8 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                           
+
+
                         </div>
 
 
@@ -137,10 +137,17 @@
                         <c:forEach items="${course}" var="o">
                             <div class="col-3">
                                 <div class="card mb-3" style="width: 101%;height:360px">
-                                    <img style="cursor: pointer" src="${o.imageLink}" class="card-img-top" alt="...">
+                                    <a href="course?cid=${o.id}">
+                                        <img style="cursor: pointer" src="${o.imageLink}" 
+                                             class="card-img-top" alt="...">
+                                    </a>
+
                                     <div class="card-body">
                                         <div style="height:145px">
-                                            <h5 class="card-title">${o.courseName}</h5>
+                                            <a href="course?cid=${o.id}" style="text-decoration: none; color: black">
+                                                <h5 class="card-title" style="cursor: pointer">${o.courseName}</h5>
+                                            </a>
+          
                                             <div class="d-flex">
                                                 <p style="text-decoration: line-through;color:#dd012d" class="card-text mr-2">$${o.price}</p>  
                                                 <p class="card-text font-weight-bold">
@@ -175,7 +182,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="clearfix text-center">
                 <ul class="pagination justify-content-center mb-5">
                     <li class="page-item">
@@ -184,7 +190,7 @@
                     <c:forEach begin="1" end="${end}" var="i">
                         <li class="page-item page-item-paging ${tag == i?"active":""}">
                             <a style=""
-                               href="paging?index=${i}&&cID=${cateID}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
+                               href="course?index=${i}&&cID=${sessionScope.categoryId}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
                                class="page-link course__list__paging">
                                 ${i}
                             </a>
@@ -198,7 +204,7 @@
                 </ul>
             </div>
         </div>
-        <jsp:include page="footer.jsp"></jsp:include>
+        <jsp:include page="/components/global/footer.jsp"></jsp:include>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
             <script>
@@ -206,20 +212,21 @@
                     $("input[name$='price']").click(function () {
                         var value = $(this).val();
                         if (value == 1) {
-                            window.location.assign("CourseListController?cID=${cateID}&&price="+value);
+                            window.location.assign("course?index=${tag}&&cID=${cateID}&&searchName=${sessionScope.searchName}&&price=" + value + "&&alpha=${sessionScope.alpha}");
                         } else if (value == 0) {
-                            window.location.assign("CourseListController?cID=${cateID}&&price="+value);
+                            window.location.assign("course?index=${tag}&&cID=${cateID}&&searchName=${sessionScope.searchName}&&price=" + value + "&&alpha=${sessionScope.alpha}");
                         }
                     });
                 });
-                
+
                 $(function () {
                     $("input[name$='alpha']").click(function () {
                         var value = $(this).val();
                         if (value === 'ascAlpha') {
-                            window.location.assign("CourseListController?cID=${cateID}&&alpha="+value);
+                            window.location.assign("course?index=${tag}&&cID=${cateID}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=" + value);
                         } else if (value === 'descAlpha') {
-                            window.location.assign("CourseListController?cID=${cateID}&&alpha="+value);
+                            window.location.assign("course?index=${tag}&&cID=${cateID}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=" + value);
+
                         }
                     });
                 });

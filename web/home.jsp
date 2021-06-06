@@ -26,7 +26,7 @@
     </head>
 
     <body>
-        <jsp:include page="navbar.jsp"></jsp:include>
+        <jsp:include page="components/global/navbar.jsp"></jsp:include>
         <!--  Banner--> 
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
@@ -460,7 +460,7 @@
 
 
     </section>    
-    <jsp:include page="footer.jsp"></jsp:include>
+    <jsp:include page="components/global/footer.jsp"></jsp:include>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"

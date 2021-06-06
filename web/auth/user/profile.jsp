@@ -28,7 +28,7 @@
         <link rel="stylesheet" type="text/css" href="${path}/skeleton/styles.css">
     </head>
     <body>
-        <jsp:include page="navbar.jsp"></jsp:include>
+        <jsp:include page="/components/global/navbar.jsp"></jsp:include>
             <div class="container">
                 <h2 class="text-center">User Profile</h2> 
                 <div class="row">
@@ -175,7 +175,7 @@
                 <br>
             </div>
         </div>
-        <jsp:include page="footer.jsp"></jsp:include>
+        <jsp:include page="/components/global/footer.jsp"></jsp:include>
     </body>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"

@@ -6,6 +6,7 @@
 package home;
 
 import common.entities.Category;
+import course.CourseService;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -22,16 +23,18 @@ import javax.servlet.http.HttpServletResponse;
 public class HomeController extends HttpServlet {
 
     private HomeService homeService;
+    private CourseService courseService;
 
     @Override
     public void init() throws ServletException {
         homeService = new HomeService();
+        courseService = new CourseService();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Category> listC = homeService.getAllCategory();
+        List<Category> listC = courseService.getAllCategory();
         request.setAttribute("listC", listC);
         request.getRequestDispatcher("home.jsp").forward(request, response);
     }
