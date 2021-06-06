@@ -28,7 +28,7 @@
                         <h2>Category</h2>
                         <hr>
                         <c:forEach var="o" items="${hmCategory}">
-                            <a href="PostsByCate?cateId=${o.key}">${o.value}</a>
+                            <a href="PostsByCate?cateId=${o.key}&curPage=1">${o.value}</a>
                         </c:forEach>
                     </div>
                     <div class="lastest-post">
@@ -63,9 +63,16 @@
                         <a class="page-link" href="#" tabindex="-1">Previous</a>
                     </li>
                     <c:forEach begin="1" end="${requestScope.nOfPage}" var="i">
-                        <li class="page-item ${curPage == i?"active":""}">
-                            <a class="page-link" href="BlogPagination?curPage=${i}">${i}</a>
-                        </li>
+                        <c:if test="${requestScope.flag == 0}">
+                            <li class="page-item ${curPage == i?"active":""}">
+                                <a class="page-link" href="BlogController?curPage=${i}">${i}</a>
+                            </li>
+                        </c:if>
+                        <c:if test="${requestScope.flag == 1}">
+                            <li class="page-item ${curPage == i?"active":""}">
+                                <a class="page-link" href="BlogController?curPage=${i}&flag=1&cateId=${requestScope.cateId}">${i}</a>
+                            </li>
+                        </c:if>
                     </c:forEach>
                     <li class="page-item">
                         <a class="page-link" href="#">Next</a>
