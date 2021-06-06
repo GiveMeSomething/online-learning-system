@@ -27,7 +27,7 @@ public class BlogRepository extends Repository {
     public HashMap<String, Post> getHmPost() throws SQLException {
         this.connectDatabase();
 
-        String getPosts = "SELECT * FROM post";
+        String getPosts = "SELECT * FROM post WHERE status_id = 1";
         try (PreparedStatement statement = this.connection.prepareStatement(getPosts)) {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
@@ -65,7 +65,7 @@ public class BlogRepository extends Repository {
     public HashMap<String, Post> getLatestPost() throws SQLException {
         this.connectDatabase();
 
-        String getLatestPosts = "SELECT * FROM post ORDER BY updated_date desc LIMIT 3";
+        String getLatestPosts = "SELECT * FROM post WHERE status_id = 1 ORDER BY updated_date desc LIMIT 3";
         try (PreparedStatement statement = this.connection.prepareStatement(getLatestPosts)) {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
@@ -127,7 +127,7 @@ public class BlogRepository extends Repository {
     public int getTotalPosts() throws SQLException {
         this.connectDatabase();
 
-        String getTotalPosts = "SELECT count(*) AS total FROM post";
+        String getTotalPosts = "SELECT count(*) AS total FROM post WHERE status_id = 1";
         try (PreparedStatement statment = this.connection.prepareStatement(getTotalPosts)) {
             ResultSet result = statment.executeQuery();
             while (result.next()) {
@@ -145,7 +145,7 @@ public class BlogRepository extends Repository {
         this.connectDatabase();
 
         ArrayList<Post> posts = new ArrayList<>();
-        String getPostsList = "SELECT * FROM post LIMIT ?,?";
+        String getPostsList = "SELECT * FROM post WHERE status_id = 1 LIMIT ?,?";
         try (PreparedStatement statement = this.connection.prepareStatement(getPostsList)) {
             statement.setInt(1, (currentPage * postsPerPage) - postsPerPage);
             statement.setInt(2, postsPerPage);
@@ -168,7 +168,7 @@ public class BlogRepository extends Repository {
     public int getTotalPostsByCategory(int id) throws SQLException {
         this.connectDatabase();
 
-        String getTotalPostsByCategory = "SELECT count(*) AS total FROM post WHERE category_id = ?";
+        String getTotalPostsByCategory = "SELECT count(*) AS total FROM post WHERE category_id = ? and status_id = 1";
         try (PreparedStatement statment = this.connection.prepareStatement(getTotalPostsByCategory)) {
             statment.setInt(1, id);
             ResultSet result = statment.executeQuery();
@@ -187,7 +187,7 @@ public class BlogRepository extends Repository {
         this.connectDatabase();
 
         ArrayList<Post> posts = new ArrayList<>();
-        String getPostsList = "SELECT * FROM post WHERE category_id = ? LIMIT ?,?";
+        String getPostsList = "SELECT * FROM post WHERE category_id = ? and status_id = 1 LIMIT ?,?";
         try (PreparedStatement statement = this.connection.prepareStatement(getPostsList)) {
             statement.setInt(1, cateId);
             statement.setInt(2, (currentPage * postsPerPage) - postsPerPage);
