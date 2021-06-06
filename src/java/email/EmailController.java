@@ -82,7 +82,7 @@ public class EmailController extends HttpServlet {
                 System.out.println("Can't send");
             }
 
-            response.sendRedirect(forwardTo);
+            response.sendRedirect("nauth/authenticate/register-success.jsp");
         } else if (operation.equals("CHANGEPW")) {
             // TODO: Duy Anh se implement phan nay
         }

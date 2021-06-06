@@ -20,7 +20,6 @@
               integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
               crossorigin="anonymous"/>
         <link rel="stylesheet" type="text/css" href="${path}/style/styles.css">
-
     </head>
     <body>
         <section id="navbar">
@@ -41,50 +40,29 @@
                                 </form>
                             </li>
                             <li class="nav-item dropdown nav-hover">
-                                <a class="nav-link dropdown-toggle"
-                                   href="#" id="navbarDropdown"
-                                   role="button" data-bs-toggle="dropdown"
-                                   aria-expanded="false">
+                                <a class="btn nav-link dropdown-toggle" id="navbarDropdownButton" data-toggle="dropdown">
                                     Categories
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="CourseListController?cID=1">
-                                            Software Engineering
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="CourseListController?cID=2">
-                                            Economy
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="CourseListController?cID=3">
-                                            Digital Marketing
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="CourseListController?cID=4">
-                                            Artificial Intelligence
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="CourseListController?cID=5">
-                                            Information Assurance
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="CourseListController?cID=6">
-                                            Language
-                                        </a>
-                                    </li>
-                                </ul>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownButton">
+                                    <a class="dropdown-item" href="CourseListController?cID=1">
+                                        Software Engineering
+                                    </a>
+                                    <a class="dropdown-item" href="CourseListController?cID=2">
+                                        Economy
+                                    </a>
+                                    <a class="dropdown-item" href="CourseListController?cID=3">
+                                        Digital Marketing
+                                    </a>
+                                    <a class="dropdown-item" href="CourseListController?cID=4">
+                                        Artificial Intelligence
+                                    </a>
+                                    <a class="dropdown-item" href="CourseListController?cID=5">
+                                        Information Assurance
+                                    </a>
+                                    <a class="dropdown-item" href="CourseListController?cID=6">
+                                        Language
+                                    </a>
+                                </div>
                             </li>
                             <li class="nav-item nav-hover">
                                 <a class="nav-link active" aria-current="page" href="#">Blogs</a>
