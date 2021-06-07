@@ -35,7 +35,7 @@ public class BlogService {
         try {
             return blogRepository.getHmPost();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }
@@ -44,7 +44,7 @@ public class BlogService {
         try {
             return blogRepository.getLatestPost();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }
@@ -53,7 +53,7 @@ public class BlogService {
         try {
             return blogRepository.getPostDetail(id);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }
@@ -62,7 +62,7 @@ public class BlogService {
         try {
             return blogRepository.getUser();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }
@@ -71,7 +71,7 @@ public class BlogService {
         try {
             return blogRepository.getTotalPosts();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return 0;
     }
@@ -80,7 +80,7 @@ public class BlogService {
         try {
             return blogRepository.getTotalPostsByCategory(id);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return 0;
     }
