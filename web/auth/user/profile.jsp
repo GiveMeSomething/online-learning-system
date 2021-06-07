@@ -28,13 +28,13 @@
     </head>
     <body>
         <jsp:include page="/components/global/navbar.jsp"/>
-            <div class="container">
-                <h2 class="text-center">User Profile</h2> 
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="w-75">
-                            <img class="mb-3" style="width: 90%" 
-                                 src="${user.image}" class="img-rounded img-responsive"><br>
+        <div class="container">
+            <h2 class="text-center">User Profile</h2> 
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="w-75">
+                        <img class="mb-3" style="width: 90%" 
+                             src="${user.image}" class="img-rounded img-responsive"><br>
                         <p class="text-center" style="color:#959fb2">
                             Email: kancute@gmail.com
                         </p>
@@ -68,7 +68,9 @@
                                type="text"
                                id="id" disabled
                                placeholder="Id"
-                               value="${user.id}"/>  
+                               value="${user.id}"
+                               data-value-missing="Can't be empty"
+                               required/>  
                         <div class="invalid-feedback"></div>
                     </div>
 
@@ -79,7 +81,9 @@
                                type="text"
                                id="image"
                                placeholder="Image url"
-                               value="${user.image}"/> 
+                               value="${user.image}"
+                               data-value-missing="Can't be empty"
+                               required/> 
                         <div class="invalid-feedback"></div>
                     </div>
 
@@ -90,26 +94,58 @@
                                type="text"
                                id="fullName"
                                placeholder="Full Name"
-                               value="${user.name}"/><br>
+                               value="${user.name}"
+                               data-value-missing="Can't be empty"
+                               required/><br>
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
                         <div class="d-flex align-items-center">
                             <p class="mb-0 mr-3">Gender</p> 
                             <c:if test="${user.gender == 'MALE'}">
-                                <input checked type="radio" id="male" name="gender" value="MALE"> 
-                                <label style="margin-top: 5px" class="mr-3 ml-1" for="male">Male</label><br>
+                                <input name="gender"
+                                       type="radio"
+                                       id="male"
+                                       value="MALE"
+                                       checked
+                                       data-value-missing="Can't be empty"
+                                       required/> 
+                                <label style="margin-top: 5px" class="mr-3 ml-1" for="male">
+                                    Male
+                                </label><br>
                                 <div class="invalid-feedback"></div>
-                                <input type="radio" id="female" name="gender" value="FEMALE">
-                                <label style="margin-top: 5px" class="ml-1" for="female">Female</label><br>  
+                                <input name="gender"
+                                       type="radio"
+                                       id="female"
+                                       value="FEMALE"
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <label style="margin-top: 5px" class="ml-1" for="female">
+                                    Female
+                                </label><br>  
                                 <div class="invalid-feedback"></div>
                             </c:if>
                             <c:if test="${user.gender == 'FEMALE'}">
-                                <input type="radio" id="male" name="gender" value="MALE">  
-                                <label style="margin-top: 5px" class="mr-3 ml-1" for="male">Male</label><br>
+                                <input name="gender"
+                                       type="radio"
+                                       id="male" 
+                                       value="MALE"
+                                       data-value-missing="Can't be empty"
+                                       required/>  
+                                <label style="margin-top: 5px" class="mr-3 ml-1" for="male">
+                                    Male
+                                </label><br>
                                 <div class="invalid-feedback"></div>
-                                <input checked type="radio" id="female" name="gender" value="FEMALE">
-                                <label style="margin-top: 5px" class="ml-1" for="female">Female</label><br>  
+                                <input name="gender"
+                                       type="radio"
+                                       id="female"
+                                       value="FEMALE"
+                                       checked 
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <label style="margin-top: 5px" class="ml-1" for="female">
+                                    Female
+                                </label><br>  
                                 <div class="invalid-feedback"></div>
                             </c:if>
                         </div>
@@ -121,7 +157,11 @@
                                type="text"
                                id="email" disabled
                                placeholder="Email"
-                               value="${user.email}"/> 
+                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
+                               value="${user.email}"
+                               data-value-missing="Can't be empty"
+                               required
+                               data-pattern-mismatch="Not a valid email"/> 
                         <div class="invalid-feedback"></div>
                     </div>
 
@@ -133,7 +173,9 @@
                                type="text"
                                id="address"
                                placeholder="Address"
-                               value="${user.address}"/>  
+                               value="${user.address}"
+                               data-value-missing="Can't be empty"
+                               required/>  
                         <div class="invalid-feedback"></div>
                     </div>
 
@@ -141,20 +183,46 @@
                         <div class="d-flex align-items-center">
                             <p class="mb-0 mr-3">Status</p> 
                             <c:if test="${user.status == 'ACTIVE'}">
-                                <input checked type="radio" id="active" name="status" value="ACTIVE">
-                                <label style="margin-top: 7px" class="mr-3 ml-1" for="male">Active</label><br>
+                                <input name="status" 
+                                       type="radio"
+                                       id="active"
+                                       value="ACTIVE"
+                                       checked 
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <label style="margin-top: 7px" class="mr-3 ml-1" for="male">
+                                    Active
+                                </label><br>
                                 <div class="invalid-feedback"></div>
-                                <input type="radio" id="inactive" name="status" value="INACTIVE">
-                                <label style="margin-top: 7px" class="ml-1" for="female">Inactive</label><br>  
+                                <input name="status" 
+                                       type="radio"
+                                       id="inactive" 
+                                       value="INACTIVE"
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <label style="margin-top: 7px" class="ml-1" for="female">
+                                    Inactive
+                                </label><br>  
                                 <div class="invalid-feedback"></div>
                             </c:if>
 
                             <c:if test="${user.status == 'INACTIVE'}">
-                                <input type="radio" id="active" name="status" value="ACTIVE">
-                                <label style="margin-top: 7px" class="mr-3 ml-1" for="male">Active</label><br>
+                                <input name="status"
+                                       type="radio"
+                                       id="active"
+                                       value="ACTIVE"
+                                       data-value-missing="Can't be empty"
+                                       required>
+                                <label style="margin-top: 7px" class="mr-3 ml-1" for="male">
+                                    Active
+                                </label><br>
                                 <div class="invalid-feedback"></div>
-                                <input checked type="radio" id="inactive" name="status" value="INACTIVE">
-                                <label style="margin-top: 7px" class="ml-1" for="female">Inactive</label><br>  
+                                <input 
+                                    checked type="radio" id="inactive"
+                                    name="status" value="INACTIVE">
+                                <label style="margin-top: 7px" class="ml-1" for="female">
+                                    Inactive
+                                </label><br>  
                                 <div class="invalid-feedback"></div>
                             </c:if>
                         </div>
@@ -166,7 +234,11 @@
                                type="text"
                                id="mobile"
                                placeholder="Mobile"
-                               value="${user.mobile}"/> 
+                               pattern="^\d{10}$"
+                               value="${user.mobile}"
+                               data-value-missing="Can't be empty"
+                               data-pattern-mismatch="Not a valid phonenumber"
+                               required/> 
                         <div class="invalid-feedback"></div>
                     </div>
                     <button type="submit" class="btn btn-success">Update Information</button><br>
@@ -191,5 +263,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" 
     crossorigin="anonymous"></script>
-
+    <!-- Import if have form input -->
+    <script type="text/javascript" src="${path}/utilities/form-validator.js"></script>
 </html>
