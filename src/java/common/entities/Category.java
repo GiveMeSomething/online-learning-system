@@ -10,36 +10,36 @@ package common.entities;
  * @author AS
  */
 public class Category {
-    private String catId;
-    private String catName;
+    private String categoryId;
+    private String categoryName;
 
     public Category() {
     }
 
     public Category(String catId, String catName) {
-        this.catId = catId;
-        this.catName = catName;
+        this.categoryId = catId;
+        this.categoryName = catName;
     }
 
-    public String getCatId() {
-        return catId;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public void setCatId(String catId) {
-        this.catId = catId;
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getCatName() {
-        return catName;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCatName(String catName) {
-        this.catName = catName;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     @Override
     public String toString() {
-        return "Category{" + "catId=" + catId + ", catName=" + catName + '}';
+        return "Category{" + "catId=" + categoryId + ", catName=" + categoryName + '}';
     }
     
 }

@@ -182,6 +182,23 @@ public class BlogRepository extends Repository {
         }
     }
     
+    public int getTotalPostsByTitle(String title) throws SQLException {
+        this.connectDatabase();
+
+        String getTotalPostsByCategory = "SELECT count(*) AS total FROM post WHERE title LIKE ? and status_id = 1";
+        try (PreparedStatement statment = this.connection.prepareStatement(getTotalPostsByCategory)) {
+            statment.setString(1, "%"+title+"%");
+            ResultSet result = statment.executeQuery();
+            while (result.next()) {
+                return result.getInt("total");
+            }
+
+            return 0;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+    
     // Get post pagination by category
     public ArrayList<Post> getPostsByCategory(int cateId, int currentPage, int postsPerPage) throws SQLException {
         this.connectDatabase();
@@ -207,18 +224,41 @@ public class BlogRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+    
+    public ArrayList<Post> getPostsByTitle(String title) throws SQLException {
+        this.connectDatabase();
+
+        ArrayList<Post> posts = new ArrayList<>();
+        String getPostsList = "SELECT * FROM post WHERE title LIKE ? and status_id = 1";
+        try (PreparedStatement statement = this.connection.prepareStatement(getPostsList)) {
+            statement.setString(1, "%"+title+"%");
+
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                posts.add(new Post(result.getString("id"), result.getString("thumbnail"),
+                        result.getString("category_id"), result.getString("title"),
+                        result.getString("brief_info"), result.getString("description"),
+                        result.getString("feature"), result.getString("status_id"),
+                        result.getString("author_id"), result.getString("updated_date")));
+            }
+
+            return posts;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
 
     // Test
     public static void main(String[] args) throws Exception {
         BlogRepository blog = new BlogRepository();
-        HashMap<String, Post> hmCat = (HashMap<String, Post>) blog.getLatestPost();
-        for (String key : blog.getHmPost().keySet()) {
-            System.out.println(blog.getHmPost().get(key));
-        }
-//        ArrayList<Post> posts = blog.getPostsByCate(1, 1, 5);
-//        for (Post post : posts) {
-//            System.out.println(post);
+//        HashMap<String, Post> hmCat = (HashMap<String, Post>) blog.getLatestPost();
+//        for (String key : blog.getHmPost().keySet()) {
+//            System.out.println(blog.getHmPost().get(key));
 //        }
-//        System.out.println(blog.getTotalPostsByCate(1));
+        ArrayList<Post> posts = blog.getPostsByTitle("tech");
+        for (Post post : posts) {
+            System.out.println(post);
+        }
+        System.out.println(blog.getTotalPostsByTitle("tec"));
     }
 }

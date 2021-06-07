@@ -102,4 +102,21 @@ public class BlogService {
         }
         return null;
     }
+    
+    public ArrayList<Post> getPostsByTitle(String title){
+        try {
+            return blogRepository.getPostsByTitle(title);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public int getTotalPostsByTitle(String title){
+        try {
+            return blogRepository.getTotalPostsByTitle(title);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

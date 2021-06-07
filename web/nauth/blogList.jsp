@@ -32,6 +32,20 @@
                     <div class="col-md-4">
                         <div class="row">
                             <div class="col-12">
+                                <form class="form-inline" method="POST" action="BlogController">
+                                    <div class="request-info">
+                                        <input name="previousPage" value="blogList.jsp" hidden="true" />
+                                        <div class="invalid-feedback"></div>
+                                        <input name="operation" value="Search-by-title" hidden="true" />
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                    <input class="form-control mr-sm-2" type="search" name="title" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
                                 <h3>Category</h3>
                                 <hr>
                                 <ul class="list-group list-group-flush shadow-sm">
