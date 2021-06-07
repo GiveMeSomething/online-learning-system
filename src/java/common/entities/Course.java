@@ -22,6 +22,9 @@ public class Course {
     private boolean feature;
     private String tag;
 
+    public Course() {
+    }
+
     public Course(int id, String imageLink, String courseName, float price, String description, int ownerId, Status status, String category, boolean feature, String tag) {
         this.id = id;
         this.imageLink = imageLink;
@@ -132,6 +135,11 @@ public class Course {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" + "id=" + id + ", imageLink=" + imageLink + ", courseName=" + courseName + ", price=" + price + ", description=" + description + ", ownerId=" + ownerId + ", status=" + status + ", category=" + category + ", feature=" + feature + ", tag=" + tag + '}';
     }
 
 }

@@ -18,10 +18,10 @@
             <c:forEach items="${langCourse}" var="o">
                 <div class="col-4" style="height: max-content">
                     <div class="card" style="width: 13rem;">
-                        <a href="course?cid=${o.id}"><img style="cursor: pointer" src="${o.imageLink}" class="card-img-top" alt="..."></a>
+                        <a href="course?courseId=${o.id}"><img style="cursor: pointer" src="${o.imageLink}" class="card-img-top" alt="..."></a>
                         <div class="card-body">
                             <div style="height:145px">
-                                <a href="course?cid=${o.id}" style="text-decoration: none; color: black"><h5 class="card-title" style="cursor: pointer">${o.courseName}</h5></a>
+                                <a href="course?courseId=${o.id}" style="text-decoration: none; color: black"><h5 class="card-title" style="cursor: pointer">${o.courseName}</h5></a>
                                 <div class="d-flex">
                                     <p style="text-decoration: line-through;color:#dd012d" class="card-text mr-2">$${o.price}</p>
                                     <p class="card-text font-weight-bold">

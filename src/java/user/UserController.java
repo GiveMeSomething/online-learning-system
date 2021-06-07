@@ -5,11 +5,14 @@
  */
 package user;
 
+import common.entities.Category;
 import common.entities.Gender;
 import common.entities.Status;
 import common.entities.User;
 import common.utilities.Controller;
+import course.CourseService;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,16 +22,26 @@ import javax.servlet.http.HttpSession;
 public class UserController extends HttpServlet implements Controller {
 
     private UserService userService;
+    private CourseService courseService;
 
     @Override
     public void init() throws ServletException {
         userService = new UserService();
+        courseService = new CourseService();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("user");
+//        HttpSession currentSession = request.getSession();
+//        int id = Integer.parseInt((String) currentSession.getAttribute("user"));
+//
+//        User user = userService.getUserProfile(id);
+//        request.setAttribute("user", user);
+
+        List<Category> listCategories = courseService.getAllCategory();
+        request.setAttribute("listC", listCategories);
+        request.getRequestDispatcher("auth/user/profile.jsp").forward(request, response);
     }
 
     @Override

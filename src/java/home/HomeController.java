@@ -6,6 +6,7 @@
 package home;
 
 import common.entities.Course;
+import common.entities.Category;
 import course.CourseService;
 import java.io.IOException;
 import java.util.List;
@@ -47,6 +48,8 @@ public class HomeController extends HttpServlet {
         request.setAttribute("iaCourse", iaCourse);
         request.setAttribute("langCourse", langCourse);
         request.setAttribute("studentsViewCourse", studentsViewCourse);
+        List<Category> listC = courseService.getAllCategory();
+        request.setAttribute("listC", listC);
         request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 

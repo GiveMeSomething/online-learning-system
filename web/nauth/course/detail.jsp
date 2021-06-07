@@ -18,16 +18,17 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Webpage style</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+              integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+              integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+              crossorigin="anonymous"/>
         <link rel="stylesheet" type="text/css" href="${path}/style/styles.css">
     </head>
 
     <body>
-        <jsp:include page="/components/global/navbar.jsp" />
+        <jsp:include page="/components/global/navbar.jsp"/>
         <div>
             <section id="brief-content">
                 <div id="brief-content-upper" class=" bg-dark d-flex" style="height: 19.5rem">
@@ -49,15 +50,25 @@ and open the template in the editor.
                             <i class="far fa-star fa-xs" style="color: #ffa805"></i>
                         </div>
                         <p style="font-size: 0.8rem; margin-bottom: .2rem" class="text-light">Created by #author</p>
-
-                        <p style="font-size: 0.8rem" class="text-light"><span style="color:#2996A9 ">#</span><a id="course-detail-category" href="#" style="color: #2996A9; text-decoration: none">${detail.category}</a></p>
+                        <p style="font-size: 0.8rem" class="text-light"><span style="color:#2996A9 ">#</span>
+                            <a id="course-detail-category" href="#" style="color: #2996A9; text-decoration: none">
+                                ${detail.category}
+                            </a>
+                        </p>
                     </div>
-                    <div  id="brief-image">
-
-                        <img style="margin-right: 12rem; margin-top:1.5rem;width: 20rem; float: right; border-radius: 5px 5px 0px 0px;box-shadow: 1px 1px 7px black" src="${detail.imageLink}">
-                        <div  style="width: 320px;height:217px; border-radius:0px 0px 5px 5px;background: black; margin-top: 50px;box-shadow: 1px 1px 7px black">
-                            <div style="margin-top: 2rem; margin-left: 5rem"><a href="#" class="btn px-sm-5 py-2" style="padding: 0.5rem 3rem!important; background: #007791; color: white; font-weight: bold; margin-top: 10px">Buy now</a></div>
-
+                    <div id="brief-image">
+                        <img
+                            style="margin-right: 12rem; margin-top:1.5rem;width: 20rem; float: right; border-radius: 5px 5px 0px 0px;box-shadow: 1px 1px 7px black"
+                            src="${detail.imageLink}"
+                            />
+                        <div style="width: 320px;height:217px; border-radius:0px 0px 5px 5px;background: black; margin-top: 50px;box-shadow: 1px 1px 7px black">
+                            <div style="margin-top: 2rem; margin-left: 5rem">
+                                <a href="#"
+                                   class="btn px-sm-5 py-2"
+                                   style="padding: 0.5rem 3rem!important; background: #007791; color: white; font-weight: bold; margin-top: 10px">
+                                    Buy now
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -128,25 +139,34 @@ and open the template in the editor.
                         </section>
                         <section id="recommendation-course">
                             <div>
-                                <jsp:include page="/components/courseDetail/oneFeaturedCourse.jsp" />
-                            </div>
-                        </section>
-                        <section id="contact-link">
-                            <h4 style="font-weight: bolder; margin-bottom: 1rem">Contact us</h4>
-                            <div class="d-flex">
-                                <i class="fab fa-facebook fa-lg"></i>
-                                <i class="fab fa-instagram fa-lg"></i>
-                                <i class="fab fa-twitter-square fa-lg"></i>
-                                <i class="fas fa-envelope fa-lg"></i>
-                                <i class="fas fa-phone-square-alt fa-lg"></i>
-                            </div>
-                        </section>
+                                <jsp:include page="/components/courseDetail/oneFeaturedCourse.jsp"></jsp:include>
+                                </div>
+                            </section>
+                            <section id="contact-link">
+                                <h4 style="font-weight: bolder; margin-bottom: 1rem">Contact us</h4>
+                                <div class="d-flex">
+                                    <i class="fab fa-facebook fa-lg"></i>
+                                    <i class="fab fa-instagram fa-lg"></i>
+                                    <i class="fab fa-twitter-square fa-lg"></i>
+                                    <i class="fas fa-envelope fa-lg"></i>
+                                    <i class="fas fa-phone-square-alt fa-lg"></i>
+                                </div>
+                            </section>
+                        </div>
                     </div>
-                </div>
-            </section>
-        </div>
-        <jsp:include page="/components/global/footer.jsp" />
+                </section>
+            </div>
+        <jsp:include page="/components/global/footer.jsp"/>
     </body>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            ntegrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
 </html>
 
 

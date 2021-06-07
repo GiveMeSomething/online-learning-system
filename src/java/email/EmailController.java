@@ -115,7 +115,7 @@ public class EmailController extends HttpServlet {
         String userEmail = request.getParameter("email");
 
         Account authAccount = authService.getAccount(userEmail);
-        boolean isSent = emailService.sendConfirmEmail(host, port, email, password,
+        boolean isSent = emailService.sendAuthEmail(host, port, email, password,
                 authAccount.getEmail(), authAccount.getPassword());
 
         if (isSent) {
