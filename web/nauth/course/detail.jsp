@@ -19,7 +19,7 @@ and open the template in the editor.
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Webpage style</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.0/css/bootstrap.min.css" 
               integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
               crossorigin="anonymous">        
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" 
@@ -56,15 +56,15 @@ and open the template in the editor.
                     </div>
                     <div  id="brief-image">
 
-                        <img style="margin-right: 12rem; margin-top:1.5rem;width: 20rem; float: right; border-radius: 5px 5px 0px 0px;box-shadow: 1px 1px 7px black" src="${detail.imageLink}">
+                        <img style="margin-right: 12rem; margin-top:1.5rem;width: 20rem; float: right; border-radius: 5px 5px 0px 0px;box-shadow: 1px 1px 7px black" src="${detail.imageLink}"/>
                         <div  style="width: 320px;height:217px; border-radius:0px 0px 5px 5px;background: black; margin-top: 50px;box-shadow: 1px 1px 7px black">
-                            <div style="margin-top: 2rem; margin-left: 5rem"><a href="#" class="btn px-sm-5 py-2" style="padding: 0.5rem 3rem!important; background: #007791; color: white; font-weight: bold; margin-top: 10px">Buy now</a></div>
-
+                            <div style="margin-top: 2rem; margin-left: 5rem">
+                                <a href="#" class="btn px-sm-5 py-2" style="padding: 0.5rem 3rem!important; background: #007791; color: white; font-weight: bold; margin-top: 10px">Buy now</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
-
             <section id="main-content" >
                 <div id="main-content-lower" class="d-flex">
                     <div id="main-content-lower-left" style="flex: 30; margin-left: 12rem; margin-top: 2rem; ">
@@ -177,7 +177,7 @@ and open the template in the editor.
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.min.js" 
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
     crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" 
     crossorigin="anonymous"></script>
 
