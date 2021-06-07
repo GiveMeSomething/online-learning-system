@@ -57,7 +57,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item nav-hover">
-                                <a class="nav-link active" aria-current="page" href="#">Blogs</a>
+                                <a class="nav-link active" aria-current="page" href="BlogController">Blogs</a>
                             </li>
                             <li class="nav-item nav-hover">
                                 <a class="nav-link active" aria-current="page" href="#">Courses</a>

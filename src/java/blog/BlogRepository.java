@@ -5,7 +5,7 @@
  */
 package blog;
 
-import entities.Post;
+import common.entities.Post;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,14 +20,15 @@ import common.utilities.Repository;
 public class BlogRepository extends Repository {
 
     private final HashMap<String, Post> hmPost = new HashMap<>();
-    private final HashMap<String, String> hmCat = new HashMap<>();
+    private final HashMap<String, String> hmCategory = new HashMap<>();
     private final HashMap<String, Post> hmLatestPost = new HashMap<>();
     private final HashMap<String, String> hmUser = new HashMap<>();
 
+    // Get all posts from database
     public HashMap<String, Post> getHmPost() throws SQLException {
         this.connectDatabase();
 
-        String getPosts = "SELECT * FROM post";
+        String getPosts = "SELECT * FROM post WHERE status_id = 1";
         try (PreparedStatement statement = this.connection.prepareStatement(getPosts)) {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
@@ -44,6 +45,7 @@ public class BlogRepository extends Repository {
         }
     }
 
+    // Get all users
     public HashMap<String, String> getUser() throws SQLException {
         this.connectDatabase();
 
@@ -60,10 +62,11 @@ public class BlogRepository extends Repository {
         }
     }
 
+    // Get 3 latest posts
     public HashMap<String, Post> getLatestPost() throws SQLException {
         this.connectDatabase();
 
-        String getLatestPosts = "SELECT * FROM post ORDER BY updated_date desc LIMIT 3";
+        String getLatestPosts = "SELECT * FROM post WHERE status_id = 1 ORDER BY updated_date desc LIMIT 3";
         try (PreparedStatement statement = this.connection.prepareStatement(getLatestPosts)) {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
@@ -80,23 +83,25 @@ public class BlogRepository extends Repository {
         }
     }
 
-    public HashMap<String, String> getHmCat() throws SQLException {
+    // Get all categories
+    public HashMap<String, String> getHmCategory() throws SQLException {
         this.connectDatabase();
 
         String getHmCategory = "SELECT * FROM category";
         try (PreparedStatement statement = this.connection.prepareStatement(getHmCategory)) {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                hmCat.put(result.getString("id"), result.getString("category_name"));
+                hmCategory.put(result.getString("id"), result.getString("category_name"));
             }
 
-            return hmCat;
+            return hmCategory;
         } finally {
             this.disconnectDatabase();
         }
 
     }
 
+    // Get 1 post
     public Post getPostDetail(String id) throws SQLException {
         this.connectDatabase();
 
@@ -119,10 +124,11 @@ public class BlogRepository extends Repository {
         }
     }
 
+    // Get total of posts
     public int getTotalPosts() throws SQLException {
         this.connectDatabase();
 
-        String getTotalPosts = "SELECT count(*) AS total FROM post";
+        String getTotalPosts = "SELECT count(*) AS total FROM post WHERE status_id = 1";
         try (PreparedStatement statment = this.connection.prepareStatement(getTotalPosts)) {
             ResultSet result = statment.executeQuery();
             while (result.next()) {
@@ -135,11 +141,12 @@ public class BlogRepository extends Repository {
         }
     }
 
+    // Get list of posts and limit number of posts per page
     public ArrayList<Post> getPostsList(int currentPage, int postsPerPage) throws SQLException {
         this.connectDatabase();
 
         ArrayList<Post> posts = new ArrayList<>();
-        String getPostsList = "SELECT * FROM post LIMIT ?,?";
+        String getPostsList = "SELECT * FROM post WHERE status_id = 1 LIMIT ?,?";
         try (PreparedStatement statement = this.connection.prepareStatement(getPostsList)) {
             statement.setInt(1, (currentPage * postsPerPage) - postsPerPage);
             statement.setInt(2, postsPerPage);
@@ -158,11 +165,12 @@ public class BlogRepository extends Repository {
         }
     }
 
-    public int getTotalPostsByCate(int id) throws SQLException {
+    // Get total number of posts by category
+    public int getTotalPostsByCategory(int id) throws SQLException {
         this.connectDatabase();
 
-        String getTotalPostsByCate = "SELECT count(*) AS total FROM post WHERE category_id = ?";
-        try (PreparedStatement statment = this.connection.prepareStatement(getTotalPostsByCate)) {
+        String getTotalPostsByCategory = "SELECT count(*) AS total FROM post WHERE category_id = ? and status_id = 1";
+        try (PreparedStatement statment = this.connection.prepareStatement(getTotalPostsByCategory)) {
             statment.setInt(1, id);
             ResultSet result = statment.executeQuery();
             while (result.next()) {
@@ -175,11 +183,12 @@ public class BlogRepository extends Repository {
         }
     }
 
-    public ArrayList<Post> getPostsByCate(int cateId, int currentPage, int postsPerPage) throws SQLException {
+    // Get post pagination by category
+    public ArrayList<Post> getPostsByCategory(int cateId, int currentPage, int postsPerPage) throws SQLException {
         this.connectDatabase();
 
         ArrayList<Post> posts = new ArrayList<>();
-        String getPostsList = "SELECT * FROM post WHERE category_id = ? LIMIT ?,?";
+        String getPostsList = "SELECT * FROM post WHERE category_id = ? and status_id = 1 LIMIT ?,?";
         try (PreparedStatement statement = this.connection.prepareStatement(getPostsList)) {
             statement.setInt(1, cateId);
             statement.setInt(2, (currentPage * postsPerPage) - postsPerPage);
@@ -207,10 +216,10 @@ public class BlogRepository extends Repository {
         for (String key : blog.getHmPost().keySet()) {
             System.out.println(blog.getHmPost().get(key));
         }
-        ArrayList<Post> posts = blog.getPostsByCate(1, 1, 5);
-        for (Post post : posts) {
-            System.out.println(post);
-        }
-        System.out.println(blog.getTotalPostsByCate(1));
+//        ArrayList<Post> posts = blog.getPostsByCate(1, 1, 5);
+//        for (Post post : posts) {
+//            System.out.println(post);
+//        }
+//        System.out.println(blog.getTotalPostsByCate(1));
     }
 }

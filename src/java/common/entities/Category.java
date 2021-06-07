@@ -10,8 +10,9 @@ package common.entities;
  * @author Nguyen Khanh Toan
  */
 public class Category {
-   private int id;
-   private String categoryName;
+
+    private int id;
+    private String categoryName;
 
     public Category() {
     }
@@ -36,12 +37,4 @@ public class Category {
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
-
-    @Override
-    public String toString() {
-        return "Category{" + "id=" + id + ", categoryName=" + categoryName + '}';
-    }
-   
-   
-   
 }
