@@ -23,7 +23,7 @@ and open the template in the editor.
               crossorigin="anonymous">
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
               integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
-              crossorigin="anonymous"/>
+              crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="${path}/style/styles.css">
     </head>
 
@@ -56,6 +56,7 @@ and open the template in the editor.
                             </a>
                         </p>
                     </div>
+                    <<<<<<< HEAD
                     <div id="brief-image">
                         <img
                             style="margin-right: 12rem; margin-top:1.5rem;width: 20rem; float: right; border-radius: 5px 5px 0px 0px;box-shadow: 1px 1px 7px black"
@@ -73,7 +74,7 @@ and open the template in the editor.
                     </div>
                 </div>
             </section>
-            <section id="main-content">
+            <section id="main-content" >
                 <div id="main-content-lower" class="d-flex">
                     <div id="main-content-lower-left" style="flex: 30; margin-left: 12rem; margin-top: 2rem; ">
                         <div id="summary-board" class="bg-light p-3" style="border: 1px solid lightgray; border-radius: 5px; margin-bottom: 14px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">

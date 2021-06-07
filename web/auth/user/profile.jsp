@@ -37,13 +37,50 @@
                             Email: ${sessionScope.user.email}
                         </p>
                         <h4>Change your password</h3>
-                            <label>Enter Old Password</label>
-                            <input type="password" class="form-control">
-                            <label>Enter New Password</label>
-                            <input type="password" class="form-control">
-                            <label>Confirm New Password</label>
-                            <input type="password" class="form-control"><br>
-                            <a href="#" class="btn btn-warning">Change Password</a>
+                            <form action="${path}/authenticate"
+                                  method="POST"
+                                  class="needs-validation"
+                                  novalidate>
+                                <div class="request-info">
+                                    <input name="previousPage" value="home" hidden="true" />
+                                    <div class="invalid-feedback"></div>
+                                    <input name="operation" value="CHANGEPW" hidden="true" />
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="current-password">Enter Old Password</label>
+                                    <input class="form-control"
+                                           name="current-password"
+                                           type="password"
+                                           id="current-password"
+                                           data-value-missing="Can't be empty"
+                                           required/>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="id">Enter New Password</label>
+                                    <input class="form-control"
+                                           name="new-password"
+                                           type="password"
+                                           id="new-password"
+                                           data-value-missing="Can't be empty"
+                                           required/>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm-password">Confirm New Password</label>
+                                    <input class="form-control"
+                                           name="confirm-password"
+                                           type="password"
+                                           id="confirm-password"
+                                           data-value-missing="Can't be empty"
+                                           required/>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <button class="btn btn-primary">
+                                    Change Password
+                                </button>
+                            </form>
                     </div>
                 </div>
                 <form action="${path}/user"
@@ -63,7 +100,9 @@
                                type="text"
                                id="id" disabled
                                placeholder="Id"
-                               value="${sessionScope.user.id}"/>
+                               value="${sessionScope.user.id}"
+                               data-value-missing="Can't be empty"
+                               required/>
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
@@ -73,7 +112,9 @@
                                type="text"
                                id="image"
                                placeholder="Image url"
-                               value="${sessionScope.user.image}"/>
+                               value="${sessionScope.user.image}"
+                               data-value-missing="Can't be empty"
+                               required/>
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group" style="margin-bottom: -11px">
@@ -83,26 +124,58 @@
                                type="text"
                                id="fullName"
                                placeholder="Full Name"
-                               value="${sessionScope.user.name}"/><br>
+                               value="${sessionScope.user.name}"
+                               data-value-missing="Can't be empty"
+                               required/><br>
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
                         <div class="d-flex align-items-center">
                             <p class="mb-0 mr-3">Gender</p>
                             <c:if test="${sessionScope.user.gender == 'MALE'}">
-                                <input checked type="radio" id="male" name="gender" value="MALE">
-                                <label style="margin-top: 5px" class="mr-3 ml-1" for="male">Male</label><br>
+                                <input name="gender"
+                                       type="radio"
+                                       id="male"
+                                       value="MALE"
+                                       checked
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <label style="margin-top: 5px" class="mr-3 ml-1" for="male">
+                                    Male
+                                </label><br>
                                 <div class="invalid-feedback"></div>
-                                <input type="radio" id="female" name="gender" value="FEMALE">
-                                <label style="margin-top: 5px" class="ml-1" for="female">Female</label><br>
+                                <input name="gender"
+                                       type="radio"
+                                       id="female"
+                                       value="FEMALE"
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <label style="margin-top: 5px" class="ml-1" for="female">
+                                    Female
+                                </label><br>
                                 <div class="invalid-feedback"></div>
                             </c:if>
                             <c:if test="${sessionScope.user.gender == 'FEMALE'}">
-                                <input type="radio" id="male" name="gender" value="MALE">
-                                <label style="margin-top: 5px" class="mr-3 ml-1" for="male">Male</label><br>
+                                <input name="gender"
+                                       type="radio"
+                                       id="male"
+                                       value="MALE"
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <label style="margin-top: 5px" class="mr-3 ml-1" for="male">
+                                    Male
+                                </label><br>
                                 <div class="invalid-feedback"></div>
-                                <input checked type="radio" id="female" name="gender" value="FEMALE">
-                                <label style="margin-top: 5px" class="ml-1" for="female">Female</label><br>
+                                <input name="gender"
+                                       type="radio"
+                                       id="female"
+                                       value="FEMALE"
+                                       checked
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <label style="margin-top: 5px" class="ml-1" for="female">
+                                    Female
+                                </label><br>
                                 <div class="invalid-feedback"></div>
                             </c:if>
                         </div>
@@ -114,11 +187,13 @@
                                type="text"
                                id="email" disabled
                                placeholder="Email"
-                               value="${sessionScope.user.email}"/>
+                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
+                               value="${sessionScope.user.email}"
+                               data-value-missing="Can't be empty"
+                               required
+                               data-pattern-mismatch="Not a valid email"/>
                         <div class="invalid-feedback"></div>
                     </div>
-
-
                     <div class="form-group">
                         <label for="address">Address</label>
                         <input class="form-control"
@@ -126,28 +201,55 @@
                                type="text"
                                id="address"
                                placeholder="Address"
-                               value="${sessionScope.user.address}"/>
+                               value="${sessionScope.user.address}"
+                               data-value-missing="Can't be empty"
+                               required/>
                         <div class="invalid-feedback"></div>
                     </div>
-
                     <div class="form-group">
                         <div class="d-flex align-items-center">
                             <p class="mb-0 mr-3">Status</p>
                             <c:if test="${sessionScope.user.status == 'ACTIVE'}">
-                                <input checked type="radio" id="active" name="status" value="ACTIVE">
-                                <label style="margin-top: 7px" class="mr-3 ml-1" for="male">Active</label><br>
+                                <input name="status"
+                                       type="radio"
+                                       id="active"
+                                       value="ACTIVE"
+                                       checked
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <label style="margin-top: 7px" class="mr-3 ml-1" for="male">
+                                    Active
+                                </label><br>
                                 <div class="invalid-feedback"></div>
-                                <input type="radio" id="inactive" name="status" value="INACTIVE">
-                                <label style="margin-top: 7px" class="ml-1" for="female">Inactive</label><br>
+                                <input name="status"
+                                       type="radio"
+                                       id="inactive"
+                                       value="INACTIVE"
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <label style="margin-top: 7px" class="ml-1" for="female">
+                                    Inactive
+                                </label><br>
                                 <div class="invalid-feedback"></div>
                             </c:if>
 
                             <c:if test="${sessionScope.user.status == 'INACTIVE'}">
-                                <input type="radio" id="active" name="status" value="ACTIVE">
-                                <label style="margin-top: 7px" class="mr-3 ml-1" for="male">Active</label><br>
+                                <input name="status"
+                                       type="radio"
+                                       id="active"
+                                       value="ACTIVE"
+                                       data-value-missing="Can't be empty"
+                                       required>
+                                <label style="margin-top: 7px" class="mr-3 ml-1" for="male">
+                                    Active
+                                </label><br>
                                 <div class="invalid-feedback"></div>
-                                <input checked type="radio" id="inactive" name="status" value="INACTIVE">
-                                <label style="margin-top: 7px" class="ml-1" for="female">Inactive</label><br>
+                                <input
+                                    checked type="radio" id="inactive"
+                                    name="status" value="INACTIVE">
+                                <label style="margin-top: 7px" class="ml-1" for="female">
+                                    Inactive
+                                </label><br>
                                 <div class="invalid-feedback"></div>
                             </c:if>
                         </div>
@@ -159,9 +261,11 @@
                                type="text"
                                id="mobile"
                                placeholder="Mobile"
+                               pattern="^\d{10}$"
                                value="${sessionScope.user.mobile}"
-                               required
-                               data-value-missing="Can't be empty"/>
+                               data-value-missing="Can't be empty"
+                               data-pattern-mismatch="Not a valid phonenumber"
+                               required/>
                         <div class="invalid-feedback"></div>
                     </div>
                     <button type="submit" class="btn btn-success">Update Information</button><br>

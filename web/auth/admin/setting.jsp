@@ -11,77 +11,240 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Setting Page</title>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="style/setting.css">
+        <link rel="stylesheet" type="text/css" href="${path}/style/setting.css">
     </head>
     <body>
         <div id="mySidebar" class="sidebar">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href="#" onclick="itOn()">User Roles</a>
+            <!--<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
+            <a href="#" onclick="userRoleOn()">User Roles</a>
             <hr>
-            <a href="#" onclick="businessOn()">System Menu</a>
+            <a href="#" onclick="systemMenuOn()">System Menu</a>
             <hr>
-            <a href="#" >Post Categories</a>
+            <a href="#" onclick="postCategoryOn()">Post Categories</a>
             <hr>
-            <a href="#" >Subject Categories</a>
+            <a href="#" onclick="subjectCategoryOn()">Subject Categories</a>
             <hr>
-            <a href="#" >Test Types</a>
+            <a href="#" onclick="testTypeOn()">Test Types</a>
             <hr>
-            <a href="#" >Question Levels</a>
+            <a href="#" onclick="questionLevelOn()">Question Levels</a>
             <hr>
-            <a href="#" >Lesson Types</a>
+            <a href="#" onclick="lessonTypeOn()">Lesson Types</a>
             <hr>
-            <a href="#" >Subject Dimension</a>
+            <a href="#" onclick="subjectDimensionOn()">Subject Dimension</a>
         </div>
-
         <div id="main">
-            <button class="openbtn" onclick="openNav()">&#9776; Open Sidebar</button>
-
-            <div id="it" style="display: block; margin-top: -2rem">
-                <jsp:include page="components/home/it.jsp"/>
-            </div>
-            
-            <div id="business" style="display: none; margin-top: -2rem">
-                <jsp:include page="components/home/business.jsp"/>
+            <button id="openNav" class="openbtn" onclick="openNav()">&#9776; Open Sidebar</button>
+            <button id="closeNav" class="openbtn" onclick="closeNav()" style="display: none">&#9776; Close Sidebar</button>
+            <div id="userRole" style="display: block">
+                <h1>Welcome to user role</h1>
+                <p>User Role's content</p>
+            </div>            
+            <div id="systemMenu" style="display: none">
+                <h1>Welcome to System Menu</h1>
+                <p>System Menu's content</p>
+            </div>          
+            <div id="postCategory" style="display: none">
+                <h1>Welcome to Post Category</h1>
+                <p>Post Category's content</p>
+            </div>           
+            <div id="subjectCategory" style="display: none">
+                <h1>Welcome to Subject Category</h1>
+                <p>Subject Category's content</p>
+            </div>           
+            <div id="testType" style="display: none">
+                <h1>Welcome to Test Type</h1>
+                <p>Test Type's content</p>
+            </div>          
+            <div id="questionLevel" style="display: none">
+                <h1>Welcome to Question Level</h1>
+                <p>Question Level's content</p>
+            </div>            
+            <div id="lessonType" style="display: none">
+                <h1>Welcome to Lesson Type</h1>
+                <p>Lesson Type's content</p>
+            </div>         
+            <div id="subjectDimension" style="display: none">
+                <h1>Welcome to Subject Dimension</h1>
+                <p>Subject Dimension's content</p>
             </div>
         </div>
-
-
-        <!--                business-->
-
-
         <script>
-            function itOn() {
-                var it = document.getElementById('it');
-                var business = document.getElementById('business');
+            function  userRoleOn() {
+                var userRole = document.getElementById('userRole');
+                var systemMenu = document.getElementById('systemMenu');
+                var postCategory = document.getElementById('postCategory');
+                var subjectCategory = document.getElementById('subjectCategory');
+                var testType = document.getElementById('testType');
+                var questionLevel = document.getElementById('questionLevel');
+                var lessonType = document.getElementById('lessonType');
+                var subjectDimension = document.getElementById('subjectDimension');
 
-
-                it.style.display = 'block';
-                business.style.display = 'none';
-
+                userRole.style.display = 'block';
+                systemMenu.style.display = 'none';
+                postCategory.style.display = 'none';
+                subjectCategory.style.display = 'none';
+                testType.style.display = 'none';
+                questionLevel.style.display = 'none';
+                lessonType.style.display = 'none';
+                subjectDimension.style.display = 'none';
             }
-            function businessOn() {
-                var it = document.getElementById('it');
-                var business = document.getElementById('business');
 
+            function  systemMenuOn() {
+                var userRole = document.getElementById('userRole');
+                var systemMenu = document.getElementById('systemMenu');
+                var postCategory = document.getElementById('postCategory');
+                var subjectCategory = document.getElementById('subjectCategory');
+                var testType = document.getElementById('testType');
+                var questionLevel = document.getElementById('questionLevel');
+                var lessonType = document.getElementById('lessonType');
+                var subjectDimension = document.getElementById('subjectDimension');
 
-                it.style.display = 'none';
-                business.style.display = 'block';
-
+                userRole.style.display = 'none';
+                systemMenu.style.display = 'block';
+                postCategory.style.display = 'none';
+                subjectCategory.style.display = 'none';
+                testType.style.display = 'none';
+                questionLevel.style.display = 'none';
+                lessonType.style.display = 'none';
+                subjectDimension.style.display = 'none';
             }
 
+            function  postCategoryOn() {
+                var userRole = document.getElementById('userRole');
+                var systemMenu = document.getElementById('systemMenu');
+                var postCategory = document.getElementById('postCategory');
+                var subjectCategory = document.getElementById('subjectCategory');
+                var testType = document.getElementById('testType');
+                var questionLevel = document.getElementById('questionLevel');
+                var lessonType = document.getElementById('lessonType');
+                var subjectDimension = document.getElementById('subjectDimension');
 
+                userRole.style.display = 'none';
+                systemMenu.style.display = 'none';
+                postCategory.style.display = 'block';
+                subjectCategory.style.display = 'none';
+                testType.style.display = 'none';
+                questionLevel.style.display = 'none';
+                lessonType.style.display = 'none';
+                subjectDimension.style.display = 'none';
+            }
+
+            function  subjectCategoryOn() {
+                var userRole = document.getElementById('userRole');
+                var systemMenu = document.getElementById('systemMenu');
+                var postCategory = document.getElementById('postCategory');
+                var subjectCategory = document.getElementById('subjectCategory');
+                var testType = document.getElementById('testType');
+                var questionLevel = document.getElementById('questionLevel');
+                var lessonType = document.getElementById('lessonType');
+                var subjectDimension = document.getElementById('subjectDimension');
+
+                userRole.style.display = 'none';
+                systemMenu.style.display = 'none';
+                postCategory.style.display = 'none';
+                subjectCategory.style.display = 'block';
+                testType.style.display = 'none';
+                questionLevel.style.display = 'none';
+                lessonType.style.display = 'none';
+                subjectDimension.style.display = 'none';
+            }
+            
+            function  testTypeOn() {
+                var userRole = document.getElementById('userRole');
+                var systemMenu = document.getElementById('systemMenu');
+                var postCategory = document.getElementById('postCategory');
+                var subjectCategory = document.getElementById('subjectCategory');
+                var testType = document.getElementById('testType');
+                var questionLevel = document.getElementById('questionLevel');
+                var lessonType = document.getElementById('lessonType');
+                var subjectDimension = document.getElementById('subjectDimension');
+
+                userRole.style.display = 'none';
+                systemMenu.style.display = 'none';
+                postCategory.style.display = 'none';
+                subjectCategory.style.display = 'none';
+                testType.style.display = 'block';
+                questionLevel.style.display = 'none';
+                lessonType.style.display = 'none';
+                subjectDimension.style.display = 'none';
+            }
+            
+            function  questionLevelOn() {
+                var userRole = document.getElementById('userRole');
+                var systemMenu = document.getElementById('systemMenu');
+                var postCategory = document.getElementById('postCategory');
+                var subjectCategory = document.getElementById('subjectCategory');
+                var testType = document.getElementById('testType');
+                var questionLevel = document.getElementById('questionLevel');
+                var lessonType = document.getElementById('lessonType');
+                var subjectDimension = document.getElementById('subjectDimension');
+
+                userRole.style.display = 'none';
+                systemMenu.style.display = 'none';
+                postCategory.style.display = 'none';
+                subjectCategory.style.display = 'none';
+                testType.style.display = 'none';
+                questionLevel.style.display = 'block';
+                lessonType.style.display = 'none';
+                subjectDimension.style.display = 'none';
+            }
+            
+            function  lessonTypeOn() {
+                var userRole = document.getElementById('userRole');
+                var systemMenu = document.getElementById('systemMenu');
+                var postCategory = document.getElementById('postCategory');
+                var subjectCategory = document.getElementById('subjectCategory');
+                var testType = document.getElementById('testType');
+                var questionLevel = document.getElementById('questionLevel');
+                var lessonType = document.getElementById('lessonType');
+                var subjectDimension = document.getElementById('subjectDimension');
+
+                userRole.style.display = 'none';
+                systemMenu.style.display = 'none';
+                postCategory.style.display = 'none';
+                subjectCategory.style.display = 'none';
+                testType.style.display = 'none';
+                questionLevel.style.display = 'none';
+                lessonType.style.display = 'block';
+                subjectDimension.style.display = 'none';
+            }
+            
+            function  subjectDimensionOn() {
+                var userRole = document.getElementById('userRole');
+                var systemMenu = document.getElementById('systemMenu');
+                var postCategory = document.getElementById('postCategory');
+                var subjectCategory = document.getElementById('subjectCategory');
+                var testType = document.getElementById('testType');
+                var questionLevel = document.getElementById('questionLevel');
+                var lessonType = document.getElementById('lessonType');
+                var subjectDimension = document.getElementById('subjectDimension');
+
+                userRole.style.display = 'none';
+                systemMenu.style.display = 'none';
+                postCategory.style.display = 'none';
+                subjectCategory.style.display = 'none';
+                testType.style.display = 'none';
+                questionLevel.style.display = 'none';
+                lessonType.style.display = 'none';
+                subjectDimension.style.display = 'block';
+            }
+            
 
             /* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
             function openNav() {
+                document.getElementById("openNav").style.display = "none";
+                document.getElementById("closeNav").style.display = "block";
                 document.getElementById("mySidebar").style.width = "250px";
                 document.getElementById("main").style.marginLeft = "250px";
             }
 
             /* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
             function closeNav() {
+                document.getElementById("openNav").style.display = "block";
+                document.getElementById("closeNav").style.display = "none";
                 document.getElementById("mySidebar").style.width = "0";
                 document.getElementById("main").style.marginLeft = "0";
             }

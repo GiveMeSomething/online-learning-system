@@ -64,7 +64,7 @@ public class UserController extends HttpServlet implements Controller {
                     address, Status.valueOf(status), mobile);
             boolean isUpdate = userService.updateUserProfile(userUpdate);
             if (isUpdate) {
-                response.sendRedirect("");
+                response.sendRedirect("user");
             } else {
                 this.forwardErrorMessage(request, response, "Can not update", "user");
             }
