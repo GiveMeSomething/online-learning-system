@@ -116,34 +116,34 @@
                     </div>
                     <!--                it-->
                     <div id="it" style="display: block; margin-top: -2rem">
-                        <jsp:include page="components/home/it.jsp"/>
+                        <jsp:include page="/components/home/it.jsp"/>
                     </div>
                     <!--                business-->
                     <div id="business" style="display: none; margin-top: -2rem">
-                        <jsp:include page="components/home/business.jsp"/>
+                        <jsp:include page="/components/home/business.jsp"/>
                     </div>
                     <!--                marketing-->
                     <div id="marketing" style="display: none; margin-top: -2rem">
-                        <jsp:include page="components/home/marketing.jsp"/>
+                        <jsp:include page="/components/home/marketing.jsp"/>
                     </div>
                     <!--                ai-->
                     <div id="ai" style="display: none; margin-top: -2rem">
-                        <jsp:include page="components/home/ai.jsp"/>
+                        <jsp:include page="/components/home/ai.jsp"/>
                     </div>
                     <!--                information assurance-->
                     <div id="ia" style="display: none; margin-top: -2rem">
-                        <jsp:include page="components/home/ia.jsp" />
+                        <jsp:include page="/components/home/ia.jsp" />
                     </div>
                     <!--                language-->
                     <div id="language" style="display: none; margin-top: -2rem">
-                        <jsp:include page="components/home/language.jsp"/>
+                        <jsp:include page="/components/home/language.jsp"/>
                     </div>
                     <div id="myDIV" style="margin-left: -0.5rem">
                         <a class="btn2 " style="outline: none; font-weight: normal; font-size: 20px">Some of the best</a>
                     </div>
                     <!--                students are viewing-->
                     <div  style="display: block; margin-top: -2rem">
-                        <jsp:include page="components/home/featuredCourse.jsp"/>
+                        <jsp:include page="/components/home/featuredCourse.jsp"/>
                     </div>
                 </div>
         </section>

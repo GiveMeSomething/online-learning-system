@@ -196,9 +196,9 @@
                     $("input[name$='price']").click(function () {
                         var value = $(this).val();
                         if (value == 1) {
-                            window.location.assign("course?index=${tag}&&cid=${cateID}&&searchName=${sessionScope.searchName}&&price=" + value + "&&alpha=${sessionScope.alpha}");
+                            window.location.assign("course?index=${tag}&&cID=${cateID}&&searchName=${sessionScope.searchName}&&price=" + value + "&&alpha=${sessionScope.alpha}");
                         } else if (value == 0) {
-                            window.location.assign("course?index=${tag}&&cid=${cateID}&&searchName=${sessionScope.searchName}&&price=" + value + "&&alpha=${sessionScope.alpha}");
+                            window.location.assign("course?index=${tag}&&cID=${cateID}&&searchName=${sessionScope.searchName}&&price=" + value + "&&alpha=${sessionScope.alpha}");
                         }
                     });
                 });
@@ -207,9 +207,9 @@
                     $("input[name$='alpha']").click(function () {
                         var value = $(this).val();
                         if (value === 'ascAlpha') {
-                            window.location.assign("course?index=${tag}&&cid=${cateID}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=" + value);
+                            window.location.assign("course?index=${tag}&&cID=${cateID}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=" + value);
                         } else if (value === 'descAlpha') {
-                            window.location.assign("course?index=${tag}&&cid=${cateID}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=" + value);
+                            window.location.assign("course?index=${tag}&&cID=${cateID}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=" + value);
 
                         }
                     });
