@@ -7,7 +7,6 @@ package auth;
 
 import common.entities.Account;
 import common.entities.Role;
-import common.entities.User;
 import common.utilities.HashPassword;
 import common.utilities.HashToken;
 import common.utilities.Repository;
@@ -177,6 +176,46 @@ public class AuthRepository extends Repository {
                 return HashPassword.validatePassword(userEmail, password, Integer.toString(salt), currentPassword);
             }
             return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public Account getAccount(String userEmail) throws SQLException {
+        this.connectDatabase();
+
+        String getAccountByEmail = "SELECT user_email, password FROM account WHERE user_email=?";
+        try (PreparedStatement statement = this.connection.prepareStatement(getAccountByEmail)) {
+            statement.setString(1, userEmail);
+
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                return new Account(userEmail, result.getString("password"));
+            }
+
+            return null;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public String getToken(String userEmail, String cryptPassword) throws SQLException {
+        this.connectDatabase();
+
+        String getAccount = "SELECT user_email, password, token FROM account WHERE user_email=?";
+        try (PreparedStatement statement = this.connection.prepareStatement(getAccount)) {
+            statement.setString(1, userEmail);
+
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                String currentPassword = result.getString("password");
+                if (cryptPassword.equals(currentPassword)) {
+                    String token = result.getString("token");
+                    return token;
+                }
+            }
+
+            return null;
         } finally {
             this.disconnectDatabase();
         }

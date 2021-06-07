@@ -18,8 +18,20 @@ public class EmailService {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
+    }
 
+    public boolean sendAuthEmail(String host, String port, String email, String password, String receiver, String cryptPassword) {
+        try {
+            String subject = "OLS Account Confirmation";
+            String content = "http://localhost:8080/online-learning-system/email?work=AUTH&email=" + receiver + "&password=" + cryptPassword;
+            Emailer.sendEmail(host, port, email, password, receiver, subject, content);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

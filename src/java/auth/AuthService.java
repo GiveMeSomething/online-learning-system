@@ -39,6 +39,26 @@ public class AuthService {
         return null;
     }
 
+    public Account getAccount(String email) {
+        try {
+            return authRepository.getAccount(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public String getToken(String email, String password) {
+        try {
+            return authRepository.getToken(email, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public boolean activeAccount(String email, String token) {
         try {
             return authRepository.activeAccount(email, token);
