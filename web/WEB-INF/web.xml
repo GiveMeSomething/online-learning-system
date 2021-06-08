@@ -44,7 +44,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BlogController</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/blog</url-pattern>
     </servlet-mapping>
     <!-- SMTP settings -->
     <context-param>

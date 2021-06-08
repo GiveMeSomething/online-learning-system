@@ -22,4 +22,19 @@ public class EmailService {
         }
 
     }
+    
+    // Test send email for resetting password
+    public boolean sendResetPasswordEmail(String host, String port, String email, String password, String receiver) {
+        try {
+            String subject = "OLS Account Confirmation";
+            String content = "http://localhost:8080/online-learning-system/email?work=RESETPW&email=" + receiver;
+            Emailer.sendEmail(host, port, email, password, receiver, subject, content);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
 }

@@ -21,7 +21,7 @@
             <div class="request-info">
                 <input name="previousPage" value="index.jsp" hidden="true" />
                 <div class="invalid-feedback"></div>
-                <input name="operation" value="CHANGEPW" hidden="true" />
+                <input name="operation" value="RESETPW2" hidden="true" />
                 <div class="invalid-feedback"></div>
             </div>
             <div>

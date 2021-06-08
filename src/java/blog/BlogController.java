@@ -30,31 +30,33 @@ public class BlogController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getServletPath();
-        String flag = request.getParameter("flag");
         String title = request.getParameter("title");
+        String operation = request.getParameter("operation");
+        
         if (title == null) {
-            if (flag == null) {
-            } else {
-                getBlogPaginationByCategory(request, response);
-            }
-            switch (action) {
-                case "/BlogDetail":
+        } else {
+            // Get posts by searching
+            getBlogByTitle(request, response);
+        }
+
+        if (operation == null) {
+            // Get posts
+            getBlogPagination(request, response);
+        } else {
+            switch (operation) {
+                case "blogDetail":
                     // Get post detail
                     getBlogDetail(request, response);
                     break;
-                case "/PostsByCate":
-                    // Get posts filtered by category
+                case "postByCategory":
+                    // Gets posts by category
                     getBlogPaginationByCategory(request, response);
                     break;
                 default:
-                    // Get posts
-                    getBlogPagination(request, response);
                     break;
             }
-        } else {
-            getBlogByTitle(request, response);
         }
+
     }
 
     @Override
@@ -62,7 +64,7 @@ public class BlogController extends HttpServlet {
             throws ServletException, IOException {
         doGet(request, response);
     }
-
+    
     private void getBlogPagination(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HashMap<String, String> hmCategory = blogService.getHmCategory();
         HashMap<String, Post> latestPost = blogService.getLatestPost();
@@ -89,9 +91,8 @@ public class BlogController extends HttpServlet {
         request.setAttribute("hmCategory", hmCategory);
         request.setAttribute("hmPost", hmPost);
         request.setAttribute("latest", latestPost);
-        request.setAttribute("flag", 0);
 
-        request.getRequestDispatcher("nauth/blogList.jsp").forward(request, response);
+        request.getRequestDispatcher("nauth/blog/blogList.jsp").forward(request, response);
     }
 
     private void getBlogDetail(HttpServletRequest request, HttpServletResponse response)
@@ -105,18 +106,18 @@ public class BlogController extends HttpServlet {
         request.setAttribute("post", postDetail);
         request.setAttribute("latest", latestPost);
 
-        request.getRequestDispatcher("nauth/blogDetail.jsp").forward(request, response);
+        request.getRequestDispatcher("nauth/blog/blogDetail.jsp").forward(request, response);
     }
 
     private void getBlogPaginationByCategory(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HashMap<String, String> hmCategory = blogService.getHmCategory();
         HashMap<String, Post> latestPost = blogService.getLatestPost();
-        String cateId = request.getParameter("cateId");
-        if (cateId == null) {
+        String categoryId = request.getParameter("cateId");
+        if (categoryId == null) {
         }
 
         // Pagination
-        int totalPosts = blogService.getTotalPostsByCategory(Integer.parseInt(cateId));
+        int totalPosts = blogService.getTotalPostsByCategory(Integer.parseInt(categoryId));
         String page = request.getParameter("curPage");
         if (page == null) {
             page = 1 + "";
@@ -132,19 +133,18 @@ public class BlogController extends HttpServlet {
         if (totalPosts % postsPerPage > 0) {
             noOfPage++;
         }
-        ArrayList<Post> hmPost = blogService.getPostsByCategory(Integer.parseInt(cateId), currentPage, postsPerPage);
+        ArrayList<Post> hmPost = blogService.getPostsByCategory(Integer.parseInt(categoryId), currentPage, postsPerPage);
 
         request.setAttribute("nOfPage", noOfPage);
         request.setAttribute("curPage", page);
         request.setAttribute("hmCategory", hmCategory);
         request.setAttribute("hmPost", hmPost);
         request.setAttribute("latest", latestPost);
-        request.setAttribute("flag", 1);
-        request.setAttribute("cateId", cateId);
+        request.setAttribute("categoryId", categoryId);
 
-        request.getRequestDispatcher("nauth/blogList.jsp").forward(request, response);
+        request.getRequestDispatcher("nauth/blog/blogList.jsp").forward(request, response);
     }
-    
+
     private void getBlogByTitle(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HashMap<String, String> hmCategory = blogService.getHmCategory();
         HashMap<String, Post> latestPost = blogService.getLatestPost();
@@ -177,8 +177,6 @@ public class BlogController extends HttpServlet {
         request.setAttribute("hmPost", hmPost);
         request.setAttribute("latest", latestPost);
 
-        request.getRequestDispatcher("nauth/blogList.jsp").forward(request, response);
+        request.getRequestDispatcher("nauth/blog/blogList.jsp").forward(request, response);
     }
-
-    
 }

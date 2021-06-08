@@ -225,6 +225,7 @@ public class BlogRepository extends Repository {
         }
     }
     
+    // Get posts by searching
     public ArrayList<Post> getPostsByTitle(String title) throws SQLException {
         this.connectDatabase();
 
@@ -252,13 +253,13 @@ public class BlogRepository extends Repository {
     public static void main(String[] args) throws Exception {
         BlogRepository blog = new BlogRepository();
 //        HashMap<String, Post> hmCat = (HashMap<String, Post>) blog.getLatestPost();
-//        for (String key : blog.getHmPost().keySet()) {
-//            System.out.println(blog.getHmPost().get(key));
-//        }
-        ArrayList<Post> posts = blog.getPostsByTitle("tech");
-        for (Post post : posts) {
-            System.out.println(post);
+        for (String key : blog.getHmPost().keySet()) {
+            System.out.println(blog.getHmPost().get(key));
         }
-        System.out.println(blog.getTotalPostsByTitle("tec"));
+//        ArrayList<Post> posts = blog.getPostsByTitle("tech");
+//        for (Post post : posts) {
+//            System.out.println(post);
+//        }
+//        System.out.println(blog.getTotalPostsByTitle("tec"));
     }
 }

@@ -19,29 +19,42 @@
     </head>
     <body>
         <!--header-->
-        <jsp:include page="../components/global/navbar.jsp"/>
+        <jsp:include page="../../components/global/navbar.jsp"/>
         <main>
             <div class="container">
                 <!-- breadcrumb -->
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="home">Home</a></li>
-                        <li class="breadcrumb-item"><a href="BlogController">Blog</a></li>
-                        <li class="breadcrumb-item" aria-current="page">${requestScope.post.title}</li>
+                        <li class="breadcrumb-item"><a href="blog">Blog</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">${requestScope.post.title}</li>
                     </ol>
                 </nav>
-                <!-- aside left -->
                 <div class="row">
+                    <!-- left -->
                     <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-12">
+                                <form class="form-inline" method="POST" action="blog">
+                                    <div class="request-info">
+                                        <input name="previousPage" value="blogList.jsp" hidden="true" />
+                                        <div class="invalid-feedback"></div>
+                                        <input name="operation" value="Search-by-title" hidden="true" />
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                    <input class="form-control mr-sm-2" type="search" name="title" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                                </form>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-12">
                                 <h3>Category</h3>
                                 <hr>
                                 <ul class="list-group list-group-flush shadow-sm">
                                     <c:forEach var="o" items="${hmCategory}">
-                                        <a href="PostsByCate?cateId=${o.key}&curPage=1" 
-                                           class="list-group-item list-group-item-action 
-                                           ${cateId == o.key?"active":""}">${o.value}</a>
+                                        <a href="blog?operation=postByCategory&cateId=${o.key}&curPage=1" 
+                                           class="list-group-item list-group-item-action ${cateId==o.key?"active":""}">${o.value}</a>
                                     </c:forEach>
                                 </ul>
                             </div>
@@ -51,13 +64,14 @@
                             <div class="col-12">
                                 <ul class="list-group list-group-flush shadow-sm">
                                     <c:forEach items="${latest}" var="o">
-                                        <a href="BlogDetail?id=${o.value.postId}" 
+                                        <a href="blog?operation=blogDetail&id=${o.value.postId}" 
                                            class="list-group-item list-group-item-action">${o.value.title}</a>
                                     </c:forEach>
                                 </ul>
                             </div>
                         </div>
                     </div>
+                    <!--right-->
                     <div class="col-8 bg-light">
                         <article class="p-3">
                             <h1 style="text-align: center;">${post.title}</h1>
@@ -75,7 +89,8 @@
         </main>
     </body>
     <!--footer-->
-    <jsp:include page="../components/global/footer.jsp"/>
+    <jsp:include page="../../components/global/footer.jsp"/>
+    <!--boostrap-->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
             crossorigin="anonymous">

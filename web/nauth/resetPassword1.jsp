@@ -25,7 +25,7 @@
             <div class="request-info">
                 <input name="previousPage" value="reset-password2.jsp" hidden="true" />
                 <div class="invalid-feedback"></div>
-                <input name="operation" value="RESETPW" hidden="true" />
+                <input name="operation" value="RESETPW1" hidden="true" />
                 <div class="invalid-feedback"></div>
             </div>
             <div class="my-2">

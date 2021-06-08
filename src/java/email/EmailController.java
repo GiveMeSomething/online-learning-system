@@ -39,7 +39,7 @@ public class EmailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String operation = request.getParameter("operation");
+        String operation = request.getParameter("work");
 
         if (operation.equals("CONFIRM")) {
             // Reads request data
@@ -54,8 +54,10 @@ public class EmailController extends HttpServlet {
                 // Do something when active fail
             }
 
-        } else if (operation.equals("CHANGEPW")) {
-            // TODO: Duy Anh se implement phan nay
+        } else if (operation.equals("RESETPW")) {
+            // Test if navigate to Change password page in nauth
+            String email = request.getParameter("email");
+            request.getRequestDispatcher("nauth/resetPassword2.jsp").forward(request, response);
         } else {
             response.sendRedirect("/home");
         }
@@ -83,8 +85,10 @@ public class EmailController extends HttpServlet {
             }
 
             response.sendRedirect(forwardTo);
-        } else if (operation.equals("CHANGEPW")) {
-            // TODO: Duy Anh se implement phan nay
+        } else if (operation.equals("RESETPW")) {
+            // Test if send successfully
+            String thisEmail = request.getParameter("email");
+            boolean isSent = emailService.sendResetPasswordEmail(host, port, email, password, thisEmail);
         }
     }
 }

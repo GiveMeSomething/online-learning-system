@@ -17,7 +17,7 @@
         <title>Blog</title>
     </head>
     <body>
-        <jsp:include page="../components/global/navbar.jsp"/>
+        <jsp:include page="../../components/global/navbar.jsp"/>
         <main>
             <div class="container">
                 <!-- breadcrumb -->
@@ -32,7 +32,7 @@
                     <div class="col-md-4">
                         <div class="row">
                             <div class="col-12">
-                                <form class="form-inline" method="POST" action="BlogController">
+                                <form class="form-inline" method="POST" action="blog">
                                     <div class="request-info">
                                         <input name="previousPage" value="blogList.jsp" hidden="true" />
                                         <div class="invalid-feedback"></div>
@@ -50,8 +50,8 @@
                                 <hr>
                                 <ul class="list-group list-group-flush shadow-sm">
                                     <c:forEach var="o" items="${hmCategory}">
-                                        <a href="PostsByCate?cateId=${o.key}&curPage=1" 
-                                           class="list-group-item list-group-item-action ${cateId==o.key?"active":""}">${o.value}</a>
+                                        <a href="blog?operation=postByCategory&cateId=${o.key}&curPage=1" 
+                                           class="list-group-item list-group-item-action ${categoryId==o.key?"active":""}">${o.value}</a>
                                     </c:forEach>
                                 </ul>
                             </div>
@@ -61,7 +61,7 @@
                             <div class="col-12">
                                 <ul class="list-group list-group-flush shadow-sm">
                                     <c:forEach items="${latest}" var="o">
-                                        <a href="BlogDetail?id=${o.value.postId}" 
+                                        <a href="blog?operation=blogDetail&id=${o.value.postId}" 
                                            class="list-group-item list-group-item-action">${o.value.title}</a>
                                     </c:forEach>
                                 </ul>
@@ -78,7 +78,7 @@
                                         <div>
                                             <h5 class="mt-0">${o.title}</h5>
                                             <p>${o.briefInfo}</p>
-                                            <a href="BlogDetail?id=${o.postId}" class="stretched-link">Read more</a>
+                                            <a href="blog?operation=blogDetail&id=${o.postId}" class="stretched-link">Read more</a>
                                         </div>
                                     </div>
                                 </c:forEach>
@@ -88,40 +88,40 @@
                             <div class="col-12">
                                 <nav aria-label="Blog-pagination">
                                     <ul class="pagination justify-content-center">
-                                        <c:if test="${requestScope.flag == 0}">
+                                        <c:if test="${requestScope.categoryId == null}">
                                             <li class="page-item ${curPage == 1?"disabled":""}">
-                                                <a class="page-link" href="BlogController?curPage=${curPage - 1}" 
+                                                <a class="page-link" href="blog?curPage=${curPage - 1}" 
                                                    tabindex="-1">Previous</a>
                                             </li>
                                         </c:if>
-                                        <c:if test="${requestScope.flag == 1}">
+                                        <c:if test="${requestScope.categoryId != null}">
                                             <li class="page-item ${curPage == 1?"disabled":""}">
                                                 <a class="page-link" 
-                                                   href="BlogController?curPage=${curPage - 1}&flag=1&cateId=${requestScope.cateId}" tabindex="-1">Previous</a>
+                                                   href="blog?curPage=${curPage - 1}&operation=postByCategory&cateId=${requestScope.categoryId}" tabindex="-1">Previous</a>
                                             </li>
                                         </c:if>
                                         <c:forEach begin="1" end="${requestScope.nOfPage}" var="i">
-                                            <c:if test="${requestScope.flag == 0}">
+                                            <c:if test="${requestScope.categoryId == null}">
                                                 <li class="page-item ${curPage == i?"active":""}">
-                                                    <a class="page-link" href="BlogController?curPage=${i}">${i}</a>
+                                                    <a class="page-link" href="blog?curPage=${i}">${i}</a>
                                                 </li>
                                             </c:if>
-                                            <c:if test="${requestScope.flag == 1}">
+                                            <c:if test="${requestScope.categoryId != null}">
                                                 <li class="page-item ${curPage == i?"active":""}">
                                                     <a class="page-link" 
-                                                       href="BlogController?curPage=${i}&flag=1&cateId=${requestScope.cateId}">${i}</a>
+                                                       href="blog?curPage=${i}&operation=postByCategory&cateId=${requestScope.categoryId}">${i}</a>
                                                 </li>
                                             </c:if>
                                         </c:forEach>
-                                        <c:if test="${requestScope.flag == 0}">        
+                                        <c:if test="${requestScope.categoryId == null}">        
                                             <li class="page-item ${curPage == nOfPage?"disabled":""}">
-                                                <a class="page-link" href="BlogController?curPage=${curPage + 1}">Next</a>
+                                                <a class="page-link" href="blog?curPage=${curPage + 1}">Next</a>
                                             </li>
                                         </c:if>
-                                        <c:if test="${requestScope.flag == 1}">        
+                                        <c:if test="${requestScope.categoryId != null}">        
                                             <li class="page-item ${curPage == nOfPage?"disabled":""}">
                                                 <a class="page-link" 
-                                                   href="BlogController?curPage=${curPage + 1}&flag=1&cateId=${requestScope.cateId}">Next</a>
+                                                   href="blog?curPage=${curPage + 1}&operation=postByCategory&cateId=${requestScope.categoryId}">Next</a>
                                             </li>
                                         </c:if>
                                     </ul>
@@ -133,7 +133,7 @@
             </div>
         </main>
         <!--footer-->
-        <jsp:include page="../components/global/footer.jsp"/>
+        <jsp:include page="../../components/global/footer.jsp"/>
     </body>
     <!--javascript-->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

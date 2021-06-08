@@ -69,6 +69,16 @@ public class AuthController extends HttpServlet implements Controller {
             System.out.println("Run in AuthController");
 
             processChangePassword(request, response, oldPassword, newPassword, confirmPassword);
+        }else if(operation.equals("RESETPW1")){
+            // Test how this RESETPW1 works
+            String email = request.getParameter("email");
+            String confirmEmailPath = "/email?operation=RESETPW&receiver=" + email;
+            request.getRequestDispatcher(confirmEmailPath).forward(request, response);
+        }else if(operation.equals("RESETPW2")){
+            // Test changing password but not done yet!
+            String newPassword = request.getParameter("new-password");
+            String confirmPassword = request.getParameter("cf-password");
+            
         }
     }
 

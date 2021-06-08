@@ -87,7 +87,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item nav-hover">
-                                <a class="nav-link active" aria-current="page" href="BlogController">Blogs</a>
+                                <a class="nav-link active" aria-current="page" href="blog">Blogs</a>
                             </li>
                             <li class="nav-item nav-hover">
                                 <a class="nav-link active" aria-current="page" href="#">Courses</a>
@@ -186,7 +186,7 @@
                                         <div class="invalid-feedback"></div>
                                     </div>
                                     <div class="sd-flex justify-content-end">
-                                        <a href="/forget-password">Forget password</a>
+                                        <a href="nauth/resetPassword1.jsp">Forget password</a>
                                     </div>
                                     <div>
                                         <!-- Trigger when wrong email or password (use Javascript) -->
