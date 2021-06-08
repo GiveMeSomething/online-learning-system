@@ -7,6 +7,8 @@ package course;
 import java.util.List;
 import common.entities.Category;
 import common.entities.Course;
+import common.entities.PricePackage;
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -37,6 +39,16 @@ public class CourseService {
             }
 
             return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public ArrayList<PricePackage> getCoursePackage(int id) {
+        try {
+            return courseRepository.getCoursePackage(id);
         } catch (Exception e) {
             e.printStackTrace();
         }

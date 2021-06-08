@@ -1,7 +1,6 @@
 package course;
 
 import common.entities.Course;
-import home.HomeService;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -9,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import common.entities.Category;
+import common.entities.PricePackage;
+import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
 
@@ -97,9 +98,13 @@ public class CourseController extends HttpServlet {
             Course courseDetail = courseService.getCourse(Integer.parseInt(courseId));
             List<Course> siderCourse = courseService.getSiderCourseDetail();
             List<Category> categoryList = courseService.getAllCategory();
+            ArrayList<PricePackage> coursePackages = courseService.getCoursePackage(courseDetail.getId());
+
             request.setAttribute("detail", courseDetail);
             request.setAttribute("siderDetail", siderCourse);
             request.setAttribute("listC", categoryList);
+            request.setAttribute("coursePackages", coursePackages);
+
             request.getRequestDispatcher("nauth/course/detail.jsp").forward(request, response);
         } else if (categoryId != null) {
             int categoryIndicator = Integer.parseInt(categoryId);
@@ -158,6 +163,11 @@ public class CourseController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        String operation = request.getParameter("operation");
+        if (operation.equals("REGISTER")) {
+
+        }
 
         int categoryId = Integer.parseInt(request.getParameter("cID"));
         String searchName = request.getParameter("searchCourse");

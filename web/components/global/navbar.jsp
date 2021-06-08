@@ -44,20 +44,17 @@
                                 <a class="btn nav-link dropdown-toggle" id="navbarDropdownButton" data-toggle="dropdown">
                                     Categories
                                 </a>
-                                <!--                                <div class="dropdown-menu" aria-labelledby="navbarDropdownButton">-->
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownButton">
                                     <c:forEach items="${listC}" var="o">
-                                        <li>
-                                            <a class="dropdown-item"
-                                               href="course?cID=${o.id}">
-                                                ${o.categoryName}
-                                            </a>
-                                        </li>
+                                        <a class="dropdown-item"
+                                           href="course?cID=${o.id}">
+                                            ${o.categoryName}
+                                        </a>
                                     </c:forEach>
-                                </ul>
+                                </div>
                             </li>
                             <li class="nav-item nav-hover">
-                                <a class="nav-link active" aria-current="page" href="BlogController">Blogs</a>
+                                <a class="nav-link active" aria-current="page" href="blog">Blogs</a>
                             </li>
                             <li class="nav-item nav-hover">
                                 <a class="nav-link active" aria-current="page" href="#">Courses</a>

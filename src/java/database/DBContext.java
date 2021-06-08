@@ -11,7 +11,7 @@ public class DBContext {
     private final String password = "root";
 
     public Connection getConnection() throws Exception {
-        String url = "jdbc:mysql://" + serverName + "/" + dbName + "?useSSL=false";
+        String url = "jdbc:mysql://" + serverName + "/" + dbName + "?useSSL=false&allowPublicKeyRetrieval=true";
         Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         return DriverManager.getConnection(url, userID, password);
     }

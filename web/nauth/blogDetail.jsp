@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : blogDetail
     Created on : May 30, 2021, 1:57:05 AM
     Author     : AS
@@ -26,7 +26,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="home">Home</a></li>
-                        <li class="breadcrumb-item"><a href="BlogController">Blog</a></li>
+                        <li class="breadcrumb-item"><a href="blog">Blog</a></li>
                         <li class="breadcrumb-item" aria-current="page">${requestScope.post.title}</li>
                     </ol>
                 </nav>
@@ -39,8 +39,8 @@
                                 <hr>
                                 <ul class="list-group list-group-flush shadow-sm">
                                     <c:forEach var="o" items="${hmCategory}">
-                                        <a href="PostsByCate?cateId=${o.key}&curPage=1" 
-                                           class="list-group-item list-group-item-action 
+                                        <a href="/PostsByCate?cateId=${o.key}&curPage=1"
+                                           class="list-group-item list-group-item-action
                                            ${cateId == o.key?"active":""}">${o.value}</a>
                                     </c:forEach>
                                 </ul>
@@ -51,7 +51,7 @@
                             <div class="col-12">
                                 <ul class="list-group list-group-flush shadow-sm">
                                     <c:forEach items="${latest}" var="o">
-                                        <a href="BlogDetail?id=${o.value.postId}" 
+                                        <a href="/BlogDetail?id=${o.value.postId}"
                                            class="list-group-item list-group-item-action">${o.value.title}</a>
                                     </c:forEach>
                                 </ul>

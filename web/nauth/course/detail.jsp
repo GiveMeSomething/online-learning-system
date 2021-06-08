@@ -56,7 +56,6 @@ and open the template in the editor.
                             </a>
                         </p>
                     </div>
-                    <<<<<<< HEAD
                     <div id="brief-image">
                         <img
                             style="margin-right: 12rem; margin-top:1.5rem;width: 20rem; float: right; border-radius: 5px 5px 0px 0px;box-shadow: 1px 1px 7px black"
@@ -65,9 +64,11 @@ and open the template in the editor.
                         <div style="width: 320px;height:217px; border-radius:0px 0px 5px 5px;background: black; margin-top: 50px;box-shadow: 1px 1px 7px black">
                             <div style="margin-top: 2rem; margin-left: 5rem">
                                 <a href="#"
-                                   class="btn px-sm-5 py-2"
-                                   style="padding: 0.5rem 3rem!important; background: #007791; color: white; font-weight: bold; margin-top: 10px">
-                                    Buy now
+                                   class="btn px-sm-5 py-2">
+                                    <button data-toggle="modal" data-target="#course-register-modal" class="btn"
+                                            style="background: #007791; color: white; font-weight: bold;">
+                                        Buy Now
+                                    </button>
                                 </a>
                             </div>
                         </div>
@@ -158,6 +159,46 @@ and open the template in the editor.
                 </section>
             </div>
         <jsp:include page="/components/global/footer.jsp"/>
+        <div class="modal fade" id="course-register-modal" tabindex="-1" role="dialog">
+            <form action="${path}/course"
+                  method="POST"
+                  class="needs-validation"
+                  novalidate>
+                <div class="request-info">
+                    <input name="previousPage" value="home" hidden="true" />
+                    <div class="invalid-feedback"></div>
+                    <input name="operation" value="REGISTER" hidden="true" />
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Register</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-12">
+                                <c:forEach items="${coursePackages}" var="package">
+                                    <div class="my-2">
+                                        <div class="custom-control custom-radio custom-control">
+                                            <input type="radio" id="${package.name}" name="package" class="custom-control-input" value="${package.id}">
+                                            <label class="custom-control-label" for="male">${package.name + ': ' + package.price}</label>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </body>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             ntegrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

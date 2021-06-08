@@ -11,6 +11,7 @@ package course;
  */
 import common.entities.Category;
 import common.entities.Course;
+import common.entities.PricePackage;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -50,6 +51,35 @@ public class CourseRepository extends Repository {
             }
 
             return null;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public ArrayList<PricePackage> getCoursePackage(int id) throws SQLException {
+        this.connectDatabase();
+
+        String getCoursePackage = "SELECT pp.id, pp.name, pp.list_price "
+                + "FROM course c INNER JOIN course_package cp on c.id = cp.course_id "
+                + "INNER JOIN price_package pp on cp.package_id = pp.id "
+                + "WHERE c.id = ? "
+                + "GROUP BY pp.id";
+        try (PreparedStatement statement = this.connection.prepareStatement(getCoursePackage)) {
+            statement.setInt(1, id);
+
+            ResultSet result = statement.executeQuery();
+            ArrayList<PricePackage> pricePackages = new ArrayList<>();
+            while (result.next()) {
+                pricePackages.add(
+                        new PricePackage(
+                                result.getInt("id"),
+                                result.getString("name"),
+                                result.getFloat("list_price")
+                        )
+                );
+            }
+
+            return pricePackages;
         } finally {
             this.disconnectDatabase();
         }

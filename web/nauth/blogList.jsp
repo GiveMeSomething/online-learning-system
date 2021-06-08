@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : blog
     Created on : May 29, 2021, 1:52:31 PM
     Author     : AS
@@ -12,7 +12,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-              integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" 
+              integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
               crossorigin="anonymous">
         <title>Blog</title>
     </head>
@@ -36,7 +36,7 @@
                                 <hr>
                                 <ul class="list-group list-group-flush shadow-sm">
                                     <c:forEach var="o" items="${hmCategory}">
-                                        <a href="PostsByCate?cateId=${o.key}&curPage=1" 
+                                        <a href="/PostsByCate?cateId=${o.key}&curPage=1"
                                            class="list-group-item list-group-item-action ${cateId==o.key?"active":""}">${o.value}</a>
                                     </c:forEach>
                                 </ul>
@@ -47,7 +47,7 @@
                             <div class="col-12">
                                 <ul class="list-group list-group-flush shadow-sm">
                                     <c:forEach items="${latest}" var="o">
-                                        <a href="BlogDetail?id=${o.value.postId}" 
+                                        <a href="blog/BlogDetail?id=${o.value.postId}"
                                            class="list-group-item list-group-item-action">${o.value.title}</a>
                                     </c:forEach>
                                 </ul>
@@ -64,7 +64,7 @@
                                         <div>
                                             <h5 class="mt-0">${o.title}</h5>
                                             <p>${o.briefInfo}</p>
-                                            <a href="BlogDetail?id=${o.postId}" class="stretched-link">Read more</a>
+                                            <a href="blog/BlogDetail?id=${o.postId}" class="stretched-link">Read more</a>
                                         </div>
                                     </div>
                                 </c:forEach>
@@ -76,38 +76,38 @@
                                     <ul class="pagination justify-content-center">
                                         <c:if test="${requestScope.flag == 0}">
                                             <li class="page-item ${curPage == 1?"disabled":""}">
-                                                <a class="page-link" href="BlogController?curPage=${curPage - 1}" 
+                                                <a class="page-link" href="blog?curPage=${curPage - 1}"
                                                    tabindex="-1">Previous</a>
                                             </li>
                                         </c:if>
                                         <c:if test="${requestScope.flag == 1}">
                                             <li class="page-item ${curPage == 1?"disabled":""}">
-                                                <a class="page-link" 
-                                                   href="BlogController?curPage=${curPage - 1}&flag=1&cateId=${requestScope.cateId}" tabindex="-1">Previous</a>
+                                                <a class="page-link"
+                                                   href="blog?curPage=${curPage - 1}&flag=1&cateId=${requestScope.cateId}" tabindex="-1">Previous</a>
                                             </li>
                                         </c:if>
                                         <c:forEach begin="1" end="${requestScope.nOfPage}" var="i">
                                             <c:if test="${requestScope.flag == 0}">
                                                 <li class="page-item ${curPage == i?"active":""}">
-                                                    <a class="page-link" href="BlogController?curPage=${i}">${i}</a>
+                                                    <a class="page-link" href="blog?curPage=${i}">${i}</a>
                                                 </li>
                                             </c:if>
                                             <c:if test="${requestScope.flag == 1}">
                                                 <li class="page-item ${curPage == i?"active":""}">
-                                                    <a class="page-link" 
-                                                       href="BlogController?curPage=${i}&flag=1&cateId=${requestScope.cateId}">${i}</a>
+                                                    <a class="page-link"
+                                                       href="blog?curPage=${i}&flag=1&cateId=${requestScope.cateId}">${i}</a>
                                                 </li>
                                             </c:if>
                                         </c:forEach>
-                                        <c:if test="${requestScope.flag == 0}">        
+                                        <c:if test="${requestScope.flag == 0}">
                                             <li class="page-item ${curPage == nOfPage?"disabled":""}">
-                                                <a class="page-link" href="BlogController?curPage=${curPage + 1}">Next</a>
+                                                <a class="page-link" href="blog?curPage=${curPage + 1}">Next</a>
                                             </li>
                                         </c:if>
-                                        <c:if test="${requestScope.flag == 1}">        
+                                        <c:if test="${requestScope.flag == 1}">
                                             <li class="page-item ${curPage == nOfPage?"disabled":""}">
-                                                <a class="page-link" 
-                                                   href="BlogController?curPage=${curPage + 1}&flag=1&cateId=${requestScope.cateId}">Next</a>
+                                                <a class="page-link"
+                                                   href="blog?curPage=${curPage + 1}&flag=1&cateId=${requestScope.cateId}">Next</a>
                                             </li>
                                         </c:if>
                                     </ul>

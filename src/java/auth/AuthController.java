@@ -67,6 +67,10 @@ public class AuthController extends HttpServlet implements Controller {
             String confirmPassword = request.getParameter("confirm-password");
 
             processChangePassword(request, response, oldPassword, newPassword, confirmPassword);
+        } else if (operation.equals("RESETPW")) {
+
+        } else {
+
         }
     }
 
