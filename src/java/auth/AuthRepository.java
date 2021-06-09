@@ -42,7 +42,6 @@ public class AuthRepository extends Repository {
                 String password = result.getString("password");
                 String salt = result.getString("salt");
                 String token = result.getString("token");
-
                 // Check password then return user
                 if (HashPassword.validatePassword(email, password, salt, inputPassword)) {
                     return token;
@@ -180,5 +179,54 @@ public class AuthRepository extends Repository {
         } finally {
             this.disconnectDatabase();
         }
+    }
+
+    // acc đang get thiếu cái role_id, mà giờ return ra cái account đang thiếu cái role_id, nhưng mà 
+    // role id là int, còn contructor truyền vào là 1 cái Role(object) nên chưa biết get kiểu gì, t chưa bao giờ dùng ENUM kiểu này
+    public Account getAccount(String userEmail) throws SQLException {
+        this.connectDatabase();
+        String getAccountByEmail = "SELECT user_email, password, role_id  FROM account WHERE user_email=?";
+        try (PreparedStatement statement = this.connection.prepareStatement(getAccountByEmail)) {
+            statement.setString(1, userEmail);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                int roleId = result.getInt("role_id");
+                Role accountRole;
+                if (roleId == 0) {
+                    accountRole = Role.ADMIN;
+                } else if (roleId == 1) {
+                    accountRole = Role.TEACHER;
+                } else {
+                    accountRole = Role.STUDENT;
+                }
+                return new Account(userEmail, result.getString("password"), accountRole);
+            }
+            return null;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+       public int getRoleIdOK(String email) throws SQLException {
+        this.connectDatabase();
+        String getRoleId = "SELECT role_id FROM db_ite1.account where user_email = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(getRoleId)) {
+            statement.setString(1, email);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt(1);
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return -1;
+    }
+    public static void main(String[] args) {
+        AuthRepository dao = new AuthRepository();
+        try {
+            Account a = dao.getAccount("1233@fpt.vn");
+            System.out.println(a.getRole().toString());
+        } catch (Exception e) {
+        }
+
     }
 }
