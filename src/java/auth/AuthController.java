@@ -12,6 +12,7 @@ import common.entities.Status;
 import common.entities.User;
 import common.utilities.Controller;
 import java.io.IOException;
+import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -34,7 +35,14 @@ public class AuthController extends HttpServlet implements Controller {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String operation = request.getParameter("operation");
 
+        if (operation.equals("LOGOUT")) {
+            HttpSession session = request.getSession();
+            session.setAttribute("isAdmin", false);
+            session.removeAttribute("user");
+        }
+        response.sendRedirect("home");
     }
 
     @Override
@@ -65,9 +73,6 @@ public class AuthController extends HttpServlet implements Controller {
             String oldPassword = request.getParameter("current-password");
             String newPassword = request.getParameter("new-password");
             String confirmPassword = request.getParameter("confirm-password");
-
-            System.out.println("Run in AuthController");
-
             processChangePassword(request, response, oldPassword, newPassword, confirmPassword);
         }else if(operation.equals("RESETPW1")){
             // Test how this RESETPW1 works
@@ -78,7 +83,6 @@ public class AuthController extends HttpServlet implements Controller {
             // Test changing password but not done yet!
             String newPassword = request.getParameter("new-password");
             String confirmPassword = request.getParameter("cf-password");
-            
         }
     }
 
@@ -100,11 +104,23 @@ public class AuthController extends HttpServlet implements Controller {
         // Check if the user enter the right account but there is no token in cookie
         if (cookieToken == null || !cookieToken.equals(accountToken)) {
             String confirmEmailPath = "/email?operation=AUTH&receiver=" + email;
-            response.sendRedirect(confirmEmailPath);
+            request.getRequestDispatcher(confirmEmailPath).forward(request, response);
         } else {
+            // Process if login by admin account
+            HttpSession session = request.getSession();
+
             User currentUser = userService.getUser(email);
+            userAccount = authService.getAccount(email);
             addUserToSession(request, response, currentUser);
-            response.sendRedirect(forwardTo);
+
+            if (userAccount.getRole() == Role.ADMIN) {
+                session.setAttribute("isAdmin", true);
+                response.sendRedirect("auth/admin");
+            } else {
+                // Student or Teacher
+                session.setAttribute("isAdmin", false);
+                response.sendRedirect(forwardTo);
+            }
         }
     }
 
@@ -128,14 +144,18 @@ public class AuthController extends HttpServlet implements Controller {
 
         String forwardTo = request.getParameter("previousPage");
         boolean isChanged = false;
+
+        System.out.println(oldPassword);
+        System.out.println(newPassword);
+        System.out.println(confirmPassword);
+
         if (currentUser != null && newPassword.equals(confirmPassword)) {
             if (authService.checkCurrentPass(currentUser.getEmail(), oldPassword)) {
                 isChanged = authService.changePassword(currentUser.getEmail(), newPassword);
             }
         }
-
         if (isChanged) {
-            response.sendRedirect("home");
+            response.sendRedirect("user");
         } else {
             this.forwardErrorMessage(request, response, "Can't change password. Please check again later", forwardTo);
         }

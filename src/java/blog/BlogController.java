@@ -98,15 +98,18 @@ public class BlogController extends HttpServlet {
     private void getBlogDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id = request.getParameter("id");
+
         HashMap<String, String> hmCategory = blogService.getHmCategory();
         HashMap<String, String> hmUser = blogService.getUser();
         HashMap<String, Post> latestPost = blogService.getLatestPost();
         Post postDetail = blogService.getPostDetail(id);
+
         request.setAttribute("hmCategory", hmCategory);
         request.setAttribute("post", postDetail);
         request.setAttribute("latest", latestPost);
 
         request.getRequestDispatcher("nauth/blog/blogDetail.jsp").forward(request, response);
+
     }
 
     private void getBlogPaginationByCategory(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

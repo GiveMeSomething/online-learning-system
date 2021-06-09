@@ -6,9 +6,11 @@
 package email;
 
 import auth.AuthService;
+import common.entities.Account;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,15 +54,28 @@ public class EmailController extends HttpServlet {
                 response.sendRedirect("/home");
             } else {
                 // Do something when active fail
+                response.sendRedirect("nauth/authenticate/register-failed.jsp");
             }
 
         } else if (operation.equals("RESETPW")) {
             // Test if navigate to Change password page in nauth
             String email = request.getParameter("email");
             request.getRequestDispatcher("nauth/resetPassword2.jsp").forward(request, response);
+        } else if (operation.equals("CHANGEPW")) {
+            // TODO: Duy Anh se implement phan nay
+        } else if (operation.equals("AUTH")) {
+            // Reads request data
+            String userEmail = request.getParameter("email");
+            String cryptPassword = request.getParameter("password");
+
+            String token = authService.getToken(userEmail, cryptPassword);
+            addTokenToCookie(response, token);
+
+            response.sendRedirect("/home");
         } else {
             response.sendRedirect("/home");
         }
+
     }
 
     @Override
@@ -89,6 +104,58 @@ public class EmailController extends HttpServlet {
             // Test if send successfully
             String thisEmail = request.getParameter("email");
             boolean isSent = emailService.sendResetPasswordEmail(host, port, email, password, thisEmail);
+//            processConfirm(request, response);
+        } else if (operation.equals("CHANGEPW")) {
+            // TODO: Duy Anh se implement phan nay
+        } else if (operation.equals("AUTH")) {
+            processAuth(request, response);
+        } else {
+            response.sendRedirect("/home");
+
         }
+    }
+
+    public void processConfirm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Reads request data
+        String inputEmail = request.getParameter("receiver");
+        String token = request.getParameter("token");
+        boolean isSent = emailService.sendConfirmEmail(host, port, email, password,
+                inputEmail, token);
+
+        if (isSent) {
+            // Do something
+            System.out.println("Email sent");
+        } else {
+            // Do something else
+            System.out.println("Can't send");
+        }
+
+        response.sendRedirect("nauth/authenticate/register-success.jsp");
+    }
+
+    public void processAuth(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String userEmail = request.getParameter("email");
+
+        Account authAccount = authService.getAccount(userEmail);
+        boolean isSent = emailService.sendAuthEmail(host, port, email, password,
+                authAccount.getEmail(), authAccount.getPassword());
+
+        if (isSent) {
+            // Do something
+            System.out.println("Email sent");
+        } else {
+            // Do something else
+            System.out.println("Can't send");
+        }
+
+        response.sendRedirect("nauth/authenticate/auth-success.jsp");
+    }
+
+    private void addTokenToCookie(HttpServletResponse response, String token) {
+        // Put userToken into cookie for later authorization
+        Cookie userCookie = new Cookie("ols-token", token);
+        response.addCookie(userCookie);
     }
 }

@@ -9,24 +9,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Online Learning System</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-              integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
-              crossorigin="anonymous">
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
               integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
               crossorigin="anonymous"/>
-        <link rel="stylesheet" type="text/css" href="${path}/skeleton/styles.css">
-
+        <link rel="stylesheet" type="text/css" href="${path}/style/styles.css">
     </head>
     <body>
         <section id="navbar">
             <div class="container-fluid d-flex justify-content-center my-3">
                 <nav class="navbar navbar-expand-xl navbar-light bg-light" style="margin: auto;">
-                    <a class="navbar-brand" style="font-size: 2rem;" href="#">
+                    <a class="navbar-brand" style="font-size: 2rem;" href="home">
                         <span style="color:blue">O</span>
                         <span style="color:orange">L</span>
                         <span style="color:green">S</span>
@@ -34,64 +30,34 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav d-flex align-items-center">
                             <li class="nav-item">
-                                <form action="searchController?cID=${sessionScope.cateID}" class="d-flex" method="post">
+                                <form action="course?index=${tag}&&cID=${sessionScope.categoryId}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
+                                      class="d-flex" method="post">
                                     <input name="searchCourse" class="form-control py-2"
                                            type="search" placeholder="Search courses">
                                     <div class="invalid-feedback"></div>
                                 </form>
                             </li>
                             <li class="nav-item dropdown nav-hover">
-                                <a class="nav-link dropdown-toggle"
-                                   href="#" id="navbarDropdown"
-                                   role="button" data-bs-toggle="dropdown"
-                                   aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" role="button" id="navbarDropdownButton" data-toggle="dropdown">
                                     Categories
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownButton">
+                                    <c:forEach items="${listC}" var="o">
                                         <a class="dropdown-item"
-                                           href="CourseListController?cID=1">
-                                            Software Engineering
+                                           href="course?cID=${o.id}">
+                                            ${o.categoryName}
                                         </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="CourseListController?cID=2">
-                                            Economy
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="CourseListController?cID=3">
-                                            Digital Marketing
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="CourseListController?cID=4">
-                                            Artificial Intelligence
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="CourseListController?cID=5">
-                                            Information Assurance
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="CourseListController?cID=6">
-                                            Language
-                                        </a>
-                                    </li>
-                                </ul>
+                                    </c:forEach>
+                                </div>
                             </li>
                             <li class="nav-item nav-hover">
                                 <a class="nav-link active" aria-current="page" href="blog">Blogs</a>
                             </li>
-                            <li class="nav-item nav-hover">
-                                <a class="nav-link active" aria-current="page" href="#">Courses</a>
-                            </li>
+                            <c:if test="${sessionScope.isAdmin != true}">
+                                <li class="nav-item nav-hover">
+                                    <a class="nav-link active" aria-current="page" href="#">Courses</a>
+                                </li>
+                            </c:if>
                             <li class="gap-3">
                                 <div style="margin-top: 4.5px; white-space: nowrap">
                                     <c:choose>
@@ -114,18 +80,20 @@
                                                             <i class="fas fa-cog fa-lg"></i>
                                                         </a>
                                                         <ul id="setting-dropdown-sub-ul">
-                                                            <li id="li-top">
-                                                                <a href="#" style="padding-top: 5px; padding-bottom: 5px">My course</a>
+                                                            <c:if test="${sessionScope.isAdmin} != true">
+                                                                <li id="li-top">
+                                                                    <a href="#" style="padding-top: 5px; padding-bottom: 5px">My course</a>
+                                                                </li>
+                                                            </c:if>
+                                                            <li id="li-middle">
+                                                                <a href="user">Account setting</a>
                                                             </li>
                                                             <li id="li-middle">
-                                                                <a href="#">Account setting</a>
+                                                                <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">Log out</a>
                                                             </li>
-                                                            <li id="li-middle">
-                                                                <a href="#" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">Log out</a>
-                                                            </li>
-                                                            <c:if test="${sessionScope.acc.isAdmin == true}">
+                                                            <c:if test="${sessionScope.isAdmin == true}">
                                                                 <li id="li-bottom">
-                                                                    <a href="#" style="padding-bottom: 5px">Management</a>
+                                                                    <a href="${path}/auth/admin" style="padding-bottom: 5px">Management</a>
                                                                 </li>
                                                             </c:if>
                                                         </ul>
@@ -317,18 +285,6 @@
             </div>
         </section>
     </body>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-            crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
-            integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
-            crossorigin="anonymous">
-    </script>
     <!-- Import if have form input -->
     <script type="text/javascript" src="${path}/utilities/form-validator.js"></script>
 </html>

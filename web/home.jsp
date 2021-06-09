@@ -21,10 +21,10 @@
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
               integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
               crossorigin="anonymous">
-        <link rel="stylesheet" href="${path}/style/styles.css">
+        <link rel="stylesheet" href="./style/styles.css">
     </head>
     <body>
-        <jsp:include page="components/global/navbar.jsp"/>
+        <jsp:include page="/components/global/navbar.jsp"/>
         <c:if test="${requestScope.errorMessage != null}">
             <div class="d-flex w-100 align-items-center justify-content-end">
                 <h5>${requestScope.errorMessage}</h5>
@@ -116,38 +116,38 @@
                     </div>
                     <!--                it-->
                     <div id="it" style="display: block; margin-top: -2rem">
-                        <jsp:include page="components/home/it.jsp"/>
+                        <jsp:include page="/components/home/it.jsp"/>
                     </div>
                     <!--                business-->
                     <div id="business" style="display: none; margin-top: -2rem">
-                        <jsp:include page="components/home/business.jsp"/>
+                        <jsp:include page="/components/home/business.jsp"/>
                     </div>
                     <!--                marketing-->
                     <div id="marketing" style="display: none; margin-top: -2rem">
-                        <jsp:include page="components/home/marketing.jsp"/>
+                        <jsp:include page="/components/home/marketing.jsp"/>
                     </div>
                     <!--                ai-->
                     <div id="ai" style="display: none; margin-top: -2rem">
-                        <jsp:include page="components/home/ai.jsp"/>
+                        <jsp:include page="/components/home/ai.jsp"/>
                     </div>
                     <!--                information assurance-->
                     <div id="ia" style="display: none; margin-top: -2rem">
-                        <jsp:include page="components/home/ia.jsp" />
+                        <jsp:include page="/components/home/ia.jsp" />
                     </div>
                     <!--                language-->
                     <div id="language" style="display: none; margin-top: -2rem">
-                        <jsp:include page="components/home/language.jsp"/>
+                        <jsp:include page="/components/home/language.jsp"/>
                     </div>
                     <div id="myDIV" style="margin-left: -0.5rem">
                         <a class="btn2 " style="outline: none; font-weight: normal; font-size: 20px">Some of the best</a>
                     </div>
                     <!--                students are viewing-->
                     <div  style="display: block; margin-top: -2rem">
-                        <jsp:include page="components/home/featuredCourse.jsp"/>
+                        <jsp:include page="/components/home/featuredCourse.jsp"/>
                     </div>
                 </div>
         </section>
-        <jsp:include page="components/global/footer.jsp"/>
+        <jsp:include page="/components/global/footer.jsp"/>
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -268,17 +268,5 @@
             ia.style.display = 'none';
             language.style.display = 'block';
         }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-            crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
-            integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
-            crossorigin="anonymous">
     </script>
 </html>

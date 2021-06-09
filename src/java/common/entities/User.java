@@ -103,4 +103,9 @@ public class User {
         this.mobile = mobile;
     }
 
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", image=" + image + ", name=" + name + ", gender=" + gender + ", email=" + email + ", address=" + address + ", status=" + status + ", mobile=" + mobile + '}';
+    }
+
 }

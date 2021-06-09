@@ -23,6 +23,7 @@ public class BlogRepository extends Repository {
     private final HashMap<String, String> hmCategory = new HashMap<>();
     private final HashMap<String, Post> hmLatestPost = new HashMap<>();
     private final HashMap<String, String> hmUser = new HashMap<>();
+
     // Get all posts from database
     public HashMap<String, Post> getHmPost() throws SQLException {
         this.connectDatabase();
@@ -43,7 +44,7 @@ public class BlogRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-    
+
     // Get all users
     public HashMap<String, String> getUser() throws SQLException {
         this.connectDatabase();
@@ -60,7 +61,7 @@ public class BlogRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-    
+
     // Get 3 latest posts
     public HashMap<String, Post> getLatestPost() throws SQLException {
         this.connectDatabase();
@@ -81,7 +82,7 @@ public class BlogRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-    
+
     // Get all categories
     public HashMap<String, String> getHmCategory() throws SQLException {
         this.connectDatabase();
@@ -99,7 +100,7 @@ public class BlogRepository extends Repository {
         }
 
     }
-    
+
     // Get 1 post
     public Post getPostDetail(String id) throws SQLException {
         this.connectDatabase();
@@ -122,7 +123,7 @@ public class BlogRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-    
+
     // Get total of posts
     public int getTotalPosts() throws SQLException {
         this.connectDatabase();
@@ -139,8 +140,8 @@ public class BlogRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-    
-    // Get list of posts and limit number of posts per page 
+
+    // Get list of posts and limit number of posts per page
     public ArrayList<Post> getPostsList(int currentPage, int postsPerPage) throws SQLException {
         this.connectDatabase();
 
@@ -163,7 +164,7 @@ public class BlogRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-    
+
     // Get total number of posts by category
     public int getTotalPostsByCategory(int id) throws SQLException {
         this.connectDatabase();
@@ -253,8 +254,8 @@ public class BlogRepository extends Repository {
     public static void main(String[] args) throws Exception {
         BlogRepository blog = new BlogRepository();
 //        HashMap<String, Post> hmCat = (HashMap<String, Post>) blog.getLatestPost();
-        for (String key : blog.getHmPost().keySet()) {
-            System.out.println(blog.getHmPost().get(key));
+        for (String key : blog.getHmCategory().keySet()) {
+            System.out.println(blog.getHmCategory());
         }
 //        ArrayList<Post> posts = blog.getPostsByTitle("tech");
 //        for (Post post : posts) {

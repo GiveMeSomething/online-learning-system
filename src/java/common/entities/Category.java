@@ -7,20 +7,22 @@ package common.entities;
 
 /**
  *
- * @author AS
+ * @author Nguyen Khanh Toan
  */
 public class Category {
     private String categoryId;
     private String categoryName;
-
-    public Category() {
-    }
+    private int id;
 
     public Category(String catId, String catName) {
         this.categoryId = catId;
         this.categoryName = catName;
     }
-
+    
+    public Category(int id, String categoryName) {
+        this.id = id;
+        this.categoryName = categoryName;
+    }
     public String getCategoryId() {
         return categoryId;
     }
@@ -37,9 +39,17 @@ public class Category {
         this.categoryName = categoryName;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return "Category{" + "catId=" + categoryId + ", catName=" + categoryName + '}';
+        return "Category{" + "categoryId=" + categoryId + ", categoryName=" + categoryName + ", id=" + id + '}';
     }
     
 }

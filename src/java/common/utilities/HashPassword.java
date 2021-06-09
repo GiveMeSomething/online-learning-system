@@ -25,5 +25,7 @@ public class HashPassword {
 
     public static void main(String[] args) {
         // For testing hashPassword method
+
+        System.out.println(HashPassword.validatePassword("minhhthe150277@fpt.edu.vn", "2083632174748690", "17", "123"));
     }
 }
