@@ -12,6 +12,7 @@ import common.entities.Status;
 import common.entities.User;
 import common.utilities.Controller;
 import java.io.IOException;
+import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -34,7 +35,14 @@ public class AuthController extends HttpServlet implements Controller {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String operation = request.getParameter("operation");
 
+        if (operation.equals("LOGOUT")) {
+            HttpSession session = request.getSession();
+            session.setAttribute("isAdmin", false);
+            session.removeAttribute("user");
+        }
+        response.sendRedirect("home");
     }
 
     @Override
@@ -94,9 +102,21 @@ public class AuthController extends HttpServlet implements Controller {
             String confirmEmailPath = "/email?operation=AUTH&receiver=" + email;
             request.getRequestDispatcher(confirmEmailPath).forward(request, response);
         } else {
+            // Process if login by admin account
+            HttpSession session = request.getSession();
+
             User currentUser = userService.getUser(email);
+            userAccount = authService.getAccount(email);
             addUserToSession(request, response, currentUser);
-            response.sendRedirect(forwardTo);
+
+            if (userAccount.getRole() == Role.ADMIN) {
+                session.setAttribute("isAdmin", true);
+                response.sendRedirect("auth/admin");
+            } else {
+                // Student or Teacher
+                session.setAttribute("isAdmin", false);
+                response.sendRedirect(forwardTo);
+            }
         }
     }
 

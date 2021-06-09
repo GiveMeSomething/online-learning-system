@@ -56,9 +56,11 @@
                             <li class="nav-item nav-hover">
                                 <a class="nav-link active" aria-current="page" href="blog">Blogs</a>
                             </li>
-                            <li class="nav-item nav-hover">
-                                <a class="nav-link active" aria-current="page" href="#">Courses</a>
-                            </li>
+                            <c:if test="${sessionScope.isAdmin != true}">
+                                <li class="nav-item nav-hover">
+                                    <a class="nav-link active" aria-current="page" href="#">Courses</a>
+                                </li>
+                            </c:if>
                             <li class="gap-3">
                                 <div style="margin-top: 4.5px; white-space: nowrap">
                                     <c:choose>
@@ -81,18 +83,20 @@
                                                             <i class="fas fa-cog fa-lg"></i>
                                                         </a>
                                                         <ul id="setting-dropdown-sub-ul">
-                                                            <li id="li-top">
-                                                                <a href="#" style="padding-top: 5px; padding-bottom: 5px">My course</a>
-                                                            </li>
+                                                            <c:if test="${sessionScope.isAdmin} != true">
+                                                                <li id="li-top">
+                                                                    <a href="#" style="padding-top: 5px; padding-bottom: 5px">My course</a>
+                                                                </li>
+                                                            </c:if>
                                                             <li id="li-middle">
                                                                 <a href="user">Account setting</a>
                                                             </li>
                                                             <li id="li-middle">
-                                                                <a href="#" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">Log out</a>
+                                                                <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">Log out</a>
                                                             </li>
-                                                            <c:if test="${sessionScope.acc.isAdmin == true}">
+                                                            <c:if test="${sessionScope.isAdmin == true}">
                                                                 <li id="li-bottom">
-                                                                    <a href="#" style="padding-bottom: 5px">Management</a>
+                                                                    <a href="${path}/auth/admin" style="padding-bottom: 5px">Management</a>
                                                                 </li>
                                                             </c:if>
                                                         </ul>

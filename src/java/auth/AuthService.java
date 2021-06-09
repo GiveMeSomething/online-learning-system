@@ -6,7 +6,6 @@
 package auth;
 
 import common.entities.Account;
-import common.entities.User;
 import java.sql.SQLException;
 
 public class AuthService {
@@ -27,15 +26,16 @@ public class AuthService {
 
         return null;
     }
-    public Account getAccount (String userEmail){
-    
-      try {
+
+    public Account getAccount(String userEmail) {
+
+        try {
             return authRepository.getAccount(userEmail);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;      
+        return null;
     }
 
     // Register and receive authorization token
@@ -45,7 +45,7 @@ public class AuthService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return null;
     }
 
@@ -96,8 +96,9 @@ public class AuthService {
         }
         return false;
     }
- public int getRoleIdOK(String email) {
-        
+
+    public int getRoleIdOK(String email) {
+
         try {
             return authRepository.getRoleIdOK(email);
 

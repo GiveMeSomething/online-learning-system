@@ -23,45 +23,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AdminController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ControllerServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ControllerServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getServletPath();
+        String path = request.getServletPath();
+        String action = path.substring(path.lastIndexOf("/"));
+
         switch (action) {
             case "/search":
                 searchUser(request, response);
@@ -84,7 +51,6 @@ public class AdminController extends HttpServlet {
             case "/updaterole":
                 updateRole(request, response);
                 break;
-
             default:
                 filterUser(request, response);
                 break;
@@ -93,7 +59,6 @@ public class AdminController extends HttpServlet {
 
     public void updateRole(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         UserService dao = new UserService();
         int roleId;
         String roleName = request.getParameter("role");
@@ -115,12 +80,10 @@ public class AdminController extends HttpServlet {
         dao.updateRole(roleId, email);
         dao.updateStatus(status, email);
         response.sendRedirect("");
-
     }
 
     public void insertUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         UserService dao = new UserService();
         String image = request.getParameter("image");
         String fullname = request.getParameter("fullname");
@@ -147,12 +110,10 @@ public class AdminController extends HttpServlet {
         dao.insertAccount(email, password, roleId);
         dao.insertUser(id, image, fullname, gender, email, address, status, mobile);
         response.sendRedirect("");
-
     }
 
     public void updateUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         UserService dao = new UserService();
         String img = request.getParameter("image");
         int uid = Integer.parseInt(request.getParameter("uid"));
@@ -162,17 +123,14 @@ public class AdminController extends HttpServlet {
         boolean gender = request.getParameter("gender").equals("male");
         dao.updateUserInformation(img, uid, fullname, gender, address, mobile);
         response.sendRedirect("");
-
     }
 
     public void editUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         UserService dao = new UserService();
         int uid = Integer.parseInt(request.getParameter("uid"));
         request.setAttribute("user", dao.getUserById(uid));
-        request.getRequestDispatcher("auth/admin/edituser.jsp").forward(request, response);
-
+        request.getRequestDispatcher("/auth/admin/edituser.jsp").forward(request, response);
     }
 
     public void viewUser(HttpServletRequest request, HttpServletResponse response)
@@ -186,13 +144,12 @@ public class AdminController extends HttpServlet {
 
         request.setAttribute("account", account);
         request.setAttribute("user", dao.getUserById(uid));
-        request.getRequestDispatcher("auth/admin/userdetail.jsp").forward(request, response);
+        request.getRequestDispatcher("/auth/admin/userdetail.jsp").forward(request, response);
 
     }
 
     public void filterUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         PrintWriter out = response.getWriter();
         String[] gender = request.getParameterValues("gender");
         String[] role = request.getParameterValues("role");
@@ -286,13 +243,11 @@ public class AdminController extends HttpServlet {
                 request.setAttribute(String.valueOf("c" + string), "checked");
             }
         }
-        request.getRequestDispatcher("auth/admin/userlist.jsp").forward(request, response);
-
+        request.getRequestDispatcher("/auth/admin/userlist.jsp").forward(request, response);
     }
 
     public void getAllUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         UserService dao = new UserService();
         String index = request.getParameter("page");
         if (index == null) {
@@ -302,41 +257,13 @@ public class AdminController extends HttpServlet {
         request.setAttribute("endPage", endPage);
         request.setAttribute("page", index);
         request.setAttribute("UserList", dao.pagingUser(Integer.parseInt(index)));
-        request.getRequestDispatcher("auth/admin/userlist.jsp").forward(request, response);
-
+        request.getRequestDispatcher("/auth/admin/userlist.jsp").forward(request, response);
     }
 
     public void searchUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         UserService dao = new UserService();
         request.setAttribute("UserList", dao.searchUser(request.getParameter("searchtxt")));
-        request.getRequestDispatcher("auth/admin/userlist.jsp").forward(request, response);
-
+        request.getRequestDispatcher("/auth/admin/userlist.jsp").forward(request, response);
     }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }
