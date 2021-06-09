@@ -35,15 +35,23 @@ public class AuthService {
             e.printStackTrace();
         }
 
-        return null;
-    
-    
+        return null;      
     }
 
     // Register and receive authorization token
     public String register(Account account) {
         try {
             return authRepository.register(account);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+
+    public String getToken(String email, String password) {
+        try {
+            return authRepository.getToken(email, password);
         } catch (Exception e) {
             e.printStackTrace();
         }

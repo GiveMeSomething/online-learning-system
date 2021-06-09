@@ -46,9 +46,9 @@ public class UserRepository extends Repository {
     public boolean addUser(User user) throws SQLException {
         this.connectDatabase();
 
-        // hard code ID until fix to auto increment id in DB
-        String addUser = "INSERT INTO user (id, full_name, gender, email, status_id, mobile) "
-                + "VALUES (11, ?, ?, ?, ?, ?)";
+        String addUser = "INSERT INTO user (full_name, gender, email, status_id, mobile) "
+                + "VALUES (?, ?, ?, ?, ?)";
+
         try (PreparedStatement statement = this.connection.prepareStatement(addUser)) {
             statement.setString(1, user.getName());
             statement.setInt(2, Gender.valueOf(user.getGender()));

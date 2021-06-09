@@ -7,7 +7,6 @@ package auth;
 
 import common.entities.Account;
 import common.entities.Role;
-import common.entities.User;
 import common.utilities.HashPassword;
 import common.utilities.HashToken;
 import common.utilities.Repository;
@@ -206,6 +205,7 @@ public class AuthRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+
        public int getRoleIdOK(String email) throws SQLException {
         this.connectDatabase();
         String getRoleId = "SELECT role_id FROM db_ite1.account where user_email = ?";
@@ -220,13 +220,26 @@ public class AuthRepository extends Repository {
         }
         return -1;
     }
-    public static void main(String[] args) {
-        AuthRepository dao = new AuthRepository();
-        try {
-            Account a = dao.getAccount("1233@fpt.vn");
-            System.out.println(a.getRole().toString());
-        } catch (Exception e) {
-        }
 
+    public String getToken(String userEmail, String cryptPassword) throws SQLException {
+        this.connectDatabase();
+
+        String getAccount = "SELECT user_email, password, token FROM account WHERE user_email=?";
+        try (PreparedStatement statement = this.connection.prepareStatement(getAccount)) {
+            statement.setString(1, userEmail);
+
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                String currentPassword = result.getString("password");
+                if (cryptPassword.equals(currentPassword)) {
+                    String token = result.getString("token");
+                    return token;
+                }
+            }
+
+            return null;
+        } finally {
+            this.disconnectDatabase();
+        }
     }
 }

@@ -33,16 +33,14 @@ public class UserController extends HttpServlet implements Controller {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("user");
-        HttpSession currentSession = request.getSession();
-        // ĐANG HARDCODE
-        int id = 1;
-        currentSession.setAttribute("id", id);
-        
-        User user = userService.getUserProfile(id);
-        request.setAttribute("user", user);
-        List<Category> listC = courseService.getAllCategory();
-        request.setAttribute("listC", listC);
+//        HttpSession currentSession = request.getSession();
+//        int id = Integer.parseInt((String) currentSession.getAttribute("user"));
+//
+//        User user = userService.getUserProfile(id);
+//        request.setAttribute("user", user);
+
+        List<Category> listCategories = courseService.getAllCategory();
+        request.setAttribute("listC", listCategories);
         request.getRequestDispatcher("auth/user/profile.jsp").forward(request, response);
     }
 
@@ -66,7 +64,7 @@ public class UserController extends HttpServlet implements Controller {
                     address, Status.valueOf(status), mobile);
             boolean isUpdate = userService.updateUserProfile(userUpdate);
             if (isUpdate) {
-                response.sendRedirect("");
+                response.sendRedirect("user");
             } else {
                 this.forwardErrorMessage(request, response, "Can not update", "user");
             }

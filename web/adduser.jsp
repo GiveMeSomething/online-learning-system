@@ -200,7 +200,6 @@
                                     type="text"
                                     placeholder="Address"
                                     required                                      
-                                    pattern="^\d{10}$"
                                     data-value-missing="Can't be empty"/>
                                 <div class="invalid-feedback"></div>
                             </div>

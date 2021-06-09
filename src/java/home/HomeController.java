@@ -5,7 +5,6 @@
  */
 package home;
 
-
 import common.entities.Course;
 import common.entities.Category;
 import course.CourseService;
@@ -23,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "Home_Controller", urlPatterns = {"/home"})
 public class HomeController extends HttpServlet {
+
     private CourseService courseService;
 
     @Override

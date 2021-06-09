@@ -33,7 +33,7 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav d-flex align-items-center">
                             <li class="nav-item">
-                                <form action="course?index=${tag}&&cID=${sessionScope.categoryId}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}" 
+                                <form action="course?index=${tag}&&cID=${sessionScope.categoryId}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
                                       class="d-flex" method="post">
                                     <input name="searchCourse" class="form-control py-2"
                                            type="search" placeholder="Search courses">
@@ -44,20 +44,17 @@
                                 <a class="btn nav-link dropdown-toggle" id="navbarDropdownButton" data-toggle="dropdown">
                                     Categories
                                 </a>
-                                <!--                                <div class="dropdown-menu" aria-labelledby="navbarDropdownButton">-->
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownButton">
                                     <c:forEach items="${listC}" var="o">
-                                        <li>
-                                            <a class="dropdown-item"
-                                               href="course?cID=${o.id}">
-                                                ${o.categoryName}
-                                            </a>
-                                        </li> 
+                                        <a class="dropdown-item"
+                                           href="course?cID=${o.id}">
+                                            ${o.categoryName}
+                                        </a>
                                     </c:forEach>
-                                </ul>
+                                </div>
                             </li>
                             <li class="nav-item nav-hover">
-                                <a class="nav-link active" aria-current="page" href="#">Blogs</a>
+                                <a class="nav-link active" aria-current="page" href="blog">Blogs</a>
                             </li>
                             <li class="nav-item nav-hover">
                                 <a class="nav-link active" aria-current="page" href="#">Courses</a>
@@ -88,7 +85,7 @@
                                                                 <a href="#" style="padding-top: 5px; padding-bottom: 5px">My course</a>
                                                             </li>
                                                             <li id="li-middle">
-                                                                <a href="#">Account setting</a>
+                                                                <a href="user">Account setting</a>
                                                             </li>
                                                             <li id="li-middle">
                                                                 <a href="#" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">Log out</a>

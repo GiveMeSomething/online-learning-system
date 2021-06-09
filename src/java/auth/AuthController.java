@@ -66,9 +66,11 @@ public class AuthController extends HttpServlet implements Controller {
             String newPassword = request.getParameter("new-password");
             String confirmPassword = request.getParameter("confirm-password");
 
-            System.out.println("Run in AuthController");
-
             processChangePassword(request, response, oldPassword, newPassword, confirmPassword);
+        } else if (operation.equals("RESETPW")) {
+
+        } else {
+
         }
     }
 
@@ -90,7 +92,7 @@ public class AuthController extends HttpServlet implements Controller {
         // Check if the user enter the right account but there is no token in cookie
         if (cookieToken == null || !cookieToken.equals(accountToken)) {
             String confirmEmailPath = "/email?operation=AUTH&receiver=" + email;
-            response.sendRedirect(confirmEmailPath);
+            request.getRequestDispatcher(confirmEmailPath).forward(request, response);
         } else {
             User currentUser = userService.getUser(email);
             addUserToSession(request, response, currentUser);
@@ -118,14 +120,18 @@ public class AuthController extends HttpServlet implements Controller {
 
         String forwardTo = request.getParameter("previousPage");
         boolean isChanged = false;
+
+        System.out.println(oldPassword);
+        System.out.println(newPassword);
+        System.out.println(confirmPassword);
+
         if (currentUser != null && newPassword.equals(confirmPassword)) {
             if (authService.checkCurrentPass(currentUser.getEmail(), oldPassword)) {
                 isChanged = authService.changePassword(currentUser.getEmail(), newPassword);
             }
         }
-
         if (isChanged) {
-            response.sendRedirect("home");
+            response.sendRedirect("user");
         } else {
             this.forwardErrorMessage(request, response, "Can't change password. Please check again later", forwardTo);
         }
