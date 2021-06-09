@@ -21,7 +21,7 @@ public class DBContext {
         try {
             System.out.println(new DBContext().getConnection());
         } catch (Exception e) {
-            
+            e.printStackTrace();
         }
     }
 }

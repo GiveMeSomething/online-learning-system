@@ -51,7 +51,7 @@ public class EmailController extends HttpServlet {
             // Request to authService to active current user
             boolean isActiveSuccess = authService.activeAccount(userEmail, token);
             if (isActiveSuccess) {
-                response.sendRedirect("/home");
+                response.sendRedirect(request.getContextPath() + "/home");
             } else {
                 // Do something when active fail
                 response.sendRedirect("nauth/authenticate/register-failed.jsp");
@@ -71,11 +71,10 @@ public class EmailController extends HttpServlet {
             String token = authService.getToken(userEmail, cryptPassword);
             addTokenToCookie(response, token);
 
-            response.sendRedirect("/home");
+            response.sendRedirect(request.getContextPath() + "/home");
         } else {
-            response.sendRedirect("/home");
+            response.sendRedirect(request.getContextPath() + "/home");
         }
-
     }
 
     @Override
