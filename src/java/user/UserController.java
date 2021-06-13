@@ -49,9 +49,10 @@ public class UserController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         HttpSession currentSession = request.getSession();
         String operation = request.getParameter("operation");
+        User currentUser = (User) currentSession.getAttribute("user");
 
         if (operation.equals("changeUserProfile")) {
-            int id = Integer.parseInt((String) currentSession.getAttribute("id"));
+            int id = currentUser.getId();
             String image = request.getParameter("image");
             String fullName = request.getParameter("fName");
             String gender = request.getParameter("gender");
