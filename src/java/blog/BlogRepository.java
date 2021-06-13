@@ -98,7 +98,6 @@ public class BlogRepository extends Repository {
         } finally {
             this.disconnectDatabase();
         }
-
     }
 
     // Get 1 post

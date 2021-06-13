@@ -79,12 +79,16 @@ public class AuthController extends HttpServlet implements Controller {
             String email = request.getParameter("email");
             String resetEmailPath = "/email?operation=RESETPW&receiver=" + email+"&token=";
             String reset = "/email?work=RESETPW&email=" + email;
+            
+            // Push reset into Session
             HttpSession ses = request.getSession();
             ses.setAttribute("resetPath", reset);
+            // Set time for this session, hope this gonna work!
             ses.setMaxInactiveInterval(30);
+            
             request.getRequestDispatcher(resetEmailPath).forward(request, response);
         }else if(operation.equals("RESETPW2")){
-            // Test changing password but not done yet!
+            // Test changing password
             String newPassword = request.getParameter("new-password");
             String confirmPassword = request.getParameter("confirm-password");
             String email = request.getParameter("email");
@@ -163,7 +167,7 @@ public class AuthController extends HttpServlet implements Controller {
         }
     }
     
-    //Vu Duy Anh: In Progress
+    //Vu Duy Anh: In Progress (bug: after changed password, still click to the link and change again)
     private void processResetPassword(HttpServletRequest request, HttpServletResponse response,
             String newPassword, String confirmPassword, String email) throws ServletException, IOException {
         String forwardTo = request.getParameter("previousPage");

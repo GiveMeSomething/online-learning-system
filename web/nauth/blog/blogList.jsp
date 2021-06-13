@@ -51,9 +51,9 @@
                                 <h3>Category</h3>
                                 <hr>
                                 <ul class="list-group list-group-flush shadow-sm">
-                                    <c:forEach var="o" items="${hmCategory}">
-                                        <a href="blog?operation=postByCategory&cateId=${o.key}&curPage=1" 
-                                           class="list-group-item list-group-item-action ${categoryId==o.key?"active":""}">${o.value}</a>
+                                    <c:forEach var="i" items="${hmCategory}">
+                                        <a href="blog?operation=postByCategory&cateId=${i.key}&curPage=1" 
+                                           class="list-group-item list-group-item-action ${categoryId==i.key?"active":""}">${i.value}</a>
                                     </c:forEach>
                                 </ul>
                             </div>
