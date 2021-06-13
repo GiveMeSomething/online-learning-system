@@ -30,63 +30,6 @@ public class CourseController extends HttpServlet {
     @Override
     public void init() throws ServletException {
         courseService = new CourseService();
-
-    }
-
-    private void getTitle(HttpServletRequest request, HttpServletResponse response, int categoryId)
-            throws ServletException, IOException {
-        switch (categoryId) {
-            case 1: {
-                request.setAttribute("title", "Software Enginneering");
-                break;
-            }
-            case 2: {
-                request.setAttribute("title", "Economy");
-                break;
-            }
-            case 3: {
-                request.setAttribute("title", "Digital Marketing");
-                break;
-            }
-            case 4: {
-                request.setAttribute("title", "Artificial Intelligence");
-                break;
-            }
-            case 5: {
-                request.setAttribute("title", "Information Assurance");
-                break;
-            }
-            case 6: {
-                request.setAttribute("title", "Language");
-                break;
-            }
-
-        }
-    }
-
-    private int getTotalPage(HttpServletRequest request, HttpServletResponse response, int categoryId)
-            throws ServletException, IOException {
-        int total = courseService.countingCourseList(categoryId);
-        int endPage = 0;
-        if (total % 8 == 0) {
-            endPage = courseService.countingCourseList(categoryId) / 8;
-        } else {
-            endPage = (courseService.countingCourseList(categoryId) / 8) + 1;
-        }
-        return endPage;
-    }
-
-    private int getTotalPageSearch(HttpServletRequest request, HttpServletResponse response, int categoryId, String searchName)
-            throws ServletException, IOException {
-        int total = courseService.countingCourseListSearch(categoryId, searchName);
-        int endPage = 0;
-        if (total % 8 == 0) {
-            endPage = courseService.countingCourseListSearch(categoryId, searchName) / 8;
-        } else {
-            endPage = (courseService.countingCourseListSearch(categoryId, searchName) / 8) + 1;
-        }
-        return endPage;
-
     }
 
     @Override
@@ -199,6 +142,62 @@ public class CourseController extends HttpServlet {
         request.setAttribute("course", list);
         request.setAttribute("courseFeature", courseFeature);
         request.getRequestDispatcher("nauth/course/list.jsp").forward(request, response);
+    }
+
+    private void getTitle(HttpServletRequest request, HttpServletResponse response, int categoryId)
+            throws ServletException, IOException {
+        switch (categoryId) {
+            case 1: {
+                request.setAttribute("title", "Software Enginneering");
+                break;
+            }
+            case 2: {
+                request.setAttribute("title", "Economy");
+                break;
+            }
+            case 3: {
+                request.setAttribute("title", "Digital Marketing");
+                break;
+            }
+            case 4: {
+                request.setAttribute("title", "Artificial Intelligence");
+                break;
+            }
+            case 5: {
+                request.setAttribute("title", "Information Assurance");
+                break;
+            }
+            case 6: {
+                request.setAttribute("title", "Language");
+                break;
+            }
+
+        }
+    }
+
+    private int getTotalPage(HttpServletRequest request, HttpServletResponse response, int categoryId)
+            throws ServletException, IOException {
+        int total = courseService.countingCourseList(categoryId);
+        int endPage = 0;
+        if (total % 8 == 0) {
+            endPage = courseService.countingCourseList(categoryId) / 8;
+        } else {
+            endPage = (courseService.countingCourseList(categoryId) / 8) + 1;
+        }
+        return endPage;
+    }
+
+    private int getTotalPageSearch(HttpServletRequest request, HttpServletResponse response, int categoryId, String searchName)
+            throws ServletException, IOException {
+        int total = courseService.countingCourseListSearch(categoryId, searchName);
+        int endPage = 0;
+        if (total % 8 == 0) {
+            endPage = courseService.countingCourseListSearch(categoryId, searchName) / 8;
+        } else {
+            endPage = (courseService.countingCourseListSearch(categoryId, searchName) / 8) + 1;
+        }
+        return endPage;
+
     }
 
 }
