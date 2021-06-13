@@ -46,7 +46,8 @@ public class TeacherFilter implements Filter {
         User user = (User) currentSession.getAttribute("user");
         Account account = authService.getAccount(user.getEmail());
 
-        if (account.getRole().toString().equals("TEACHER")) {
+        // Admin can also access teacher's feature
+        if (account.getRole().toString().equals("TEACHER") || account.getRole().toString().equals("ADMIN")) {
             doFilter(request, response, chain);
         } else {
             pageResponse.sendRedirect("home");
