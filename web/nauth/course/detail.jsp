@@ -55,7 +55,7 @@
                             src="${detail.imageLink}"
                             />
                         <div style="width: 320px;height:217px; border-radius:0px 0px 5px 5px;background: black; margin-top: 50px;box-shadow: 1px 1px 7px black">
-                            <div style="margin-top: 2rem; margin-left: 5rem">
+                            <div style="margin-top: 2rem; margin-left: 3rem">
                                 <a href="#"
                                    class="btn px-sm-5 py-2">
                                     <button data-toggle="modal" data-target="#exampleModal" type="button" class="btn"
@@ -175,7 +175,10 @@
                 </div>
             </section>
         </div>
+<<<<<<< HEAD
         <jsp:include page="/components/global/footer.jsp"/>
+=======
+>>>>>>> cb96a0e26ddf7c43e9d2cfb576e82f91edbc79b0
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -189,4 +192,10 @@
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
             crossorigin="anonymous">
     </script>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+
+
+>>>>>>> cb96a0e26ddf7c43e9d2cfb576e82f91edbc79b0
