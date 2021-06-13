@@ -101,7 +101,7 @@ public class CourseController extends HttpServlet {
             ArrayList<PricePackage> coursePackages = courseService.getCoursePackage(courseDetail.getId());
 
             request.setAttribute("detail", courseDetail);
-            request.setAttribute("siderDetail", siderCourse);
+            request.setAttribute("siderCourse", siderCourse);
             request.setAttribute("listC", categoryList);
             request.setAttribute("coursePackages", coursePackages);
 

@@ -85,7 +85,7 @@ public class CourseRepository extends Repository {
         }
     }
 
-    public List<Course> getITCourse() throws SQLException {
+    public List<Course> getCourses(String category) throws SQLException {
         this.connectDatabase();
         String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
                 + "AS price from db_ite1.course c "
@@ -95,13 +95,14 @@ public class CourseRepository extends Repository {
                 + "on p.package_id = pp.id "
                 + "INNER JOIN db_ite1.category ca "
                 + "on ca.id = c.category_id "
-                + "where ca.category_name = 'Software Engineering' "
+                + "where ca.category_name = ? "
                 + "GROUP BY c.id "
                 + "ORDER BY RAND() "
                 + "LIMIT 3";
 
         List<Course> list = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+            statement.setString(1, category);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 list.add(new Course(
@@ -120,187 +121,7 @@ public class CourseRepository extends Repository {
         }
         return null;
     }
-
-    public List<Course> getBusinessCourse() throws SQLException {
-        this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
-                + "AS price from db_ite1.course c "
-                + "INNER JOIN db_ite1.course_package p "
-                + "on c.id = p.course_id "
-                + "INNER JOIN db_ite1.price_package pp "
-                + "on p.package_id = pp.id "
-                + "INNER JOIN db_ite1.category ca "
-                + "on ca.id = c.category_id "
-                + "where ca.category_name = 'Economy' "
-                + "GROUP BY c.id "
-                + "ORDER BY RAND() "
-                + "LIMIT 3";
-
-        List<Course> list = new ArrayList<>();
-        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                list.add(new Course(
-                        result.getInt("id"),
-                        result.getString("thumbnail"),
-                        result.getString("title"),
-                        result.getFloat("price"),
-                        result.getString("category_name"),
-                        result.getString("description"),
-                        result.getString("tag")
-                ));
-
-            }
-            return list;
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
-    public List<Course> getMarketingCourse() throws SQLException {
-        this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
-                + "AS price from db_ite1.course c "
-                + "INNER JOIN db_ite1.course_package p "
-                + "on c.id = p.course_id "
-                + "INNER JOIN db_ite1.price_package pp "
-                + "on p.package_id = pp.id "
-                + "INNER JOIN db_ite1.category ca "
-                + "on ca.id = c.category_id "
-                + "where ca.category_name = 'Digital Marketing' "
-                + "GROUP BY c.id "
-                + "ORDER BY RAND() "
-                + "LIMIT 3";
-
-        List<Course> list = new ArrayList<>();
-        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                list.add(new Course(
-                        result.getInt("id"),
-                        result.getString("thumbnail"),
-                        result.getString("title"),
-                        result.getFloat("price"),
-                        result.getString("category_name"),
-                        result.getString("description"),
-                        result.getString("tag")
-                ));
-
-            }
-            return list;
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
-    public List<Course> getAICourse() throws SQLException {
-        this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
-                + "AS price from db_ite1.course c "
-                + "INNER JOIN db_ite1.course_package p "
-                + "on c.id = p.course_id "
-                + "INNER JOIN db_ite1.price_package pp "
-                + "on p.package_id = pp.id "
-                + "INNER JOIN db_ite1.category ca "
-                + "on ca.id = c.category_id "
-                + "where ca.category_name = 'Artificial Intelligence' and c.id > '43' "
-                + "GROUP BY c.id "
-                + "ORDER BY RAND() "
-                + "LIMIT 3";
-
-        List<Course> list = new ArrayList<>();
-        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                list.add(new Course(
-                        result.getInt("id"),
-                        result.getString("thumbnail"),
-                        result.getString("title"),
-                        result.getFloat("price"),
-                        result.getString("category_name"),
-                        result.getString("description"),
-                        result.getString("tag")
-                ));
-
-            }
-            return list;
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
-    public List<Course> getIACourse() throws SQLException {
-        this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
-                + "AS price from db_ite1.course c "
-                + "INNER JOIN db_ite1.course_package p "
-                + "on c.id = p.course_id "
-                + "INNER JOIN db_ite1.price_package pp "
-                + "on p.package_id = pp.id "
-                + "INNER JOIN db_ite1.category ca "
-                + "on ca.id = c.category_id "
-                + "where ca.category_name = 'Information Assurance' "
-                + "GROUP BY c.id "
-                + "ORDER BY RAND() "
-                + "LIMIT 3";
-
-        List<Course> list = new ArrayList<>();
-        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                list.add(new Course(
-                        result.getInt("id"),
-                        result.getString("thumbnail"),
-                        result.getString("title"),
-                        result.getFloat("price"),
-                        result.getString("category_name"),
-                        result.getString("description"),
-                        result.getString("tag")
-                ));
-
-            }
-            return list;
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
-    public List<Course> getLanguageCourse() throws SQLException {
-        this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
-                + "AS price from db_ite1.course c "
-                + "INNER JOIN db_ite1.course_package p "
-                + "on c.id = p.course_id "
-                + "INNER JOIN db_ite1.price_package pp "
-                + "on p.package_id = pp.id "
-                + "INNER JOIN db_ite1.category ca "
-                + "on ca.id = c.category_id "
-                + "where ca.category_name = 'Language' "
-                + "GROUP BY c.id "
-                + "ORDER BY RAND() "
-                + "LIMIT 3";
-
-        List<Course> list = new ArrayList<>();
-        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                list.add(new Course(
-                        result.getInt("id"),
-                        result.getString("thumbnail"),
-                        result.getString("title"),
-                        result.getFloat("price"),
-                        result.getString("category_name"),
-                        result.getString("description"),
-                        result.getString("tag")
-                ));
-
-            }
-            return list;
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
+    
     public List<Course> getFeaturedCourse() throws SQLException {
         this.connectDatabase();
         String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,pp.list_price "
@@ -337,7 +158,7 @@ public class CourseRepository extends Repository {
 
     public List<Course> getSiderCourseDetail() throws SQLException {
         this.connectDatabase();
-        String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
+        String sql = "SELECT c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
                 + " AS price from db_ite1.course c "
                 + "INNER JOIN db_ite1.course_package p "
                 + "on c.id = p.course_id "
@@ -345,7 +166,7 @@ public class CourseRepository extends Repository {
                 + "on p.package_id = pp.id "
                 + "INNER JOIN db_ite1.category ca "
                 + "on ca.id = c.category_id "
-                + "where c.feature =1 "
+                + "where c.feature = '1' "
                 + "GROUP BY c.id "
                 + "ORDER BY RAND() "
                 + "limit 3 ";

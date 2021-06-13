@@ -1,18 +1,17 @@
 <%--
-    Document   : courseDetail
-    Created on : May 29, 2021, 8:12:28 PM
-    Author     : Admin
+    Document   : courseDetail.jsp
+    Created on : Jun 13, 2021
+    Author     : Dinh Kong Thanh
 --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Course List</title>
+        <title>JSP Page</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
               integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
               crossorigin="anonymous">
@@ -22,7 +21,7 @@
         <link rel="stylesheet" type="text/css" href="${path}/style/styles.css">
     </head>
     <body>
-        <jsp:include page="/components/global/navbar.jsp"/>
+        <jsp:include page="/components/global/navbar.jsp" />
         <div>
             <section id="brief-content">
                 <div id="brief-content-upper" class=" bg-dark d-flex" style="height: 19.5rem">
@@ -56,12 +55,12 @@
                             src="${detail.imageLink}"
                             />
                         <div style="width: 320px;height:217px; border-radius:0px 0px 5px 5px;background: black; margin-top: 50px;box-shadow: 1px 1px 7px black">
-                            <div style="margin-top: 2rem; margin-left: 5rem">
+                            <div style="margin-top: 2rem; margin-left: 3rem">
                                 <a href="#"
                                    class="btn px-sm-5 py-2">
-                                    <button data-toggle="modal" data-target="#course-register-modal" class="btn"
+                                    <button data-toggle="modal" data-target="#exampleModal" type="button" class="btn"
                                             style="background: #007791; color: white; font-weight: bold;">
-                                        Buy Now
+                                        Register Now
                                     </button>
                                 </a>
                             </div>
@@ -133,79 +132,70 @@
                                 </div>
                             </div>
                         </section>
-                        <section id="recommendation-course">
-                            <div>
-                                <jsp:include page="/components/courseDetail/oneFeaturedCourse.jsp"></jsp:include>
-                                </div>
-                            </section>
-                            <section id="contact-link">
-                                <h4 style="font-weight: bolder; margin-bottom: 1rem">Contact us</h4>
-                                <div class="d-flex">
-                                    <i class="fab fa-facebook fa-lg"></i>
-                                    <i class="fab fa-instagram fa-lg"></i>
-                                    <i class="fab fa-twitter-square fa-lg"></i>
-                                    <i class="fas fa-envelope fa-lg"></i>
-                                    <i class="fas fa-phone-square-alt fa-lg"></i>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        <jsp:include page="/components/global/footer.jsp"/>
-        <div class="modal fade" id="course-register-modal" tabindex="-1" role="dialog">
-            <form action="${path}/course"
-                  method="POST"
-                  class="needs-validation"
-                  novalidate>
-                <div class="request-info">
-                    <input name="previousPage" value="home" hidden="true" />
-                    <div class="invalid-feedback"></div>
-                    <input name="operation" value="REGISTER" hidden="true" />
-                    <div class="invalid-feedback"></div>
-                </div>
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Register</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="col-12">
-                                <c:forEach items="${coursePackages}" var="package">
-                                    <div class="my-2">
-                                        <div class="custom-control custom-radio custom-control">
-                                            <input type="radio" id="${package.name}" name="package" class="custom-control-input" value="${package.id}">
-                                            <label class="custom-control-label" for="male">${package.name + ': ' + package.price}</label>
-                                            <div class="invalid-feedback"></div>
+
+                        <section id="sider-course">
+                            <div class="mt-4" style="margin-left: -1rem">
+                                <h4 style="font-weight: bolder; margin-left: .8rem; margin-bottom: 1rem">You might like</h4>
+                                <c:forEach items="${siderCourse}" var="o">
+                                    <div style="width: 500px; display: flex; margin-left: .8rem">
+                                        <div style=" margin-right: 10px;height: 45px; margin-bottom: 5px">
+                                            <a href="course?courseId=${o.id}">
+                                                <img src="${o.imageLink}" style="width: 5rem; margin-right: 5px; margin-bottom: 10px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                                            </a>
                                         </div>
+                                        <div style="height: 45px; width: 250px">
+                                            <a class="sider-course-hover" href="course?courseId=${o.id}" style="margin-right: 5px">
+                                                ${o.courseName}
+                                            </a>
+                                        </div>
+                                        <div style="margin-top: 2px; margin-left: 5px">
+                                            <a class="sider-course-hover" href="course?courseId=${o.id}">
+                                                <i class="far fa-arrow-alt-circle-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <hr style="margin-left: .8rem; width: 380px">
                                     </div>
                                 </c:forEach>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Register</button>
-                        </div>
+                        </section>
+
+                        <section id="contact-link" >
+                            <h4 style="font-weight: bolder; margin-bottom: 1rem">Contact us</h4>
+                            <div class="d-flex">
+                                <i class="fab fa-facebook fa-lg"></i>
+                                <i class="fab fa-instagram fa-lg"></i>
+                                <i class="fab fa-twitter-square fa-lg"></i>
+                                <i class="fas fa-envelope fa-lg"></i>
+                                <i class="fas fa-phone-square-alt fa-lg"></i>
+                            </div>
+                        </section>
                     </div>
                 </div>
-            </form>
+            </section>
         </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-                integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-                crossorigin="anonymous">
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-                integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-                crossorigin="anonymous">
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
-                integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
-                crossorigin="anonymous">
-        </script>
+<<<<<<< HEAD
+        <jsp:include page="/components/global/footer.jsp"/>
+=======
+>>>>>>> cb96a0e26ddf7c43e9d2cfb576e82f91edbc79b0
     </body>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+            integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
+            crossorigin="anonymous">
+    </script>
+<<<<<<< HEAD
+</html>
+=======
 </html>
 
 
+>>>>>>> cb96a0e26ddf7c43e9d2cfb576e82f91edbc79b0

@@ -1,11 +1,12 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%-- 
+<%--
     Document   : userdetail
     Created on : May 23, 2021, 10:09:53 AM
     Author     : ADMIN
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
     <head>
@@ -78,8 +79,7 @@
         </style>
     </head>
     <body>
-        <form action="updaterole" method="GET">
-
+        <form action="${path}/auth/admin/updaterole" method="GET">
             <div class="container">
                 <div class="left">
                     <div class="image">
@@ -139,31 +139,31 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Role: 
+                                    Role:
                                 </td>
                                 <td>
                                     <div class="custom-control custom-radio custom-control">
-                                        <input type="radio" 
-                                               id="student" 
-                                               name="role" 
-                                               class="custom-control-input" 
-                                               value="STUDENT" 
+                                        <input type="radio"
+                                               id="student"
+                                               name="role"
+                                               class="custom-control-input"
+                                               value="STUDENT"
                                                <c:if test="${account.role.toString() eq 'STUDENT'}">checked</c:if>>
                                                <label class="custom-control-label" for="student">Student</label>
                                                <div class="invalid-feedback"></div>
                                         </div>
                                         <div class="custom-control custom-radio custom-control">
-                                            <input type="radio" 
+                                            <input type="radio"
                                                    id="student" name="role"
-                                                   class="custom-control-input" 
+                                                   class="custom-control-input"
                                                    value="TEACHER" <c:if test="${account.role.toString() eq 'TEACHER'}">checked</c:if>>
                                             <label class="custom-control-label" for="student">Teacher</label>
                                             <div class="invalid-feedback"></div>
                                         </div>
                                         <div class="custom-control custom-radio custom-control">
                                             <input type="radio"
-                                                   id="student" 
-                                                   name="role" class="custom-control-input" 
+                                                   id="student"
+                                                   name="role" class="custom-control-input"
                                                    value="ADMIN" <c:if test="${account.role.toString() eq 'ADMIN'}">checked</c:if>>
                                             <label class="custom-control-label" for="student">Admin</label>
                                             <div class="invalid-feedback"></div>
@@ -177,20 +177,20 @@
                                         Status:
                                     </td>
 
-                                    <td> 
+                                    <td>
                                         <div class="custom-control custom-radio custom-control">
-                                            <input type="radio" 
-                                                   id="male" 
-                                                   name="status" 
-                                                   class="custom-control-input" 
+                                            <input type="radio"
+                                                   id="male"
+                                                   name="status"
+                                                   class="custom-control-input"
                                                    value="ACTIVE" <c:if test="${user.status.toString() eq  'ACTIVE'}">checked</c:if>>
                                             <label class="custom-control-label" for="male">ACTIVE</label>
                                             <div class="invalid-feedback"></div>
                                         </div>
                                         <div class="custom-control custom-radio custom-control">
-                                            <input type="radio" 
+                                            <input type="radio"
                                                    id="female"
-                                                   name="status" 
+                                                   name="status"
                                                    class="custom-control-input"
                                                    value="INACTIVE" <c:if test="${user.status.toString() eq 'INACTIVE'}">checked</c:if>>
                                             <label class="custom-control-label" for="female">INACTIVE</label>

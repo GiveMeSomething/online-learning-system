@@ -79,7 +79,7 @@ public class AdminController extends HttpServlet {
         }
         dao.updateRole(roleId, email);
         dao.updateStatus(status, email);
-        response.sendRedirect("");
+        response.sendRedirect(request.getContextPath() + "/auth/admin");
     }
 
     public void insertUser(HttpServletRequest request, HttpServletResponse response)
