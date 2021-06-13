@@ -56,101 +56,11 @@ public class CourseService {
         return null;
     }
 
-    public List<Course> getITCourse() {
+    public List<Course> getCourses(String category) {
         try {
-            List<Course> result = courseRepository.getITCourse();
+            List<Course> result = courseRepository.getCourses(category);
 
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public List<Course> getBusinessCourse() {
-        try {
-            List<Course> result = courseRepository.getBusinessCourse();
-
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public List<Course> getMarketingCourse() {
-        try {
-            List<Course> result = courseRepository.getMarketingCourse();
-
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public List<Course> getAICourse() {
-        try {
-            List<Course> result = courseRepository.getAICourse();
-
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public List<Course> getIACourse() {
-        try {
-            List<Course> result = courseRepository.getIACourse();
-
-            if (result == null) {
-                // redirect to 404
-                System.out.println("Something wrong");
-                return null;
-            }
-
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public List<Course> getLanguageCourse() {
-        try {
-            List<Course> result = courseRepository.getLanguageCourse();
-
-            if (result == null) {
+            if (result == null || result.size() == 0) {
                 // redirect to 404
                 System.out.println("Something wrong");
                 return null;

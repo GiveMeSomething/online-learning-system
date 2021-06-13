@@ -42,7 +42,7 @@
                                     Categories
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownButton">
-                                    <c:forEach items="${listC}" var="o">
+                                    <c:forEach items="${requestScope.listC}" var="o">
                                         <a class="dropdown-item"
                                            href="course?cID=${o.id}">
                                             ${o.categoryName}
@@ -51,7 +51,7 @@
                                 </div>
                             </li>
                             <li class="nav-item nav-hover">
-                                <a class="nav-link active" aria-current="page" href="blog">Blogs</a>
+                                <a class="nav-link active" aria-current="page" href="blog?operation=BLOG">Blogs</a>
                             </li>
                             <c:if test="${sessionScope.isAdmin != true}">
                                 <li class="nav-item nav-hover">

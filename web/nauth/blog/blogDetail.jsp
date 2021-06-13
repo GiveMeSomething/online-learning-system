@@ -14,6 +14,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
                   integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+            <link rel="stylesheet" type="text/css" href="${path}/style/styles.css">
             <title>${requestScope.post.title}</title>
     </head>
     <body>
@@ -25,7 +26,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="home">Home</a></li>
-                        <li class="breadcrumb-item"><a href="blog">Blog</a></li>
+                        <li class="breadcrumb-item"><a href="blog?operation=BLOG">Blog</a></li>
                         <li class="breadcrumb-item active" aria-current="page">${requestScope.post.title}</li>
                     </ol>
                 </nav>
@@ -38,26 +39,29 @@
                                     <div class="request-info">
                                         <input name="previousPage" value="blogList.jsp" hidden="true" />
                                         <div class="invalid-feedback"></div>
-                                        <input name="operation" value="Search-by-title" hidden="true" />
+                                        <input name="operation" value="SearchByTitle" hidden="true" />
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <input class="form-control mr-sm-2" type="search" name="title" placeholder="Search" aria-label="Search">
+                                    <input class="form-control mr-sm-2" type="search" name="title" 
+                                           placeholder="Search" value="${title}" aria-label="Search">
                                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                                 </form>
                             </div>
                         </div>
+                        <!--categories-->
                         <div class="row">
                             <div class="col-12">
                                 <h3>Category</h3>
                                 <hr>
                                 <ul class="list-group list-group-flush shadow-sm">
                                     <c:forEach var="o" items="${hmCategory}">
-                                        <a href="blog?operation=postByCategory&cateId=${o.key}&curPage=1" 
+                                        <a href="blog?operation=postByCategory&categoryId=${o.key}&curPage=1" 
                                            class="list-group-item list-group-item-action ${cateId==o.key?"active":""}">${o.value}</a>
                                     </c:forEach>
                                 </ul>
                             </div>
                         </div>
+                        <!--latest posts-->
                         <div class="row">
                             <h3 class="mt-4">Top 3 Latest Posts</h3>
                             <div class="col-12">

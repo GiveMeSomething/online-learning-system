@@ -98,7 +98,6 @@ public class BlogRepository extends Repository {
         } finally {
             this.disconnectDatabase();
         }
-
     }
 
     // Get 1 post
@@ -182,13 +181,13 @@ public class BlogRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-    
+
     public int getTotalPostsByTitle(String title) throws SQLException {
         this.connectDatabase();
 
         String getTotalPostsByCategory = "SELECT count(*) AS total FROM post WHERE title LIKE ? and status_id = 1";
         try (PreparedStatement statment = this.connection.prepareStatement(getTotalPostsByCategory)) {
-            statment.setString(1, "%"+title+"%");
+            statment.setString(1, "%" + title + "%");
             ResultSet result = statment.executeQuery();
             while (result.next()) {
                 return result.getInt("total");
@@ -199,7 +198,7 @@ public class BlogRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-    
+
     // Get post pagination by category
     public ArrayList<Post> getPostsByCategory(int cateId, int currentPage, int postsPerPage) throws SQLException {
         this.connectDatabase();
@@ -225,15 +224,17 @@ public class BlogRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-    
+
     // Get posts by searching
-    public ArrayList<Post> getPostsByTitle(String title) throws SQLException {
+    public ArrayList<Post> getPostsByTitle(String title, int currentPage, int postsPerPage) throws SQLException {
         this.connectDatabase();
 
         ArrayList<Post> posts = new ArrayList<>();
-        String getPostsList = "SELECT * FROM post WHERE title LIKE ? and status_id = 1";
+        String getPostsList = "SELECT * FROM post WHERE title LIKE ? and status_id = 1 LIMIT ?,?";
         try (PreparedStatement statement = this.connection.prepareStatement(getPostsList)) {
-            statement.setString(1, "%"+title+"%");
+            statement.setString(1, "%" + title + "%");
+            statement.setInt(2, (currentPage * postsPerPage) - postsPerPage);
+            statement.setInt(3, postsPerPage);
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {

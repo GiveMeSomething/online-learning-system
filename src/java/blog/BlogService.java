@@ -103,9 +103,9 @@ public class BlogService {
         return null;
     }
     
-    public ArrayList<Post> getPostsByTitle(String title){
+    public ArrayList<Post> getPostsByTitle(String title, int currentPage, int PostsPerPage){
         try {
-            return blogRepository.getPostsByTitle(title);
+            return blogRepository.getPostsByTitle(title, currentPage, PostsPerPage);
         } catch (Exception e) {
             e.printStackTrace();
         }

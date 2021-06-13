@@ -218,7 +218,6 @@
                     window.location.assign("course?index=${tag}&&cID=${cateID}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=" + value);
                 } else if (value === 'descAlpha') {
                     window.location.assign("course?index=${tag}&&cID=${cateID}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=" + value);
-
                 }
             });
         });

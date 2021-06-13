@@ -13,7 +13,7 @@
         <title>JSP Page</title>
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
               integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
-              crossorigin="anonymous"/>
+              crossorigin="anonymous">
     </head>
     <body>
         <div class="row mt-4" style="margin-left: -1.5rem">

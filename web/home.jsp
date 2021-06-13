@@ -17,11 +17,10 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
               integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
               crossorigin="anonymous">
-        <!--        FontAwesome-->
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
               integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
               crossorigin="anonymous">
-        <link rel="stylesheet" href="./style/styles.css">
+        <link rel="stylesheet" href="${path}/style/styles.css">
     </head>
     <body>
         <jsp:include page="/components/global/navbar.jsp"/>
@@ -161,112 +160,5 @@
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
             crossorigin="anonymous">
     </script>
-    <script>
-        // Add active class to the current button (highlight it)
-        var header = document.getElementById("myDIV");
-        var btns = header.getElementsByClassName("btn1");
-        for (var i = 0; i < btns.length; i++) {
-            btns[i].addEventListener("click", function () {
-                var current = document.getElementsByClassName("active1");
-                current[0].className = current[0].className.replace(" active1", "");
-                this.className += " active1";
-            });
-        }
-
-        //display and none
-        function itOn() {
-            var it = document.getElementById('it');
-            var business = document.getElementById('business');
-            var marketing = document.getElementById('marketing');
-            var ai = document.getElementById('ai');
-            var ia = document.getElementById('ia');
-            var language = document.getElementById('language');
-
-            it.style.display = 'block';
-            business.style.display = 'none';
-            marketing.style.display = 'none';
-            ai.style.display = 'none';
-            ia.style.display = 'none';
-            language.style.display = 'none';
-        }
-        function businessOn() {
-            var it = document.getElementById('it');
-            var business = document.getElementById('business');
-            var marketing = document.getElementById('marketing');
-            var ai = document.getElementById('ai');
-            var ia = document.getElementById('ia');
-            var language = document.getElementById('language');
-
-            it.style.display = 'none';
-            business.style.display = 'block';
-            marketing.style.display = 'none';
-            ai.style.display = 'none';
-            ia.style.display = 'none';
-            language.style.display = 'none';
-        }
-
-        function marketingOn() {
-            var it = document.getElementById('it');
-            var business = document.getElementById('business');
-            var marketing = document.getElementById('marketing');
-            var ai = document.getElementById('ai');
-            var ia = document.getElementById('ia');
-            var language = document.getElementById('language');
-
-            it.style.display = 'none';
-            business.style.display = 'none';
-            marketing.style.display = 'block';
-            ai.style.display = 'none';
-            ia.style.display = 'none';
-            language.style.display = 'none';
-        }
-
-        function aiOn() {
-            var it = document.getElementById('it');
-            var business = document.getElementById('business');
-            var marketing = document.getElementById('marketing');
-            var ai = document.getElementById('ai');
-            var ia = document.getElementById('ia');
-            var language = document.getElementById('language');
-
-            it.style.display = 'none';
-            business.style.display = 'none';
-            marketing.style.display = 'none';
-            ai.style.display = 'block';
-            ia.style.display = 'none';
-            language.style.display = 'none';
-        }
-
-        function iaOn() {
-            var it = document.getElementById('it');
-            var business = document.getElementById('business');
-            var marketing = document.getElementById('marketing');
-            var ai = document.getElementById('ai');
-            var ia = document.getElementById('ia');
-            var language = document.getElementById('language');
-
-            it.style.display = 'none';
-            business.style.display = 'none';
-            marketing.style.display = 'none';
-            ai.style.display = 'none';
-            ia.style.display = 'block';
-            language.style.display = 'none';
-        }
-
-        function languageOn() {
-            var it = document.getElementById('it');
-            var business = document.getElementById('business');
-            var marketing = document.getElementById('marketing');
-            var ai = document.getElementById('ai');
-            var ia = document.getElementById('ia');
-            var language = document.getElementById('language');
-
-            it.style.display = 'none';
-            business.style.display = 'none';
-            marketing.style.display = 'none';
-            ai.style.display = 'none';
-            ia.style.display = 'none';
-            language.style.display = 'block';
-        }
-    </script>
+    <script type="text/javascript" src="${path}/utilities/home-suggested-course.js"></script>
 </html>

@@ -8,12 +8,14 @@ package email;
 import auth.AuthService;
 import common.entities.Account;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class EmailController extends HttpServlet {
 
@@ -60,9 +62,24 @@ public class EmailController extends HttpServlet {
         } else if (operation.equals("RESETPW")) {
             // Test if navigate to Change password page in nauth
             String email = request.getParameter("email");
+            request.setAttribute("email", email);
             request.getRequestDispatcher("nauth/resetPassword2.jsp").forward(request, response);
-        } else if (operation.equals("CHANGEPW")) {
-            // TODO: Duy Anh se implement phan nay
+        } else if (operation.equals("RESETPW1")) {
+            // This is middle space which navigate to operation RESETPW
+            String resetEmail = request.getParameter("email");
+            request.setAttribute("email", email);
+            
+            // Get reset path in AuthController through session
+            HttpSession ses = request.getSession(false);
+            Object obj = ses.getAttribute("resetPath");
+            
+            // Test if session ends, link will be expired or not
+            if (obj == null) {
+                PrintWriter out = response.getWriter();
+                out.println("<h3>This link was expired</h3>");
+            } else {
+                request.getRequestDispatcher((String) obj).forward(request, response);
+            }
         } else if (operation.equals("AUTH")) {
             // Reads request data
             String userEmail = request.getParameter("email");
@@ -102,10 +119,8 @@ public class EmailController extends HttpServlet {
         } else if (operation.equals("RESETPW")) {
             // Test if send successfully
             String thisEmail = request.getParameter("email");
-            boolean isSent = emailService.sendResetPasswordEmail(host, port, email, password, thisEmail);
-//            processConfirm(request, response);
-        } else if (operation.equals("CHANGEPW")) {
-            // TODO: Duy Anh se implement phan nay
+            String token = request.getParameter("token");
+            boolean isSent = emailService.sendResetPasswordEmail(host, port, email, password, thisEmail, token);
         } else if (operation.equals("AUTH")) {
             processAuth(request, response);
         } else {

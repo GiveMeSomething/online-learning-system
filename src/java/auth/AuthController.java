@@ -77,12 +77,22 @@ public class AuthController extends HttpServlet implements Controller {
         }else if(operation.equals("RESETPW1")){
             // Test how this RESETPW1 works
             String email = request.getParameter("email");
-            String confirmEmailPath = "/email?operation=RESETPW&receiver=" + email;
-            request.getRequestDispatcher(confirmEmailPath).forward(request, response);
+            String resetEmailPath = "/email?operation=RESETPW&receiver=" + email+"&token=";
+            String reset = "/email?work=RESETPW&email=" + email;
+            
+            // Push reset into Session
+            HttpSession ses = request.getSession();
+            ses.setAttribute("resetPath", reset);
+            // Set time for this session, hope this gonna work!
+            ses.setMaxInactiveInterval(30);
+            
+            request.getRequestDispatcher(resetEmailPath).forward(request, response);
         }else if(operation.equals("RESETPW2")){
-            // Test changing password but not done yet!
+            // Test changing password
             String newPassword = request.getParameter("new-password");
-            String confirmPassword = request.getParameter("cf-password");
+            String confirmPassword = request.getParameter("confirm-password");
+            String email = request.getParameter("email");
+            processResetPassword(request, response, newPassword, confirmPassword, email);
         }
     }
 
@@ -145,10 +155,6 @@ public class AuthController extends HttpServlet implements Controller {
         String forwardTo = request.getParameter("previousPage");
         boolean isChanged = false;
 
-        System.out.println(oldPassword);
-        System.out.println(newPassword);
-        System.out.println(confirmPassword);
-
         if (currentUser != null && newPassword.equals(confirmPassword)) {
             if (authService.checkCurrentPass(currentUser.getEmail(), oldPassword)) {
                 isChanged = authService.changePassword(currentUser.getEmail(), newPassword);
@@ -156,6 +162,22 @@ public class AuthController extends HttpServlet implements Controller {
         }
         if (isChanged) {
             response.sendRedirect("user");
+        } else {
+            this.forwardErrorMessage(request, response, "Can't change password. Please check again later", forwardTo);
+        }
+    }
+    
+    //Vu Duy Anh: In Progress (bug: after changed password, still click to the link and change again)
+    private void processResetPassword(HttpServletRequest request, HttpServletResponse response,
+            String newPassword, String confirmPassword, String email) throws ServletException, IOException {
+        String forwardTo = request.getParameter("previousPage");
+        boolean isChanged = false;
+
+        if (authService.getAccount(email) != null && newPassword.equals(confirmPassword)) {
+                isChanged = authService.changePassword(email, newPassword);
+        }
+        if (isChanged) {
+            response.sendRedirect("home");
         } else {
             this.forwardErrorMessage(request, response, "Can't change password. Please check again later", forwardTo);
         }
