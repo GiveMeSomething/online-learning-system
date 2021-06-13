@@ -37,10 +37,11 @@
                                     <div class="request-info">
                                         <input name="previousPage" value="blogList.jsp" hidden="true" />
                                         <div class="invalid-feedback"></div>
-                                        <input name="operation" value="Search-by-title" hidden="true" />
+                                        <input name="operation" value="SearchByTitle" hidden="true" />
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <input class="form-control mr-sm-2" type="search" name="title" placeholder="Search" aria-label="Search">
+                                    <input class="form-control mr-sm-2" type="search" name="title" 
+                                           value="${title}" placeholder="Search" aria-label="Search">
                                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                                 </form>
                             </div>
@@ -89,7 +90,7 @@
                             <div class="col-12">
                                 <nav aria-label="Blog-pagination">
                                     <ul class="pagination justify-content-center">
-                                        <c:if test="${requestScope.categoryId == null}">
+                                        <c:if test="${requestScope.categoryId == null && title == null}">
                                             <li class="page-item ${curPage == 1?"disabled":""}">
                                                 <a class="page-link" href="blog?curPage=${curPage - 1}" 
                                                    tabindex="-1">Previous</a>
@@ -102,8 +103,15 @@
                                                    tabindex="-1">Previous</a>
                                             </li>
                                         </c:if>
+                                        <c:if test="${requestScope.title != null && categoryId == null}">
+                                            <li class="page-item ${curPage == 1?"disabled":""}">
+                                                <a class="page-link" 
+                                                   href="blog?curPage=${curPage - 1}&operation=SearchByTitle&title=${title}" 
+                                                   tabindex="-1">Previous</a>
+                                            </li>
+                                        </c:if>
                                         <c:forEach begin="1" end="${requestScope.nOfPage}" var="i">
-                                            <c:if test="${requestScope.categoryId == null}">
+                                            <c:if test="${requestScope.categoryId == null && title == null}">
                                                 <li class="page-item ${curPage == i?"active":""}">
                                                     <a class="page-link" href="blog?curPage=${i}">${i}</a>
                                                 </li>
@@ -114,8 +122,14 @@
                                                        href="blog?curPage=${i}&operation=postByCategory&cateId=${requestScope.categoryId}">${i}</a>
                                                 </li>
                                             </c:if>
+                                            <c:if test="${requestScope.categoryId == null && title != null}">
+                                                <li class="page-item ${curPage == i?"active":""}">
+                                                    <a class="page-link" 
+                                                       href="blog?curPage=${i}&operation=SearchByTitle&title=${title}">${i}</a>
+                                                </li>
+                                            </c:if>
                                         </c:forEach>
-                                        <c:if test="${requestScope.categoryId == null}">        
+                                        <c:if test="${requestScope.categoryId == null && title == null}">        
                                             <li class="page-item ${curPage == nOfPage?"disabled":""}">
                                                 <a class="page-link" href="blog?curPage=${curPage + 1}">Next</a>
                                             </li>
@@ -124,6 +138,12 @@
                                             <li class="page-item ${curPage == nOfPage?"disabled":""}">
                                                 <a class="page-link" 
                                                    href="blog?curPage=${curPage + 1}&operation=postByCategory&cateId=${requestScope.categoryId}">Next</a>
+                                            </li>
+                                        </c:if>
+                                        <c:if test="${requestScope.categoryId == null && title != null}">        
+                                            <li class="page-item ${curPage == nOfPage?"disabled":""}">
+                                                <a class="page-link" 
+                                                   href="blog?curPage=${curPage + 1}&operation=SearchByTitle&title=${title}">Next</a>
                                             </li>
                                         </c:if>
                                     </ul>

@@ -14,16 +14,17 @@
         <title>Reset Password</title>
     </head>
     <body>
-        <form action="${path}/authenticate"
+        <form action="authenticate"
               method="POST"
               class="needs-validation w-25 shadow"
               novalidate>
             <div class="request-info">
-                <input name="previousPage" value="index.jsp" hidden="true" />
+                <input name="previousPage" value="nauth/resetPassword2.jsp" hidden="true" />
                 <div class="invalid-feedback"></div>
                 <input name="operation" value="RESETPW2" hidden="true" />
                 <div class="invalid-feedback"></div>
             </div>
+            <input type="text" hidden name="email" value="${email}">
             <div>
                 <label for="new-password">New Password</label>
                 <input class="form-control" name="new-password" type="password" id="new-password"

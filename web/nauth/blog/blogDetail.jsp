@@ -38,10 +38,11 @@
                                     <div class="request-info">
                                         <input name="previousPage" value="blogList.jsp" hidden="true" />
                                         <div class="invalid-feedback"></div>
-                                        <input name="operation" value="Search-by-title" hidden="true" />
+                                        <input name="operation" value="SearchByTitle" hidden="true" />
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <input class="form-control mr-sm-2" type="search" name="title" placeholder="Search" aria-label="Search">
+                                    <input class="form-control mr-sm-2" type="search" name="title" 
+                                           placeholder="Search" value="${title}" aria-label="Search">
                                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                                 </form>
                             </div>

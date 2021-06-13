@@ -14,6 +14,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class EmailController extends HttpServlet {
 
@@ -60,9 +61,16 @@ public class EmailController extends HttpServlet {
         } else if (operation.equals("RESETPW")) {
             // Test if navigate to Change password page in nauth
             String email = request.getParameter("email");
+            request.setAttribute("email", email);
             request.getRequestDispatcher("nauth/resetPassword2.jsp").forward(request, response);
-        } else if (operation.equals("CHANGEPW")) {
-            // TODO: Duy Anh se implement phan nay
+        } else if (operation.equals("RESETPW1")) {
+            // Test if navigate to Change password page in nauth
+            String resetEmail = request.getParameter("email");
+            request.setAttribute("email", email);
+            HttpSession ses = request.getSession(false);
+            Object obj = ses.getAttribute("resetPath");
+            
+            request.getRequestDispatcher((String) obj).forward(request, response);
         } else if (operation.equals("AUTH")) {
             // Reads request data
             String userEmail = request.getParameter("email");
@@ -102,10 +110,9 @@ public class EmailController extends HttpServlet {
         } else if (operation.equals("RESETPW")) {
             // Test if send successfully
             String thisEmail = request.getParameter("email");
-            boolean isSent = emailService.sendResetPasswordEmail(host, port, email, password, thisEmail);
+            String token = request.getParameter("token");
+            boolean isSent = emailService.sendResetPasswordEmail(host, port, email, password, thisEmail, token);
 //            processConfirm(request, response);
-        } else if (operation.equals("CHANGEPW")) {
-            // TODO: Duy Anh se implement phan nay
         } else if (operation.equals("AUTH")) {
             processAuth(request, response);
         } else {
