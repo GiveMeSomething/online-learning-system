@@ -32,7 +32,7 @@ public class BlogController extends HttpServlet {
             throws ServletException, IOException {
         String operation = request.getParameter("operation");
 
-        if (operation == null) {
+        if (operation.equals("BLOG")) {
             // Get posts
             getBlogPagination(request, response);
         } else {
@@ -72,6 +72,7 @@ public class BlogController extends HttpServlet {
         }
         doPagination(request, response, totalPosts, Integer.parseInt(curPage), 4);
         ArrayList<Post> hmPost = blogService.getPostsList(Integer.parseInt(curPage), 4);
+        
         request.setAttribute("hmCategory", hmCategory);
         request.setAttribute("hmPost", hmPost);
         request.setAttribute("latest", latestPost);
@@ -113,8 +114,8 @@ public class BlogController extends HttpServlet {
     private void getBlogPaginationByCategory(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HashMap<String, String> hmCategory = blogService.getHmCategory();
         HashMap<String, Post> latestPost = blogService.getLatestPost();
-        String categoryId = request.getParameter("cateId");
-        if (categoryId == null) {
+        String categoryID = request.getParameter("categoryId");
+        if (categoryID == null) {
         }
 
         // Pagination
@@ -123,13 +124,14 @@ public class BlogController extends HttpServlet {
             page = 1 + "";
         }
         int currentPage = Integer.parseInt(page);
-        int totalPosts = blogService.getTotalPostsByCategory(Integer.parseInt(categoryId));
+        int totalPosts = blogService.getTotalPostsByCategory(Integer.parseInt(categoryID));
         doPagination(request, response, totalPosts, Integer.parseInt(page), 4);
-        ArrayList<Post> hmPost = blogService.getPostsByCategory(Integer.parseInt(categoryId), currentPage, 4);
+        ArrayList<Post> hmPost = blogService.getPostsByCategory(Integer.parseInt(categoryID), currentPage, 4);
+        
         request.setAttribute("hmCategory", hmCategory);
         request.setAttribute("hmPost", hmPost);
         request.setAttribute("latest", latestPost);
-        request.setAttribute("categoryId", categoryId);
+        request.setAttribute("categoryId", categoryID);
 
         request.getRequestDispatcher("nauth/blog/blogList.jsp").forward(request, response);
     }
@@ -150,6 +152,7 @@ public class BlogController extends HttpServlet {
         int totalPosts = blogService.getTotalPostsByTitle(title);
         doPagination(request, response, totalPosts, currentPage, 4);
         ArrayList<Post> hmPost = blogService.getPostsByTitle(title, currentPage, 4);
+        
         request.setAttribute("hmCategory", hmCategory);
         request.setAttribute("hmPost", hmPost);
         request.setAttribute("latest", latestPost);

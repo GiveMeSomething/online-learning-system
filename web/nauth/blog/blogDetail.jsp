@@ -55,7 +55,7 @@
                                 <hr>
                                 <ul class="list-group list-group-flush shadow-sm">
                                     <c:forEach var="o" items="${hmCategory}">
-                                        <a href="blog?operation=postByCategory&cateId=${o.key}&curPage=1" 
+                                        <a href="blog?operation=postByCategory&categoryId=${o.key}&curPage=1" 
                                            class="list-group-item list-group-item-action ${cateId==o.key?"active":""}">${o.value}</a>
                                     </c:forEach>
                                 </ul>
