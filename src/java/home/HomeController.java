@@ -33,12 +33,12 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Course> itCourse = courseService.getITCourse();
-        List<Course> bizCourse = courseService.getBusinessCourse();
-        List<Course> marCourse = courseService.getMarketingCourse();
-        List<Course> aiCourse = courseService.getAICourse();
-        List<Course> iaCourse = courseService.getIACourse();
-        List<Course> langCourse = courseService.getLanguageCourse();
+        List<Course> itCourse = courseService.getCourses("Software Engineering");
+        List<Course> bizCourse = courseService.getCourses("Economy");
+        List<Course> marCourse = courseService.getCourses("Digital Marketing");
+        List<Course> aiCourse = courseService.getCourses("Artificial Intelligence");
+        List<Course> iaCourse = courseService.getCourses("Information Assurance");
+        List<Course> langCourse = courseService.getCourses("Language");
         List<Course> studentsViewCourse = courseService.getFeaturedCourse();
 
         request.setAttribute("itCourse", itCourse);
