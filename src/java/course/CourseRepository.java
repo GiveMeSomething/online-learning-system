@@ -12,6 +12,7 @@ package course;
 import common.entities.Category;
 import common.entities.Course;
 import common.entities.PricePackage;
+import common.entities.Status;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -121,7 +122,7 @@ public class CourseRepository extends Repository {
         }
         return null;
     }
-    
+
     public List<Course> getFeaturedCourse() throws SQLException {
         this.connectDatabase();
         String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,pp.list_price "
@@ -482,6 +483,27 @@ public class CourseRepository extends Repository {
                 list.add(new Category(result.getInt("id"), result.getString("category_name")));
             }
             return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean addNewSubject(String thumbnail, String title, String description, 
+            String owner, Status status, String category, String feature) throws SQLException {
+        this.connectDatabase();
+
+        String addNewSubject = "INSERT INTO course(title, thumbnail, description, "
+                + "owner, status_id, category_id, feature) VALUES(?,?,?,?,?,?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(addNewSubject)) {
+            statement.setString(1, title);
+            statement.setString(2, thumbnail);
+            statement.setString(3, description);
+            statement.setString(4, owner);
+            statement.setInt(5, Status.valueOf(status));
+            statement.setString(6, category);
+            statement.setString(7, feature);
+            
+            return statement.executeUpdate() > 0;
         } finally {
             this.disconnectDatabase();
         }

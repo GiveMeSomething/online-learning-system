@@ -51,7 +51,7 @@
                                 </div>
                             </li>
                             <li class="nav-item nav-hover">
-                                <a class="nav-link active" aria-current="page" href="blog?operation=BLOG">Blogs</a>
+                                <a class="nav-link active" aria-current="page" href="${path}/blog">Blogs</a>
                             </li>
                             <c:if test="${sessionScope.isAdmin != true}">
                                 <li class="nav-item nav-hover">
