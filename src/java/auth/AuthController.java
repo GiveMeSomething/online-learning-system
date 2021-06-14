@@ -12,7 +12,6 @@ import common.entities.Status;
 import common.entities.User;
 import common.utilities.Controller;
 import java.io.IOException;
-import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -74,20 +73,23 @@ public class AuthController extends HttpServlet implements Controller {
             String newPassword = request.getParameter("new-password");
             String confirmPassword = request.getParameter("confirm-password");
             processChangePassword(request, response, oldPassword, newPassword, confirmPassword);
-        }else if(operation.equals("RESETPW1")){
+        } else if (operation.equals("RESETPW1")) {
             // Test how this RESETPW1 works
             String email = request.getParameter("email");
-            String resetEmailPath = "/email?operation=RESETPW&receiver=" + email+"&token=";
+            if (authService.getAccount(email) == null) {
+                this.forwardErrorMessage(request, response, "Email cannot be found", "nauth/resetPassword1.jsp");
+            }
+            String resetEmailPath = "/email?operation=RESETPW&receiver=" + email + "&token=";
             String reset = "/email?work=RESETPW&email=" + email;
-            
+
             // Push reset into Session
             HttpSession ses = request.getSession();
             ses.setAttribute("resetPath", reset);
             // Set time for this session, hope this gonna work!
             ses.setMaxInactiveInterval(30);
-            
+
             request.getRequestDispatcher(resetEmailPath).forward(request, response);
-        }else if(operation.equals("RESETPW2")){
+        } else if (operation.equals("RESETPW2")) {
             // Test changing password
             String newPassword = request.getParameter("new-password");
             String confirmPassword = request.getParameter("confirm-password");
@@ -166,7 +168,7 @@ public class AuthController extends HttpServlet implements Controller {
             this.forwardErrorMessage(request, response, "Can't change password. Please check again later", forwardTo);
         }
     }
-    
+
     //Vu Duy Anh: In Progress (bug: after changed password, still click to the link and change again)
     private void processResetPassword(HttpServletRequest request, HttpServletResponse response,
             String newPassword, String confirmPassword, String email) throws ServletException, IOException {
@@ -174,7 +176,7 @@ public class AuthController extends HttpServlet implements Controller {
         boolean isChanged = false;
 
         if (authService.getAccount(email) != null && newPassword.equals(confirmPassword)) {
-                isChanged = authService.changePassword(email, newPassword);
+            isChanged = authService.changePassword(email, newPassword);
         }
         if (isChanged) {
             response.sendRedirect("home");
