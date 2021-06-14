@@ -51,6 +51,14 @@
         <servlet-class>blog.BlogController</servlet-class>
     </servlet>
     <!--Servlet Mapping-->
+    <servlet>
+        <servlet-name>QuestionController</servlet-name>
+        <servlet-class>question.QuestionController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>QuizController</servlet-name>
+        <servlet-class>quiz.QuizController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthController</servlet-name>
         <url-pattern>/authenticate</url-pattern>
@@ -121,6 +129,14 @@
         <param-value>se1501team1</param-value>
     </context-param>
     <!-- Other Configurations -->
+    <servlet-mapping>
+        <servlet-name>QuestionController</servlet-name>
+        <url-pattern>/auth/teacher/question</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuizController</servlet-name>
+        <url-pattern>/auth/teacher/quiz</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
