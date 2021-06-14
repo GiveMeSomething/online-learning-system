@@ -158,24 +158,6 @@ public class CourseService {
         return null;
     }
 
-    public List<Course> sortCoursePrice(int cateID, String price) {
-        try {
-            return courseRepository.sortCoursePrice(cateID, price);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public List<Course> sortCourseAlpha(int cateID, String alpha) {
-        try {
-            return courseRepository.sortCourseAlpha(cateID, alpha);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public List<Course> pagingCourseList(int cateID, String searchName, int page, String price, String alpha) {
         try {
             return courseRepository.pagingCourseList(cateID, searchName, page, price, alpha);

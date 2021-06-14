@@ -48,8 +48,8 @@ public class HomeController extends HttpServlet {
         request.setAttribute("iaCourse", iaCourse);
         request.setAttribute("langCourse", langCourse);
         request.setAttribute("studentsViewCourse", studentsViewCourse);
-        List<Category> listC = courseService.getAllCategory();
-        request.setAttribute("listC", listC);
+        List<Category> categoryList = courseService.getAllCategory();
+        request.setAttribute("categoryList", categoryList);
         request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 

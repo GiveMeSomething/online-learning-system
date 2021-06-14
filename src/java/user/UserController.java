@@ -39,8 +39,8 @@ public class UserController extends HttpServlet implements Controller {
 //        User user = userService.getUserProfile(id);
 //        request.setAttribute("user", user);
 
-        List<Category> listCategories = courseService.getAllCategory();
-        request.setAttribute("listC", listCategories);
+        List<Category> categoryList = courseService.getAllCategory();
+        request.setAttribute("categoryList", categoryList);
         request.getRequestDispatcher("auth/user/profile.jsp").forward(request, response);
     }
 
