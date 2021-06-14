@@ -184,11 +184,8 @@
                                type="text"
                                id="email" disabled
                                placeholder="Email"
-                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
                                value="${sessionScope.user.email}"
-                               data-value-missing="Can't be empty"
-                               required
-                               data-pattern-mismatch="Not a valid email"/>
+                               />
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
