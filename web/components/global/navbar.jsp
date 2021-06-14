@@ -30,10 +30,10 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav d-flex align-items-center">
                             <li class="nav-item">
-                                <form action="course?index=${tag}&&cID=${sessionScope.categoryId}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
+                                <form action="course?operation=SEARCHCOURSE&&index=${tag}&&cID=${sessionScope.categoryId}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
                                       class="d-flex" method="post">
                                     <input name="searchCourse" class="form-control py-2"
-                                           type="search" placeholder="Search courses">
+                                           type="search" placeholder="Search courses"/>
                                     <div class="invalid-feedback"></div>
                                 </form>
                             </li>
@@ -42,7 +42,7 @@
                                     Categories
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownButton">
-                                    <c:forEach items="${requestScope.listC}" var="o">
+                                    <c:forEach items="${requestScope.categoryList}" var="o">
                                         <a class="dropdown-item"
                                            href="course?cID=${o.id}">
                                             ${o.categoryName}

@@ -124,7 +124,7 @@ public class UserRepository extends Repository {
             statement.setInt(5, Status.valueOf(userUpdate.getStatus()));
             statement.setString(6, userUpdate.getMobile());
             statement.setInt(7, userUpdate.getId());
-
+           
             if (statement.executeUpdate() > 0) {
                 return true;
             }

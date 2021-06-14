@@ -39,8 +39,8 @@ public class UserController extends HttpServlet implements Controller {
 //        User user = userService.getUserProfile(id);
 //        request.setAttribute("user", user);
 
-        List<Category> listCategories = courseService.getAllCategory();
-        request.setAttribute("listC", listCategories);
+        List<Category> categoryList = courseService.getAllCategory();
+        request.setAttribute("categoryList", categoryList);
         request.getRequestDispatcher("auth/user/profile.jsp").forward(request, response);
     }
 
@@ -64,7 +64,10 @@ public class UserController extends HttpServlet implements Controller {
             User userUpdate = new User(id, image, fullName, Gender.valueOf(gender), email,
                     address, Status.valueOf(status), mobile);
             boolean isUpdate = userService.updateUserProfile(userUpdate);
+            
             if (isUpdate) {
+                userUpdate = userService.getUserById(id);
+                currentSession.setAttribute("user", userUpdate);
                 response.sendRedirect("user");
             } else {
                 this.forwardErrorMessage(request, response, "Can not update", "user");

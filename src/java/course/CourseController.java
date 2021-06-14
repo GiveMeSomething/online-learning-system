@@ -32,11 +32,38 @@ public class CourseController extends HttpServlet {
         courseService = new CourseService();
     }
 
+    private void handleFilterPriceAlpha(HttpServletRequest request,
+            HttpServletResponse response, int categoryIndicator, String searchName,
+            int indexPage, String price, String alpha)
+            throws ServletException, IOException {
+        //When user click both filter by price and alpha
+        if (price != null && alpha != null && price != "" && alpha != "") {
+            List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
+            request.setAttribute("course", listCoursePagingDetail);
+        } else if (price != null && price != "") { //When user click filter by price
+            List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
+            request.setAttribute("course", listCoursePagingDetail);
+        } else if (alpha != null && alpha != "") { //When user click filter by alpha
+            List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
+            request.setAttribute("course", listCoursePagingDetail);
+        } else { //When user do not click fiter radio button
+            if (price == null && alpha == null) {
+                List<Course> listCoursePaging = courseService.pagingCourseList(categoryIndicator, indexPage);
+                request.setAttribute("course", listCoursePaging);
+            } else { //When paging search
+                List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
+                request.setAttribute("course", listCoursePagingDetail);
+            }
+
+        }
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String courseId = request.getParameter("courseId");
         String categoryId = request.getParameter("cID");
+
         if (courseId != null) {
             Course courseDetail = courseService.getCourse(Integer.parseInt(courseId));
             List<Course> siderCourse = courseService.getSiderCourseDetail();
@@ -45,7 +72,7 @@ public class CourseController extends HttpServlet {
 
             request.setAttribute("detail", courseDetail);
             request.setAttribute("siderCourse", siderCourse);
-            request.setAttribute("listC", categoryList);
+            request.setAttribute("categoryList", categoryList);
             request.setAttribute("coursePackages", coursePackages);
 
             request.getRequestDispatcher("nauth/course/detail.jsp").forward(request, response);
@@ -55,50 +82,36 @@ public class CourseController extends HttpServlet {
             session.setAttribute("categoryId", categoryId);
             List<Course> courseFeature = courseService.getCourseFeature(categoryIndicator);
             String searchName = request.getParameter("searchName");
+            //assign first slider image active to display in UI
             int idFeature = 0;
             for (int i = 0; i < courseFeature.size(); i++) {
                 idFeature = courseFeature.get(0).getId();
             }
             //Get title corresponding to category id
             getTitle(request, response, categoryIndicator);
-
             String index = request.getParameter("index");
             if (index == null) {
                 index = "1";
             }
             int indexPage = Integer.parseInt(index);
-
+            //show the category list dropdown
             List<Category> categoryList = courseService.getAllCategory();
-            //FILTER PRICE,ALPHA
+            //filter price,alpha
             String price = request.getParameter("price");
             String alpha = request.getParameter("alpha");
-            if (price != null && alpha != null && price != "" && alpha != "") {
-                List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
-                request.setAttribute("course", listCoursePagingDetail);
-            } else if (price != null && price != "") {
-                List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
-                request.setAttribute("course", listCoursePagingDetail);
-            } else if (alpha != null && alpha != "") {
-                List<Course> listAlpha = courseService.sortCourseAlpha(categoryIndicator, alpha);
-                List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
-                request.setAttribute("course", listCoursePagingDetail);
-            } else {
-                if (price == null && alpha == null) {
-                    List<Course> listCoursePaging = courseService.pagingCourseList(categoryIndicator, indexPage);
-                    request.setAttribute("course", listCoursePaging);
-                } else {
-                    List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
-                    request.setAttribute("course", listCoursePagingDetail);
-                }
-
-            }
+            //handle filter
+            handleFilterPriceAlpha(request, response, categoryIndicator, searchName, indexPage, price, alpha);
             session.setAttribute("price", price);
             session.setAttribute("alpha", alpha);
-            request.setAttribute("listC", categoryList);
+            request.setAttribute("categoryList", categoryList);
             request.setAttribute("tag", index);
             request.setAttribute("price", price);
-            request.setAttribute("end", getTotalPage(request, response, categoryIndicator));
-            request.setAttribute("cateID", categoryId);
+            if (searchName != null) {
+                request.setAttribute("end", getTotalPageSearch(request, response, categoryIndicator, searchName));
+            } else {
+                request.setAttribute("end", getTotalPage(request, response, categoryIndicator));
+            }
+            request.setAttribute("categoryId", categoryId);
             request.setAttribute("courseFeature", courseFeature);
             session.removeAttribute("searchName");
             request.setAttribute("id", idFeature);
@@ -113,35 +126,35 @@ public class CourseController extends HttpServlet {
         String operation = request.getParameter("operation");
         if (operation.equals("REGISTER")) {
 
+        } else if (operation.equals("SEARCHCOURSE")) {
+            int categoryId = Integer.parseInt(request.getParameter("cID"));
+            String searchName = request.getParameter("searchCourse");
+            HttpSession ses = request.getSession();
+            ses.setAttribute("searchName", searchName);
+            String index = request.getParameter("index");
+            if (index == null) {
+                index = "1";
+            }
+            int indexPage = Integer.parseInt(index);
+
+            String price = request.getParameter("price");
+            String alpha = request.getParameter("alpha");
+            List<Course> list = courseService.searchCourse(categoryId, searchName);
+            List<Course> courseFeature = courseService.getCourseFeature(categoryId);
+            List<Category> categoryList = courseService.getAllCategory();
+            request.setAttribute("categoryList", categoryList);
+            int id = 0;
+            for (int i = 0; i < courseFeature.size(); i++) {
+                id = courseFeature.get(0).getId();
+            }
+            request.setAttribute("id", id);
+            request.setAttribute("end", getTotalPageSearch(request, response, categoryId, searchName));
+            request.setAttribute("tag", 1);
+            request.setAttribute("course", list);
+            request.setAttribute("courseFeature", courseFeature);
+            request.getRequestDispatcher("nauth/course/list.jsp").forward(request, response);
         }
 
-        int categoryId = Integer.parseInt(request.getParameter("cID"));
-        String searchName = request.getParameter("searchCourse");
-        HttpSession ses = request.getSession();
-        ses.setAttribute("searchName", searchName);
-        String index = request.getParameter("index");
-        if (index == null) {
-            index = "1";
-        }
-        int indexPage = Integer.parseInt(index);
-
-        String price = request.getParameter("price");
-        String alpha = request.getParameter("alpha");
-        List<Course> list = courseService.searchCourse(categoryId, searchName);
-        List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryId, searchName, indexPage, price, alpha);
-        List<Course> courseFeature = courseService.getCourseFeature(categoryId);
-        List<Category> listC = courseService.getAllCategory();
-        request.setAttribute("listC", listC);
-        int id = 0;
-        for (int i = 0; i < courseFeature.size(); i++) {
-            id = courseFeature.get(0).getId();
-        }
-        request.setAttribute("id", id);
-        request.setAttribute("end", getTotalPageSearch(request, response, categoryId, searchName));
-        request.setAttribute("tag", 1);
-        request.setAttribute("course", list);
-        request.setAttribute("courseFeature", courseFeature);
-        request.getRequestDispatcher("nauth/course/list.jsp").forward(request, response);
     }
 
     private void getTitle(HttpServletRequest request, HttpServletResponse response, int categoryId)
