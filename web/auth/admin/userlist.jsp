@@ -180,9 +180,11 @@
                                             </td>
                                             <td>${o.status}</td>
                                             <td>
-                                                <button> <a href="viewuser?uid=${o.id}">View</a> </button>
                                                 <button>
-                                                    <a href="edituser?uid=${o.id}">Edit</a>
+                                                    <a href="${path}/auth/admin/viewuser?uid=${o.id}">View</a>
+                                                </button>
+                                                <button>
+                                                    <a href="${path}/auth/admin/edituser?uid=${o.id}">Edit</a>
                                                 </button>
                                             </td>
                                         </tr>
@@ -190,7 +192,7 @@
                                 </tbody>
                             </table>
                             <div class="nutadd">
-                                <a href="auth/admin/adduser.jsp">
+                                <a href="${path}/auth/admin/adduser.jsp">
                                     Add
                                 </a>
                             </div>
