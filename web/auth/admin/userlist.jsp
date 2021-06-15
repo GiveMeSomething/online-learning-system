@@ -190,7 +190,7 @@
                                 </tbody>
                             </table>
                             <div class="nutadd">
-                                <a href="auth/admin/adduser.jsp">
+                                <a href="adduser.jsp">
                                     Add
                                 </a>
                             </div>
