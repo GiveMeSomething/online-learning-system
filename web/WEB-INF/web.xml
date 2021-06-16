@@ -59,6 +59,10 @@
         <servlet-name>QuizController</servlet-name>
         <servlet-class>quiz.QuizController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SubjectController</servlet-name>
+        <servlet-class>subject.SubjectController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthController</servlet-name>
         <url-pattern>/authenticate</url-pattern>
@@ -136,6 +140,10 @@
     <servlet-mapping>
         <servlet-name>QuizController</servlet-name>
         <url-pattern>/auth/teacher/quiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubjectController</servlet-name>
+        <url-pattern>/subject</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

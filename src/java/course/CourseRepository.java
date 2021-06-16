@@ -11,8 +11,11 @@ package course;
  */
 import common.entities.Category;
 import common.entities.Course;
+import common.entities.LessonType;
+import common.entities.Level;
 import common.entities.PricePackage;
 import common.entities.Status;
+import common.entities.TestType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -488,36 +491,117 @@ public class CourseRepository extends Repository {
         }
     }
 
-    public boolean addNewSubject(String thumbnail, String title, String description, 
-            String owner, Status status, String category, String feature) throws SQLException {
+    public boolean addNewSubject(Course course) throws SQLException {
         this.connectDatabase();
 
         String addNewSubject = "INSERT INTO course(title, thumbnail, description, "
                 + "owner, status_id, category_id, feature) VALUES(?,?,?,?,?,?,?)";
         try (PreparedStatement statement = this.connection.prepareStatement(addNewSubject)) {
-            statement.setString(1, title);
-            statement.setString(2, thumbnail);
-            statement.setString(3, description);
-            statement.setString(4, owner);
-            statement.setInt(5, Status.valueOf(status));
-            statement.setString(6, category);
-            statement.setString(7, feature);
-            
+            statement.setString(1, course.getCourseName());
+            statement.setString(2, course.getImageLink());
+            statement.setString(3, course.getDescription());
+            statement.setInt(4, course.getOwnerId());
+            statement.setInt(5, Status.valueOf(course.getStatus()));
+            statement.setString(6, course.getCategory());
+            statement.setBoolean(7, course.isFeature());
+
             return statement.executeUpdate() > 0;
         } finally {
             this.disconnectDatabase();
         }
     }
 
+    public boolean addLessonDetail(String lessonName, String order,
+            LessonType lessonType, String courseId) throws SQLException {
+        this.connectDatabase();
+
+        String addLessonDetail = "INSERT INTO lesson(lesson_name, order, "
+                + "status_id, type_id, course_id) VALUES(?,?,1,?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(addLessonDetail)) {
+            statement.setString(1, lessonName);
+            statement.setString(2, order);
+            statement.setInt(3, LessonType.valueOf(lessonType));
+            statement.setString(4, courseId);
+
+            return statement.executeUpdate() > 0;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean addQuizOverView(String name, String subjectId, Level level,
+            String duration, String passRate, TestType testType, String description) throws SQLException {
+        this.connectDatabase();
+
+        String addQuizOverview = "INSERT INTO quiz(name, subject_id, level_id, "
+                + "duration, pass_rate, quiz_type_id, description) "
+                + "VALUES(?,?,?,?,?,?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(addQuizOverview)) {
+            statement.setString(1, name);
+            statement.setString(2, subjectId);
+            statement.setInt(3, Level.valueOf(level));
+            statement.setString(4, duration);
+            statement.setString(5, passRate);
+            statement.setInt(6, TestType.valueOf(testType));
+            statement.setString(7, description);
+
+            return statement.executeUpdate() > 0;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean updateLessonDetail(String lessonName, String order, 
+            LessonType lessonType, String courseId, String id) throws SQLException {
+        this.connectDatabase();
+
+        String updateLessonDetail = "UPDATE lesson SET lesson_name = ?, order = ?, "
+                + "type_id = ?, course_id = ? WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(updateLessonDetail)) {
+            statement.setString(1, lessonName);
+            statement.setString(2, order);
+            statement.setInt(3, LessonType.valueOf(lessonType));
+            statement.setString(4, courseId);
+            statement.setString(5, id);
+
+            return statement.executeUpdate() > 0;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean updateQuizOverView(String name, String subjectId, Level level,
+            String duration, String passRate, TestType testType, String description, String id) throws SQLException {
+        this.connectDatabase();
+
+        String updateQuizOverview = "UPDATE quiz SET name= ?, subject_id= ?, "
+                + "level_id = ?, duration = ?, pass_rate = ?, quiz_type_id = ?, "
+                + "description = ?) "
+                + "WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(updateQuizOverview)) {
+            statement.setString(1, name);
+            statement.setString(2, subjectId);
+            statement.setInt(3, Level.valueOf(level));
+            statement.setString(4, duration);
+            statement.setString(5, passRate);
+            statement.setInt(6, TestType.valueOf(testType));
+            statement.setString(7, description);
+            statement.setString(8, id);
+
+            return statement.executeUpdate() > 0;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+    
+    
     public static void main(String[] args) throws Exception {
         CourseRepository repo = new CourseRepository();
-        try {
-            List<Category> list = repo.getAllCategory();
-            for (Category o : list) {
-                System.out.println(o);
-            }
-        } catch (Exception e) {
-        }
+//        List<Category> list = repo.getAllCategory();
+//        list.forEach((o) -> {
+//            System.out.println(o);
+//        });
+//        repo.addQuizOverView("Exam 1", "1", Level.HARD, "50", "60", TestType.QUIZ, "This is simulation test of PT1");
     }
 
 }
