@@ -8,6 +8,8 @@ import java.util.List;
 import common.entities.Category;
 import common.entities.Course;
 import common.entities.PricePackage;
+import common.entities.Status;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,7 +114,7 @@ public class CourseService {
 
     public List<Course> getCourseByCateID(int cateID) {
         try {
-            return courseRepository.getCourseByCateID(cateID);
+            return courseRepository.getCourseByCategoryId(cateID);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -191,6 +193,19 @@ public class CourseService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public ArrayList<ArrayList<String>> getSubjectList(String keyword, int categoryId, Status status, int teacherId) {
+        try {
+            if (categoryId <= 0) {
+                categoryId = -1;
+            }
+            return courseRepository.getSubjectList(keyword, categoryId, status, teacherId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 
