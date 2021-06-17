@@ -63,6 +63,10 @@
         <servlet-name>SubjectController</servlet-name>
         <servlet-class>subject.SubjectController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LessonController</servlet-name>
+        <servlet-class>lesson.LessonController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthController</servlet-name>
         <url-pattern>/authenticate</url-pattern>
@@ -144,6 +148,10 @@
     <servlet-mapping>
         <servlet-name>SubjectController</servlet-name>
         <url-pattern>/auth/teacher/subject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LessonController</servlet-name>
+        <url-pattern>/auth/teacher/lesson</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
