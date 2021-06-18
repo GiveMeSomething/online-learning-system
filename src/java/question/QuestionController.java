@@ -7,6 +7,7 @@ package question;
 
 import common.entities.Course;
 import common.entities.Dimension;
+import common.entities.Lesson;
 import common.entities.Question;
 import course.CourseService;
 import java.io.IOException;
@@ -37,15 +38,23 @@ public class QuestionController extends HttpServlet {
         if (operation == null) {
             Question questionDetail = questionService.getQuestionDetails(questionId);
             List<Course> courseList = courseService.getCourseByCateID(categoryId);
+            List<Lesson> lessonList = questionService.getLessonByCourseId(courseId);
             List<Dimension> dimensionList = courseService.getSubjectDimensionByCourseId(courseId);
             request.setAttribute("courseList", courseList);
             request.setAttribute("dimensionList", dimensionList);
+            request.setAttribute("lessonList", lessonList);
             request.setAttribute("questionDetail", questionDetail);
             request.getRequestDispatcher("QuestionDetail.jsp").forward(request, response);
         } else if (operation.equals("DELETEANSWER")) {
             String column = request.getParameter("column");
             questionService.deleteAnswerOptions(column, questionId);
             Question questionDetail = questionService.getQuestionDetails(questionId);
+            List<Course> courseList = courseService.getCourseByCateID(categoryId);
+            List<Lesson> lessonList = questionService.getLessonByCourseId(courseId);
+            List<Dimension> dimensionList = courseService.getSubjectDimensionByCourseId(courseId);
+            request.setAttribute("courseList", courseList);
+            request.setAttribute("dimensionList", dimensionList);
+            request.setAttribute("lessonList", lessonList);
             request.setAttribute("questionDetail", questionDetail);
             request.getRequestDispatcher("QuestionDetail.jsp").forward(request, response);
         } else if (operation.equals("EDITANSWER")) {
@@ -64,21 +73,7 @@ public class QuestionController extends HttpServlet {
             request.setAttribute("id", id);
             request.setAttribute("column", column);
             request.getRequestDispatcher("AnswerEditInfo.jsp").forward(request, response);
-        } else if (operation.equals("UPDATEQUESTION")) {
-            int questionIdUpdate = Integer.parseInt(request.getParameter("questionId"));
-            String subject = request.getParameter("subject");
-            String dimension = request.getParameter("dimension");
-            String lesson = request.getParameter("lesson");
-            int statusId = Integer.parseInt(request.getParameter("status"));
-            String content = request.getParameter("content");
-            String media = request.getParameter("media");
-            String option1 = request.getParameter("option1");
-            String option2 = request.getParameter("option2");
-            String option3 = request.getParameter("option3");
-            String option4 = request.getParameter("option4");
-            String explaination = request.getParameter("explaination");
-
-        }
+        } 
 
     }
 
@@ -91,6 +86,22 @@ public class QuestionController extends HttpServlet {
         if (operation.equals("UPDATEANSWER")) {
             String content = request.getParameter("content");
             questionService.updateAnswerOptions(columnUpdated, content, questionId);
+            response.sendRedirect("question");
+        } else if (operation.equals("UPDATEQUESTION")) {
+            int subjectId = Integer.parseInt(request.getParameter("subject")) ;
+            int dimensionId = Integer.parseInt(request.getParameter("dimension")) ;
+            int lessonId = Integer.parseInt(request.getParameter("lesson"));
+            int statusId = Integer.parseInt(request.getParameter("status"));
+            String content = request.getParameter("content");
+            String media = request.getParameter("media");
+            String option1 = request.getParameter("option1");
+            String option2 = request.getParameter("option2");
+            String option3 = request.getParameter("option3");
+            String option4 = request.getParameter("option4");
+            String explaination = request.getParameter("explaination");
+            questionService.updateQuestionBankByQuestionId(statusId, content, media,
+                    option1, option2, option3, option4, explaination, questionId);
+            questionService.updateQuestionCourseDimLes(subjectId, dimensionId, lessonId, questionId);
             response.sendRedirect("question");
         }
     }

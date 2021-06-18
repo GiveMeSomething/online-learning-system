@@ -31,6 +31,10 @@ public class Question {
         this.option4 = option4;
     }
     
+    public Question(String answer){
+        this.answer = answer;
+    }
+    
     public Question(int id, String course, String lesson_name, String dimension_name, Status status, String content, String media, String option1, String option2, String option3, String option4, String answer, String explaination) {
         this.id = id;
         this.course = course;
