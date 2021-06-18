@@ -252,5 +252,16 @@ public class UserService {
         return 0;
 
     }
+    
+    public List<User> getAuthor() {
+        List<User> list;
+        try {
+            list = this.userRepository.getAuthor();
+            return list;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 
 }

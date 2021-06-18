@@ -109,7 +109,7 @@ public class AdminController extends HttpServlet {
         int id = dao.getNewId();
         dao.insertAccount(email, password, roleId);
         dao.insertUser(id, image, fullname, gender, email, address, status, mobile);
-      response.sendRedirect(request.getContextPath() + "/auth/admin");
+        response.sendRedirect(request.getContextPath() + "/auth/admin");
     }
 
     public void updateUser(HttpServletRequest request, HttpServletResponse response)

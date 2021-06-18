@@ -12,6 +12,7 @@ package course;
 import common.entities.Category;
 import common.entities.Course;
 import common.entities.PricePackage;
+import common.entities.Status;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -121,7 +122,7 @@ public class CourseRepository extends Repository {
         }
         return null;
     }
-    
+
     public List<Course> getFeaturedCourse() throws SQLException {
         this.connectDatabase();
         String sql = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,pp.list_price "
@@ -487,6 +488,74 @@ public class CourseRepository extends Repository {
         }
     }
 
+//    Subject part
+    public Course getSubject(int id) throws SQLException {
+        this.connectDatabase();
+        String getCourse = "SELECT c.id, c.thumbnail, c.title, c.description, ca.category_name,c.feature, c.status_id, c.owner "
+                + "from db_ite1.course c "
+                + "INNER JOIN db_ite1.status s "
+                + "on c.status_id = s.id "
+                + "INNER JOIN db_ite1.course_package p "
+                + "ON c.id = p.course_id "
+                + "INNER JOIN db_ite1.price_package pp  "
+                + "ON p.package_id = pp.id "
+                + "INNER JOIN db_ite1.category ca "
+                + "ON ca.id = c.category_id "
+                + "WHERE c.id = ? "
+                + "GROUP BY c.id";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(getCourse)) {
+            statement.setInt(1, id);
+
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                return new Course(
+                        result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        result.getInt("owner"),
+                        result.getInt("status_id") == 0 ? Status.INACTIVE : Status.ACTIVE,
+                        result.getString("category_name"),
+                        result.getBoolean("feature"));
+            }
+
+            return null;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean updateSubjectInformation(String courseName, String description,int owner, int status_id, int category_id,int feature, int id) throws SQLException {
+        this.connectDatabase();
+
+        String updateUserInformation = "UPDATE db_ite1.course "
+                + "SET course.title = ?, "
+                + "course.description = ?, "
+                + "course.owner = ?, "
+                + "course.status_id = ?, "
+                + "course.category_id = ?, "
+                + "course.feature = ? "
+                + "WHERE course.id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(updateUserInformation)) {
+            statement.setString(1, courseName);
+            statement.setString(2, description);
+            statement.setInt(3, owner);
+            statement.setInt(4, status_id);
+            statement.setInt(5, category_id);
+            statement.setInt(6, feature);
+            statement.setInt(7, id);
+            statement.executeUpdate();
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+
+    }
+
     public static void main(String[] args) throws Exception {
         CourseRepository repo = new CourseRepository();
         try {
@@ -497,5 +566,6 @@ public class CourseRepository extends Repository {
         } catch (Exception e) {
         }
     }
+
 
 }
