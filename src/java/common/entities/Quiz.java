@@ -5,6 +5,8 @@
  */
 package common.entities;
 
+import java.util.List;
+//my quiz
 public class Quiz {
 
     private int id;
@@ -15,8 +17,9 @@ public class Quiz {
     private int passRate;
     private TestType quizType;
     private String description;
+    private List<Question> question;
 
-    public Quiz(int id, String quizName, int subject_id, Level quizLevel, int duration, int passRate, TestType quizType, String description) {
+    public Quiz(int id, String quizName, int subject_id, Level quizLevel, int duration, int passRate, TestType quizType, String description, List<Question> question) {
         this.id = id;
         this.quizName = quizName;
         this.subject_id = subject_id;
@@ -25,6 +28,15 @@ public class Quiz {
         this.passRate = passRate;
         this.quizType = quizType;
         this.description = description;
+        this.question = question;
+    }
+
+    public List<Question> getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(List<Question> question) {
+        this.question = question;
     }
 
     public int getId() {

@@ -11,17 +11,21 @@ package course;
  */
 import common.entities.Category;
 import common.entities.Course;
+import common.entities.CourseStatus;
 import common.entities.LessonType;
 import common.entities.Level;
 import common.entities.PricePackage;
 import common.entities.Status;
 import common.entities.TestType;
+import common.entities.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import common.utilities.Repository;
+import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class CourseRepository extends Repository {
 
@@ -318,9 +322,31 @@ public class CourseRepository extends Repository {
                         0,
                         result.getString("tag")
                 ));
-
             }
             return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+    
+    public Course checkCourseExist(String searchName, int cateID) throws SQLException {
+        this.connectDatabase();
+        String searchCourse = "SELECT * FROM db_ite1.course WHERE title LIKE ? AND category_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
+            statement.setString(1, "%" + searchName + "%");
+            statement.setInt(2, cateID);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new Course(
+                        result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        0,
+                        result.getString("tag")
+                );
+            }
+            return null;
         } finally {
             this.disconnectDatabase();
         }
@@ -491,110 +517,45 @@ public class CourseRepository extends Repository {
         }
     }
 
-    public boolean addNewSubject(Course course) throws SQLException {
+    public boolean addNewSubject(Course course, InputStream inputStream) throws SQLException {
         this.connectDatabase();
 
-        String addNewSubject = "INSERT INTO course(title, thumbnail, description, "
+        String addNewSubject = "INSERT INTO course(title, thumbnails, description, "
                 + "owner, status_id, category_id, feature) VALUES(?,?,?,?,?,?,?)";
         try (PreparedStatement statement = this.connection.prepareStatement(addNewSubject)) {
             statement.setString(1, course.getCourseName());
-            statement.setString(2, course.getImageLink());
+             if (inputStream != null) {
+                // fetches input stream of the upload file for the blob column
+                statement.setBlob(2, inputStream);
+            }
             statement.setString(3, course.getDescription());
             statement.setInt(4, course.getOwnerId());
-            statement.setInt(5, Status.valueOf(course.getStatus()));
+            statement.setInt(5, CourseStatus.valueOf(course.getStatus()));
             statement.setString(6, course.getCategory());
             statement.setBoolean(7, course.isFeature());
-
+            
             return statement.executeUpdate() > 0;
         } finally {
             this.disconnectDatabase();
         }
     }
 
-    public boolean addLessonDetail(String lessonName, String order,
-            LessonType lessonType, String courseId) throws SQLException {
+    public HashMap<Integer, String> getOwners() throws SQLException {
         this.connectDatabase();
 
-        String addLessonDetail = "INSERT INTO lesson(lesson_name, order, "
-                + "status_id, type_id, course_id) VALUES(?,?,1,?,?)";
-        try (PreparedStatement statement = this.connection.prepareStatement(addLessonDetail)) {
-            statement.setString(1, lessonName);
-            statement.setString(2, order);
-            statement.setInt(3, LessonType.valueOf(lessonType));
-            statement.setString(4, courseId);
-
-            return statement.executeUpdate() > 0;
-        } finally {
-            this.disconnectDatabase();
+        HashMap<Integer, String> owners = new HashMap<>();
+        String getOwners = "SELECT user.id, user.full_name FROM user JOIN account"
+                + " ON user.email = account.user_email WHERE account.role_id = 1;";
+        try (PreparedStatement statement = this.connection.prepareStatement(getOwners)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                owners.put(result.getInt("id"), result.getString("full_name"));
+                return owners;
+            }
         }
+        return null;
     }
 
-    public boolean addQuizOverView(String name, String subjectId, Level level,
-            String duration, String passRate, TestType testType, String description) throws SQLException {
-        this.connectDatabase();
-
-        String addQuizOverview = "INSERT INTO quiz(name, subject_id, level_id, "
-                + "duration, pass_rate, quiz_type_id, description) "
-                + "VALUES(?,?,?,?,?,?,?)";
-        try (PreparedStatement statement = this.connection.prepareStatement(addQuizOverview)) {
-            statement.setString(1, name);
-            statement.setString(2, subjectId);
-            statement.setInt(3, Level.valueOf(level));
-            statement.setString(4, duration);
-            statement.setString(5, passRate);
-            statement.setInt(6, TestType.valueOf(testType));
-            statement.setString(7, description);
-
-            return statement.executeUpdate() > 0;
-        } finally {
-            this.disconnectDatabase();
-        }
-    }
-
-    public boolean updateLessonDetail(String lessonName, String order, 
-            LessonType lessonType, String courseId, String id) throws SQLException {
-        this.connectDatabase();
-
-        String updateLessonDetail = "UPDATE lesson SET lesson_name = ?, order = ?, "
-                + "type_id = ?, course_id = ? WHERE id = ?";
-        try (PreparedStatement statement = this.connection.prepareStatement(updateLessonDetail)) {
-            statement.setString(1, lessonName);
-            statement.setString(2, order);
-            statement.setInt(3, LessonType.valueOf(lessonType));
-            statement.setString(4, courseId);
-            statement.setString(5, id);
-
-            return statement.executeUpdate() > 0;
-        } finally {
-            this.disconnectDatabase();
-        }
-    }
-
-    public boolean updateQuizOverView(String name, String subjectId, Level level,
-            String duration, String passRate, TestType testType, String description, String id) throws SQLException {
-        this.connectDatabase();
-
-        String updateQuizOverview = "UPDATE quiz SET name= ?, subject_id= ?, "
-                + "level_id = ?, duration = ?, pass_rate = ?, quiz_type_id = ?, "
-                + "description = ?) "
-                + "WHERE id = ?";
-        try (PreparedStatement statement = this.connection.prepareStatement(updateQuizOverview)) {
-            statement.setString(1, name);
-            statement.setString(2, subjectId);
-            statement.setInt(3, Level.valueOf(level));
-            statement.setString(4, duration);
-            statement.setString(5, passRate);
-            statement.setInt(6, TestType.valueOf(testType));
-            statement.setString(7, description);
-            statement.setString(8, id);
-
-            return statement.executeUpdate() > 0;
-        } finally {
-            this.disconnectDatabase();
-        }
-    }
-    
-    
     public static void main(String[] args) throws Exception {
         CourseRepository repo = new CourseRepository();
 //        List<Category> list = repo.getAllCategory();
@@ -602,6 +563,15 @@ public class CourseRepository extends Repository {
 //            System.out.println(o);
 //        });
 //        repo.addQuizOverView("Exam 1", "1", Level.HARD, "50", "60", TestType.QUIZ, "This is simulation test of PT1");
+//        for (Integer name : repo.getOwners().keySet()) {
+//            String key = name.toString();
+//            String value = repo.getOwners().get(name);
+//            System.out.println(key + " " + value);
+//        }
+//    Course course = new Course("jsahdkj", "dsa", "des", 1, CourseStatus.valueOf("PUBLISHED"), "1", true);
+            if(repo.checkCourseExist("sadasd",6)!=null){
+                System.out.println("had");
+            }else System.out.println("not");
     }
 
 }

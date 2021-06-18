@@ -4,11 +4,13 @@
  */
 package course;
 
-import java.util.List;
 import common.entities.Category;
 import common.entities.Course;
 import common.entities.PricePackage;
+import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /*
@@ -157,6 +159,16 @@ public class CourseService {
 
         return null;
     }
+    
+    public Course checkCourseExist(String searchName, int cateID) {
+        try {
+            return courseRepository.checkCourseExist(searchName, cateID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public List<Course> pagingCourseList(int cateID, String searchName, int page, String price, String alpha) {
         try {
@@ -193,5 +205,21 @@ public class CourseService {
         }
         return null;
     }
-
+    
+    public boolean addNewSubject(Course course, InputStream inputStream){
+        try {
+            return courseRepository.addNewSubject(course, inputStream);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public HashMap<Integer, String> getOwners(){
+        try {
+            return courseRepository.getOwners();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

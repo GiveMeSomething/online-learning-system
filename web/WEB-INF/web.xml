@@ -115,6 +115,10 @@
         <servlet-name>BlogController</servlet-name>
         <url-pattern>/blog</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubjectController</servlet-name>
+        <url-pattern>/subject</url-pattern>
+    </servlet-mapping>
     <!-- SMTP settings -->
     <context-param>
         <param-name>host</param-name>
@@ -140,10 +144,6 @@
     <servlet-mapping>
         <servlet-name>QuizController</servlet-name>
         <url-pattern>/auth/teacher/quiz</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SubjectController</servlet-name>
-        <url-pattern>/subject</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

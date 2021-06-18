@@ -18,17 +18,8 @@ public class Lesson {
     private int quiz_id;
 
     public Lesson(int id, String lessonName, int order, Status status,
-            LessonType lessonType, int courseId) {
-        this.id = id;
-        this.lessonName = lessonName;
-        this.order = order;
-        this.status = status;
-        this.lessonType = lessonType;
-        this.courseId = courseId;
-    }
-
-    public Lesson(int id, String lessonName, int order, Status status,
-            LessonType lessonType, int courseId, String videoLink, String htmlContent) {
+            LessonType lessonType, int courseId, String videoLink,
+            String htmlContent, int quiz_id) {
         this.id = id;
         this.lessonName = lessonName;
         this.order = order;
@@ -37,14 +28,34 @@ public class Lesson {
         this.courseId = courseId;
         this.videoLink = videoLink;
         this.htmlContent = htmlContent;
+        this.quiz_id = quiz_id;
     }
 
-    public Lesson(int id, String lessonName, int order, Status status,
-            LessonType lessonType, int courseId, String htmlContent, int quiz_id) {
-        this.id = id;
+    public Lesson(String lessonName, int order, LessonType lessonType, int courseId) {
         this.lessonName = lessonName;
         this.order = order;
-        this.status = status;
+        this.lessonType = lessonType;
+        this.courseId = courseId;
+    }
+
+    public Lesson(String lessonName) {
+        this.lessonName = lessonName;
+    }
+
+    public Lesson(String lessonName, int order,
+            LessonType lessonType, int courseId, String videoLink, String htmlContent) {
+        this.lessonName = lessonName;
+        this.order = order;
+        this.lessonType = lessonType;
+        this.courseId = courseId;
+        this.videoLink = videoLink;
+        this.htmlContent = htmlContent;
+    }
+
+    public Lesson(String lessonName, int order, LessonType lessonType,
+            int courseId, String htmlContent, int quiz_id) {
+        this.lessonName = lessonName;
+        this.order = order;
         this.lessonType = lessonType;
         this.courseId = courseId;
         this.htmlContent = htmlContent;
