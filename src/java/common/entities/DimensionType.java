@@ -5,19 +5,40 @@
  */
 package common.entities;
 
-import java.util.HashMap;
-import java.util.Map;
+public class DimensionType {
+   private int id;
+   private String dimension_type_name;
 
-public enum DimensionType {
-    DOMAIN,
-    GROUP,
-    SUBJECT_TOPIC;
-
-    private static final Map<DimensionType, Integer> DIMENSION_VALUE = new HashMap<>();
-
-    static {
-        DIMENSION_VALUE.put(DOMAIN, 1);
-        DIMENSION_VALUE.put(GROUP, 2);
-        DIMENSION_VALUE.put(SUBJECT_TOPIC, 3);
+    public DimensionType() {
     }
+
+    public DimensionType(int id, String dimension_type_name) {
+        this.id = id;
+        this.dimension_type_name = dimension_type_name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDimension_type_name() {
+        return dimension_type_name;
+    }
+
+    public void setDimension_type_name(String dimension_type_name) {
+        this.dimension_type_name = dimension_type_name;
+    }
+    
+    
+
+    @Override
+    public String toString() {
+        return "DimensionType{" + "id=" + id + ", dimension_type_name=" + dimension_type_name + '}';
+    }
+   
+   
 }
