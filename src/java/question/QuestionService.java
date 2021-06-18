@@ -97,4 +97,21 @@ public class QuestionService {
         }
         return null;
     }
+    
+    public void addAnswer(String column,String content,int questionId){
+        try {
+           questionRepository.addAnswer(column, content, questionId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public int countAnswerOptions() {
+        try {
+          return questionRepository.countAnswerOptions();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

@@ -99,22 +99,15 @@
                            value="${questionDetail.content}"
                            id="content">
                 </div>
-                <div class="form-group">
-                    <label for="media">
-                        Media
-                    </label>
-                    <input name="media"
-                           type="text"
-                           class="form-control"
-                           value="${questionDetail.media}"
-                           id="media">
-
-                </div>
 
                 <div class="form-group">
                     Answer Options<br/>
                     <div class="text-right mb-2">
-                        <button class="btn btn-success">Add Answer</button>  
+                        <button type="button" class="btn btn-success mb-2"
+                                data-toggle="modal" data-target="#AddAnswer">
+                            Add Answer
+                        </button>
+
                     </div>
                     <table class="table table-bordered">
                         <thead>
@@ -129,7 +122,7 @@
                             <c:if test="${questionDetail.option1 != null && questionDetail.option1 != ''}">
                                 <tr>
                                     <th scope="row">1</th>
-                                    <td style="background-color: #00f77b">
+                                    <td ${answer.answer == questionDetail.option1 ? "style='background-color:#00f77b'":""}>
                                         <textarea cols="97" 
                                                   rows="2" 
                                                   name="option1"
@@ -152,7 +145,7 @@
                             <c:if test="${questionDetail.option2 != null && questionDetail.option2 != ''}">
                                 <tr>
                                     <th scope="row">2</th>
-                                    <td>
+                                    <td ${answer.answer == questionDetail.option2 ? "style='background-color:#00f77b'":""}>
                                         <textarea cols="97" 
                                                   rows="2" 
                                                   name="option2"
@@ -174,7 +167,7 @@
                             <c:if test="${questionDetail.option3 != null && questionDetail.option3 != ''}">
                                 <tr>
                                     <th scope="row">3</th>
-                                    <td>
+                                    <td ${answer.answer == questionDetail.option3 ? "style='background-color:#00f77b'":""}>
                                         <textarea cols="97" 
                                                   rows="2" 
                                                   name="option3"
@@ -195,7 +188,7 @@
                             <c:if test="${questionDetail.option4 != null && questionDetail.option4 != ''}">
                                 <tr>
                                     <th scope="row">4</th>
-                                    <td>
+                                    <td ${answer.answer == questionDetail.option4 ? "style='background-color:#00f77b'":""}>
                                         <textarea cols="97" 
                                                   rows="2" 
                                                   name="option4"
@@ -205,7 +198,7 @@
                                     <td>
                                         <a href="${path}/question?operation=EDITANSWER&&id=4&&column=option4">
                                             <button 
-                                                   type="button" class="btn btn-warning mb-2">Edit Answer</button>
+                                                type="button" class="btn btn-warning mb-2">Edit Answer</button>
                                         </a>
                                         <a href="${path}/question?operation=DELETEANSWER&&column=option4">
                                             <button type="button" class="btn btn-danger">Delete Answer</button>
@@ -216,6 +209,68 @@
                         </tbody>
                     </table>
                 </div>
+                            
+                         
+                            
+                            
+                            
+                            
+                            
+                <!--THU NGHIEM LOAD DONG ANSWER-->
+                <div class="form-group">
+                    Answer Options<br/>
+                    <div class="text-right mb-2">
+                        <button type="button" class="btn btn-success mb-2"
+                                data-toggle="modal" data-target="#AddAnswer">
+                            Add Answer
+                        </button>
+
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr style='black'>
+                                <th style='border-bottom: 0px;width:5%' scope="col">#</th>
+                                <th style='border-bottom: 0px;width:70%' scope="col">Answer options</th>
+                                <th style='border-bottom: 0px' scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach begin="1" end="${totalAnswerOptions}" var="i">
+                            <c:if test="${questionDetail.option1 == null}"></c:if>
+                            <c:if test="${questionDetail.option1 != null && questionDetail.option1 != ''}">
+                                <tr>
+                                    <th scope="row">${i}</th>
+                                    <td ${answer.answer == questionDetail.option1 ? "style='background-color:#00f77b'":""}>
+                                        <textarea cols="97" 
+                                                  rows="2" 
+                                                  name="option1"
+                                                  style="border:none;resize:none;overflow:hidden;background: transparent;outline:none"/>${questionDetail.option1}
+                                        </textarea>
+                                    </td>
+
+                                    <td>
+                                        <a href="${path}/question?operation=EDITANSWER&&id=1&&column=option1">
+                                            <button type="button" class="btn btn-warning mb-2">Edit Answer</button>
+                                        </a>
+                                        <a href="question?operation=DELETEANSWER&&column=option1">
+                                            <button type="button" class="btn btn-danger">Delete Answer</button>  
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
 
                 <div class="form-group mt-2">
                     <label for="explaination">
@@ -224,18 +279,93 @@
                     <textarea name="explaination"
                               rows="5"
                               type="text"
+                              style="font-size: 19px"
                               class="form-control"
                               id="explaination">${questionDetail.explaination}</textarea>
                 </div>
 
+                <div class="form-group">
+                    <label for="media">
+                        Media
+                    </label>
+                    <input name="media"
+                           type="text"
+                           class="form-control mb-2"
+                           value="${image}"
+                           id="media">
+                    <img src="assets/${image}" style="width: 50%"/>
+                </div>
 
 
-                <button type="submit" class="btn btn-warning">Update</button> 
-            
+                <button type="submit" class="btn btn-warning">Update Question</button> 
+
 
 
             </form>
-            
+
+            <!--UPLOAD MEDIA-->
+            <div style="width: 85%;margin: 0 auto">
+                <form class="mt-3" action="question?operation=UPLOADMEDIA" method="POST" enctype="multipart/form-data">
+                    <div class="d-flex align-items-center">
+                        <label style="background: rgb(200,94,103);margin-bottom: 0;
+                               text-align:center;padding:5px;width: 146px;height:34px;
+                               border-radius:5px;color:white;font-size:17px" for="file-upload" class="custom-file-upload">
+                            Upload Media
+                            <input style="color:transparent;opacity: 0"
+                                   type="file" name="photo" value="" id="file-upload" /></label>
+                        <div style="margin-left: 10px">
+                            <button style="width: 146px;height: 34px;padding: 5px" class="btn btn-success" type="submit" value="Save">
+                                Update Media
+                            </button>            
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <!--ADD ANSWER-->
+            <div class="modal fade" id="AddAnswer">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="font-weight-bold">Add answer</h5>
+                            <button data-dismiss="modal" class="close">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="${path}/question?operation=ADDANSWER"
+                                  method="post">
+                                <div class="form-group">
+                                    <label class="d-block text-left" for="id">
+                                        Id
+                                    </label>
+                                    <input name="id" type="text" class="form-control"
+                                           id="id">
+                                </div>
+                                <div class="form-group">
+                                    <label class="d-block text-left"
+                                           for="answerContent">
+                                        Answer content
+                                    </label>
+                                    <textarea rows="5" name="answerContent" type="text" class="form-control"
+                                              id="answerContent"></textarea>
+                                </div>
+                                <div class="modal-footer myModalFooter">
+                                    <button class="btn btn-success" type="submit">
+                                        Add
+                                    </button> 
+                                    <button data-dismiss="modal" class="btn btn-danger">
+                                        Close
+                                    </button>
+                                </div>
+                            </form>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
 
 

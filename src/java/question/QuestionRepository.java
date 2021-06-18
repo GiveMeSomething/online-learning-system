@@ -174,13 +174,13 @@ public class QuestionRepository extends Repository {
     public static void main(String[] args) {
         QuestionRepository repo = new QuestionRepository();
         try {
-            Question questionList = repo.getAnswerByQuestionId(2);
-            System.out.println(questionList);
+            int countAnswerOptions = repo.countAnswerOptions();
+            System.out.println(countAnswerOptions);
         } catch (Exception e) {
         }
     }
 
-    public void updateQuestionCourseDimLes(int courseId,int dimensionId,int lessonId,int questionId) throws SQLException {
+    public void updateQuestionCourseDimLes(int courseId, int dimensionId, int lessonId, int questionId) throws SQLException {
         this.connectDatabase();
         String updateQuestionBank = "UPDATE db_ite1.question_course_dim_les SET "
                 + "course_id = ?, "
@@ -197,7 +197,7 @@ public class QuestionRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-    
+
     public Question getAnswerByQuestionId(int questionId) throws SQLException {
         this.connectDatabase();
         String getAnswerByQuestionId = "SELECT answer FROM db_ite1.questions_bank WHERE id = ?";
@@ -208,13 +208,44 @@ public class QuestionRepository extends Repository {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 return new Question(
-                    result.getString("answer")
+                        result.getString("answer")
                 );
             }
         } catch (Exception e) {
         }
         return null;
     }
-    
-   
+
+    public void addAnswer(String column, String content, int questionId) throws SQLException {
+        this.connectDatabase();
+        String updateQuestionBank = "UPDATE db_ite1.questions_bank SET " + column + " = ?"
+                + "WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(updateQuestionBank)) {
+            statement.setString(1, content);
+            statement.setInt(2, questionId);
+            statement.executeUpdate();
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public int countAnswerOptions() throws SQLException {
+        this.connectDatabase();
+        String countAnswerOptions = "SELECT COUNT(*) AS count "
+                + "  FROM INFORMATION_SCHEMA.COLUMNS "
+                + "  WHERE table_name = 'questions_bank' "
+                + "  AND table_schema = 'db_ite1' "
+                + "  AND column_name LIKE '%option%'";
+        try (PreparedStatement statement = this.connection.prepareStatement(countAnswerOptions)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("count");
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
+    }
+
 }
