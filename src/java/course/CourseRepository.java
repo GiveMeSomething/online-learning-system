@@ -536,7 +536,7 @@ public class CourseRepository extends Repository {
                 info.add(result.getString("id"));
                 info.add(result.getString("title"));
                 info.add(result.getString("category_name"));
-                info.add(result.getString("lessonNum"));
+                info.add(result.getString("lessonCount"));
                 info.add(result.getString("full_name"));
 
                 Status statusInfo = result.getInt("status_id") == 0 ? Status.INACTIVE : Status.ACTIVE;
