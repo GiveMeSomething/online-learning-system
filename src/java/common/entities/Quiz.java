@@ -7,28 +7,40 @@ package common.entities;
 
 import java.util.List;
 //my quiz
+
 public class Quiz {
 
     private int id;
     private String quizName;
-    private int subject_id;
+    private int subjectId;
     private Level quizLevel;
     private int duration;
-    private int passRate;
     private TestType quizType;
+    private float passRate;
     private String description;
     private List<Question> question;
 
     public Quiz(int id, String quizName, int subject_id, Level quizLevel, int duration, int passRate, TestType quizType, String description, List<Question> question) {
         this.id = id;
         this.quizName = quizName;
-        this.subject_id = subject_id;
+        this.subjectId = subject_id;
         this.quizLevel = quizLevel;
         this.duration = duration;
         this.passRate = passRate;
         this.quizType = quizType;
         this.description = description;
         this.question = question;
+    }
+
+    public Quiz(int id, String name, int subjectId, Level level, int duration, float passRate, TestType testType, String description) {
+        this.id = id;
+        this.quizName = name;
+        this.subjectId = subjectId;
+        this.quizLevel = level;
+        this.duration = duration;
+        this.passRate = passRate;
+        this.quizType = testType;
+        this.description = description;
     }
 
     public List<Question> getQuestion() {
@@ -55,12 +67,12 @@ public class Quiz {
         this.quizName = quizName;
     }
 
-    public int getSubject_id() {
-        return subject_id;
+    public int getSubjectId() {
+        return subjectId;
     }
 
-    public void setSubject_id(int subject_id) {
-        this.subject_id = subject_id;
+    public void setSubjectId(int subjectId) {
+        this.subjectId = subjectId;
     }
 
     public Level getQuizLevel() {
@@ -79,7 +91,7 @@ public class Quiz {
         this.duration = duration;
     }
 
-    public int getPassRate() {
+    public float getPassRate() {
         return passRate;
     }
 
@@ -104,8 +116,9 @@ public class Quiz {
     }
 
     @Override
+
     public String toString() {
-        return "Quiz{" + "id=" + id + ", quizName=" + quizName + ", subject_id=" + subject_id + ", quizLevel=" + quizLevel + ", duration=" + duration + ", passRate=" + passRate + ", quizType=" + quizType + ", description=" + description + '}';
+        return "Quiz{" + "id=" + id + ", quizName=" + quizName + ", subject_id=" + subjectId + ", quizLevel=" + quizLevel + ", duration=" + duration + ", passRate=" + passRate + ", quizType=" + quizType + ", description=" + description + '}';
     }
 
 }

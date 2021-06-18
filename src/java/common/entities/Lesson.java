@@ -15,11 +15,10 @@ public class Lesson {
     private int courseId;
     private String videoLink;
     private String htmlContent;
-    private int quiz_id;
+    private int quizId;
 
-    public Lesson(int id, String lessonName, int order, Status status,
-            LessonType lessonType, int courseId, String videoLink,
-            String htmlContent, int quiz_id) {
+    public Lesson(int id, String lessonName, int order, Status status, 
+            LessonType lessonType, int courseId, String videoLink, String htmlContent, int quizId) {
         this.id = id;
         this.lessonName = lessonName;
         this.order = order;
@@ -28,7 +27,7 @@ public class Lesson {
         this.courseId = courseId;
         this.videoLink = videoLink;
         this.htmlContent = htmlContent;
-        this.quiz_id = quiz_id;
+        this.quizId = quizId;
     }
 
     public Lesson(String lessonName, int order, LessonType lessonType, int courseId) {
@@ -59,7 +58,7 @@ public class Lesson {
         this.lessonType = lessonType;
         this.courseId = courseId;
         this.htmlContent = htmlContent;
-        this.quiz_id = quiz_id;
+        this.quizId = quizId;
     }
 
     public int getId() {
@@ -126,17 +125,11 @@ public class Lesson {
         this.htmlContent = htmlContent;
     }
 
-    public int getQuiz_id() {
-        return quiz_id;
+    public int getQuizId() {
+        return quizId;
     }
 
-    public void setQuiz_id(int quiz_id) {
-        this.quiz_id = quiz_id;
+    public void setQuizId(int quizId) {
+        this.quizId = quizId;
     }
-
-    @Override
-    public String toString() {
-        return "Lesson{" + "id=" + id + ", lessonName=" + lessonName + ", order=" + order + ", status=" + status + ", lessonType=" + lessonType + ", courseId=" + courseId + ", videoLink=" + videoLink + ", htmlContent=" + htmlContent + ", quiz_id=" + quiz_id + '}';
-    }
-
 }

@@ -7,14 +7,16 @@ package quiz;
 
 import common.entities.Quiz;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class QuizService {
 
-    final private QuizRepository quizRepository;
+    private final QuizRepository quizRepository;
 
     public QuizService() {
         this.quizRepository = new QuizRepository();
     }
+
 
     public boolean addQuizOverView(Quiz quiz) {
         try {
@@ -25,7 +27,7 @@ public class QuizService {
         return false;
     }
 
-    public boolean updateQuizOverView(Quiz quiz){
+    public boolean updateQuizOverView(Quiz quiz) {
         try {
             return quizRepository.updateQuizOverView(quiz);
         } catch (SQLException e) {
@@ -33,4 +35,20 @@ public class QuizService {
         }
         return false;
     }
+
+    public ArrayList<Quiz> getQuizList(int subjectId) {
+        try {
+            ArrayList<Quiz> result = quizRepository.getQuizList(subjectId);
+            if (result.size() <= 0) {
+                return null;
+            } else {
+                return result;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }

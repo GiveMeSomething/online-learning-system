@@ -1,7 +1,13 @@
 /**
+ * <<<<<<< HEAD
  * Jun 16, 2021
  *
  * @author Vu Duy Anh
+ * =======
+ * Jun 17, 2021
+ *
+ * @author Hoang Tien Minh
+ * >>>>>>> c44157fc169893bad2cd702c98aab9860ade848f
  */
 package lesson;
 
@@ -12,6 +18,7 @@ import common.utilities.Repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class LessonRepository extends Repository {
 
@@ -53,7 +60,7 @@ public class LessonRepository extends Repository {
                     statement.setInt(2, lesson.getOrder());
                     statement.setInt(3, lesson.getCourseId());
                     statement.setString(4, lesson.getHtmlContent());
-                    statement.setInt(5, lesson.getQuiz_id());
+                    statement.setInt(5, lesson.getQuizId());
 
                     return statement.executeUpdate() > 0;
                 } finally {
@@ -104,7 +111,7 @@ public class LessonRepository extends Repository {
                     statement.setInt(2, lesson.getOrder());
                     statement.setInt(3, lesson.getCourseId());
                     statement.setString(4, lesson.getHtmlContent());
-                    statement.setInt(5, lesson.getQuiz_id());
+                    statement.setInt(5, lesson.getQuizId());
                     statement.setInt(6, lesson.getId());
 
                     return statement.executeUpdate() > 0;
@@ -160,10 +167,49 @@ public class LessonRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+
+    public ArrayList<Lesson> getLessonList(int subjectId) throws SQLException {
+        this.connectDatabase();
+
+        String getLessons = "SELECT id, lesson_name, `order`,  "
+                + "       status_id, type_id, course_id,  "
+                + "       video_link, html_content, quiz_id "
+                + "FROM lesson "
+                + "WHERE course_id = ?";
+        ArrayList<Lesson> lessons = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(getLessons)) {
+            statement.setInt(1, subjectId);
+
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                int lessonType = result.getInt("type_id");
+                lessons.add(
+                        new Lesson(
+                                result.getInt("id"),
+                                result.getString("lesson_name"),
+                                result.getInt("order"),
+                                result.getInt("status_id") == 0 ? Status.INACTIVE : Status.ACTIVE,
+                                lessonType == 1
+                                        ? LessonType.SUBJECT_TOPIC
+                                        : (lessonType == 2 ? LessonType.LESSON : LessonType.QUIZ),
+                                result.getInt("course_id"),
+                                result.getString("video_link"),
+                                result.getString("html_content"),
+                                result.getInt("quiz_id")
+                        )
+                );
+            }
+
+            return lessons;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
     public static void main(String[] args) throws SQLException {
         LessonRepository lessonRepository = new LessonRepository();
         Lesson les = new Lesson(290, "Chapter 1.5", 2, Status.ACTIVE, LessonType.valueOf("QUIZ"), 1, "https://youtu.be/U-hAhjg56HU",
-            "html", 1);
+                "html", 1);
         lessonRepository.updateLessonDetail(les);
     }
 }

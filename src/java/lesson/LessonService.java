@@ -7,6 +7,7 @@ package lesson;
 
 import common.entities.Lesson;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class LessonService {
 
@@ -49,6 +50,22 @@ public class LessonService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public ArrayList<Lesson> getLessonList(int subjectId) {
+        try {
+            ArrayList<Lesson> result = this.lessonRepository.getLessonList(subjectId);
+
+            if (result.size() <= 0) {
+                return null;
+            } else {
+                return result;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 }

@@ -109,7 +109,7 @@ public class AdminController extends HttpServlet {
         int id = dao.getNewId();
         dao.insertAccount(email, password, roleId);
         dao.insertUser(id, image, fullname, gender, email, address, status, mobile);
-        response.sendRedirect("");
+      response.sendRedirect(request.getContextPath() + "/auth/admin");
     }
 
     public void updateUser(HttpServletRequest request, HttpServletResponse response)
@@ -122,7 +122,7 @@ public class AdminController extends HttpServlet {
         String mobile = request.getParameter("mobile");
         boolean gender = request.getParameter("gender").equals("male");
         dao.updateUserInformation(img, uid, fullname, gender, address, mobile);
-        response.sendRedirect("");
+        response.sendRedirect(request.getContextPath() + "/auth/admin");
     }
 
     public void editUser(HttpServletRequest request, HttpServletResponse response)

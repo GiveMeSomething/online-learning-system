@@ -8,6 +8,7 @@ import common.entities.Category;
 import common.entities.Course;
 import common.entities.PricePackage;
 import java.io.InputStream;
+import common.entities.Status;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,7 +115,7 @@ public class CourseService {
 
     public List<Course> getCourseByCateID(int cateID) {
         try {
-            return courseRepository.getCourseByCateID(cateID);
+            return courseRepository.getCourseByCategoryId(cateID);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -159,7 +160,7 @@ public class CourseService {
 
         return null;
     }
-    
+
     public Course checkCourseExist(String searchName, int cateID) {
         try {
             return courseRepository.checkCourseExist(searchName, cateID);
@@ -205,8 +206,8 @@ public class CourseService {
         }
         return null;
     }
-    
-    public boolean addNewSubject(Course course, InputStream inputStream){
+
+    public boolean addNewSubject(Course course, InputStream inputStream) {
         try {
             return courseRepository.addNewSubject(course, inputStream);
         } catch (SQLException e) {
@@ -214,7 +215,8 @@ public class CourseService {
         }
         return false;
     }
-    public HashMap<Integer, String> getOwners(){
+
+    public HashMap<Integer, String> getOwners() {
         try {
             return courseRepository.getOwners();
         } catch (Exception e) {
@@ -222,4 +224,18 @@ public class CourseService {
         }
         return null;
     }
+
+    public ArrayList<ArrayList<String>> getSubjectList(String keyword, int categoryId, Status status, int teacherId) {
+        try {
+            if (categoryId <= 0) {
+                categoryId = -1;
+            }
+            return courseRepository.getSubjectList(keyword, categoryId, status, teacherId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }
