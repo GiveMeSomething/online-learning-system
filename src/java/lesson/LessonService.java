@@ -26,9 +26,9 @@ public class LessonService {
         return false;
     }
 
-    public boolean updateLessonDetail(Lesson lesson) {
+    public boolean updateLessonDetail(Lesson lesson, int id) {
         try {
-            return lessonRepository.updateLessonDetail(lesson);
+            return lessonRepository.updateLessonDetail(lesson, id);
         } catch (SQLException e) {
             e.printStackTrace();
         }

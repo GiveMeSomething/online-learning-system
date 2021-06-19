@@ -554,6 +554,23 @@ public class CourseRepository extends Repository {
         }
     }
 
+    public HashMap<Integer, String> getCourses() throws SQLException {
+        this.connectDatabase();
+
+        HashMap<Integer, String> courses = new HashMap<>();
+        String getHmCourse = "SELECT id, title FROM course ORDER BY title";
+        try (PreparedStatement statement = this.connection.prepareStatement(getHmCourse)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                courses.put(result.getInt("id"), result.getString("title"));
+            }
+            return courses;
+
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
     public ArrayList<ArrayList<String>> getSubjectList(String keyword, int categoryId, Status status, int teacherId) throws SQLException {
         this.connectDatabase();
 
@@ -612,7 +629,7 @@ public class CourseRepository extends Repository {
             }
 
             return subjectInfo;
-        }finally{
+        } finally {
             this.disconnectDatabase();
         }
     }

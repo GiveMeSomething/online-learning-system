@@ -50,5 +50,23 @@ public class QuizService {
 
         return null;
     }
+    public Quiz getExistQuiz(Quiz quiz){
+        try {
+            return quizRepository.getExistQuiz(quiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public Quiz getQuiz(int id){
+        try {
+            return quizRepository.getQuiz(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
 
 }

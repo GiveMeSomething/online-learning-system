@@ -59,6 +59,82 @@ public class QuizRepository extends Repository {
         }
     }
 
+    public Quiz getExistQuiz(Quiz quiz) throws SQLException {
+        this.connectDatabase();
+
+        String getQuiz = "SELECT * FROM quiz WHERE name = ?, subject_id = ?, quiz_type_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(getQuiz)) {
+            statement.setString(1, getQuiz);
+            statement.setInt(2, quiz.getSubjectId());
+            statement.setInt(3, TestType.valueOf(quiz.getQuizType()));
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                int levelId = result.getInt("level_id");
+                int testType = result.getInt("quiz_type_id");
+                return new Quiz(result.getInt("id"),
+                        result.getString("name"),
+                        result.getInt("subject_id"),
+                        levelId == 1
+                                ? Level.EASY
+                                : (levelId == 2 ? Level.MEDIUM : Level.HARD),
+                        result.getInt("duration"),
+                        result.getFloat("pass_rate"),
+                        testType == 1
+                                ? TestType.SIMULATION
+                                : (testType == 2 ? TestType.TEST : TestType.QUIZ),
+                        result.getString("description"));
+            }
+            return null;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public Quiz getQuiz(int id) throws SQLException {
+        this.connectDatabase();
+
+        String getQuiz = "SELECT * FROM quiz WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(getQuiz)) {
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                int levelId = result.getInt("level_id");
+                int testType = result.getInt("quiz_type_id");
+                return new Quiz(result.getInt("id"),
+                        result.getString("name"),
+                        result.getInt("subject_id"),
+                        levelId == 1
+                                ? Level.EASY
+                                : (levelId == 2 ? Level.MEDIUM : Level.HARD),
+                        result.getInt("duration"),
+                        result.getFloat("pass_rate"),
+                        testType == 1
+                                ? TestType.SIMULATION
+                                : (testType == 2 ? TestType.TEST : TestType.QUIZ),
+                        result.getString("description"));
+            }
+            return null;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public int countQuestion(int id) throws SQLException {
+        this.connectDatabase();
+
+        String questionCount = "SELECT COUNT(question_id) as question FROM question_quiz WHERE quiz_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(questionCount)) {
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("question");
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
+    }
+
     public ArrayList<Quiz> getQuizList(int subjectId) throws SQLException {
         this.connectDatabase();
 

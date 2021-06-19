@@ -20,16 +20,20 @@ public class Quiz {
     private String description;
     private List<Question> question;
 
-    public Quiz(int id, String quizName, int subject_id, Level quizLevel, int duration, int passRate, TestType quizType, String description, List<Question> question) {
+    public Quiz(int id, String quizName, int subjectId, Level quizLevel, int duration, int passRate, TestType quizType, String description, List<Question> question) {
         this.id = id;
         this.quizName = quizName;
-        this.subjectId = subject_id;
+        this.subjectId = subjectId;
         this.quizLevel = quizLevel;
         this.duration = duration;
         this.passRate = passRate;
         this.quizType = quizType;
         this.description = description;
         this.question = question;
+    }
+
+    public Quiz(int id) {
+        this.id = id;
     }
 
     public Quiz(int id, String name, int subjectId, Level level, int duration, float passRate, TestType testType, String description) {

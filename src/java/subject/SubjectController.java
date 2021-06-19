@@ -88,7 +88,7 @@ public class SubjectController extends HttpServlet implements Controller {
         } else {
             courseService.addNewSubject(course, inputStream);
             // Navigating to subject list
-            response.sendRedirect("new-subject.jsp");
+            response.sendRedirect("auth/admin/subject/new-subject.jsp");
         }
     }
 

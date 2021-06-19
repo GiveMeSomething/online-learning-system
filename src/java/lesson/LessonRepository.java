@@ -69,7 +69,7 @@ public class LessonRepository extends Repository {
         }
     }
 
-    public boolean updateLessonDetail(Lesson lesson) throws SQLException {
+    public boolean updateLessonDetail(Lesson lesson, int id) throws SQLException {
         this.connectDatabase();
 
         String updateLessonWithType1 = "UPDATE lesson SET lesson_name = ?, lesson.order = ?, "
@@ -86,7 +86,7 @@ public class LessonRepository extends Repository {
                     statement.setString(1, lesson.getLessonName());
                     statement.setInt(2, lesson.getOrder());
                     statement.setInt(3, lesson.getCourseId());
-                    statement.setInt(4, lesson.getId());
+                    statement.setInt(4, id);
 
                     return statement.executeUpdate() > 0;
                 } finally {
@@ -99,7 +99,7 @@ public class LessonRepository extends Repository {
                     statement.setInt(3, lesson.getCourseId());
                     statement.setString(4, lesson.getVideoLink());
                     statement.setString(5, lesson.getHtmlContent());
-                    statement.setInt(6, lesson.getId());
+                    statement.setInt(6, id);
 
                     return statement.executeUpdate() > 0;
                 } finally {
@@ -112,7 +112,7 @@ public class LessonRepository extends Repository {
                     statement.setInt(3, lesson.getCourseId());
                     statement.setString(4, lesson.getHtmlContent());
                     statement.setInt(5, lesson.getQuizId());
-                    statement.setInt(6, lesson.getId());
+                    statement.setInt(6, id);
 
                     return statement.executeUpdate() > 0;
                 } finally {
@@ -208,8 +208,7 @@ public class LessonRepository extends Repository {
 
     public static void main(String[] args) throws SQLException {
         LessonRepository lessonRepository = new LessonRepository();
-        Lesson les = new Lesson(290, "Chapter 1.5", 2, Status.ACTIVE, LessonType.valueOf("QUIZ"), 1, "https://youtu.be/U-hAhjg56HU",
-                "html", 1);
-        lessonRepository.updateLessonDetail(les);
+        Lesson lesson = new Lesson("lesson 3.3", 2, LessonType.valueOf("QUIZ"), 1, "html", 2);
+        lessonRepository.updateLessonDetail(lesson, 290);
     }
 }

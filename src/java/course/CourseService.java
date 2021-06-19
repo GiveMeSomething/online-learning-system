@@ -237,5 +237,12 @@ public class CourseService {
 
         return null;
     }
-
+    public HashMap<Integer, String> getCourses(){
+        try {
+            return courseRepository.getCourses();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -52,7 +52,7 @@ public class Lesson {
     }
 
     public Lesson(String lessonName, int order, LessonType lessonType,
-            int courseId, String htmlContent, int quiz_id) {
+            int courseId, String htmlContent, int quizId) {
         this.lessonName = lessonName;
         this.order = order;
         this.lessonType = lessonType;
