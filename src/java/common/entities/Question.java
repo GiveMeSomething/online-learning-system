@@ -23,6 +23,10 @@ public class Question {
 
     public Question() {
     }
+    
+    public Question(int id) {
+        this.id = id;
+    }
 
     public Question(String option1, String option2, String option3, String option4) {
         this.option1 = option1;

@@ -5,6 +5,7 @@
  */
 package quiz;
 
+import common.entities.Question;
 import common.entities.Quiz;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,7 +17,6 @@ public class QuizService {
     public QuizService() {
         this.quizRepository = new QuizRepository();
     }
-
 
     public boolean addQuizOverView(Quiz quiz) {
         try {
@@ -50,7 +50,8 @@ public class QuizService {
 
         return null;
     }
-    public Quiz getExistQuiz(Quiz quiz){
+
+    public Quiz getExistQuiz(Quiz quiz) {
         try {
             return quizRepository.getExistQuiz(quiz);
         } catch (Exception e) {
@@ -58,8 +59,8 @@ public class QuizService {
         }
         return null;
     }
-    
-    public Quiz getQuiz(int id){
+
+    public Quiz getQuiz(int id) {
         try {
             return quizRepository.getQuiz(id);
         } catch (Exception e) {
@@ -67,6 +68,22 @@ public class QuizService {
         }
         return null;
     }
-    
 
+    public ArrayList<Question> getQuestionByLesson(int lessonId) {
+        try {
+            return quizRepository.getQuestionByLesson(lessonId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int countQuestion(int id) {
+        try {
+            return quizRepository.countQuestion(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

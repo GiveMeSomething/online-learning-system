@@ -121,7 +121,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SubjectController</servlet-name>
-        <url-pattern>/subject</url-pattern>
+        <url-pattern>/auth/admin/subject</url-pattern>
     </servlet-mapping>
     <!-- SMTP settings -->
     <context-param>
@@ -147,8 +147,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>QuizController</servlet-name>
-<!--        <url-pattern>/auth/teacher/quiz</url-pattern>-->
-        <url-pattern>/quiz</url-pattern>
+        <url-pattern>/auth/teacher/quiz</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SubjectController</servlet-name>

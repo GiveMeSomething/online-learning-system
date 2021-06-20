@@ -8,6 +8,7 @@ package quiz;
 import common.entities.Level;
 import common.entities.Quiz;
 import common.entities.TestType;
+import common.utilities.Controller;
 import course.CourseService;
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class QuizController extends HttpServlet {
+public class QuizController extends HttpServlet implements Controller{
 
     private QuizService quizService;
     private CourseService courseService;
@@ -42,13 +43,13 @@ public class QuizController extends HttpServlet {
             }
         } else if (operation.equals("ADDQUIZOVERVIEW")) {
             String id = request.getParameter("id");
-            if (id == null) {
+            if (id.equalsIgnoreCase("")) {
                 addQuizOverview(request, response);
             } else {
                 updateQuizOverview(request, response);
             }
         } else if (operation.equals("ADDQUIZSETTING")) {
-
+            addQuizSetting(request, response);
         }
     }
 
@@ -59,6 +60,24 @@ public class QuizController extends HttpServlet {
     }
 
     public void addQuizOverview(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String forwardTo = request.getParameter("previousPage");
+        String quizName = request.getParameter("quiz-name");
+        String subject = request.getParameter("subject-name");
+        Level level = Level.valueOf(request.getParameter("exam-level"));
+        int duration = Integer.parseInt(request.getParameter("duration"));
+        float passRate = Float.parseFloat(request.getParameter("pass-rate"));
+        TestType type = TestType.valueOf(request.getParameter("quiz-type"));
+        String description = request.getParameter("description");
+        Quiz quiz = new Quiz(0, quizName, Integer.parseInt(subject), level, duration, passRate, type, description);
+        if (quizService.getExistQuiz(quiz) == null) {
+            quizService.addQuizOverView(quiz);
+        } else {
+            this.forwardErrorMessage(request, response, "Already had this quiz", forwardTo);
+        }
+    }
+
+    public void addQuizSetting(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String quizName = request.getParameter("quiz-name");
         String subject = request.getParameter("subject-name");
@@ -74,6 +93,20 @@ public class QuizController extends HttpServlet {
     }
 
     public void updateQuizOverview(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String quizName = request.getParameter("quiz-name");
+        int subject = Integer.parseInt(request.getParameter("subject-name"));
+        Level level = Level.valueOf(request.getParameter("exam-level"));
+        int duration = Integer.parseInt(request.getParameter("duration"));
+        float passRate = Float.parseFloat(request.getParameter("pass-rate"));
+        TestType type = TestType.valueOf(request.getParameter("quiz-type"));
+        String description = request.getParameter("description");
+        Quiz quiz = new Quiz(id, quizName, subject, level, duration, passRate, type, description);
+        quizService.updateQuizOverView(quiz);
+    }
+
+    public void updateQuizSetting(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         String quizName = request.getParameter("quiz-name");

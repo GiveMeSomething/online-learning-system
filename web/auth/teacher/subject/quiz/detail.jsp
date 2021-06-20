@@ -33,7 +33,7 @@
             <!-- content -->
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                    <form action="quiz" method="POST" class="needs-validatation" novalidate>
+                    <form action="/auth/teacher/quiz" method="POST" class="needs-validatation" novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="/auth/teacher/subject/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
@@ -120,25 +120,27 @@
                             <input name="operation" value="ADDQUIZSETTING" hidden="true" />
                             <div class="invalid-feedback"></div>
                         </div>
+                        <input value="${quiz.subjectId}" hidden name="subject"/>
                         <div class="form-row">
                             <div class="mb-3">
                                 <label for="total-question">Total Questions</label>
-                                <input class="form-control" value="50" type="text" name="total-question" id="total-question"
+                                <input class="form-control" value="50" type="text" 
+                                       name="total-question" id="total-question"
                                        data-value-missing="Can't be empty" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <span class="col-md-2">Quiz type</span>
                             <div class="custom-control custom-radio col-md-2">
-                                <input type="radio" checked="true" class="custom-control-input" id="topic" name="radio-stacked" required>
+                                <input type="radio" checked="true" class="custom-control-input" id="topic" name="type" required>
                                 <label class="custom-control-label" for="topic">Topic</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">
-                                <input type="radio" class="custom-control-input" id="group" name="radio-stacked" required>
+                                <input type="radio" class="custom-control-input" id="group" name="type" required>
                                 <label class="custom-control-label" for="group">Group</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">
-                                <input type="radio" class="custom-control-input" id="domain" name="radio-stacked" required>
+                                <input type="radio" class="custom-control-input" id="domain" name="type" required>
                                 <label class="custom-control-label" for="domain">Domain</label>
                                 <div class="invalid-feedback">More example invalid feedback text</div>
                             </div>

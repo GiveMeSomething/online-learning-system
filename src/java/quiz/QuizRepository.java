@@ -6,6 +6,7 @@
 package quiz;
 
 import common.entities.Level;
+import common.entities.Question;
 import common.entities.Quiz;
 import common.entities.TestType;
 import common.utilities.Repository;
@@ -42,7 +43,7 @@ public class QuizRepository extends Repository {
 
         String updateQuizOverview = "UPDATE quiz SET name= ?, subject_id= ?, "
                 + "level_id = ?, duration = ?, pass_rate = ?, quiz_type_id = ?, "
-                + "description = ?) "
+                + "description = ? "
                 + "WHERE id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(updateQuizOverview)) {
             statement.setString(1, quiz.getQuizName());
@@ -134,6 +135,7 @@ public class QuizRepository extends Repository {
         }
         return 0;
     }
+    
 
     public ArrayList<Quiz> getQuizList(int subjectId) throws SQLException {
         this.connectDatabase();
@@ -174,4 +176,26 @@ public class QuizRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+    
+    public ArrayList<Question> getQuestionByLesson(int lessonId) throws SQLException {
+        this.connectDatabase();
+
+        String questionByLesson = "SELECT question_id FROM db_ite1.question_course_dim_les "
+                + "WHERE lesson_id = ?";
+        ArrayList<Question> questions = new ArrayList<>();
+
+        try (PreparedStatement statement = this.connection.prepareStatement(questionByLesson)) {
+            statement.setInt(1, lessonId);
+
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                questions.add(new Question(result.getInt("question_id")));
+            }
+
+            return questions;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+    //Need to get lesson in order to fill option of group quiz
 }
