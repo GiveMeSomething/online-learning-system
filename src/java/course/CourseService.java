@@ -198,9 +198,6 @@ public class CourseService {
 
     public ArrayList<ArrayList<String>> getSubjectList(String keyword, int categoryId, Status status, int teacherId) {
         try {
-            if (categoryId <= 0) {
-                categoryId = -1;
-            }
             return courseRepository.getSubjectList(keyword, categoryId, status, teacherId);
         } catch (SQLException e) {
             e.printStackTrace();

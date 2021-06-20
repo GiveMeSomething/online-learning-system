@@ -495,9 +495,7 @@ public class CourseRepository extends Repository {
 
         if (keyword != null && !keyword.equals("")) {
             keyword = "%" + keyword + "%";
-            option += "AND c.title LIKE " + keyword
-                    + "c2.category_name LIKE " + keyword
-                    + "u.full_name LIKE " + keyword + " ";
+            option += "AND c.title LIKE '" + keyword + "' ";
         }
 
         if (categoryId != -1) {

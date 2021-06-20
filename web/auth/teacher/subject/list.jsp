@@ -35,8 +35,7 @@
                 </div>
             </div>
             <div class="row">
-                <form action="${path}/auth/teacher/subject" method="POST"
-                      class="needs-validation" novalidate>
+                <form action="${path}/auth/teacher/subject" method="POST">
                     <div class="request-info">
                         <input name="previousPage" value="${path}/auth/teacher/subject" hidden="true" />
                         <div class="invalid-feedback"></div>
@@ -49,33 +48,51 @@
                                    name="keyword"
                                    type="text"
                                    id="keyword"
+                                   value="${requestScope.selectedKeyword != null ? requestScope.selectedKeyword: ''}"
                                    placeholder="Search subjects"
                                    style="width: 70vh"/>
-                            <div class="invalid-feedback"></div>
                         </div>
                         <div id="category" class="d-flex justify-content-center align-items-center m-2" >
-                            <div class="mx-2">Categories</div>
-                            <select class="custom-select custom-select-sm" name="category">
-                                <option value="" selected>All</option>
+                            <label for="category-select" class="mx-2">Categories</label>
+                            <select class="form-control" name="category" style="width: 20vh">
+                                <option value="-1" ${requestScope.selectedCategory == null ? 'selected': ''}>All</option>
                                 <c:forEach items="${requestScope.categories}" var="category">
-                                    <option value="${category.categoryId}">${category.categoryName}</option>
+                                    <option value="${category.id}" ${requestScope.selectedCategory == category.id ? 'selected': ''}>
+                                        ${category.categoryName}
+                                    </option>
                                 </c:forEach>
                             </select>
                         </div>
                         <div id="status" class="d-flex justify-content-center align-items-center m-2">
                             <div class="mx-2">Status</div>
                             <div class="custom-control custom-radio custom-control m-2">
-                                <input type="radio" id="active" name="status" class="custom-control-input" value="ACTIVE">
+                                <input
+                                    type="radio"
+                                    id="active"
+                                    name="status"
+                                    class="custom-control-input"
+                                    value="ACTIVE"
+                                    ${requestScope.selectedStatus == "ACTIVE" ? 'checked': ''}>
                                 <label class="custom-control-label" for="active">ACTIVE</label>
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="custom-control custom-radio custom-control m-2">
-                                <input type="radio" id="inactive" name="status" class="custom-control-input" value="INACTIVE">
+                                <input type="radio"
+                                       id="inactive"
+                                       name="status"
+                                       class="custom-control-input"
+                                       value="INACTIVE"
+                                       ${requestScope.selectedStatus == "INACTIVE" ? 'checked': ''}>
                                 <label class="custom-control-label" for="inactive">INACTIVE</label>
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="custom-control custom-radio custom-control m-2">
-                                <input type="radio" name="status" class="custom-control-input" value="Both">
+                                <input type="radio"
+                                       id="all"
+                                       name="status"
+                                       class="custom-control-input"
+                                       value=""
+                                       ${requestScope.selectedStatus == null || requestScope.selectedStatus == '' ? 'checked': ''}>
                                 <label class="custom-control-label" for="all">Both</label>
                                 <div class="invalid-feedback"></div>
                             </div>
@@ -100,11 +117,6 @@
                         </div>
                     </div>
                     <div class="col-3 d-flex align-items-center justify-content-center m-2">
-                        <a href="/auth/teacher/subject">
-                            <button class="btn btn-sm btn-success px-3 py-2">
-                                ACTIVE
-                            </button>
-                        </a>
                         <a href="/auth/teacher/subject?operation=VIEW&subjectId=1" class="m-2">
                             <button class="btn btn-sm btn-primary px-3 py-2">
                                 View and Edit
@@ -116,21 +128,26 @@
             <nav aria-label="Page navigation example">
                 <c:set var="contentSize" value="${sessionScope.subjectList.size()}" />
                 <c:set var="maxPage" value="${((contentSize - contentSize % 5) / 5) + 1}" />
-                <c:set var="prevPage" value="${pageContext.request.getParameter('page') - 1}" />
-                <c:set var="nextPage" value="${pageContext.request.getParameter('page') + 1}" />
+                <c:set var="currentPage" value="${pageContext.request.getParameter('page')}" />
+                <c:set var="prevPage" value="${currentPage == null ? 1 : currentPage - 1}" />
+                <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" href="${path}/auth/teacher/subject?page=${prevPage > 0 ? prevPage: 1}">Previous</a>
+                        <a class="page-link" href="${path}/auth/teacher/subject?operation=PAGINATION&page=${prevPage > 0 ? prevPage: 1}">Previous</a>
                     </li>
                     <c:forEach begin="1" end="${maxPage}" varStatus="counter">
                         <li class="page-item">
-                            <a class="page-link" href="${path}/auth/teacher/subject?page=${counter.index}">
+                            <a class="page-link"
+                               href="${path}/auth/teacher/subject?operation=PAGINATION&page=${counter.index}">
                                 ${counter.index}
                             </a>
                         </li>
                     </c:forEach>
                     <li class="page-item">
-                        <a class="page-link" href="${path}/auth/teacher/subject?page=${nextPage > maxPage ? nextPage: maxPage}">Next</a>
+                        <a class="page-link"
+                           href="${path}/auth/teacher/subject?operation=PAGINATION&page=${nextPage > maxPage ? maxPage: nextPage}">
+                            Next
+                        </a>
                     </li>
                 </ul>
             </nav>
