@@ -99,7 +99,6 @@
                            value="${questionDetail.content}"
                            id="content">
                 </div>
-
                 <div class="form-group">
                     Answer Options<br/>
                     <div class="text-right mb-2">
@@ -118,159 +117,52 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:if test="${questionDetail.option1 == null}"></c:if>
-                            <c:if test="${questionDetail.option1 != null && questionDetail.option1 != ''}">
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td ${answer.answer == questionDetail.option1 ? "style='background-color:#00f77b'":""}>
-                                        <textarea cols="97" 
-                                                  rows="2" 
-                                                  name="option1"
-                                                  style="border:none;resize:none;overflow:hidden;background: transparent;outline:none"/>${questionDetail.option1}
-                                        </textarea>
-                                    </td>
+                            <c:forEach begin="1" end="${totalAnswerOptions}" var="i">
+                                <c:set var="property" value="option${i}" />
+                                <c:if test="${questionDetail[property] == null}"></c:if>
+                                <c:if test="${questionDetail[property] != null && questionDetail[property] != ''}">
+                                    <tr>
+                                        <th scope="row">${i}</th>
+                                        <td ${questionDetail[property].trim() == (answer.answer) ? "style='background-color:#00f77b'":""}>
+                                            <textarea cols="97" 
+                                                      rows="2" 
+                                                      name="option${i}"
+                                                      style="border:none;font-size: inherit;resize:none;overflow:hidden;background: transparent;outline:none"/>${questionDetail[property]}
+                                            </textarea>
+                                        </td>
 
-                                    <td>
-                                        <a href="${path}/question?operation=EDITANSWER&&id=1&&column=option1">
-                                            <button type="button" class="btn btn-warning mb-2">Edit Answer</button>
-                                        </a>
-                                        <a href="question?operation=DELETEANSWER&&column=option1">
-                                            <button type="button" class="btn btn-danger">Delete Answer</button>  
-                                        </a>
+                                        <td>
+                                            <a href="question?operation=EDITANSWER&&id=${i}&&column=option${i}">
+                                                <button type="button" class="btn btn-warning mb-2">Edit Answer</button>
+                                            </a>
+                                            <a href="question?operation=DELETEANSWER&&column=option${i}&&media=${image}">
+                                                <button type="button" class="btn btn-danger">Delete Answer</button>  
+                                            </a>
 
-                                    </td>
-                                </tr>
-                            </c:if>
-                            <c:if test="${questionDetail.option2 == null}"></c:if>
-                            <c:if test="${questionDetail.option2 != null && questionDetail.option2 != ''}">
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td ${answer.answer == questionDetail.option2 ? "style='background-color:#00f77b'":""}>
-                                        <textarea cols="97" 
-                                                  rows="2" 
-                                                  name="option2"
-                                                  style="border:none;resize:none;overflow:hidden;background: transparent;outline:none"/>${questionDetail.option2}
-                                        </textarea>
-
-                                    </td>
-                                    <td>
-                                        <a href="${path}/question?operation=EDITANSWER&&id=2&&column=option2">
-                                            <button type="button" class="btn btn-warning mb-2">Edit Answer</button>
-                                        </a>
-                                        <a href="question?operation=DELETEANSWER&&column=option2">
-                                            <button type="button" class="btn btn-danger">Delete Answer</button>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </c:if>
-                            <c:if test="${questionDetail.option3 == null}"></c:if>
-                            <c:if test="${questionDetail.option3 != null && questionDetail.option3 != ''}">
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td ${answer.answer == questionDetail.option3 ? "style='background-color:#00f77b'":""}>
-                                        <textarea cols="97" 
-                                                  rows="2" 
-                                                  name="option3"
-                                                  style="border:none;resize:none;background: transparent;overflow:hidden;outline:none"/>${questionDetail.option3}
-                                        </textarea>
-                                    </td>
-                                    <td>
-                                        <a href="${path}/question?operation=EDITANSWER&&id=3&&column=option3">
-                                            <button type="button" class="btn btn-warning mb-2">Edit Answer</button>
-                                        </a>
-                                        <a href="question?operation=DELETEANSWER&&column=option3">
-                                            <button type="button" class="btn btn-danger">Delete Answer</button>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </c:if>
-                            <c:if test="${questionDetail.option4 == null}"></c:if>
-                            <c:if test="${questionDetail.option4 != null && questionDetail.option4 != ''}">
-                                <tr>
-                                    <th scope="row">4</th>
-                                    <td ${answer.answer == questionDetail.option4 ? "style='background-color:#00f77b'":""}>
-                                        <textarea cols="97" 
-                                                  rows="2" 
-                                                  name="option4"
-                                                  style="border:none;resize:none;overflow:hidden;background: transparent;outline:none"/>${questionDetail.option4}
-                                        </textarea>
-                                    </td>
-                                    <td>
-                                        <a href="${path}/question?operation=EDITANSWER&&id=4&&column=option4">
-                                            <button 
-                                                type="button" class="btn btn-warning mb-2">Edit Answer</button>
-                                        </a>
-                                        <a href="${path}/question?operation=DELETEANSWER&&column=option4">
-                                            <button type="button" class="btn btn-danger">Delete Answer</button>
-                                        </a>
-                                    </td>
-                                </tr> 
-                            </c:if>
+                                        </td>
+                                    </tr>
+                                </c:if>
+                            </c:forEach>
                         </tbody>
                     </table>
                 </div>
-                            
-                         
-                            
-                            
-                            
-                            
-                            
-                <!--THU NGHIEM LOAD DONG ANSWER-->
+
                 <div class="form-group">
-                    Answer Options<br/>
-                    <div class="text-right mb-2">
-                        <button type="button" class="btn btn-success mb-2"
-                                data-toggle="modal" data-target="#AddAnswer">
-                            Add Answer
-                        </button>
-
-                    </div>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr style='black'>
-                                <th style='border-bottom: 0px;width:5%' scope="col">#</th>
-                                <th style='border-bottom: 0px;width:70%' scope="col">Answer options</th>
-                                <th style='border-bottom: 0px' scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <label for="answer">
+                        Answer
+                    </label>
+                    <select name="answer" class="form-control">
                         <c:forEach begin="1" end="${totalAnswerOptions}" var="i">
-                            <c:if test="${questionDetail.option1 == null}"></c:if>
-                            <c:if test="${questionDetail.option1 != null && questionDetail.option1 != ''}">
-                                <tr>
-                                    <th scope="row">${i}</th>
-                                    <td ${answer.answer == questionDetail.option1 ? "style='background-color:#00f77b'":""}>
-                                        <textarea cols="97" 
-                                                  rows="2" 
-                                                  name="option1"
-                                                  style="border:none;resize:none;overflow:hidden;background: transparent;outline:none"/>${questionDetail.option1}
-                                        </textarea>
-                                    </td>
-
-                                    <td>
-                                        <a href="${path}/question?operation=EDITANSWER&&id=1&&column=option1">
-                                            <button type="button" class="btn btn-warning mb-2">Edit Answer</button>
-                                        </a>
-                                        <a href="question?operation=DELETEANSWER&&column=option1">
-                                            <button type="button" class="btn btn-danger">Delete Answer</button>  
-                                        </a>
-
-                                    </td>
-                                </tr>
+                            <c:set var="property" value="option${i}" />
+                            <c:if test="${questionDetail[property] == null}"></c:if>
+                            <c:if test="${questionDetail[property] != null && questionDetail[property] != ''}">
+                                <option style="font-size: inherit" ${questionDetail[property].trim() == answer.answer ? "selected":""} value="${questionDetail[property].trim()}">
+                                    ${questionDetail[property]}
+                                </option>
                             </c:if>
                         </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
+                    </select>
+                </div>         
 
                 <div class="form-group mt-2">
                     <label for="explaination">
@@ -280,6 +172,7 @@
                               rows="5"
                               type="text"
                               style="font-size: 19px"
+                              placeholder="${questionDetail.explaination}"
                               class="form-control"
                               id="explaination">${questionDetail.explaination}</textarea>
                 </div>

@@ -18,13 +18,14 @@ public class Question {
     private String option2;
     private String option3;
     private String option4;
+    private String option5;
     private String answer;
     private String explaination;
 
     public Question() {
     }
     
-    public Question(String option1,String option2,String option3,String option4){
+    public Question(String option1,String option2,String option3,String option4,String option5){
         this.option1 = option1;
         this.option2 = option2;
         this.option3 = option3;
@@ -35,7 +36,7 @@ public class Question {
         this.answer = answer;
     }
     
-    public Question(int id, String course, String lesson_name, String dimension_name, Status status, String content, String media, String option1, String option2, String option3, String option4, String answer, String explaination) {
+    public Question(int id, String course, String lesson_name, String dimension_name, Status status, String content, String media, String option1, String option2, String option3, String option4,String option5, String answer, String explaination) {
         this.id = id;
         this.course = course;
         this.lesson_name = lesson_name;
@@ -47,6 +48,7 @@ public class Question {
         this.option2 = option2;
         this.option3 = option3;
         this.option4 = option4;
+        this.option5 = option5;
         this.answer = answer;
         this.explaination = explaination;
     }
@@ -140,6 +142,16 @@ public class Question {
     public void setOption4(String option4) {
         this.option4 = option4;
     }
+
+    public String getOption5() {
+        return option5;
+    }
+
+    public void setOption5(String option5) {
+        this.option5 = option5;
+    }
+    
+    
 
     public String getAnswer() {
         return answer;

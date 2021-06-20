@@ -492,9 +492,9 @@ public class CourseRepository extends Repository {
 
     public List<Dimension> getSubjectDimensionByCourseId(int courseId) throws SQLException {
         this.connectDatabase();
-        String getSubjectDimension = "SELECT DISTINCT q.dimension_id,dt.dimension_type_name,d.name,d.description "
-                + "FROM db_ite1.question_course_dim_les q "
-                + "INNER JOIN dimension d ON q.dimension_id = d.id "
+        String getSubjectDimension = "SELECT cd.dimension_id,dt.dimension_type_name,d.name,d.description "
+                + "FROM db_ite1.course_dimension cd "
+                + "INNER JOIN dimension d ON cd.dimension_id = d.id "
                 + "INNER JOIN dimension_type dt on d.type_id = dt.id "
                 + "WHERE course_id = ? ORDER BY type_id";
         List<Dimension> list = new ArrayList<>();
@@ -515,7 +515,7 @@ public class CourseRepository extends Repository {
 
     public void deleteSubjectDimensionByCourseId(int courseId, int dimensionId) throws SQLException {
         this.connectDatabase();
-        String deleteSubjectDimension = "DELETE FROM db_ite1.question_course_dim_les "
+        String deleteSubjectDimension = "DELETE FROM db_ite1.course_dimension "
                 + "WHERE course_id = ? and dimension_id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(deleteSubjectDimension)) {
             statement.setInt(1, courseId);
@@ -561,8 +561,8 @@ public class CourseRepository extends Repository {
 
     public void addDimensionCourse(int courseId, int dimensionId) throws SQLException {
         this.connectDatabase();
-        String addDimension = "INSERT INTO db_ite1.question_course_dim_les\n"
-                + "VALUES (?,?,1,1)";
+        String addDimension = "INSERT INTO db_ite1.course_dimension\n"
+                + "VALUES (?,?)";
         try (PreparedStatement statement = this.connection.prepareStatement(addDimension)) {
             statement.setInt(1, courseId);
             statement.setInt(2, dimensionId);
@@ -644,11 +644,11 @@ public class CourseRepository extends Repository {
             for (Dimension o : dimensionList) {
                 System.out.println(o);
             }
-        }catch(Exception e){
-            
+        } catch (Exception e) {
+
         }
     }
-    
+
     public ArrayList<ArrayList<String>> getSubjectList(String keyword, int categoryId, Status status, int teacherId) throws SQLException {
         this.connectDatabase();
 

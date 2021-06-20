@@ -21,6 +21,7 @@ import javax.servlet.http.Part;
 import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.annotation.MultipartConfig;
@@ -126,11 +127,17 @@ public class QuestionController extends HttpServlet {
         } else if (operation.equals("DELETEANSWER")) {
             String column = request.getParameter("column");
             questionService.deleteAnswerOptions(column, questionId);
+            int totalAnswerOptions = questionService.countAnswerOptions();
+            Question questionDetail = questionService.getQuestionDetails(questionId);
+            String media = request.getParameter("media");
+            request.setAttribute("image", media);
+            request.setAttribute("totalAnswerOptions", totalAnswerOptions);
             processUserInterface(request, response, questionId, categoryId, courseId);
             request.getRequestDispatcher("QuestionDetail.jsp").forward(request, response);
         } else if (operation.equals("EDITANSWER")) {
             String column = request.getParameter("column");
             int id = Integer.parseInt(request.getParameter("id"));
+
             Question answerDetail = questionService.getAnswerDetail(column, questionId);
             if (column.equals("option1")) {
                 request.setAttribute("answerDetail", answerDetail.getOption1());
@@ -138,8 +145,10 @@ public class QuestionController extends HttpServlet {
                 request.setAttribute("answerDetail", answerDetail.getOption2());
             } else if (column.equals("option3")) {
                 request.setAttribute("answerDetail", answerDetail.getOption3());
-            } else {
+            } else if (column.equals("option4")) {
                 request.setAttribute("answerDetail", answerDetail.getOption4());
+            } else {
+                request.setAttribute("answerDetail", answerDetail.getOption5());
             }
             request.setAttribute("id", id);
             request.setAttribute("column", column);
@@ -171,9 +180,11 @@ public class QuestionController extends HttpServlet {
             String option2 = request.getParameter("option2");
             String option3 = request.getParameter("option3");
             String option4 = request.getParameter("option4");
+            String option5 = request.getParameter("option5");
+            String answer = request.getParameter("answer");
             String explaination = request.getParameter("explaination");
             questionService.updateQuestionBankByQuestionId(statusId, content, media,
-                    option1, option2, option3, option4, explaination, questionId);
+                    option1, option2, option3, option4, option5, explaination, answer, questionId);
             questionService.updateQuestionCourseDimLes(subjectId, dimensionId, lessonId, questionId);
             response.sendRedirect("question");
         } else if (operation.equals("ADDANSWER")) {
@@ -182,6 +193,7 @@ public class QuestionController extends HttpServlet {
             Question option2 = questionService.getAnswerDetail("option2", questionId);
             Question option3 = questionService.getAnswerDetail("option3", questionId);
             Question option4 = questionService.getAnswerDetail("option4", questionId);
+            Question option5 = questionService.getAnswerDetail("option5", questionId);
             String answerContent = request.getParameter("answerContent");
             if (option1.getOption1().equals("")) {
                 questionService.addAnswer("option1", answerContent, questionId);
@@ -191,11 +203,15 @@ public class QuestionController extends HttpServlet {
                 questionService.addAnswer("option3", answerContent, questionId);
             } else if (option4.getOption4().equals("")) {
                 questionService.addAnswer("option4", answerContent, questionId);
+            } else {
+                questionService.addColumnAnswer("option5", "option4");
+                questionService.addAnswer("option5", answerContent, questionId);
+
             }
             response.sendRedirect("question");
         } else if (operation.equals("UPLOADMEDIA")) {
-            request.setAttribute("username", request.getParameter("username"));
-            request.setAttribute("password", request.getParameter("password"));
+            int totalAnswerOptions = questionService.countAnswerOptions();
+            request.setAttribute("totalAnswerOptions", totalAnswerOptions);
             request.setAttribute("image", uploadFile(request));
             processUserInterface(request, response, questionId, categoryId, courseId);
             request.getRequestDispatcher("QuestionDetail.jsp").forward(request, response);

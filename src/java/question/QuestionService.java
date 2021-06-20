@@ -36,12 +36,13 @@ public class QuestionService {
         return null;
     }
     
-    public void deleteAnswerOptions(String column,int questionId){
+    public boolean deleteAnswerOptions(String column,int questionId){
         try {
-            questionRepository.deleteAnswerOptions(column, questionId);
+           return questionRepository.deleteAnswerOptions(column, questionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
     
     public Question getAnswerDetail(String column,int questionId){
@@ -71,11 +72,11 @@ public class QuestionService {
     }
     
     public void updateQuestionBankByQuestionId(int statusId,String content,String media,
-            String option1,String option2,String option3,String option4,String explaination,
-            int questionId) {
+            String option1,String option2,String option3,String option4,String option5,String explaination,
+            String answer,int questionId) {
         try {
            questionRepository.updateQuestionBankByQuestionId(statusId, content, media,
-                   option1, option2, option3, option4, explaination, questionId);
+                   option1, option2, option3, option4, option5, explaination,answer, questionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,5 +114,13 @@ public class QuestionService {
             e.printStackTrace();
         }
         return 0;
+    }
+    
+    public void addColumnAnswer(String columnAdded,String previousColumn){
+        try {
+          questionRepository.addColumnAnswer(columnAdded, previousColumn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

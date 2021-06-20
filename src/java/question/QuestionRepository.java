@@ -19,7 +19,7 @@ public class QuestionRepository extends Repository {
 
     public Question getQuestionDetails(int questionId) throws SQLException {
         this.connectDatabase();
-        String getQuestionDetails = "SELECT q.id,c.title,l.lesson_name,d.name AS dimension_name,q.status_id,q.content,q.media,q.option1,q.option2,q.option3,q.option4,q.answer,q.explaination "
+        String getQuestionDetails = "SELECT q.id,c.title,l.lesson_name,d.name AS dimension_name,q.status_id,q.content,q.media,q.option1,q.option2,q.option3,q.option4,q.option5,q.answer,q.explaination "
                 + "FROM db_ite1.questions_bank q "
                 + "INNER JOIN db_ite1.question_course_dim_les qc "
                 + "ON q.id = qc.question_id "
@@ -44,6 +44,7 @@ public class QuestionRepository extends Repository {
                         result.getString("option2"),
                         result.getString("option3"),
                         result.getString("option4"),
+                        result.getString("option5"),
                         result.getString("answer"),
                         result.getString("explaination"));
             }
@@ -66,7 +67,8 @@ public class QuestionRepository extends Repository {
                         result.getString("option1"),
                         result.getString("option2"),
                         result.getString("option3"),
-                        result.getString("option4")
+                        result.getString("option4"),
+                        result.getString("option5")
                 );
             }
         } catch (Exception e) {
@@ -74,13 +76,16 @@ public class QuestionRepository extends Repository {
         return null;
     }
 
-    public void deleteAnswerOptions(String column, int questionId) throws SQLException {
+    public boolean deleteAnswerOptions(String column, int questionId) throws SQLException {
         this.connectDatabase();
         String deleteAnswerOptions = "UPDATE db_ite1.questions_bank SET " + column + " = '' "
                 + "WHERE id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(deleteAnswerOptions)) {
             statement.setInt(1, questionId);
-            statement.executeUpdate();
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
         } finally {
             this.disconnectDatabase();
         }
@@ -99,7 +104,8 @@ public class QuestionRepository extends Repository {
                         column.equals("option1") ? result.getString("option1") : "",
                         column.equals("option2") ? result.getString("option2") : "",
                         column.equals("option3") ? result.getString("option3") : "",
-                        column.equals("option4") ? result.getString("option4") : ""
+                        column.equals("option4") ? result.getString("option4") : "",
+                        column.equals("option5") ? result.getString("option5") : ""
                 );
             }
         } catch (Exception e) {
@@ -142,8 +148,8 @@ public class QuestionRepository extends Repository {
     }
 
     public void updateQuestionBankByQuestionId(int statusId, String content, String media,
-            String option1, String option2, String option3, String option4, String explaination,
-            int questionId) throws SQLException {
+            String option1, String option2, String option3, String option4,String option5, String explaination,
+            String answer, int questionId) throws SQLException {
         this.connectDatabase();
         String updateQuestionBank = "UPDATE db_ite1.questions_bank SET "
                 + "status_id = ?, "
@@ -153,7 +159,9 @@ public class QuestionRepository extends Repository {
                 + "option2= ?, "
                 + "option3= ?, "
                 + "option4 = ?, "
-                + "explaination = ? "
+                + "option5 = ?, "
+                + "explaination = ?, "
+                + "answer = ? "
                 + "WHERE id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(updateQuestionBank)) {
             statement.setInt(1, statusId);
@@ -163,8 +171,10 @@ public class QuestionRepository extends Repository {
             statement.setString(5, option2);
             statement.setString(6, option3);
             statement.setString(7, option4);
-            statement.setString(8, explaination);
-            statement.setInt(9, questionId);
+            statement.setString(8, option5);
+            statement.setString(9, explaination);
+            statement.setString(10, answer);
+            statement.setInt(11, questionId);
             statement.executeUpdate();
         } finally {
             this.disconnectDatabase();
@@ -174,8 +184,8 @@ public class QuestionRepository extends Repository {
     public static void main(String[] args) {
         QuestionRepository repo = new QuestionRepository();
         try {
-            int countAnswerOptions = repo.countAnswerOptions();
-            System.out.println(countAnswerOptions);
+            Question answer = repo.getAnswerByQuestionId(2);
+            System.out.println(answer);
         } catch (Exception e) {
         }
     }
@@ -223,6 +233,19 @@ public class QuestionRepository extends Repository {
         try (PreparedStatement statement = this.connection.prepareStatement(updateQuestionBank)) {
             statement.setString(1, content);
             statement.setInt(2, questionId);
+            statement.executeUpdate();
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public void addColumnAnswer(String columnAdded,String previousColumn) throws SQLException {
+        this.connectDatabase();
+        String addColumnAnswer = "ALTER TABLE db_ite1.questions_bank "
+                + "ADD COLUMN "+columnAdded+" TEXT AFTER "+previousColumn;
+        try (PreparedStatement statement = this.connection.prepareStatement(addColumnAnswer)) {
+            statement.setString(1, columnAdded);
+            statement.setString(2, previousColumn);
             statement.executeUpdate();
         } finally {
             this.disconnectDatabase();
