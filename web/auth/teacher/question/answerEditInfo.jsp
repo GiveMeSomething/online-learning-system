@@ -1,10 +1,11 @@
 <%--
-    Document   : dimensionEditInfo
-    Created on : Jun 16, 2021
+    Document   : AnswerEditInfo
+    Created on : Jun 17, 2021
     Author     : Nguyen Khanh Toan
 --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<c:set var="path" value="${pageContext.request.contextPath}"/>
+<c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,58 +21,41 @@
     </head>
     <body>
         <div class="container">
-            <h3 class="font-weight-bold text-center mt-5">Edit subject dimesion</h3>
-            <form action="subject?operation=UPDATESUBJECT&&dimensionId=${dimensionId}"
-                  method="post">
+            <h3 class="text-center mt-2">Answer Information</h3>
+            <form action="${path}/question?columnUpdated=${column}" method="post">
+                <div class="request-info">
+                    <input name="previousPage" value="home" hidden="true" />
+                    <div class="invalid-feedback"></div>
+                    <input name="operation" value="UPDATEANSWER" hidden="true" />
+                    <div class="invalid-feedback"></div>
+                </div>
                 <div class="form-group">
                     <label class="d-block text-left" for="id">
                         Id
                     </label>
-                    <input name="id"
-                           type="text"
-                           value="${dimensionDetail.id}"
-                           class="form-control"
+                    <input value="${id}"
+                           name="id"
                            disabled
-                           id="id">
-                </div>
-                <div class="form-group">
-                    <label class="d-block text-left" for="type">
-                        Type
-                    </label>
-                    <input name="type"
                            type="text"
-                           value="${dimensionDetail.type}"
                            class="form-control"
-                           id="type">
+                           id="id"
+                           data-value-missing="Can't be empty"
+                           required>
                 </div>
                 <div class="form-group">
-                    <label class="d-block text-left" for="dimension">
-                        Dimension
+                    <label class="d-block text-left" for="content">
+                        Content
                     </label>
-                    <input name="dimension"
-                           type="text" 
-                           value="${dimensionDetail.name}"
-                           class="form-control"
-                           id="dimension">
-                </div>
-                <div class="form-group">
-                    <label class="d-block text-left"
-                           for="description">
-                        Description
-                    </label>
-                    <textarea rows="5"
-                              name="description"
+                    <textarea name="content"
                               type="text"
-                              style="font-family: inherit"
+                              style="font-size: inherit"
                               class="form-control"
-                              id="description">${dimensionDetail.description}</textarea>
+                              id="content"
+                              data-value-missing="Can't be empty"
+                              required>${answerDetail}</textarea>
                 </div>
-
-                <button class="btn" style='background-color: #ff9800' type="submit">
-                    Update
-                </button> 
+                <button type="submit" class="btn btn-warning">Update</button>
             </form>
-
         </div>
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -86,4 +70,5 @@
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
             crossorigin="anonymous">
     </script>
+    <script src="${path}/utilities/form-validator.js"></script>
 </html>

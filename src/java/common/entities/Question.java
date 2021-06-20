@@ -173,8 +173,4 @@ public class Question {
     public String toString() {
         return "Question{" + "id=" + id + ", course=" + course + ", lesson_name=" + lesson_name + ", dimension_name=" + dimension_name + ", status=" + status + ", content=" + content + ", media=" + media + ", option1=" + option1 + ", option2=" + option2 + ", option3=" + option3 + ", option4=" + option4 + ", answer=" + answer + ", explaination=" + explaination + '}';
     }
-    
-    
-    
-
 }

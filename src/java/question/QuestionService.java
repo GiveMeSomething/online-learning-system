@@ -54,12 +54,13 @@ public class QuestionService {
         return null;
     }
     
-    public void updateAnswerOptions(String column,String content,int questionId){
+    public boolean updateAnswerOptions(String column,String content,int questionId){
         try {
-            questionRepository.updateAnswerOptions(column, content, questionId);
+           return questionRepository.updateAnswerOptions(column, content, questionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
     
     public List<Lesson> getLessonByCourseId(int courseId){
@@ -71,23 +72,25 @@ public class QuestionService {
         return null;
     }
     
-    public void updateQuestionBankByQuestionId(int statusId,String content,String media,
+    public boolean updateQuestionBankByQuestionId(int statusId,String content,String media,
             String option1,String option2,String option3,String option4,String option5,String explaination,
             String answer,int questionId) {
         try {
-           questionRepository.updateQuestionBankByQuestionId(statusId, content, media,
+          return questionRepository.updateQuestionBankByQuestionId(statusId, content, media,
                    option1, option2, option3, option4, option5, explaination,answer, questionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
     
-    public void updateQuestionCourseDimLes(int courseId,int dimensionId,int lessonId,int questionId){
+    public boolean updateQuestionCourseDimLes(int courseId,int dimensionId,int lessonId,int questionId){
         try {
-           questionRepository.updateQuestionCourseDimLes(courseId, dimensionId, lessonId, questionId);
+          return questionRepository.updateQuestionCourseDimLes(courseId, dimensionId, lessonId, questionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
     
     public Question getAnswerByQuestionId(int questionId){
@@ -99,12 +102,13 @@ public class QuestionService {
         return null;
     }
     
-    public void addAnswer(String column,String content,int questionId){
+    public boolean addAnswer(String column,String content,int questionId){
         try {
-           questionRepository.addAnswer(column, content, questionId);
+          return questionRepository.addAnswer(column, content, questionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
     
     public int countAnswerOptions() {
@@ -116,11 +120,12 @@ public class QuestionService {
         return 0;
     }
     
-    public void addColumnAnswer(String columnAdded,String previousColumn){
+    public boolean addColumnAnswer(String columnAdded,String previousColumn){
         try {
-          questionRepository.addColumnAnswer(columnAdded, previousColumn);
+          return questionRepository.addColumnAnswer(columnAdded, previousColumn);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 }

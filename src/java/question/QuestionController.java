@@ -1,7 +1,7 @@
 /**
  * Jun 13, 2021
  *
- * @author Hoang Tien Minh
+ * @author Hoang Tien Minh + Nguyen Khanh Toan
  */
 package question;
 
@@ -11,17 +11,13 @@ import common.entities.Lesson;
 import common.entities.Question;
 import course.CourseService;
 import java.util.List;
-
 import java.io.*;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import javax.servlet.http.Part;
-
 import javax.servlet.http.HttpSession;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.annotation.MultipartConfig;
@@ -114,6 +110,7 @@ public class QuestionController extends HttpServlet {
             throws ServletException, IOException {
         String operation = request.getParameter("operation");
         int questionId = 2;
+//        int questionId = Integer.parseInt(request.getParameter("questionId"));
         int categoryId = 6;
         int courseId = 72;
         if (operation == null) {
@@ -123,7 +120,8 @@ public class QuestionController extends HttpServlet {
             int totalAnswerOptions = questionService.countAnswerOptions();
             request.setAttribute("totalAnswerOptions", totalAnswerOptions);
             request.setAttribute("image", image);
-            request.getRequestDispatcher("QuestionDetail.jsp").forward(request, response);
+            request.getRequestDispatcher("auth/teacher/question/detail.jsp").forward(request, response);
+            //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/detail.jsp
         } else if (operation.equals("DELETEANSWER")) {
             String column = request.getParameter("column");
             questionService.deleteAnswerOptions(column, questionId);
@@ -133,7 +131,8 @@ public class QuestionController extends HttpServlet {
             request.setAttribute("image", media);
             request.setAttribute("totalAnswerOptions", totalAnswerOptions);
             processUserInterface(request, response, questionId, categoryId, courseId);
-            request.getRequestDispatcher("QuestionDetail.jsp").forward(request, response);
+            request.getRequestDispatcher("auth/teacher/question/detail.jsp").forward(request, response); 
+            //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/detail.jsp
         } else if (operation.equals("EDITANSWER")) {
             String column = request.getParameter("column");
             int id = Integer.parseInt(request.getParameter("id"));
@@ -152,7 +151,8 @@ public class QuestionController extends HttpServlet {
             }
             request.setAttribute("id", id);
             request.setAttribute("column", column);
-            request.getRequestDispatcher("AnswerEditInfo.jsp").forward(request, response);
+            request.getRequestDispatcher("auth/teacher/question/answerEditInfo.jsp").forward(request, response); 
+            //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/answerEditInfo.jsp
         }
 
     }
@@ -168,7 +168,7 @@ public class QuestionController extends HttpServlet {
         if (operation.equals("UPDATEANSWER")) {
             String content = request.getParameter("content");
             questionService.updateAnswerOptions(columnUpdated, content, questionId);
-            response.sendRedirect("question");
+            response.sendRedirect(request.getContextPath()+"/auth/teacher/question"); //sau khi merge code chỉnh lại đường dẫn
         } else if (operation.equals("UPDATEQUESTION")) {
             int subjectId = Integer.parseInt(request.getParameter("subject"));
             int dimensionId = Integer.parseInt(request.getParameter("dimension"));
@@ -186,7 +186,7 @@ public class QuestionController extends HttpServlet {
             questionService.updateQuestionBankByQuestionId(statusId, content, media,
                     option1, option2, option3, option4, option5, explaination, answer, questionId);
             questionService.updateQuestionCourseDimLes(subjectId, dimensionId, lessonId, questionId);
-            response.sendRedirect("question");
+            response.sendRedirect(request.getContextPath()+"/auth/teacher/question"); //sau khi merge code chỉnh lại đường dẫn
         } else if (operation.equals("ADDANSWER")) {
             HttpSession currentSession = request.getSession();
             Question option1 = questionService.getAnswerDetail("option1", questionId);
@@ -206,15 +206,15 @@ public class QuestionController extends HttpServlet {
             } else {
                 questionService.addColumnAnswer("option5", "option4");
                 questionService.addAnswer("option5", answerContent, questionId);
-
             }
-            response.sendRedirect("question");
+            response.sendRedirect(request.getContextPath()+"/auth/teacher/question"); //sau khi merge code chỉnh lại đường dẫn
         } else if (operation.equals("UPLOADMEDIA")) {
             int totalAnswerOptions = questionService.countAnswerOptions();
             request.setAttribute("totalAnswerOptions", totalAnswerOptions);
             request.setAttribute("image", uploadFile(request));
             processUserInterface(request, response, questionId, categoryId, courseId);
-            request.getRequestDispatcher("QuestionDetail.jsp").forward(request, response);
+            request.getRequestDispatcher("auth/teacher/question/detail.jsp").forward(request, response); 
+            //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/detail.jsp
         }
     }
 }

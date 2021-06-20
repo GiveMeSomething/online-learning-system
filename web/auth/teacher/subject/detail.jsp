@@ -89,23 +89,36 @@
                                                 <label class="d-block text-left" for="type">
                                                     Type
                                                 </label>
-                                                <input name="type" type="text" class="form-control"
-                                                       id="type">
+                                                <input name="type"
+                                                       type="text"
+                                                       class="form-control"
+                                                       id="type"
+                                                       data-value-missing="Can't be empty"
+                                                       required>
                                             </div>
                                             <div class="form-group">
                                                 <label class="d-block text-left" for="dimension">
                                                     Dimension
                                                 </label>
-                                                <input name="dimension" type="text" class="form-control"
-                                                       id="dimension">
+                                                <input name="dimension"
+                                                       type="text"
+                                                       class="form-control"
+                                                       id="dimension"
+                                                       data-value-missing="Can't be empty"
+                                                       required>
                                             </div>
                                             <div class="form-group">
                                                 <label class="d-block text-left"
                                                        for="description">
                                                     Description
                                                 </label>
-                                                <textarea rows="5" name="description" type="text" class="form-control"
-                                                          id="description"></textarea>
+                                                <textarea rows="5"
+                                                          name="description"
+                                                          type="text"
+                                                          class="form-control"
+                                                          id="description"
+                                                          data-value-missing="Can't be empty"
+                                                          required></textarea>
                                             </div>
                                             <div class="modal-footer myModalFooter">
                                                 <button class="btn btn-success" type="submit">
@@ -182,4 +195,5 @@
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
             crossorigin="anonymous">
     </script>
+    <script src="${path}/utilities/form-validator.js"></script>
 </html>

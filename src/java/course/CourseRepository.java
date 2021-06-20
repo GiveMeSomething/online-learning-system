@@ -513,20 +513,23 @@ public class CourseRepository extends Repository {
         }
     }
 
-    public void deleteSubjectDimensionByCourseId(int courseId, int dimensionId) throws SQLException {
+    public boolean deleteSubjectDimensionByCourseId(int courseId, int dimensionId) throws SQLException {
         this.connectDatabase();
         String deleteSubjectDimension = "DELETE FROM db_ite1.course_dimension "
                 + "WHERE course_id = ? and dimension_id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(deleteSubjectDimension)) {
             statement.setInt(1, courseId);
             statement.setInt(2, dimensionId);
-            statement.executeUpdate();
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
         } finally {
             this.disconnectDatabase();
         }
     }
 
-    public void addDimension(int typeId, String name, String description) throws SQLException {
+    public boolean addDimension(int typeId, String name, String description) throws SQLException {
         this.connectDatabase();
         String addDimension = "INSERT INTO db_ite1.dimension (type_id,name,description) "
                 + "VALUES (?,?,?)";
@@ -534,7 +537,10 @@ public class CourseRepository extends Repository {
             statement.setInt(1, typeId);
             statement.setString(2, name);
             statement.setString(3, description);
-            statement.executeUpdate();
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
         } finally {
             this.disconnectDatabase();
         }
@@ -559,14 +565,17 @@ public class CourseRepository extends Repository {
         return null;
     }
 
-    public void addDimensionCourse(int courseId, int dimensionId) throws SQLException {
+    public boolean addDimensionCourse(int courseId, int dimensionId) throws SQLException {
         this.connectDatabase();
         String addDimension = "INSERT INTO db_ite1.course_dimension\n"
                 + "VALUES (?,?)";
         try (PreparedStatement statement = this.connection.prepareStatement(addDimension)) {
             statement.setInt(1, courseId);
             statement.setInt(2, dimensionId);
-            statement.executeUpdate();
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
         } finally {
             this.disconnectDatabase();
         }
@@ -593,7 +602,7 @@ public class CourseRepository extends Repository {
         return null;
     }
 
-    public void updateSubjectDimension(int typeId, String name, String description, int dimensionId) throws SQLException {
+    public boolean updateSubjectDimension(int typeId, String name, String description, int dimensionId) throws SQLException {
         this.connectDatabase();
         String addDimension = "UPDATE db_ite1.dimension SET type_id = ?,name= ?,description= ? "
                 + "WHERE id = ?";
@@ -602,19 +611,25 @@ public class CourseRepository extends Repository {
             statement.setString(2, name);
             statement.setString(3, description);
             statement.setInt(4, dimensionId);
-            statement.executeUpdate();
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
         } finally {
             this.disconnectDatabase();
         }
     }
 
-    public void addDimensionType(String type) throws SQLException {
+    public boolean addDimensionType(String type) throws SQLException {
         this.connectDatabase();
         String addDimension = "INSERT INTO db_ite1.dimension_type (dimension_type_name) "
                 + "VALUES (?)";
         try (PreparedStatement statement = this.connection.prepareStatement(addDimension)) {
             statement.setString(1, type);
-            statement.executeUpdate();
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
         } finally {
             this.disconnectDatabase();
         }

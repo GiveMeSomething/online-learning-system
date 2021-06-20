@@ -113,14 +113,17 @@ public class QuestionRepository extends Repository {
         return null;
     }
 
-    public void updateAnswerOptions(String column, String content, int questionId) throws SQLException {
+    public boolean updateAnswerOptions(String column, String content, int questionId) throws SQLException {
         this.connectDatabase();
         String deleteAnswerOptions = "UPDATE db_ite1.questions_bank SET " + column + " = ? "
                 + "WHERE id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(deleteAnswerOptions)) {
             statement.setString(1, content);
             statement.setInt(2, questionId);
-            statement.executeUpdate();
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
         } finally {
             this.disconnectDatabase();
         }
@@ -147,7 +150,7 @@ public class QuestionRepository extends Repository {
         return null;
     }
 
-    public void updateQuestionBankByQuestionId(int statusId, String content, String media,
+    public boolean updateQuestionBankByQuestionId(int statusId, String content, String media,
             String option1, String option2, String option3, String option4,String option5, String explaination,
             String answer, int questionId) throws SQLException {
         this.connectDatabase();
@@ -175,7 +178,10 @@ public class QuestionRepository extends Repository {
             statement.setString(9, explaination);
             statement.setString(10, answer);
             statement.setInt(11, questionId);
-            statement.executeUpdate();
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
         } finally {
             this.disconnectDatabase();
         }
@@ -190,7 +196,7 @@ public class QuestionRepository extends Repository {
         }
     }
 
-    public void updateQuestionCourseDimLes(int courseId, int dimensionId, int lessonId, int questionId) throws SQLException {
+    public boolean updateQuestionCourseDimLes(int courseId, int dimensionId, int lessonId, int questionId) throws SQLException {
         this.connectDatabase();
         String updateQuestionBank = "UPDATE db_ite1.question_course_dim_les SET "
                 + "course_id = ?, "
@@ -202,7 +208,10 @@ public class QuestionRepository extends Repository {
             statement.setInt(2, dimensionId);
             statement.setInt(3, lessonId);
             statement.setInt(4, questionId);
-            statement.executeUpdate();
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
         } finally {
             this.disconnectDatabase();
         }
@@ -226,27 +235,33 @@ public class QuestionRepository extends Repository {
         return null;
     }
 
-    public void addAnswer(String column, String content, int questionId) throws SQLException {
+    public boolean addAnswer(String column, String content, int questionId) throws SQLException {
         this.connectDatabase();
         String updateQuestionBank = "UPDATE db_ite1.questions_bank SET " + column + " = ?"
                 + "WHERE id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(updateQuestionBank)) {
             statement.setString(1, content);
             statement.setInt(2, questionId);
-            statement.executeUpdate();
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
         } finally {
             this.disconnectDatabase();
         }
     }
 
-    public void addColumnAnswer(String columnAdded,String previousColumn) throws SQLException {
+    public boolean addColumnAnswer(String columnAdded,String previousColumn) throws SQLException {
         this.connectDatabase();
         String addColumnAnswer = "ALTER TABLE db_ite1.questions_bank "
                 + "ADD COLUMN "+columnAdded+" TEXT AFTER "+previousColumn;
         try (PreparedStatement statement = this.connection.prepareStatement(addColumnAnswer)) {
             statement.setString(1, columnAdded);
             statement.setString(2, previousColumn);
-            statement.executeUpdate();
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
         } finally {
             this.disconnectDatabase();
         }

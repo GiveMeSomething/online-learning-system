@@ -38,7 +38,9 @@
                            class="form-control"
                            value="${questionDetail.id}"
                            disabled
-                           id="questionId">
+                           id="questionId"
+                           data-value-missing="Can't be empty"
+                           required>
                 </div>
                 <div class="form-group">
                     <label for="subject">
@@ -97,7 +99,9 @@
                            type="text"
                            class="form-control"
                            value="${questionDetail.content}"
-                           id="content">
+                           id="content"
+                           data-value-missing="Can't be empty"
+                           required>
                 </div>
                 <div class="form-group">
                     Answer Options<br/>
@@ -174,7 +178,9 @@
                               style="font-size: 19px"
                               placeholder="${questionDetail.explaination}"
                               class="form-control"
-                              id="explaination">${questionDetail.explaination}</textarea>
+                              id="explaination"
+                              data-value-missing="Can't be empty"
+                              required>${questionDetail.explaination}</textarea>
                 </div>
 
                 <div class="form-group">
@@ -185,7 +191,9 @@
                            type="text"
                            class="form-control mb-2"
                            value="${image}"
-                           id="media">
+                           id="media"
+                           data-value-missing="Can't be empty"
+                           required>
                     <img src="assets/${image}" style="width: 50%"/>
                 </div>
 
@@ -231,16 +239,25 @@
                                     <label class="d-block text-left" for="id">
                                         Id
                                     </label>
-                                    <input name="id" type="text" class="form-control"
-                                           id="id">
+                                    <input name="id"
+                                           type="text"
+                                           class="form-control"
+                                           id="id"
+                                           data-value-missing="Can't be empty"
+                                           required>
                                 </div>
                                 <div class="form-group">
                                     <label class="d-block text-left"
                                            for="answerContent">
                                         Answer content
                                     </label>
-                                    <textarea rows="5" name="answerContent" type="text" class="form-control"
-                                              id="answerContent"></textarea>
+                                    <textarea rows="5"
+                                              name="answerContent"
+                                              type="text"
+                                              class="form-control"
+                                              id="answerContent"
+                                              data-value-missing="Can't be empty"
+                                              required></textarea>
                                 </div>
                                 <div class="modal-footer myModalFooter">
                                     <button class="btn btn-success" type="submit">
@@ -258,22 +275,19 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
-
-
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-                integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-                crossorigin="anonymous">
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@4.6.0/dist/umd/popper.min.js"
-                integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-                crossorigin="anonymous">
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
-                integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
-                crossorigin="anonymous">
-        </script>
     </body>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@4.6.0/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+            integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
+            crossorigin="anonymous">
+    </script>
+    <script src="${path}/utilities/form-validator.js"></script>
 </html>

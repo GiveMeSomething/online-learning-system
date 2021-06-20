@@ -35,7 +35,8 @@ public class SubjectController extends HttpServlet {
         int courseId = 1;
         List<Dimension> listDimension = courseService.getSubjectDimensionByCourseId(courseId);
         request.setAttribute("listDimension", listDimension);
-        request.getRequestDispatcher("detail.jsp").forward(request, response);
+        request.getRequestDispatcher("auth/teacher/subject/detail.jsp").forward(request, response);
+        //sau khi merge code chỉnh lại đường dẫn auth/teacher/subject/detail.jsp
     }
 
     @Override
@@ -56,13 +57,13 @@ public class SubjectController extends HttpServlet {
             Dimension dimensionDetail = courseService.getDimensionDetail(dimensionId);
             request.setAttribute("dimensionDetail", dimensionDetail);
             request.setAttribute("dimensionId", dimensionId);
-            request.getRequestDispatcher("dimensionEditInfo.jsp").forward(request, response);
-
-        if (operation.equals("GETSUBJECT")) {
+            request.getRequestDispatcher("auth/teacher/subject/dimensionEditInfo.jsp").forward(request, response);
+            //sau khi merge code chỉnh lại đường dẫn auth/teacher/subject/dimensionEditInfo.jsp
+        
+        } else if (operation.equals("GETSUBJECT")) {
             // This will set a List of List<String> in session and can be used to display data to subjectlist
             processInputForSubject(request, response);
         }
-    }
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

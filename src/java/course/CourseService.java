@@ -206,20 +206,22 @@ public class CourseService {
         return null;
     }
     
-    public void deleteSubjectDimensionByCourseId(int courseId, int dimensionId) {
+    public boolean deleteSubjectDimensionByCourseId(int courseId, int dimensionId) {
         try {
-            courseRepository.deleteSubjectDimensionByCourseId(courseId, dimensionId);
+           return courseRepository.deleteSubjectDimensionByCourseId(courseId, dimensionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    public void addDimension(int typeId, String name, String description) {
+    public boolean addDimension(int typeId, String name, String description) {
         try {
-            courseRepository.addDimension(typeId, name, description);
+           return courseRepository.addDimension(typeId, name, description);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
     
     public Dimension getDimensionId(String dimension) {
@@ -231,12 +233,13 @@ public class CourseService {
         return null;
     }
     
-    public void addDimensionCourse(int courseId, int dimensionId) {
+    public boolean addDimensionCourse(int courseId, int dimensionId) {
         try {
-            courseRepository.addDimensionCourse(courseId, dimensionId);
+            return courseRepository.addDimensionCourse(courseId, dimensionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
     
     public Dimension getDimensionDetail(int dimensionId){
@@ -248,20 +251,22 @@ public class CourseService {
         return null;
     }
     
-    public void updateSubjectDimension(int typeId,String name,String description,int dimensionId){
+    public boolean updateSubjectDimension(int typeId,String name,String description,int dimensionId){
         try {
-            courseRepository.updateSubjectDimension(typeId, name, description, dimensionId);
+           return courseRepository.updateSubjectDimension(typeId, name, description, dimensionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
     
-    public void addDimensionType(String dimension){
+    public boolean addDimensionType(String dimension){
         try {
-            courseRepository.addDimensionType(dimension);
+           return courseRepository.addDimensionType(dimension);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
     
     public DimensionType getDimensionTypeDetail(String dimension){
