@@ -67,6 +67,11 @@ public class Question {
         this.content = content;
         this.level = level;
     }
+
+    public Question(String dimension_name) {
+        this.dimension_name = dimension_name;
+    }
+    
     
     public String getLevel() {
         return level;

@@ -44,7 +44,7 @@ public class SubjectController extends HttpServlet {
             request.setAttribute("ownerName", ownerName);
             request.setAttribute("authorList", authorList);
             request.setAttribute("detail", subject);
-            request.getRequestDispatcher("auth/teacher/subject/detail.jsp").forward(request, response);
+            request.getRequestDispatcher("/auth/teacher/subject/detail.jsp").forward(request, response);
         }
 
     }

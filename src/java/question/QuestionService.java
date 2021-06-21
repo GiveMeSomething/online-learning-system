@@ -3,23 +3,24 @@
  *
  * @author Hoang Tien Minh
  */
-
 package question;
 
+import common.entities.Level;
 import common.entities.Question;
+import common.entities.Status;
 import java.util.List;
 
-
 public class QuestionService {
-   private QuestionRepository questionRepository;
+
+    private QuestionRepository questionRepository;
 
     public QuestionService() {
         this.questionRepository = new QuestionRepository();
     }
-    
-    public List<Question> getQuestions(int courseId, int page) {
+
+    public List<Question> getQuestionsWithCondition(int courseId, String keyword, List<Level> levels, List<Status> status, List<String> dimensionIds) {
         try {
-            List<Question> result = questionRepository.getQuestions(courseId, page);
+            List<Question> result = questionRepository.getQuestionsWithCondition(courseId, keyword, levels, status, dimensionIds);
 
             if (result == null || result.size() == 0) {
                 // redirect to 404
@@ -34,36 +35,23 @@ public class QuestionService {
 
         return null;
     }
-    
-    public int countTotalQuestion(int courseId) {
 
+    public List<Question> getDimensionList(int courseId) {
         try {
-            return questionRepository.countTotalQuestion(courseId);
+            List<Question> result = questionRepository.getDimensionList(courseId);
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return 0;
+            if (result == null || result.size() == 0) {
+                // redirect to 404
+                System.out.println("Something wrong");
+                return null;
+            }
 
-    }
-    
-     public int countingQuestionListSearch(int courseId, String searchName) {
-        try {
-            return questionRepository.countingQuestionListSearch(courseId, searchName);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return 0;
-    }
-     
-     public List<Question> searchQuestion(int cateID, String searchName, int page) {
-        try {
-            return questionRepository.searchQuestion(cateID, searchName, page);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
         return null;
     }
-    
-    
+
 }

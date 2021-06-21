@@ -137,13 +137,9 @@
         <param-value>se1501team1</param-value>
     </context-param>
     <!-- Other Configurations -->
-<!--    <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>QuestionController</servlet-name>
         <url-pattern>/auth/teacher/question</url-pattern>
-    </servlet-mapping>-->
-        <servlet-mapping>
-        <servlet-name>QuestionController</servlet-name>
-        <url-pattern>/question</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>QuizController</servlet-name>
@@ -151,7 +147,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SubjectController</servlet-name>
-        <url-pattern>/subject</url-pattern>
+        <url-pattern>/auth/teacher/subject</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>subjectDetail</servlet-name>
