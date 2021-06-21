@@ -22,7 +22,7 @@
     <body>
         <div class="container">
             <h3 class="text-center mt-2">Answer Information</h3>
-            <form action="${path}/question?columnUpdated=${column}" method="post">
+            <form action="${path}/auth/teacher/question?columnUpdated=${column}" method="post">
                 <div class="request-info">
                     <input name="previousPage" value="home" hidden="true" />
                     <div class="invalid-feedback"></div>

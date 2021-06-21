@@ -94,8 +94,6 @@ public class QuestionRepository extends Repository {
     public Question getAnswerDetail(String column, int questionId) throws SQLException {
         this.connectDatabase();
         String getAnswerDetail = "SELECT " + column + " FROM db_ite1.questions_bank WHERE id = ?";
-
-        List<Question> list = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(getAnswerDetail)) {
             statement.setInt(1, questionId);
             ResultSet result = statement.executeQuery();
@@ -132,8 +130,8 @@ public class QuestionRepository extends Repository {
     public List<Lesson> getLessonByCourseId(int courseId) throws SQLException {
         this.connectDatabase();
         String getLessonByCourseId = "SELECT DISTINCT qc.lesson_id,l.lesson_name FROM db_ite1.question_course_dim_les qc "
-                + "INNER JOIN lesson l on qc.lesson_id = l.id "
-                + "WHERE qc.course_id = ?";
+                +"INNER JOIN lesson l on qc.lesson_id = l.id "
+                +"WHERE qc.course_id = ? AND l.type_id = 3;";
         List<Lesson> list = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(getLessonByCourseId)) {
             statement.setInt(1, courseId);
@@ -151,7 +149,7 @@ public class QuestionRepository extends Repository {
     }
 
     public boolean updateQuestionBankByQuestionId(int statusId, String content, String media,
-            String option1, String option2, String option3, String option4,String option5, String explaination,
+            String option1, String option2, String option3, String option4, String option5, String explaination,
             String answer, int questionId) throws SQLException {
         this.connectDatabase();
         String updateQuestionBank = "UPDATE db_ite1.questions_bank SET "
@@ -190,8 +188,8 @@ public class QuestionRepository extends Repository {
     public static void main(String[] args) {
         QuestionRepository repo = new QuestionRepository();
         try {
-            Question answer = repo.getAnswerByQuestionId(2);
-            System.out.println(answer);
+            Question detail = repo.getAnswerDetail("option5", 2);
+            System.out.println(detail);
         } catch (Exception e) {
         }
     }
@@ -251,10 +249,10 @@ public class QuestionRepository extends Repository {
         }
     }
 
-    public boolean addColumnAnswer(String columnAdded,String previousColumn) throws SQLException {
+    public boolean addColumnAnswer(String columnAdded, String previousColumn) throws SQLException {
         this.connectDatabase();
         String addColumnAnswer = "ALTER TABLE db_ite1.questions_bank "
-                + "ADD COLUMN "+columnAdded+" TEXT AFTER "+previousColumn;
+                + "ADD COLUMN " + columnAdded + " TEXT AFTER " + previousColumn;
         try (PreparedStatement statement = this.connection.prepareStatement(addColumnAnswer)) {
             statement.setString(1, columnAdded);
             statement.setString(2, previousColumn);

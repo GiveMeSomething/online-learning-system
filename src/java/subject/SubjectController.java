@@ -7,6 +7,7 @@
 package subject;
 
 import common.entities.Dimension;
+import common.entities.DimensionType;
 import java.util.List;
 import common.entities.Status;
 import common.entities.User;
@@ -35,7 +36,7 @@ public class SubjectController extends HttpServlet {
         int courseId = 1;
         List<Dimension> listDimension = courseService.getSubjectDimensionByCourseId(courseId);
         request.setAttribute("listDimension", listDimension);
-        request.getRequestDispatcher("auth/teacher/subject/detail.jsp").forward(request, response);
+        request.getRequestDispatcher("/auth/teacher/subject/detail.jsp").forward(request, response);
         //sau khi merge code chỉnh lại đường dẫn auth/teacher/subject/detail.jsp
     }
 
@@ -55,9 +56,11 @@ public class SubjectController extends HttpServlet {
         } else if (operation.equals("GETDIMENSIONDETAIL")) {
             int dimensionId = Integer.parseInt(request.getParameter("dimensionId"));
             Dimension dimensionDetail = courseService.getDimensionDetail(dimensionId);
+            List<DimensionType> dimensionTypeList = courseService.getAllDimenstionType();
             request.setAttribute("dimensionDetail", dimensionDetail);
             request.setAttribute("dimensionId", dimensionId);
-            request.getRequestDispatcher("auth/teacher/subject/dimensionEditInfo.jsp").forward(request, response);
+            request.setAttribute("dimensionTypeList", dimensionTypeList);
+            request.getRequestDispatcher("/auth/teacher/subject/dimensionEditInfo.jsp").forward(request, response);
             //sau khi merge code chỉnh lại đường dẫn auth/teacher/subject/dimensionEditInfo.jsp
         
         } else if (operation.equals("GETSUBJECT")) {

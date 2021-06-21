@@ -3,8 +3,9 @@
     Created on : Jun 16, 2021
     Author     : Nguyen Khanh Toan
 --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<c:set var="path" value="${pageContext.request.contextPath}"/>
+<c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,7 +22,7 @@
     <body>
         <div class="container">
             <h3 class="font-weight-bold text-center mt-5">Edit subject dimesion</h3>
-            <form action="subject?dimensionId=${dimensionId}"
+            <form action="${path}/auth/teacher/subject?dimensionId=${dimensionId}"
                   method="post">
                 <div class="request-info">
                     <input name="previousPage" value="home" hidden="true" />
@@ -43,19 +44,21 @@
                            required>
                     <div class="invalid-feedback"></div>
                 </div>
+                        
                 <div class="form-group">
                     <label class="d-block text-left" for="type">
                         Type
                     </label>
-                    <input name="type"
-                           type="text"
-                           value="${dimensionDetail.type}"
-                           class="form-control"
-                           id="type"
-                           data-value-missing="Can't be empty"
-                           required>
-                    <div class="invalid-feedback"></div>
-                </div>
+                    <select name="type" class="form-control">
+                        <c:forEach items="${dimensionTypeList}" var="o">
+                            <option ${o.dimension_type_name == dimensionDetail.type ? "selected":""} 
+                                value="${o.dimension_type_name}">
+                                ${o.dimension_type_name}
+                            </option>
+                        </c:forEach>
+                    </select>
+
+                </div>           
                 <div class="form-group">
                     <label class="d-block text-left" for="dimension">
                         Dimension

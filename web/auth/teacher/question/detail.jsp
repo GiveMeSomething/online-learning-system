@@ -22,7 +22,7 @@
     <body>
         <div class="container-fluid" style="width:85%;margin:0 auto;font-size: 19px">
             <h3 class="text-center">Questions</h3>
-            <form action="question" method="post" style="width: 85%;margin:0 auto;font-size: 19px">
+            <form action="${path}/auth/teacher/question" method="post" style="width: 85%;margin:0 auto;font-size: 19px">
                 <div class="request-info">
                     <input name="previousPage" value="home" hidden="true" />
                     <div class="invalid-feedback"></div>
@@ -136,10 +136,10 @@
                                         </td>
 
                                         <td>
-                                            <a href="question?operation=EDITANSWER&&id=${i}&&column=option${i}">
+                                            <a href="${path}/auth/teacher/question?operation=EDITANSWER&&id=${i}&&column=option${i}">
                                                 <button type="button" class="btn btn-warning mb-2">Edit Answer</button>
                                             </a>
-                                            <a href="question?operation=DELETEANSWER&&column=option${i}&&media=${image}">
+                                            <a href="${path}/auth/teacher/question?operation=DELETEANSWER&&column=option${i}&&media=${image}">
                                                 <button type="button" class="btn btn-danger">Delete Answer</button>  
                                             </a>
 
@@ -194,7 +194,7 @@
                            id="media"
                            data-value-missing="Can't be empty"
                            required>
-                    <img src="assets/${image}" style="width: 50%"/>
+                    <img src="${path}/assets/${image}" style="width: 50%"/>
                 </div>
 
 
@@ -206,7 +206,7 @@
 
             <!--UPLOAD MEDIA-->
             <div style="width: 85%;margin: 0 auto">
-                <form class="mt-3" action="question?operation=UPLOADMEDIA" method="POST" enctype="multipart/form-data">
+                <form class="mt-3" action="${path}/auth/teacher/question?operation=UPLOADMEDIA" method="POST" enctype="multipart/form-data">
                     <div class="d-flex align-items-center">
                         <label style="background: rgb(200,94,103);margin-bottom: 0;
                                text-align:center;padding:5px;width: 146px;height:34px;
@@ -233,7 +233,7 @@
                             <button data-dismiss="modal" class="close">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <form action="${path}/question?operation=ADDANSWER"
+                            <form action="${path}/auth/teacher/question?operation=ADDANSWER"
                                   method="post">
                                 <div class="form-group">
                                     <label class="d-block text-left" for="id">

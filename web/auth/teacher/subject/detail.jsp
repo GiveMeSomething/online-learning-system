@@ -83,7 +83,7 @@
                                         <button data-dismiss="modal" class="close">&times;</button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="${path}/subject?operation=ADDSUBJECT"
+                                        <form action="${path}/auth/teacher/subject?operation=ADDSUBJECT"
                                               method="post">
                                             <div class="form-group">
                                                 <label class="d-block text-left" for="type">
@@ -155,12 +155,13 @@
                                     <td>${o.type}</td>
                                     <td>${o.name}</td>
                                     <td>
-                                        <a style="color:white;" href="${path}/subject?operation=GETDIMENSIONDETAIL&&dimensionId=${o.id}">
+               
+                                        <a style="color:white;" href="${path}/auth/teacher/subject?operation=GETDIMENSIONDETAIL&&dimensionId=${o.id}">
                                             <button class="btn mb-2" style='background-color: #ff9800;color:white'>
                                                 Edit
                                             </button>
                                         </a>
-                                        <a href="${path}/subject?operation=DELETESUBJECT&&courseId=1&&dimensionId=${o.id}">
+                                        <a href="${path}/auth/teacher/subject?operation=DELETESUBJECT&&courseId=1&&dimensionId=${o.id}">
                                             <button class="btn btn-danger mb-2">
                                                 Delete
                                             </button>

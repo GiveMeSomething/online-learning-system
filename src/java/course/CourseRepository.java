@@ -567,7 +567,7 @@ public class CourseRepository extends Repository {
 
     public boolean addDimensionCourse(int courseId, int dimensionId) throws SQLException {
         this.connectDatabase();
-        String addDimension = "INSERT INTO db_ite1.course_dimension\n"
+        String addDimension = "INSERT INTO db_ite1.course_dimension "
                 + "VALUES (?,?)";
         try (PreparedStatement statement = this.connection.prepareStatement(addDimension)) {
             statement.setInt(1, courseId);
@@ -651,14 +651,29 @@ public class CourseRepository extends Repository {
         }
         return null;
     }
+    
+    public List<DimensionType> getAllDimenstionType() throws SQLException {
+        this.connectDatabase();
+        String getAllDimenstionType = "SELECT * FROM db_ite1.dimension_type";
+        List<DimensionType> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(getAllDimenstionType)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new DimensionType(result.getInt("id"),
+                        result.getString("dimension_type_name")));
+            }
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
 
     public static void main(String[] args) throws Exception {
         CourseRepository repo = new CourseRepository();
         try {
-            List<Dimension> dimensionList = repo.getSubjectDimensionByCourseId(72);
-            for (Dimension o : dimensionList) {
-                System.out.println(o);
-            }
+            Dimension d = repo.getDimensionDetail(11);
+            System.out.println(d);
+                
         } catch (Exception e) {
 
         }

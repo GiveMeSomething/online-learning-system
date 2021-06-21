@@ -30,6 +30,7 @@ public class Question {
         this.option2 = option2;
         this.option3 = option3;
         this.option4 = option4;
+        this.option5 = option5;
     }
     
     public Question(String answer){
@@ -171,6 +172,6 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question{" + "id=" + id + ", course=" + course + ", lesson_name=" + lesson_name + ", dimension_name=" + dimension_name + ", status=" + status + ", content=" + content + ", media=" + media + ", option1=" + option1 + ", option2=" + option2 + ", option3=" + option3 + ", option4=" + option4 + ", answer=" + answer + ", explaination=" + explaination + '}';
+        return "Question{" + "id=" + id + ", course=" + course + ", lesson_name=" + lesson_name + ", dimension_name=" + dimension_name + ", status=" + status + ", content=" + content + ", media=" + media + ", option1=" + option1 + ", option2=" + option2 + ", option3=" + option3 + ", option4=" + option4 + ", option5=" + option5 + ", answer=" + answer + ", explaination=" + explaination + '}';
     }
 }

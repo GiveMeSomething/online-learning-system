@@ -289,5 +289,14 @@ public class CourseService {
 
         return null;
     }
+    
+    public List<DimensionType> getAllDimenstionType() {
+        try {
+            return courseRepository.getAllDimenstionType();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

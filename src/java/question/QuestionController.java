@@ -120,7 +120,7 @@ public class QuestionController extends HttpServlet {
             int totalAnswerOptions = questionService.countAnswerOptions();
             request.setAttribute("totalAnswerOptions", totalAnswerOptions);
             request.setAttribute("image", image);
-            request.getRequestDispatcher("auth/teacher/question/detail.jsp").forward(request, response);
+            request.getRequestDispatcher("/auth/teacher/question/detail.jsp").forward(request, response);
             //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/detail.jsp
         } else if (operation.equals("DELETEANSWER")) {
             String column = request.getParameter("column");
@@ -131,7 +131,7 @@ public class QuestionController extends HttpServlet {
             request.setAttribute("image", media);
             request.setAttribute("totalAnswerOptions", totalAnswerOptions);
             processUserInterface(request, response, questionId, categoryId, courseId);
-            request.getRequestDispatcher("auth/teacher/question/detail.jsp").forward(request, response); 
+            request.getRequestDispatcher("/auth/teacher/question/detail.jsp").forward(request, response); 
             //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/detail.jsp
         } else if (operation.equals("EDITANSWER")) {
             String column = request.getParameter("column");
@@ -151,7 +151,7 @@ public class QuestionController extends HttpServlet {
             }
             request.setAttribute("id", id);
             request.setAttribute("column", column);
-            request.getRequestDispatcher("auth/teacher/question/answerEditInfo.jsp").forward(request, response); 
+            request.getRequestDispatcher("/auth/teacher/question/answerEditInfo.jsp").forward(request, response); 
             //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/answerEditInfo.jsp
         }
 
@@ -204,7 +204,7 @@ public class QuestionController extends HttpServlet {
             } else if (option4.getOption4().equals("")) {
                 questionService.addAnswer("option4", answerContent, questionId);
             } else {
-                questionService.addColumnAnswer("option5", "option4");
+//                questionService.addColumnAnswer("option5", "option4");
                 questionService.addAnswer("option5", answerContent, questionId);
             }
             response.sendRedirect(request.getContextPath()+"/auth/teacher/question"); //sau khi merge code chỉnh lại đường dẫn
@@ -213,7 +213,7 @@ public class QuestionController extends HttpServlet {
             request.setAttribute("totalAnswerOptions", totalAnswerOptions);
             request.setAttribute("image", uploadFile(request));
             processUserInterface(request, response, questionId, categoryId, courseId);
-            request.getRequestDispatcher("auth/teacher/question/detail.jsp").forward(request, response); 
+            request.getRequestDispatcher("/auth/teacher/question/detail.jsp").forward(request, response); 
             //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/detail.jsp
         }
     }
