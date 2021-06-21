@@ -546,9 +546,8 @@ public class CourseRepository extends Repository {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 owners.put(result.getInt("id"), result.getString("full_name"));
-                return owners;
             }
-            return null;
+             return owners;
         } finally {
             this.disconnectDatabase();
         }

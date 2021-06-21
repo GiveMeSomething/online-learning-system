@@ -33,14 +33,14 @@
             <!-- content -->
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                    <form action="/auth/teacher/quiz" method="POST" class="needs-validatation" novalidate>
+                    <form action="${path}/auth/teacher/quiz" method="POST" class="needs-validatation" novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="/auth/teacher/subject/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
                             <input name="operation" value="ADDQUIZOVERVIEW" hidden="true" />
                             <div class="invalid-feedback"></div>
                         </div>
-                        <input name="id" value="${quiz.id}" hidden="true"/>
+                        <input name="id" value="${quiz.id}" hidden/>
                         <div class="form-row">
                             <div class="mb-3 col-md-12">
                                 <label for="quiz-name">Quiz name</label>
@@ -80,6 +80,7 @@
                                        class="form-control" value="${quiz.duration}" 
                                        id="duration" placeholder="Exam Duration"
                                        data-value-missing="Can't be empty" required>
+                                <div class="invalid-feedback"></div>
                             </div>
                         </div>
                         <div class="form-row">
@@ -113,7 +114,7 @@
                 </div>
                 <!-- setting -->
                 <div class="tab-pane fade" id="setting" role="tabpanel" aria-labelledby="setting-tab">
-                    <form action="/auth/teacher/quiz" class="needs-validatation" novalidate>
+                    <form action="${path}/auth/teacher/quiz" class="needs-validatation" novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="/auth/teacher/subject/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
@@ -121,16 +122,17 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <input value="${quiz.subjectId}" hidden name="subject"/>
+                        <input value="1" hidden name="id"/>
                         <div class="form-row">
                             <div class="mb-3">
                                 <label for="total-question">Total Questions</label>
-                                <input class="form-control" value="50" type="text" 
+                                <input class="form-control" value="${questionNumber == null?50:questionNumber}" type="text" 
                                        name="total-question" id="total-question"
                                        data-value-missing="Can't be empty" required>
                             </div>
                         </div>
                         <div class="form-row">
-                            <span class="col-md-2">Quiz type</span>
+                            <span class="col-md-2">Question type</span>
                             <div class="custom-control custom-radio col-md-2">
                                 <input type="radio" checked="true" class="custom-control-input" id="topic" name="type" required>
                                 <label class="custom-control-label" for="topic">Topic</label>
@@ -146,57 +148,26 @@
                             </div>
                         </div>
                         <p>Choose number of Questions corresponding their group</p>
-                        <div class="form-row">
-                            <div class="mb-3 col-md-7">
-                                <select class="custom-select" id="group-name" required>
-                                    <option selected value="">Name 1</option>
-                                    <option>Name 2</option>
-                                </select>
-                                <div class="invalid-feedback"></div>
+                        <c:forEach  begin="1" end="3" var="i" varStatus="status">
+                            <div class="form-row">
+                                <div class="mb-3 col-md-7">
+                                    <select class="custom-select" id="group-name" name="dimension-name${i}" required>
+                                        <c:forEach items="${dimension}" var="o">
+                                            <option selected value="${o.key}">${o.value}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" name="number-of-question${i}" placeholder="Number of questions">
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-light">${not status.last ? "Delete":"Add"}</button>
+                                </div>
                             </div>
-                            <div class="col-md-1"></div>
-                            <div class="col-md-2">
-                                <input type="text" class="form-control" name="number-ques-of-group" placeholder="Number of questions">
-                            </div>
-                            <div class="col-md-1"></div>
-                            <div class="col-md-1">
-                                <button class="btn btn-light">Delete</button>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="mb-3 col-md-7">
-                                <select class="custom-select" id="group-name" required>
-                                    <option selected value="">Name 1</option>
-                                    <option>Name 2</option>
-                                </select>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="col-md-1"></div>
-                            <div class="col-md-2">
-                                <input type="text" class="form-control" name="number-ques-of-group" placeholder="Number of questions">
-                            </div>
-                            <div class="col-md-1"></div>
-                            <div class="col-md-1">
-                                <button class="btn btn-light">Delete</button>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="mb-3 col-md-7">
-                                <select class="custom-select" id="group-name" required>
-                                    <option selected value="">Name 1</option>
-                                    <option>Name 2</option>
-                                </select>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="col-md-1"></div>
-                            <div class="col-md-2">
-                                <input type="text" class="form-control" name="number-ques-of-group" placeholder="Number of questions">
-                            </div>
-                            <div class="col-md-1"></div>
-                            <div class="col-md-1">
-                                <button class="btn btn-light">Add</button>
-                            </div>
-                        </div>
+                        </c:forEach>
                         <div class="form-row">
                             <button class="btn btn-primary col-md-1" type="submit">Save</button>
                             <div class="col-md-10"></div>
@@ -216,7 +187,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
                 integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
         crossorigin="anonymous"></script>
-        <script src="${path}/utilities/form-validator.jsp"></script>
+        <script src="${path}/utilities/form-validator.js"></script>
     </body>
 
 </html>

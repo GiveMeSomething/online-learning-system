@@ -91,7 +91,7 @@ public class LessonController extends HttpServlet {
                 lessonService.addLessonDetail(lesson);
             }
         }
-        response.sendRedirect("auth/teacher/subject/lesson/list.jsp");
+        response.sendRedirect("/auth/teacher/subject/lesson/list.jsp");
     }
 
     private void editLesson(HttpServletRequest request, HttpServletResponse response)
@@ -117,7 +117,7 @@ public class LessonController extends HttpServlet {
             lesson = new Lesson(lessonName, order, lessonType, courseId, html, quizId);
             lessonService.updateLessonDetail(lesson, id);
         }
-        response.sendRedirect("auth/teacher/subject/lesson/list.jsp");
+        response.sendRedirect("/auth/teacher/subject/lesson/list.jsp");
     }
 
     private void viewLesson(HttpServletRequest request, HttpServletResponse response, Lesson lesson)
@@ -127,7 +127,7 @@ public class LessonController extends HttpServlet {
         request.setAttribute("course", getCourses);
         request.setAttribute("quiz", quizsList);
         request.setAttribute("lesson", lesson);
-        request.getRequestDispatcher("detail.jsp").forward(request, response);
+        request.getRequestDispatcher("/auth/teacher/subject/lesson/detail.jsp").forward(request, response);
     }
 
 }

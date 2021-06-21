@@ -46,7 +46,7 @@ public class SubjectController extends HttpServlet implements Controller {
             HashMap<Integer, String> owner = courseService.getOwners();
             request.setAttribute("category", categories);
             request.setAttribute("owner", owner);
-            request.getRequestDispatcher("new-subject.jsp").forward(request, response);
+            request.getRequestDispatcher("/auth/admin/subject/new-subject.jsp").forward(request, response);
         } else if (operation.equals("ADDNEWSUBJECT")) {
             addNewSubject(request, response);
         } else if (operation.equals("GETSUBJECT")) {
@@ -88,7 +88,7 @@ public class SubjectController extends HttpServlet implements Controller {
         } else {
             courseService.addNewSubject(course, inputStream);
             // Navigating to subject list
-            response.sendRedirect("auth/admin/subject/new-subject.jsp");
+            response.sendRedirect("/auth/admin/subject/new-subject.jsp");
         }
     }
 
