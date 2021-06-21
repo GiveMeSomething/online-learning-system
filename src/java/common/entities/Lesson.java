@@ -28,6 +28,11 @@ public class Lesson {
         this.htmlContent = htmlContent;
         this.quizId = quizId;
     }
+    
+    public Lesson(int id,String lessonName){
+        this.id = id;
+        this.lessonName = lessonName;
+    }
 
     public int getId() {
         return id;
@@ -101,4 +106,10 @@ public class Lesson {
         this.quizId = quizId;
     }
 
+    @Override
+    public String toString() {
+        return "Lesson{" + "id=" + id + ", lessonName=" + lessonName + ", order=" + order + ", status=" + status + ", lessonType=" + lessonType + ", courseId=" + courseId + ", videoLink=" + videoLink + ", htmlContent=" + htmlContent + ", quizId=" + quizId + '}';
+    }
+
+    
 }

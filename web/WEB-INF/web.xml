@@ -51,16 +51,16 @@
         <servlet-class>blog.BlogController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>SubjectController</servlet-name>
+        <servlet-class>subject.SubjectController</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>QuestionController</servlet-name>
         <servlet-class>question.QuestionController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>QuizController</servlet-name>
         <servlet-class>quiz.QuizController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SubjectController</servlet-name>
-        <servlet-class>subject.SubjectController</servlet-class>
     </servlet>
     <!--Servlet Mapping-->
     <servlet>
@@ -148,7 +148,6 @@
         <param-name>email_password</param-name>
         <param-value>se1501team1</param-value>
     </context-param>
-    <!-- Other Configurations -->
     <servlet-mapping>
         <servlet-name>LessonController</servlet-name>
         <url-pattern>/auth/teacher/lesson</url-pattern>

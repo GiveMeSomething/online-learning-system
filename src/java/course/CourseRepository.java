@@ -11,6 +11,8 @@ package course;
  */
 import common.entities.Category;
 import common.entities.Course;
+import common.entities.Dimension;
+import common.entities.DimensionType;
 import common.entities.PricePackage;
 import common.entities.Status;
 import java.sql.PreparedStatement;
@@ -485,6 +487,195 @@ public class CourseRepository extends Repository {
             return list;
         } finally {
             this.disconnectDatabase();
+        }
+    }
+
+    public List<Dimension> getSubjectDimensionByCourseId(int courseId) throws SQLException {
+        this.connectDatabase();
+        String getSubjectDimension = "SELECT cd.dimension_id,dt.dimension_type_name,d.name,d.description "
+                + "FROM db_ite1.course_dimension cd "
+                + "INNER JOIN dimension d ON cd.dimension_id = d.id "
+                + "INNER JOIN dimension_type dt on d.type_id = dt.id "
+                + "WHERE course_id = ? ORDER BY type_id";
+        List<Dimension> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(getSubjectDimension)) {
+            statement.setInt(1, courseId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new Dimension(result.getInt("dimension_id"),
+                        result.getString("dimension_type_name"),
+                        result.getString("name"),
+                        result.getString("description")));
+            }
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean deleteSubjectDimensionByCourseId(int courseId, int dimensionId) throws SQLException {
+        this.connectDatabase();
+        String deleteSubjectDimension = "DELETE FROM db_ite1.course_dimension "
+                + "WHERE course_id = ? and dimension_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(deleteSubjectDimension)) {
+            statement.setInt(1, courseId);
+            statement.setInt(2, dimensionId);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean addDimension(int typeId, String name, String description) throws SQLException {
+        this.connectDatabase();
+        String addDimension = "INSERT INTO db_ite1.dimension (type_id,name,description) "
+                + "VALUES (?,?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(addDimension)) {
+            statement.setInt(1, typeId);
+            statement.setString(2, name);
+            statement.setString(3, description);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public Dimension getDimensionId(String dimension) throws SQLException {
+        this.connectDatabase();
+        String getDimensionId = "SELECT * FROM db_ite1.dimension WHERE name = ?";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(getDimensionId)) {
+            statement.setString(1, dimension);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new Dimension(result.getInt("id"),
+                        result.getString("type_id"),
+                        result.getString("name"),
+                        result.getString("description"));
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return null;
+    }
+
+    public boolean addDimensionCourse(int courseId, int dimensionId) throws SQLException {
+        this.connectDatabase();
+        String addDimension = "INSERT INTO db_ite1.course_dimension "
+                + "VALUES (?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(addDimension)) {
+            statement.setInt(1, courseId);
+            statement.setInt(2, dimensionId);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public Dimension getDimensionDetail(int dimensionId) throws SQLException {
+        this.connectDatabase();
+        String getDimensionId = "SELECT d.id,dt.dimension_type_name,d.name,d.description FROM db_ite1.dimension d INNER JOIN dimension_type dt "
+                + "on d.type_id = dt.id "
+                + "WHERE d.id = ?";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(getDimensionId)) {
+            statement.setInt(1, dimensionId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new Dimension(result.getInt("id"),
+                        result.getString("dimension_type_name"),
+                        result.getString("name"),
+                        result.getString("description"));
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return null;
+    }
+
+    public boolean updateSubjectDimension(int typeId, String name, String description, int dimensionId) throws SQLException {
+        this.connectDatabase();
+        String addDimension = "UPDATE db_ite1.dimension SET type_id = ?,name= ?,description= ? "
+                + "WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(addDimension)) {
+            statement.setInt(1, typeId);
+            statement.setString(2, name);
+            statement.setString(3, description);
+            statement.setInt(4, dimensionId);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean addDimensionType(String type) throws SQLException {
+        this.connectDatabase();
+        String addDimension = "INSERT INTO db_ite1.dimension_type (dimension_type_name) "
+                + "VALUES (?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(addDimension)) {
+            statement.setString(1, type);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public DimensionType getDimensionTypeDetail(String type) throws SQLException {
+        this.connectDatabase();
+        String getDimensionType = "SELECT * FROM db_ite1.dimension_type WHERE dimension_type_name = ?";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(getDimensionType)) {
+            statement.setString(1, type);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new DimensionType(result.getInt("id"),
+                        result.getString("dimension_type_name"));
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return null;
+    }
+    
+    public List<DimensionType> getAllDimenstionType() throws SQLException {
+        this.connectDatabase();
+        String getAllDimenstionType = "SELECT * FROM db_ite1.dimension_type";
+        List<DimensionType> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(getAllDimenstionType)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new DimensionType(result.getInt("id"),
+                        result.getString("dimension_type_name")));
+            }
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        CourseRepository repo = new CourseRepository();
+        try {
+            Dimension d = repo.getDimensionDetail(11);
+            System.out.println(d);
+                
+        } catch (Exception e) {
+
         }
     }
 
