@@ -1,34 +1,64 @@
 /**
- * Jun 17, 2021
+ * Jun 16, 2021
  *
- * @author Hoang Tien Minh
+ * @author Vu Duy Anh
  */
 package common.entities;
+
+import java.util.List;
+//my quiz
 
 public class Quiz {
 
     private int id;
-    private String name;
+    private String quizName;
     private int subjectId;
     private String subjectName;
     private Level level;
     private int duration;
+    private TestType quizType;
     private float passRate;
-    private TestType testType;
     private String description;
     private int questionNum;
 
+    public Quiz(int id) {
+        this.id = id;
+    }
+
     public Quiz(int id, String name, int subjectId, String subjectName, Level level, int duration, float passRate, TestType testType, String description, int questionNum) {
         this.id = id;
-        this.name = name;
+        this.quizName = name;
         this.subjectId = subjectId;
         this.subjectName = subjectName;
         this.level = level;
         this.duration = duration;
         this.passRate = passRate;
-        this.testType = testType;
+        this.quizType = testType;
         this.description = description;
         this.questionNum = questionNum;
+    }
+
+    public Quiz(int id, String quizName, int subjectId, String subjectName, Level level, int duration, TestType quizType, float passRate, String description) {
+        this.id = id;
+        this.quizName = quizName;
+        this.subjectId = subjectId;
+        this.subjectName = subjectName;
+        this.level = level;
+        this.duration = duration;
+        this.quizType = quizType;
+        this.passRate = passRate;
+        this.description = description;
+    }
+
+    public Quiz(int id, String quizName, int subjectId, Level level, int duration, TestType quizType, float passRate, String description) {
+        this.id = id;
+        this.quizName = quizName;
+        this.subjectId = subjectId;
+        this.level = level;
+        this.duration = duration;
+        this.quizType = quizType;
+        this.passRate = passRate;
+        this.description = description;
     }
 
     public int getId() {
@@ -39,12 +69,12 @@ public class Quiz {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getQuizName() {
+        return quizName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setQuizName(String quizName) {
+        this.quizName = quizName;
     }
 
     public int getSubjectId() {
@@ -67,10 +97,6 @@ public class Quiz {
         return level;
     }
 
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
     public int getDuration() {
         return duration;
     }
@@ -83,16 +109,16 @@ public class Quiz {
         return passRate;
     }
 
-    public void setPassRate(float passRate) {
+    public void setPassRate(int passRate) {
         this.passRate = passRate;
     }
 
-    public TestType getTestType() {
-        return testType;
+    public TestType getQuizType() {
+        return quizType;
     }
 
-    public void setTestType(TestType testType) {
-        this.testType = testType;
+    public void setQuizType(TestType quizType) {
+        this.quizType = quizType;
     }
 
     public String getDescription() {

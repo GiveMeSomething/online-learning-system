@@ -49,6 +49,13 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
+                    <div class="add-lesson">
+                        <a href="${path}/auth/teacher/lesson?operation=VIEW">
+                            <button class="btn btn-success px-3 py-2">
+                                Add new lesson
+                            </button>
+                        </a>
+                    </div>
                 </form>
             </div>
             <div class="row my-5">

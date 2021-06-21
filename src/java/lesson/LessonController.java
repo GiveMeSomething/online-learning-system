@@ -1,29 +1,39 @@
 /**
- * Jun 17, 2021
+ * Jun 16, 2021
  *
- * @author Hoang Tien Minh
+ * @author Vu Duy Anh
  */
 package lesson;
 
 import common.entities.Lesson;
+import common.entities.LessonType;
+import common.entities.Quiz;
 import common.entities.Status;
 import common.utilities.Controller;
+import course.CourseService;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import quiz.QuizService;
 
 public class LessonController extends HttpServlet implements Controller {
 
     private LessonService lessonService;
-    private final int itemPerPage = 5;
+    private CourseService courseService;
+    private QuizService quizService;
+
+    private int itemPerPage = 5;
 
     @Override
     public void init() throws ServletException {
         lessonService = new LessonService();
+        courseService = new CourseService();
+        quizService = new QuizService();
     }
 
     @Override
@@ -36,9 +46,20 @@ public class LessonController extends HttpServlet implements Controller {
         if (operation == null) {
             processGetLesson(request, response);
         } else {
+            String lessonId;
             switch (operation) {
                 case "VIEW":
                     // View lesson details
+                    lessonId = request.getParameter("lessonId");
+                    int id;
+                    if (lessonId == null) {
+                        Lesson lesson = null;
+                        viewLesson(request, response, lesson);
+                    } else {
+                        id = Integer.parseInt(lessonId);
+                        Lesson lesson = lessonService.getLesson(id);
+                        viewLesson(request, response, lesson);
+                    }
                     break;
                 case "UPDATESTATUS":
                     processUpdateLessonStatus(request, response);
@@ -59,19 +80,15 @@ public class LessonController extends HttpServlet implements Controller {
                         response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
                     }
                     break;
+                case "ADDNEWLESSON":
+                    lessonId = request.getParameter("lessonId");
+                    if (lessonId == null) {
+                        addLesson(request, response);
+                    } else {
+                        editLesson(request, response);
+                    }
+                    break;
             }
-        }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String operation = request.getParameter("operation");
-
-        if (operation.equals("FILTER")) {
-            processGetLesson(request, response);
-        } else {
-
         }
     }
 
@@ -154,4 +171,72 @@ public class LessonController extends HttpServlet implements Controller {
 
         return page;
     }
+
+    private void addLesson(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String lessonName = request.getParameter("lesson-name");
+        LessonType lessonType = LessonType.valueOf(request.getParameter("type"));
+        int order = Integer.parseInt(request.getParameter("order"));
+        int courseId = Integer.parseInt(request.getParameter("course"));
+
+        if (lessonType.equals(LessonType.valueOf("SUBJECT_TOPIC"))) {
+            Lesson lesson = new Lesson(lessonName, order, lessonType, courseId);
+            if (lessonService.checkLessonExist(lesson) == null) {
+                lessonService.addLessonDetail(lesson);
+            }
+        } else if (lessonType.equals(LessonType.valueOf("LESSON"))) {
+            String videoLink = request.getParameter("video-link");
+            String html = request.getParameter("html-content");
+            Lesson lesson = new Lesson(lessonName, order, lessonType, courseId, videoLink, html);
+            if (lessonService.checkLessonExist(lesson) == null) {
+                lessonService.addLessonDetail(lesson);
+            }
+        } else {
+            int quizId = Integer.parseInt(request.getParameter("quiz"));
+            String html = request.getParameter("html-quiz");
+            Lesson lesson = new Lesson(lessonName, order, lessonType, courseId, html, quizId);
+            if (lessonService.checkLessonExist(lesson) == null) {
+                lessonService.addLessonDetail(lesson);
+            }
+        }
+        response.sendRedirect(request.getContextPath() + "/auth/teacher/lesson/list.jsp");
+    }
+
+    private void editLesson(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String lessonName = request.getParameter("lesson-name");
+        LessonType lessonType = LessonType.valueOf(request.getParameter("type"));
+        int order = Integer.parseInt(request.getParameter("order"));
+        int courseId = Integer.parseInt(request.getParameter("course"));
+        Lesson lesson = lessonService.getLesson(order);
+        request.setAttribute("lesson", lesson);
+        if (lessonType.equals(LessonType.valueOf("SUBJECT_TOPIC"))) {
+            lesson = new Lesson(lessonName, order, lessonType, courseId);
+            lessonService.updateLessonDetail(lesson, id);
+        } else if (lessonType.equals(LessonType.valueOf("LESSON"))) {
+            String videoLink = request.getParameter("video-link");
+            String html = request.getParameter("html-content");
+            lesson = new Lesson(lessonName, order, lessonType, courseId, videoLink, html);
+            lessonService.updateLessonDetail(lesson, id);
+        } else {
+            int quizId = Integer.parseInt(request.getParameter("quiz"));
+            String html = request.getParameter("html-quiz");
+            lesson = new Lesson(lessonName, order, lessonType, courseId, html, quizId);
+            lessonService.updateLessonDetail(lesson, id);
+        }
+        response.sendRedirect("/auth/teacher/lesson/list.jsp");
+    }
+
+    private void viewLesson(HttpServletRequest request, HttpServletResponse response, Lesson lesson)
+            throws ServletException, IOException {
+        HashMap<Integer, String> getCourses = courseService.getCourses();
+        ArrayList<Quiz> quizList = quizService.getQuizList(1, "", null);
+
+        request.setAttribute("course", getCourses);
+        request.setAttribute("quiz", quizList);
+        request.setAttribute("lesson", lesson);
+        request.getRequestDispatcher("/auth/teacher/lesson/detail.jsp").forward(request, response);
+    }
+
 }

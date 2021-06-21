@@ -1,7 +1,7 @@
 /**
- * Jun 17, 2021
+ * Jun 16, 2021
  *
- * @author Hoang Tien Minh
+ * @author Vu Duy Anh
  */
 package common.entities;
 
@@ -17,7 +17,8 @@ public class Lesson {
     private String htmlContent;
     private int quizId;
 
-    public Lesson(int id, String lessonName, int order, Status status, LessonType lessonType, int courseId, String videoLink, String htmlContent, int quizId) {
+    public Lesson(int id, String lessonName, int order, Status status,
+            LessonType lessonType, int courseId, String videoLink, String htmlContent, int quizId) {
         this.id = id;
         this.lessonName = lessonName;
         this.order = order;
@@ -28,10 +29,41 @@ public class Lesson {
         this.htmlContent = htmlContent;
         this.quizId = quizId;
     }
-    
-    public Lesson(int id,String lessonName){
+
+    public Lesson(int id, String lessonName) {
         this.id = id;
         this.lessonName = lessonName;
+    }
+
+    public Lesson(String lessonName, int order, LessonType lessonType, int courseId) {
+        this.lessonName = lessonName;
+        this.order = order;
+        this.lessonType = lessonType;
+        this.courseId = courseId;
+    }
+
+    public Lesson(String lessonName) {
+        this.lessonName = lessonName;
+    }
+
+    public Lesson(String lessonName, int order,
+            LessonType lessonType, int courseId, String videoLink, String htmlContent) {
+        this.lessonName = lessonName;
+        this.order = order;
+        this.lessonType = lessonType;
+        this.courseId = courseId;
+        this.videoLink = videoLink;
+        this.htmlContent = htmlContent;
+    }
+
+    public Lesson(String lessonName, int order, LessonType lessonType,
+            int courseId, String htmlContent, int quizId) {
+        this.lessonName = lessonName;
+        this.order = order;
+        this.lessonType = lessonType;
+        this.courseId = courseId;
+        this.htmlContent = htmlContent;
+        this.quizId = quizId;
     }
 
     public int getId() {
@@ -105,11 +137,4 @@ public class Lesson {
     public void setQuizId(int quizId) {
         this.quizId = quizId;
     }
-
-    @Override
-    public String toString() {
-        return "Lesson{" + "id=" + id + ", lessonName=" + lessonName + ", order=" + order + ", status=" + status + ", lessonType=" + lessonType + ", courseId=" + courseId + ", videoLink=" + videoLink + ", htmlContent=" + htmlContent + ", quizId=" + quizId + '}';
-    }
-
-    
 }

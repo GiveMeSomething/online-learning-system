@@ -24,20 +24,24 @@ public class Question {
 
     public Question() {
     }
-    
-    public Question(String option1,String option2,String option3,String option4,String option5){
+
+    public Question(String option1, String option2, String option3, String option4, String option5) {
         this.option1 = option1;
         this.option2 = option2;
         this.option3 = option3;
         this.option4 = option4;
         this.option5 = option5;
     }
-    
-    public Question(String answer){
+
+    public Question(String answer) {
         this.answer = answer;
     }
-    
-    public Question(int id, String course, String lesson_name, String dimension_name, Status status, String content, String media, String option1, String option2, String option3, String option4,String option5, String answer, String explaination) {
+
+    public Question(int id) {
+        this.id = id;
+    }
+
+    public Question(int id, String course, String lesson_name, String dimension_name, Status status, String content, String media, String option1, String option2, String option3, String option4, String option5, String answer, String explaination) {
         this.id = id;
         this.course = course;
         this.lesson_name = lesson_name;
@@ -53,8 +57,6 @@ public class Question {
         this.answer = answer;
         this.explaination = explaination;
     }
-    
-    
 
     public int getId() {
         return id;
@@ -151,8 +153,6 @@ public class Question {
     public void setOption5(String option5) {
         this.option5 = option5;
     }
-    
-    
 
     public String getAnswer() {
         return answer;
@@ -170,8 +170,4 @@ public class Question {
         this.explaination = explaination;
     }
 
-    @Override
-    public String toString() {
-        return "Question{" + "id=" + id + ", course=" + course + ", lesson_name=" + lesson_name + ", dimension_name=" + dimension_name + ", status=" + status + ", content=" + content + ", media=" + media + ", option1=" + option1 + ", option2=" + option2 + ", option3=" + option3 + ", option4=" + option4 + ", option5=" + option5 + ", answer=" + answer + ", explaination=" + explaination + '}';
-    }
 }

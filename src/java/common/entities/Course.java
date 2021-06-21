@@ -17,7 +17,7 @@ public class Course {
     private float price;
     private String description;
     private int ownerId;
-    private Status status;
+    private CourseStatus status;
     private String category;
     private boolean feature;
     private String tag;
@@ -25,7 +25,7 @@ public class Course {
     public Course() {
     }
 
-    public Course(int id, String imageLink, String courseName, float price, String description, int ownerId, Status status, String category, boolean feature, String tag) {
+    public Course(int id, String imageLink, String courseName, float price, String description, int ownerId, CourseStatus status, String category, boolean feature, String tag) {
         this.id = id;
         this.imageLink = imageLink;
         this.courseName = courseName;
@@ -36,6 +36,15 @@ public class Course {
         this.category = category;
         this.feature = feature;
         this.tag = tag;
+    }
+    
+    public Course(String courseName, String description, int ownerId, CourseStatus status, String category, boolean feature) {
+        this.courseName = courseName;
+        this.description = description;
+        this.ownerId = ownerId;
+        this.status = status;
+        this.category = category;
+        this.feature = feature;
     }
 
     public Course(int id, String imageLink, String courseName, float price, String category, String description, String tag) {
@@ -56,7 +65,7 @@ public class Course {
         this.description = description;
         this.tag = tag;
     }
-
+    
     public int getId() {
         return id;
     }
@@ -105,11 +114,11 @@ public class Course {
         this.ownerId = ownerId;
     }
 
-    public Status getStatus() {
+    public CourseStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(CourseStatus status) {
         this.status = status;
     }
 

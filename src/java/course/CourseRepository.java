@@ -11,6 +11,7 @@ package course;
  */
 import common.entities.Category;
 import common.entities.Course;
+import common.entities.CourseStatus;
 import common.entities.Dimension;
 import common.entities.DimensionType;
 import common.entities.PricePackage;
@@ -20,7 +21,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import common.utilities.Repository;
+import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.HashMap;
+import javax.ws.rs.HEAD;
 
 public class CourseRepository extends Repository {
 
@@ -317,9 +321,31 @@ public class CourseRepository extends Repository {
                         0,
                         result.getString("tag")
                 ));
-
             }
             return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public Course checkCourseExist(String searchName, int cateID) throws SQLException {
+        this.connectDatabase();
+        String searchCourse = "SELECT * FROM db_ite1.course WHERE title LIKE ? AND category_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
+            statement.setString(1, "%" + searchName + "%");
+            statement.setInt(2, cateID);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new Course(
+                        result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        0,
+                        result.getString("tag")
+                );
+            }
+            return null;
         } finally {
             this.disconnectDatabase();
         }
@@ -490,6 +516,22 @@ public class CourseRepository extends Repository {
         }
     }
 
+    public boolean deleteSubjectDimensionByCourseId(int courseId, int dimensionId) throws SQLException {
+        this.connectDatabase();
+        String deleteSubjectDimension = "DELETE FROM db_ite1.course_dimension "
+                + "WHERE course_id = ? and dimension_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(deleteSubjectDimension)) {
+            statement.setInt(1, courseId);
+            statement.setInt(2, dimensionId);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
     public List<Dimension> getSubjectDimensionByCourseId(int courseId) throws SQLException {
         this.connectDatabase();
         String getSubjectDimension = "SELECT cd.dimension_id,dt.dimension_type_name,d.name,d.description "
@@ -513,22 +555,6 @@ public class CourseRepository extends Repository {
         }
     }
 
-    public boolean deleteSubjectDimensionByCourseId(int courseId, int dimensionId) throws SQLException {
-        this.connectDatabase();
-        String deleteSubjectDimension = "DELETE FROM db_ite1.course_dimension "
-                + "WHERE course_id = ? and dimension_id = ?";
-        try (PreparedStatement statement = this.connection.prepareStatement(deleteSubjectDimension)) {
-            statement.setInt(1, courseId);
-            statement.setInt(2, dimensionId);
-            if (statement.executeUpdate() > 0) {
-                return true;
-            }
-            return false;
-        } finally {
-            this.disconnectDatabase();
-        }
-    }
-
     public boolean addDimension(int typeId, String name, String description) throws SQLException {
         this.connectDatabase();
         String addDimension = "INSERT INTO db_ite1.dimension (type_id,name,description) "
@@ -541,6 +567,27 @@ public class CourseRepository extends Repository {
                 return true;
             }
             return false;
+        }
+    }
+
+    public boolean addNewSubject(Course course, InputStream inputStream) throws SQLException {
+        this.connectDatabase();
+
+        String addNewSubject = "INSERT INTO course(title, thumbnails, description, "
+                + "owner, status_id, category_id, feature) VALUES(?,?,?,?,?,?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(addNewSubject)) {
+            statement.setString(1, course.getCourseName());
+            if (inputStream != null) {
+                // fetches input stream of the upload file for the blob column
+                statement.setBlob(2, inputStream);
+            }
+            statement.setString(3, course.getDescription());
+            statement.setInt(4, course.getOwnerId());
+            statement.setInt(5, CourseStatus.valueOf(course.getStatus()));
+            statement.setString(6, course.getCategory());
+            statement.setBoolean(7, course.isFeature());
+
+            return statement.executeUpdate() > 0;
         } finally {
             this.disconnectDatabase();
         }
@@ -651,7 +698,7 @@ public class CourseRepository extends Repository {
         }
         return null;
     }
-    
+
     public List<DimensionType> getAllDimenstionType() throws SQLException {
         this.connectDatabase();
         String getAllDimenstionType = "SELECT * FROM db_ite1.dimension_type";
@@ -663,19 +710,39 @@ public class CourseRepository extends Repository {
                         result.getString("dimension_type_name")));
             }
             return list;
+        }
+    }
+
+    public HashMap<Integer, String> getOwners() throws SQLException {
+        this.connectDatabase();
+
+        HashMap<Integer, String> owners = new HashMap<>();
+        String getOwners = "SELECT user.id, user.full_name FROM user JOIN account"
+                + " ON user.email = account.user_email WHERE account.role_id = 1;";
+        try (PreparedStatement statement = this.connection.prepareStatement(getOwners)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                owners.put(result.getInt("id"), result.getString("full_name"));
+            }
+            return owners;
         } finally {
             this.disconnectDatabase();
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        CourseRepository repo = new CourseRepository();
-        try {
-            Dimension d = repo.getDimensionDetail(11);
-            System.out.println(d);
-                
-        } catch (Exception e) {
+    public HashMap<Integer, String> getCourses() throws SQLException {
+        this.connectDatabase();
 
+        HashMap<Integer, String> courses = new HashMap<>();
+        String getHmCourse = "SELECT id, title FROM course ORDER BY title";
+        try (PreparedStatement statement = this.connection.prepareStatement(getHmCourse)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                courses.put(result.getInt("id"), result.getString("title"));
+            }
+            return courses;
+        } finally {
+            this.disconnectDatabase();
         }
     }
 
@@ -735,6 +802,8 @@ public class CourseRepository extends Repository {
             }
 
             return subjectInfo;
+        } finally {
+            this.disconnectDatabase();
         }
     }
 }

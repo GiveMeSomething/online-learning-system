@@ -7,8 +7,8 @@ package email;
 
 import auth.AuthService;
 import common.entities.Account;
+import common.utilities.Controller;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class EmailController extends HttpServlet {
+public class EmailController extends HttpServlet implements Controller{
 
     private String host;
     private String port;
@@ -71,12 +71,14 @@ public class EmailController extends HttpServlet {
             
             // Get reset path in AuthController through session
             HttpSession ses = request.getSession(false);
+            if(ses == null){
+                this.forwardErrorMessage(request, response, "this session has been expired", "nauth/resetPassword1.jsp");
+            }
             Object obj = ses.getAttribute("resetPath");
             
             // Test if session ends, link will be expired or not
             if (obj == null) {
-                PrintWriter out = response.getWriter();
-                out.println("<h3>This link was expired</h3>");
+                this.forwardErrorMessage(request, response, "this link has been expired", "nauth/resetPassword1.jsp");
             } else {
                 request.getRequestDispatcher((String) obj).forward(request, response);
             }

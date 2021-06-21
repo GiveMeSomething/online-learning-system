@@ -1,31 +1,43 @@
 /**
- * Jun 15, 2021
+ *
+ * Jun 16, 2021
+ *
  *
  * @author Nguyen Khanh Toan
+ * @author Vu Duy Anh
  */
 package subject;
 
 import common.entities.Dimension;
 import common.entities.DimensionType;
-import java.util.List;
 import common.entities.Status;
 import common.entities.User;
+import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
+import common.entities.Category;
+import common.entities.Course;
+import common.entities.CourseStatus;
 import common.utilities.Controller;
 import course.CourseService;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
+@MultipartConfig(maxFileSize = 16177215)
 public class SubjectController extends HttpServlet implements Controller {
 
     private CourseService courseService;
     private final int itemPerPage = 5;
 
     @Override
+
     public void init() throws ServletException {
         courseService = new CourseService();
     }
@@ -43,10 +55,11 @@ public class SubjectController extends HttpServlet implements Controller {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession currentSession = request.getSession();
-        String operation = request.getParameter("operation");
 
         int dimensionId;
         int subjectId = 1;
+
+        String operation = request.getParameter("operation");
         if (operation == null) {
             processInputForSubject(request, response);
         } else {
@@ -77,6 +90,19 @@ public class SubjectController extends HttpServlet implements Controller {
                     break;
                 case "PAGINATION":
                     getItemInPage(request, response);
+                    break;
+                case "TONEWSUBJECT":
+                    List<Category> categories = courseService.getAllCategory();
+                    HashMap<Integer, String> owner = courseService.getOwners();
+                    request.setAttribute("category", categories);
+                    request.setAttribute("owner", owner);
+                    request.getRequestDispatcher("/auth/admin/subject/new-subject.jsp").forward(request, response);
+                    break;
+                case "ADDNEWSUBJECT":
+                    addNewSubject(request, response);
+                    break;
+                case "GETSUBJECT":
+                    processInputForSubject(request, response);
                     break;
                 default:
                     response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
@@ -144,6 +170,37 @@ public class SubjectController extends HttpServlet implements Controller {
             default:
                 response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
                 break;
+        }
+    }
+
+    private void addNewSubject(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String forwardTo = request.getParameter("previousPage");
+        String subjectName = request.getParameter("subject-name");
+        String category = request.getParameter("category");
+        CourseStatus status = CourseStatus.valueOf(request.getParameter("status"));
+        Boolean feature = request.getParameter("featured") != null;
+        String description = request.getParameter("description");
+
+        InputStream inputStream = null;
+        Part thumbnail = request.getPart("thumbnail");
+        if (thumbnail != null) {
+            // prints out some information for debugging
+            System.out.println(thumbnail.getName());
+            System.out.println(thumbnail.getSize());
+            System.out.println(thumbnail.getContentType());
+
+            // obtains input stream of the upload file
+            inputStream = thumbnail.getInputStream();
+        }
+        int ownerId = Integer.parseInt(request.getParameter("owner"));
+
+        Course course = new Course(subjectName, description, ownerId, status, category, feature);
+        if (courseService.checkCourseExist(subjectName, Integer.parseInt(category)) != null) {
+            this.forwardErrorMessage(request, response, "Already had this course", forwardTo);
+        } else {
+            courseService.addNewSubject(course, inputStream);
+            // Navigating to subject list
+            response.sendRedirect("/auth/admin/subject/new-subject.jsp");
         }
     }
 
