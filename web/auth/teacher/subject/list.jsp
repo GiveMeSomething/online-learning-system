@@ -117,7 +117,7 @@
                         </div>
                     </div>
                     <div class="col-3 d-flex align-items-center justify-content-center m-2">
-                        <a href="/auth/teacher/subject?operation=VIEW&subjectId=1" class="m-2">
+                        <a href="/auth/teacher/subject?operation=VIEW&subjectId=${item.get(0)}" class="m-2">
                             <button class="btn btn-sm btn-primary px-3 py-2">
                                 View and Edit
                             </button>

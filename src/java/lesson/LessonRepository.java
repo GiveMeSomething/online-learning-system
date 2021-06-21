@@ -16,14 +16,20 @@ import java.util.ArrayList;
 
 public class LessonRepository extends Repository {
 
-    public ArrayList<Lesson> getLessonList(int subjectId) throws SQLException {
+    public ArrayList<Lesson> getLessonList(int subjectId, String keyword) throws SQLException {
         this.connectDatabase();
+
+        String option = "";
+
+        if (keyword != null && !keyword.equals("")) {
+            option += "AND lesson_name LIKE '%" + keyword + "%'";
+        }
 
         String getLessons = "SELECT id, lesson_name, `order`,  "
                 + "       status_id, type_id, course_id,  "
                 + "       video_link, html_content, quiz_id "
                 + "FROM lesson "
-                + "WHERE course_id = ?";
+                + "WHERE course_id = ? " + option;
         ArrayList<Lesson> lessons = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(getLessons)) {
             statement.setInt(1, subjectId);
@@ -52,5 +58,21 @@ public class LessonRepository extends Repository {
         } finally {
             this.disconnectDatabase();
         }
+    }
+
+    public boolean updateLessonStatus(int lessonId, Status status) throws SQLException {
+        this.connectDatabase();
+
+        String updateLesson = "UPDATE lesson SET status_id = ? WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(updateLesson)) {
+            statement.setInt(1, Status.valueOf(status));
+            statement.setInt(2, lessonId);
+
+            boolean isUpdate = statement.executeUpdate() > 0;
+            return isUpdate;
+        } finally {
+            this.disconnectDatabase();
+        }
+
     }
 }

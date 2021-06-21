@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.1"
-         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <!--Filter Mapping-->
     <filter>
         <filter-name>AuthFilter</filter-name>
@@ -28,6 +25,7 @@
         <filter-name>AuthFilter</filter-name>
         <url-pattern>/auth/*</url-pattern>
     </filter-mapping>
+    <!--Servlet-->
     <servlet>
         <servlet-name>AuthController</servlet-name>
         <servlet-class>auth.AuthController</servlet-class>
@@ -52,7 +50,6 @@
         <servlet-name>BlogController</servlet-name>
         <servlet-class>blog.BlogController</servlet-class>
     </servlet>
-    <!--Servlet Mapping-->
     <servlet>
         <servlet-name>QuestionController</servlet-name>
         <servlet-class>question.QuestionController</servlet-class>
@@ -65,6 +62,7 @@
         <servlet-name>SubjectController</servlet-name>
         <servlet-class>subject.SubjectController</servlet-class>
     </servlet>
+    <!--Servlet Mapping-->
     <servlet>
         <servlet-name>LessonController</servlet-name>
         <servlet-class>lesson.LessonController</servlet-class>
@@ -121,6 +119,18 @@
         <servlet-name>BlogController</servlet-name>
         <url-pattern>/blog</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuestionController</servlet-name>
+        <url-pattern>/auth/teacher/question</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuizController</servlet-name>
+        <url-pattern>/auth/teacher/quiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubjectController</servlet-name>
+        <url-pattern>/auth/teacher/subject</url-pattern>
+    </servlet-mapping>
     <!-- SMTP settings -->
     <context-param>
         <param-name>host</param-name>
@@ -139,18 +149,6 @@
         <param-value>se1501team1</param-value>
     </context-param>
     <!-- Other Configurations -->
-    <servlet-mapping>
-        <servlet-name>QuestionController</servlet-name>
-        <url-pattern>/auth/teacher/question</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>QuizController</servlet-name>
-        <url-pattern>/auth/teacher/quiz</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SubjectController</servlet-name>
-        <url-pattern>/auth/teacher/subject</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LessonController</servlet-name>
         <url-pattern>/auth/teacher/lesson</url-pattern>

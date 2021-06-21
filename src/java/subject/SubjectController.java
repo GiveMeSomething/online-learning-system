@@ -7,6 +7,7 @@ package subject;
 
 import common.entities.Status;
 import common.entities.User;
+import common.utilities.Controller;
 import course.CourseService;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,10 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class SubjectController extends HttpServlet {
+public class SubjectController extends HttpServlet implements Controller {
 
     private CourseService courseService;
-    private int itemPerPage = 5;
+    private final int itemPerPage = 5;
 
     @Override
     public void init() throws ServletException {
@@ -103,20 +104,8 @@ public class SubjectController extends HttpServlet {
         ArrayList<ArrayList<String>> subjectList = courseService.getSubjectList(keyword, categoryId, status, teacherId);
         currentSession.setAttribute("subjectList", subjectList);
 
-        // If not yet receive page param (first time in page) change it to 1
-        int page;
-        try {
-            page = Integer.parseInt(request.getParameter("page"));
-            if (page < 1 || page > ((subjectList.size() / itemPerPage) + 1)) {
-                response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            System.out.println(e.getMessage() + " at ~96 SubjectController");
-            page = 1;
-        }
-
         // Send data to the list page
+        int page = processPageParameter(request, response, subjectList.size());
         ArrayList<ArrayList<String>> pageItems = getItemInPage(subjectList, page);
         if (pageItems != null) {
             request.setAttribute("categories", courseService.getAllCategory());
@@ -142,5 +131,21 @@ public class SubjectController extends HttpServlet {
         }
 
         return subjectInPage;
+    }
+
+    private int processPageParameter(HttpServletRequest request, HttpServletResponse response, int listSize)
+            throws ServletException, IOException {
+        // If not yet receive page param (first time in page) change it to 1
+        int page = 1;
+        try {
+            page = Integer.parseInt(request.getParameter("page"));
+            if (page < 1 || page > ((listSize / itemPerPage) + 1)) {
+                response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage() + " at ~96 SubjectController");
+        }
+
+        return page;
     }
 }
