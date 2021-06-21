@@ -6,6 +6,7 @@
 package quiz;
 
 import common.entities.Quiz;
+import common.entities.TestType;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -17,14 +18,9 @@ public class QuizService {
         this.quizRepository = new QuizRepository();
     }
 
-    public ArrayList<Quiz> getQuizList(int subjectId) {
+    public ArrayList<Quiz> getQuizList(int subjectId, String keyword, TestType quizType) {
         try {
-            ArrayList<Quiz> result = quizRepository.getQuizList(subjectId);
-            if (result.size() <= 0) {
-                return null;
-            } else {
-                return result;
-            }
+            return quizRepository.getQuizList(subjectId, keyword, quizType);
         } catch (SQLException e) {
             e.printStackTrace();
         }

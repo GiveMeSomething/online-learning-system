@@ -36,17 +36,16 @@ public class SubjectController extends HttpServlet implements Controller {
         // This will set a List of List<String> in session and can be used to display data to subjectlist
         if (operation == null) {
             processInputForSubject(request, response);
-
-        } else if (operation.equals("PAGINATION")) {
-            int page = Integer.parseInt(request.getParameter("page"));
-
-            ArrayList<ArrayList<String>> pageItems = getItemInPage((ArrayList<ArrayList<String>>) currentSession.getAttribute("subjectList"), page);
-            if (pageItems != null) {
-                request.setAttribute("categories", courseService.getAllCategory());
-                request.setAttribute("pageItems", pageItems);
-                request.getRequestDispatcher("/auth/teacher/subject/list.jsp").forward(request, response);
-            } else {
-                response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+        } else {
+            switch (operation) {
+                case "VIEW":
+                    // View quiz details
+                    break;
+                case "PAGINATION":
+                    getItemInPage(request, response);
+                    break;
+                default:
+                    response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
             }
         }
     }
@@ -117,6 +116,22 @@ public class SubjectController extends HttpServlet implements Controller {
 
     }
 
+    private void getItemInPage(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
+
+        int page = Integer.parseInt(request.getParameter("page"));
+
+        ArrayList<ArrayList<String>> pageItems = getItemInPage((ArrayList<ArrayList<String>>) currentSession.getAttribute("subjectList"), page);
+        if (pageItems != null) {
+            request.setAttribute("categories", courseService.getAllCategory());
+            request.setAttribute("pageItems", pageItems);
+            request.getRequestDispatcher("/auth/teacher/subject/list.jsp").forward(request, response);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+        }
+    }
+
     // Get the right data for the right page
     private ArrayList<ArrayList<String>> getItemInPage(ArrayList<ArrayList<String>> subjectList, int page) {
         if (page > ((subjectList.size() / 5) + 1)) {
@@ -139,11 +154,20 @@ public class SubjectController extends HttpServlet implements Controller {
         int page = 1;
         try {
             page = Integer.parseInt(request.getParameter("page"));
-            if (page < 1 || page > ((listSize / itemPerPage) + 1)) {
+
+            int pageNum;
+            if (listSize % itemPerPage == 0) {
+                pageNum = listSize / itemPerPage;
+            } else {
+                pageNum = (listSize / itemPerPage) + 1;
+            }
+
+            if (page < 1 || page > pageNum) {
                 response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+                return -1;
             }
         } catch (NumberFormatException e) {
-            System.out.println(e.getMessage() + " at ~96 SubjectController");
+            System.out.println(e.getMessage() + " at ~96 LessonController");
         }
 
         return page;
