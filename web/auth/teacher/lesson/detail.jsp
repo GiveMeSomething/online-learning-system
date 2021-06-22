@@ -18,16 +18,16 @@
     <body>
         <div class="container">
             <h1>Lesson Detail</h1>
-            <form action=${path}"/auth/teacher/lesson" method="POST" class="needs-validatation" novalidate>
+            <form action="${path}/auth/teacher/lesson" method="POST" class="needs-validatation" novalidate>
                 <div class="request-info">
-                    <input name="previousPage" value="detail.jsp" hidden="true" />
+                    <input name="previousPage" value="/auth/teacher/lesson/detail.jsp" hidden="true" />
                     <div class="invalid-feedback"></div>
                     <input name="operation" value="ADDNEWLESSON" hidden="true" />
                     <div class="invalid-feedback"></div>
                 </div>
                 <div class="form-row">
                     <div class="mb-3 col-md-5">
-                        <input hidden="true" value="${lesson.id}" name="id"/>
+                        <input hidden="true" value="${lesson.id}" name="lessonId"/>
                         <label for="lesson-name">Lesson Name</label>
                         <input class="form-control" name="lesson-name" value="${lesson.lessonName}" type="text" id="lesson-name"
                                placeholder="Enter Lesson Name" data-value-missing="Can't be empty" required />

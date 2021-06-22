@@ -50,10 +50,9 @@
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
                     <div class="add-lesson">
-                        <a href="${path}/auth/teacher/lesson?operation=VIEW">
-                            <button class="btn btn-success px-3 py-2">
-                                Add new lesson
-                            </button>
+                        <a role="button" class="btn btn-success px-3 py-2" 
+                           href="${path}/auth/teacher/lesson?operation=VIEW">
+                            Add new lesson
                         </a>
                     </div>
                 </form>

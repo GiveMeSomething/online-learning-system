@@ -169,7 +169,7 @@ public class LessonRepository extends Repository {
         this.connectDatabase();
 
         String isLessonExist = "SELECT lesson_name FROM lesson "
-                + "WHERE lesson_name = ?, order = ?, course_id = ?, type_id = ?";
+                + "WHERE lesson_name = ? AND order = ? AND course_id = ? AND type_id = ?";
         try (PreparedStatement statment = this.connection.prepareStatement(isLessonExist)) {
             statment.setString(1, lesson.getLessonName());
             statment.setInt(2, lesson.getOrder());

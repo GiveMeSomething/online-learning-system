@@ -52,7 +52,7 @@ public class LessonController extends HttpServlet implements Controller {
                     // View lesson details
                     lessonId = request.getParameter("lessonId");
                     int id;
-                    if (lessonId == null) {
+                    if (lessonId == null || lessonId.equals("")) {
                         Lesson lesson = null;
                         viewLesson(request, response, lesson);
                     } else {
@@ -82,7 +82,7 @@ public class LessonController extends HttpServlet implements Controller {
                     break;
                 case "ADDNEWLESSON":
                     lessonId = request.getParameter("lessonId");
-                    if (lessonId == null) {
+                    if (lessonId == null || lessonId.equals("")) {
                         addLesson(request, response);
                     } else {
                         editLesson(request, response);
@@ -90,6 +90,12 @@ public class LessonController extends HttpServlet implements Controller {
                     break;
             }
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
     }
 
     private void processGetLesson(HttpServletRequest request, HttpServletResponse response)
@@ -199,12 +205,12 @@ public class LessonController extends HttpServlet implements Controller {
                 lessonService.addLessonDetail(lesson);
             }
         }
-        response.sendRedirect(request.getContextPath() + "/auth/teacher/lesson/list.jsp");
+        response.sendRedirect("/auth/teacher/lesson");
     }
 
     private void editLesson(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(request.getParameter("lessonId"));
         String lessonName = request.getParameter("lesson-name");
         LessonType lessonType = LessonType.valueOf(request.getParameter("type"));
         int order = Integer.parseInt(request.getParameter("order"));
@@ -225,16 +231,16 @@ public class LessonController extends HttpServlet implements Controller {
             lesson = new Lesson(lessonName, order, lessonType, courseId, html, quizId);
             lessonService.updateLessonDetail(lesson, id);
         }
-        response.sendRedirect("/auth/teacher/lesson/list.jsp");
+        response.sendRedirect("/auth/teacher/lesson");
     }
 
     private void viewLesson(HttpServletRequest request, HttpServletResponse response, Lesson lesson)
             throws ServletException, IOException {
         HashMap<Integer, String> getCourses = courseService.getCourses();
-        ArrayList<Quiz> quizList = quizService.getQuizList(1, "", null);
+//        ArrayList<Quiz> quizList = quizService.getQuizList(1, "", null);
 
         request.setAttribute("course", getCourses);
-        request.setAttribute("quiz", quizList);
+//        request.setAttribute("quiz", quizList);
         request.setAttribute("lesson", lesson);
         request.getRequestDispatcher("/auth/teacher/lesson/detail.jsp").forward(request, response);
     }
