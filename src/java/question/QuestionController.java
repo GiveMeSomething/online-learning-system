@@ -86,7 +86,7 @@ public class QuestionController extends HttpServlet {
             String dimension = request.getParameter("dimension");
             dimensionName = dimension;
         } catch (NumberFormatException e) {
-            System.out.println(e.getMessage() + " at ~60 SubjectController");
+            System.out.println(e.getMessage() + " at ~89 QuestionController");
         }
 
         request.setAttribute("selectedDimension", dimensionName);
@@ -111,12 +111,13 @@ public class QuestionController extends HttpServlet {
         List<Question> questionList = questionService.getQuestionsWithCondition(courseId, keyword, level, status, dimensionName);
         session.setAttribute("questionList", questionList);
 
+        if (questionList == null || questionList.size() == 0) {
+            request.setAttribute("dimensionList", questionService.getDimensionList(courseId));
+            request.setAttribute("questionList", questionList);
+            request.getRequestDispatcher("/auth/teacher/subject/quiz/question/list.jsp").forward(request, response);
+        }
         int page = processPageParameter(request, response, questionList.size());
         List<Question> pageItems = getQuestionPerPage(questionList, page);
-
-//        if (questionList == null || questionList.size() == 0) {
-//            request.setAttribute("questionList", questionList);
-//        }
 
         if (pageItems != null) {
             request.setAttribute("dimensionList", questionService.getDimensionList(courseId));
