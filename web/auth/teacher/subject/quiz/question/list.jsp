@@ -25,50 +25,93 @@
             <h1 id="user-list-title" style="padding-bottom: 15px;">
                 MANAGE QUESTIONS
             </h1>
-            <form action="${path}/auth/teacher/question?operation=SEARCHQUESTION"
-                  method="POST">
-                <div id="search-section" class="d-flex my-sm-1">
-                    <input name="keyword"                
-                           type="text" 
-                           id="keyword"
-                           value="${requestScope.selectedKeyword != null ? requestScope.selectedKeyword: ''}"
-                           placeholder="Search questions"
-                           style="border-radius: 3px; border: 1px solid lightslategrey; margin-right: .2rem "/>
-                    <div>
-                        <button class="btn btn-dark" type="submit">Search</button>
+            <div class="row">
+                <form action="${path}/auth/teacher/question?operation=SEARCHQUESTION"
+                      method="POST">
+                    <div class="my-2 d-flex justify-content-center align-items-center gap-3">
+                        <div>
+                            <input class="form-control"
+                                   name="keyword"
+                                   type="text"
+                                   id="keyword"
+                                   value="${requestScope.selectedKeyword != null ? requestScope.selectedKeyword: ''}"
+                                   placeholder="Search subjects"
+                                   style="width: 43vh"/>
+                        </div>
+                        <div id="category" class="d-flex justify-content-center align-items-center m-2" >
+                            <label for="category-select" class="mx-2">Categories</label>
+                            <select class="form-control" name="dimension" style="width: 20vh">
+                                <option value="" ${requestScope.selectedDimension == null ? 'selected': ''}>All</option>
+                                <c:forEach items="${requestScope.dimensionList}" var="o">
+                                    <option value="${o.dimension_name}" ${requestScope.selectedDimension == o.dimension_name ? 'selected': ''}>
+                                        ${o.dimension_name}
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div id="status" class="d-flex justify-content-center align-items-center m-2">
+                            <div class="mx-2">Status</div>
+                            <div class="custom-control custom-radio custom-control m-2">
+                                <input
+                                    type="radio"
+                                    id="active"
+                                    name="status"
+                                    class="custom-control-input"
+                                    value="ACTIVE"
+                                    ${requestScope.selectedStatus == "ACTIVE" ? 'checked': ''}>
+                                <label class="custom-control-label" for="active">ACTIVE</label>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="custom-control custom-radio custom-control m-2">
+                                <input type="radio"
+                                       id="inactive"
+                                       name="status"
+                                       class="custom-control-input"
+                                       value="INACTIVE"
+                                       ${requestScope.selectedStatus == "INACTIVE" ? 'checked': ''}>
+                                <label class="custom-control-label" for="inactive">INACTIVE</label>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            
+                        </div>
+                                <div id="level" class="d-flex justify-content-center align-items-center m-2">
+                            <div class="mx-2">Level</div>
+                            <div class="custom-control custom-radio custom-control m-2">
+                                <input
+                                    type="radio"
+                                    id="hard"
+                                    name="level"
+                                    class="custom-control-input"
+                                    value="HARD"
+                                    ${requestScope.selectedLevel == "HARD" ? 'checked': ''}>
+                                <label class="custom-control-label" for="hard">HARD</label>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="custom-control custom-radio custom-control m-2">
+                                <input type="radio"
+                                       id="medium"
+                                       name="level"
+                                       class="custom-control-input"
+                                       value="MEDIUM"
+                                       ${requestScope.selectedLevel == "MEDIUM" ? 'checked': ''}>
+                                <label class="custom-control-label" for="medium">MEDIUM</label>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="custom-control custom-radio custom-control m-2">
+                                <input type="radio"
+                                       id="easy"
+                                       name="level"
+                                       class="custom-control-input"
+                                       value="EASY"
+                                       ${requestScope.selectedLevel == "EASY" ? 'checked': ''}>
+                                <label class="custom-control-label" for="easy">EASY</label>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Search</button>
                     </div>
-                </div>
-                <div style=" width: 100%;
-                     height: auto;
-                     float: left;
-                     margin-bottom: 10px;">
-                    <span style="float: left; margin-left: 10px;font-weight: bold">Level</span>
-                    <span style="float: left; margin-left: 10px;">
-                        <input type="checkbox" onclick="this.form.submit()" name="level" value="HARD"> Hard <br>
-                    </span>
-                    <span style="float: left; margin-left: 10px;">
-                        <input type="checkbox" onclick="this.form.submit()" name="level" value="MEDIUM"> Medium <br>
-                    </span>
-                    <span style="float: left; margin-left: 10px; border-right: 2px solid black;
-                          padding-right: 10px;">
-                        <input type="checkbox" onclick="this.form.submit()" name="level" value="EASY"> Easy <br>
-                    </span>
-                    <span style="padding-left: 10px; float: left; padding-right: 10px;font-weight: bold">Status</span>
-                    <span style="float: left;padding-right: 10px;">
-                        <input type="checkbox" onclick="this.form.submit()" name="status" value="ACTIVE"> Active <br>
-                    </span>
-                    <span>
-                        <input type="checkbox" onclick="this.form.submit()" name="status" value="INACTIVE"> Inactive<br>
-                    </span>
-                    <span style="padding-left: 10px; float: left; padding-right: 10px; font-weight: bold">Dimension</span>
-                    <!--                    dimension list filter-->
-                    <c:forEach items="${requestScope.dimensionList}" var="o" >
-                        <span style="float: left;padding-right: 10px;">
-                            <input type="checkbox" onclick="this.form.submit()" name="dimension" value="${o.dimension_name}"> ${o.dimension_name} <br>
-                        </span>
-                    </c:forEach>
-                </div>
-            </form> 
+                </form> 
+            </div>
             <div id="question-table">
                 <table id="myTable" class="table table-light table-striped">
                     <thead>

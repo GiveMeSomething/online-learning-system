@@ -17,36 +17,25 @@ import java.util.List;
 
 public class QuestionRepository extends Repository {
 
-    public List<Question> getQuestionsWithCondition(int courseId, String keyword, List<Level> levels, List<Status> status, List<String> dimensionIds) throws SQLException {
+    public List<Question> getQuestionsWithCondition(int courseId, String keyword, Level level, Status status, String dimensionName) throws SQLException {
         this.connectDatabase();
-        String condition = "";
+        String condition = "where c.id = ? AND 1=1 ";
 
         if (keyword != null && !keyword.equals("")) {
             keyword = "%" + keyword + "%";
             condition += "AND d.name LIKE '" + keyword + "' ";
         }
 
-        if (levels != null) {
-            condition += "AND (1 = 0 ";
-            for (Level level : levels) {
-                condition += "OR q.level_id = " + Level.valueOf(level) + " ";
-            }
-            condition += ") ";
+        if (level != null) {
+            condition += "AND q.level_id = " + Level.valueOf(level) + " ";
         }
 
         if (status != null) {
-            condition += "AND (1 = 0 ";
-            for (Status statusList : status) {
-                condition += "OR q.status_id = " + Status.valueOf(statusList) + " ";
-            }
-            condition += ") ";
+            condition += "AND q.status_id = " + Status.valueOf(status) + " ";
+
         }
-        if (dimensionIds != null) {
-            condition += "AND (1 = 0 ";
-            for (String dimension : dimensionIds) {
-                condition += "OR d.name = '" + dimension + "' ";
-            }
-            condition += ") ";
+        if (dimensionName != null) {
+            condition += "AND d.name = '%" + dimensionName + "%' ";
         }
 
         String sql = "SELECT q.id ,q.status_id, q.content, c.title, d.name as 'dimension_name', l.lesson_name,ql.type, s.value as 'status' "
@@ -63,7 +52,7 @@ public class QuestionRepository extends Repository {
                 + "on qcdl.lesson_id = l.id "
                 + "INNER JOIN db_ite1.status s "
                 + "on q.status_id = s.id "
-                + "where c.id = ? " + condition
+                + condition
                 + "ORDER by q.id asc ";
 
         List<Question> list = new ArrayList<>();

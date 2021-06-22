@@ -63,44 +63,35 @@ public class QuestionController extends HttpServlet {
     public void processInputForQuestion(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String keyword = request.getParameter("keyword");
+        String dimensionName = "";
+        String levelString = request.getParameter("level");
+        String statusString = request.getParameter("status");
 
-        String[] level = request.getParameterValues("level");
-        String[] status = request.getParameterValues("status");
-        String[] dimension = request.getParameterValues("dimension");
-        List<Level> levelList;
-        List<Status> statusList;
-        List<String> dimensionList;
+        Level level;
+        Status status;
 
-        if (level == null || level.length == 0) {
-            levelList = null;
+        if (levelString != null && !levelString.equals("")) {
+            level = Level.valueOf(levelString);
         } else {
-            levelList = new ArrayList<>();
-            for (int i = 0; i < level.length; i++) {
-                levelList.add(Level.valueOf(level[i]));
-            }
+            level = null;
         }
 
-        if (status == null || status.length == 0) {
-            statusList = null;
+        if (statusString != null && !statusString.equals("")) {
+            status = Status.valueOf(statusString);
         } else {
-            statusList = new ArrayList<>();
-            for (int i = 0; i < status.length; i++) {
-                statusList.add(Status.valueOf(status[i]));
-            }
+            status = null;
         }
 
-        if (dimension == null || dimension.length == 0) {
-            dimensionList = null;
-        } else {
-            dimensionList = new ArrayList<>();
-            for (int i = 0; i < dimension.length; i++) {
-                dimensionList.add(dimension[i]);
-            }
+        try {
+            String dimension = request.getParameter("dimension");
+            dimensionName = dimension;
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage() + " at ~60 SubjectController");
         }
 
-        request.setAttribute("selectedDimension", dimensionList);
-        request.setAttribute("selectedStatus", statusList);
-        request.setAttribute("selectedLevel", levelList);
+        request.setAttribute("selectedDimension", dimensionName);
+        request.setAttribute("selectedStatus", statusString);
+        request.setAttribute("selectedLevel", levelString);
         request.setAttribute("selectedKeyword", keyword);
 
 //        int courseId = Integer.parseInt(request.getParameter("thong nhat sau"));
@@ -109,20 +100,23 @@ public class QuestionController extends HttpServlet {
             keyword = "";
         }
 
-        getQuestionList(request, response, courseId, keyword, levelList, statusList, dimensionList);
+        getQuestionList(request, response, courseId, keyword, level, status, dimensionName);
     }
 
     public void getQuestionList(HttpServletRequest request, HttpServletResponse response,
-            int courseId, String keyword, List<Level> levels, List<Status> status, List<String> dimensionIds)
+            int courseId, String keyword, Level level, Status status, String dimensionName)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        List<Question> questionList = questionService.getQuestionsWithCondition(courseId, keyword, levels, status, dimensionIds);
+        List<Question> questionList = questionService.getQuestionsWithCondition(courseId, keyword, level, status, dimensionName);
         session.setAttribute("questionList", questionList);
 
-        int page;
-        page = processPageParameter(request, response, questionList.size());
+        int page = processPageParameter(request, response, questionList.size());
         List<Question> pageItems = getQuestionPerPage(questionList, page);
+
+//        if (questionList == null || questionList.size() == 0) {
+//            request.setAttribute("questionList", questionList);
+//        }
 
         if (pageItems != null) {
             request.setAttribute("dimensionList", questionService.getDimensionList(courseId));

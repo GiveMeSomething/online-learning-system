@@ -18,9 +18,9 @@ public class QuestionService {
         this.questionRepository = new QuestionRepository();
     }
 
-    public List<Question> getQuestionsWithCondition(int courseId, String keyword, List<Level> levels, List<Status> status, List<String> dimensionIds) {
+    public List<Question> getQuestionsWithCondition(int courseId, String keyword, Level level, Status status, String dimensionName) {
         try {
-            List<Question> result = questionRepository.getQuestionsWithCondition(courseId, keyword, levels, status, dimensionIds);
+            List<Question> result = questionRepository.getQuestionsWithCondition(courseId, keyword, level, status, dimensionName);
 
             if (result == null || result.size() == 0) {
                 // redirect to 404
