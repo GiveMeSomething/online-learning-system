@@ -64,7 +64,7 @@
                      id="overview" 
                      role="tabpanel" 
                      aria-labelledby="overview-tab">
-                    <form action="${path}/subject"
+                    <form action="${path}/auth/teacher/subjects"
                           method="POST"
                           class="col-md-7 needs-validation"
                           novalidate>

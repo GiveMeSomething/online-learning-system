@@ -60,12 +60,8 @@
         <servlet-class>quiz.QuizController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SubjectController</servlet-name>
+        <servlet-name>SubjectController1</servlet-name>
         <servlet-class>subject.SubjectController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>subjectDetail</servlet-name>
-        <servlet-class>subjectDetail</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AuthController</servlet-name>
@@ -137,25 +133,17 @@
         <param-value>se1501team1</param-value>
     </context-param>
     <!-- Other Configurations -->
-<!--    <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>QuestionController</servlet-name>
         <url-pattern>/auth/teacher/question</url-pattern>
-    </servlet-mapping>-->
-        <servlet-mapping>
-        <servlet-name>QuestionController</servlet-name>
-        <url-pattern>/question</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>QuizController</servlet-name>
         <url-pattern>/auth/teacher/quiz</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SubjectController</servlet-name>
-        <url-pattern>/subject</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>subjectDetail</servlet-name>
-        <url-pattern>/subjectDetail</url-pattern>
+        <servlet-name>SubjectController1</servlet-name>
+        <url-pattern>/auth/teacher/subjects</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

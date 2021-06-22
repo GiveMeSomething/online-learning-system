@@ -1,13 +1,11 @@
 /**
- * Jun 15, 1011
+ * Jun 22, 2021
  *
  * @author Dinh Kong Thanh
  */
 package subject;
-
 import common.entities.Category;
 import common.entities.Course;
-import common.entities.Status;
 import common.entities.User;
 import course.CourseService;
 import java.io.IOException;
@@ -17,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import user.UserService;
-
 public class SubjectController extends HttpServlet {
 
     private UserService userService;
@@ -44,7 +41,8 @@ public class SubjectController extends HttpServlet {
             request.setAttribute("ownerName", ownerName);
             request.setAttribute("authorList", authorList);
             request.setAttribute("detail", subject);
-            request.getRequestDispatcher("auth/teacher/subject/detail.jsp").forward(request, response);
+                
+            request.getRequestDispatcher("/auth/teacher/subject/detail.jsp").forward(request, response);
         }
 
     }
@@ -70,7 +68,7 @@ public class SubjectController extends HttpServlet {
                 courseService.updateSubjectInformation(subjectName, description, courseOwner, status, categoryBox, 0, 2);
             }
             request.setAttribute("activeId", 1);
-            response.sendRedirect("subject");
+            response.sendRedirect(request.getContextPath() + "/auth/teacher/subjects");
         }
     }
 }
