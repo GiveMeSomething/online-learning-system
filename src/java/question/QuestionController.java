@@ -1,96 +1,121 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Jun 13, 1011
+ *
+ * @author Hoang Tien Minh
  */
 package question;
 
+import common.entities.Question;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Iterator;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import javax.ws.rs.HEAD;
+import static javax.ws.rs.core.Response.status;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-/**
- *
- * @author ADMIN
- */
 @MultipartConfig(maxFileSize = 16177215)
-
 public class QuestionController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ImportQuestionController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ImportQuestionController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+    private QuestionService questionService;
+
+    @Override
+    public void init() throws ServletException {
+        questionService = new QuestionService();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String subjectId = request.getParameter("63");
+
+        int subjectIndicator = 63;
+//        HttpSession session = request.getSession();
+//        session.setAttribute("sId", subjectId);
+        String index = request.getParameter("index");
+        if (index == null) {
+            index = "1";
+        }
+        int indexPage = Integer.parseInt(index);
+        List<Question> questionList = questionService.getQuestions(63, indexPage);
+        request.setAttribute("end", getTotalPage(request, response, subjectIndicator));
+        request.setAttribute("tag", index);
+        request.setAttribute("questionList", questionList);
+        request.getRequestDispatcher("list.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
+
         String operation = request.getParameter("operation");
-        switch (operation) {
-            case "Import":
-                importQuestion(request, response);
-                break;
-            default:
-                response.sendRedirect("ImportQuestion.jsp");
-                break;
+        if (operation == null) {
+            response.sendRedirect("ImportQuestion.jsp");
+        } else {
+            switch (operation) {
+                case "Import":
+                    importQuestion(request, response);
+                    break;
+                case "SEARCHQUESTION":
+                    String subjectId = request.getParameter("63");
+                    int subjectIndicator = 63;
+                    String searchName = request.getParameter("searchQuestion");
+                    HttpSession ses = request.getSession();
+                    ses.setAttribute("searchName", searchName);
+                    String index = request.getParameter("index");
+                    if (index == null) {
+                        index = "1";
+                    }
+                    int indexPage = Integer.parseInt(index);
+
+                    List<Question> questionList = questionService.searchQuestion(63, searchName, indexPage);
+
+                    request.setAttribute("end", getTotalPageSearch(request, response, 63, searchName));
+                    request.setAttribute("tag", index);
+                    request.setAttribute("questionList", questionList);
+                    request.getRequestDispatcher("list.jsp").forward(request, response);
+                    break;
+                default:
+                    response.sendRedirect("ImportQuestion.jsp");
+                    break;
+            }
         }
+    }
+
+    private int getTotalPage(HttpServletRequest request, HttpServletResponse response, int courseId)
+            throws ServletException, IOException {
+        int total = questionService.countTotalQuestion(63);
+        int endPage = 0;
+        if (total % 5 == 0) {
+            endPage = questionService.countTotalQuestion(63) / 5;
+        } else {
+            endPage = (questionService.countTotalQuestion(63) / 5) + 1;
+        }
+        return endPage;
+    }
+
+    private int getTotalPageSearch(HttpServletRequest request, HttpServletResponse response, int courseId, String searchName)
+            throws ServletException, IOException {
+        int total = questionService.countingQuestionListSearch(63, searchName);
+        int endPage = 0;
+        if (total % 5 == 0) {
+            endPage = questionService.countingQuestionListSearch(63, searchName) / 8;
+        } else {
+            endPage = (questionService.countingQuestionListSearch(63, searchName) / 8) + 1;
+        }
+        return endPage;
     }
 
     public void importQuestion(HttpServletRequest request, HttpServletResponse response)
@@ -123,7 +148,6 @@ public class QuestionController extends HttpServlet {
 
             while (cellIterator.hasNext()) {
                 Cell nextCell = cellIterator.next();
-
                 int columnIndex = nextCell.getColumnIndex();
 
                 switch (columnIndex) {
@@ -162,15 +186,5 @@ public class QuestionController extends HttpServlet {
         /*đoạn dưới này là đã import xong, muốn quay về trang nào thì code*/
         out.print("Import Successfully OK!");
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

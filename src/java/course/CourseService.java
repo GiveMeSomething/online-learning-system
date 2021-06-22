@@ -8,6 +8,7 @@ import java.util.List;
 import common.entities.Category;
 import common.entities.Course;
 import common.entities.PricePackage;
+import common.entities.Status;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -192,6 +193,34 @@ public class CourseService {
             e.printStackTrace();
         }
         return null;
+    }
+
+//subject
+    public Course getSubject(int id) {
+        try {
+            Course result = courseRepository.getSubject(id);
+
+            if (result == null) {
+                // redirect to 404
+                System.out.println("Something wrong");
+                return null;
+            }
+
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public boolean updateSubjectInformation(String courseName, String description,int owner, int status_id, int category_id, int feature, int id) {
+        try {
+            return courseRepository.updateSubjectInformation(courseName, description,owner, status_id, category_id, feature, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

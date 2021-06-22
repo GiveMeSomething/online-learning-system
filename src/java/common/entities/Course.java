@@ -57,6 +57,27 @@ public class Course {
         this.tag = tag;
     }
 
+    public Course(int id, String imageLink, String courseName, String description,int ownerId, Status status, String category, boolean feature) {
+        this.id = id;
+        this.imageLink = imageLink;
+        this.courseName = courseName;
+        this.description = description;
+        this.ownerId = ownerId;
+        this.status = status;
+        this.category = category;
+        this.feature = feature;
+    }
+    
+    public Course(int id, String courseName, String description,int ownerId, Status status, String category, boolean feature) {
+        this.id = id;
+        this.courseName = courseName;
+        this.description = description;
+        this.ownerId = ownerId;
+        this.status = status;
+        this.category = category;
+        this.feature = feature;
+    }
+
     public int getId() {
         return id;
     }

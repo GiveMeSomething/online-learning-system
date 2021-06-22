@@ -43,6 +43,7 @@ public class UserRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+
     public boolean addUser(User user) throws SQLException {
         this.connectDatabase();
 
@@ -65,6 +66,7 @@ public class UserRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+
     public boolean activeUser(String email) throws SQLException {
         this.connectDatabase();
 
@@ -79,6 +81,7 @@ public class UserRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+
     public User getUser(int id) throws SQLException {
         this.connectDatabase();
 
@@ -106,6 +109,7 @@ public class UserRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+
     public boolean updateUser(User userUpdate) throws SQLException {
         this.connectDatabase();
         String sql = "UPDATE db_ite1.user SET "
@@ -124,7 +128,7 @@ public class UserRepository extends Repository {
             statement.setInt(5, Status.valueOf(userUpdate.getStatus()));
             statement.setString(6, userUpdate.getMobile());
             statement.setInt(7, userUpdate.getId());
-           
+
             if (statement.executeUpdate() > 0) {
                 return true;
             }
@@ -134,6 +138,7 @@ public class UserRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+
     public List<User> getUserAscById() throws SQLException {
         this.connectDatabase();
 
@@ -164,6 +169,7 @@ public class UserRepository extends Repository {
         }
         return userList;
     }
+
     public List<User> getUserAscByName() throws SQLException {
         this.connectDatabase();
 
@@ -195,7 +201,8 @@ public class UserRepository extends Repository {
         }
         return userList;
     }
-   public List<User> getUserDescByName() throws SQLException {
+
+    public List<User> getUserDescByName() throws SQLException {
         this.connectDatabase();
 
         String getUserDescByName = "SELECT "
@@ -226,6 +233,7 @@ public class UserRepository extends Repository {
         }
         return list;
     }
+
     public List<User> getUserDescById() throws SQLException {
         this.connectDatabase();
 
@@ -257,6 +265,7 @@ public class UserRepository extends Repository {
         }
         return list;
     }
+
     public int countTotalUser() throws SQLException {
         this.connectDatabase();
 
@@ -274,6 +283,7 @@ public class UserRepository extends Repository {
         }
         return 0;
     }
+
     public List<User> pagingUser(int index) throws SQLException {
         this.connectDatabase();
         String pagingUser = "SELECT id, image, full_name, gender, email, role_id, address, status_id, mobile FROM db_ite1.user LIMIT 5 OFFSET ?;";
@@ -301,6 +311,7 @@ public class UserRepository extends Repository {
         }
         return list;
     }
+
     public List<User> searchUser(String txt) throws SQLException {
         this.connectDatabase();
         String searchUser = "SELECT "
@@ -335,6 +346,7 @@ public class UserRepository extends Repository {
         }
         return list;
     }
+
     public List<User> searchUserByField(String searchUserByField, int index) throws SQLException {
         this.connectDatabase();
         List<User> list = new ArrayList<>();
@@ -360,6 +372,7 @@ public class UserRepository extends Repository {
         }
         return list;
     }
+
     public int countSearchUserByField(String countSearchUserByField) throws SQLException {
         this.connectDatabase();
         try (PreparedStatement statement = this.connection.prepareStatement(countSearchUserByField)) {
@@ -372,6 +385,7 @@ public class UserRepository extends Repository {
         }
         return 0;
     }
+
     public User getUserById(int id) throws SQLException {
         this.connectDatabase();
         String getUserById = "SELECT id, image, full_name, gender, email, role_id, address, status_id, mobile FROM db_ite1.user join account on user.email = account.user_email WHERE id = ?;";
@@ -396,6 +410,7 @@ public class UserRepository extends Repository {
         }
         return null;
     }
+
     public boolean updateUserInformation(String img, int id, String fullname, boolean gender, String address, String mobile) throws SQLException {
         this.connectDatabase();
 
@@ -423,6 +438,7 @@ public class UserRepository extends Repository {
         }
 
     }
+
     public boolean addUser(String email) throws SQLException {
         this.connectDatabase();
 
@@ -436,6 +452,7 @@ public class UserRepository extends Repository {
             return false;
         }
     }
+
     // TODO: insert account
     public boolean insertAccount(String account, String password, int roleId) throws SQLException {
         this.connectDatabase();
@@ -454,6 +471,7 @@ public class UserRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+
     public boolean updateRole(int roleid, String email) throws SQLException {
         this.connectDatabase();
         String updateRole = "UPDATE db_ite1.account SET role_id = ? WHERE user_email = ?";
@@ -469,6 +487,7 @@ public class UserRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+
     public boolean updateStatus(int status, String email) throws SQLException {
         this.connectDatabase();
 
@@ -486,6 +505,7 @@ public class UserRepository extends Repository {
         }
 
     }
+
     public boolean checkExistAccount(String email) throws SQLException {
         this.connectDatabase();
 
@@ -502,6 +522,7 @@ public class UserRepository extends Repository {
         }
         return false;
     }
+
     public int getNewId() throws SQLException {
         this.connectDatabase();
 
@@ -515,6 +536,7 @@ public class UserRepository extends Repository {
         }
         return 0;
     }
+
     public void insertUser(int id, String image, String fullname, boolean gender, String email, String address, int status, String mobile) throws SQLException {
         this.connectDatabase();
         String insertUser = "INSERT INTO db_ite1.user VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -530,6 +552,43 @@ public class UserRepository extends Repository {
             statement.executeUpdate();
         } finally {
             this.disconnectDatabase();
+        }
+    }
+
+    //subject
+    public List<User> getAuthor() throws SQLException {
+        this.connectDatabase();
+
+        String getUser = "SELECT u.id, u.full_name, u.email "
+                + "FROM user u "
+                + "INNER JOIN account a  "
+                + "on a.user_email = u.email "
+                + "where a.role_id = 1";
+        List<User> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(getUser)) {
+            ResultSet result = statement.executeQuery();
+             while(result.next()) {
+                list.add(new User(
+                        result.getInt("id"),
+                        result.getString("full_name"),
+                        result.getString("email")
+                ));
+            }
+
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        UserRepository repo = new UserRepository();
+        try {
+            List<User> list = repo.getAuthor();
+            for (User o : list) {
+                System.out.println(o);
+            }
+        } catch (Exception e) {
         }
     }
 
