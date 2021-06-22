@@ -16,8 +16,8 @@
               crossorigin="anonymous">
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
               integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
-              crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="${path}/style/subject.css">
+              crossorigin="anonymous"> 
+       <link href="${path}/style/subject.css" rel="stylesheet" type="text/css"/> 
     </head>
     <body>        
         <div class="container container-fluid">
@@ -25,23 +25,27 @@
             <div>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">Overview</a>
+                        <a class="nav-link active" id="pricepackage-tab" data-toggle="tab" href="#pricepackage" role="tab" aria-controls="pricepackage" aria-selected="true">Price package</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link " id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="false">Overview</a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="dimension-tab" data-toggle="tab" href="#dimension" role="tab" aria-controls="dimension" aria-selected="false">Dimension</a>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="pricepackage-tab" data-toggle="tab" href="#pricepackage" role="tab" aria-controls="pricepackage" aria-selected="false">Price package</a>
-                    </li>
                 </ul> 
             </div>
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">wazzup</div>
+                <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
+                    <div class="tab-pane fade show active" id="pricepackage" role="tabpanel" aria-labelledby="pricepackage-tab">
+                        <jsp:include page="/auth/teacher/subject/price-package.jsp"/>
+                    </div>
+                </c:if>
+                <div class="tab-pane fade  " id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                </div>
                 <div class="tab-pane fade" id="dimension" role="tabpanel" aria-labelledby="dimension-tab">whatup</div>
-                <div class="tab-pane fade" id="pricepackage" role="tabpanel" aria-labelledby="pricepackage-tab">what's up</div>
             </div>
         </div>
-
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

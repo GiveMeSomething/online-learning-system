@@ -55,7 +55,7 @@
                             </li>
                             <c:if test="${sessionScope.isAdmin != true}">
                                 <li class="nav-item nav-hover">
-                                    <a class="nav-link active" aria-current="page" href="#">Courses</a>
+                                    <a class="nav-link active" aria-current="page" href="${path}/auth/user/UserCourse?operation=">Courses</a>
                                 </li>
                             </c:if>
                             <li class="gap-3">

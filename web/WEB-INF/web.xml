@@ -56,8 +56,16 @@
         <servlet-class>question.QuestionController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>PricePackageController</servlet-name>
+        <servlet-class>price_package.PricePackageController</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>QuizController</servlet-name>
         <servlet-class>quiz.QuizController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserCourseController</servlet-name>
+        <servlet-class>user_course.UserCourseController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AuthController</servlet-name>
@@ -111,6 +119,10 @@
         <servlet-name>BlogController</servlet-name>
         <url-pattern>/blog</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PricePackageController</servlet-name>
+        <url-pattern>/auth/teacher/price-package</url-pattern>
+    </servlet-mapping>
     <!-- SMTP settings -->
     <context-param>
         <param-name>host</param-name>
@@ -129,13 +141,21 @@
         <param-value>se1501team1</param-value>
     </context-param>
     <!-- Other Configurations -->
-    <servlet-mapping>
+    <!--<servlet-mapping>
         <servlet-name>QuestionController</servlet-name>
         <url-pattern>/auth/teacher/question</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
     <servlet-mapping>
         <servlet-name>QuizController</servlet-name>
         <url-pattern>/auth/teacher/quiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserCourseController</servlet-name>
+        <url-pattern>/auth/user/UserCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuestionController</servlet-name>
+        <url-pattern>/auth/teacher/quiz/question/ImportQuestions</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
