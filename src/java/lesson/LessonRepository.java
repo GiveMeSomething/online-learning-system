@@ -177,9 +177,9 @@ public class LessonRepository extends Repository {
             statment.setInt(4, LessonType.valueOf(lesson.getLessonType()));
             ResultSet result = statment.executeQuery();
             while (result.next()) {
-                lesson = new Lesson(result.getString("lesson_name"));
+                return new Lesson(result.getString("lesson_name"));
             }
-            return lesson;
+            return null;
         } finally {
             this.disconnectDatabase();
         }
@@ -222,6 +222,16 @@ public class LessonRepository extends Repository {
             return isUpdate;
         } finally {
             this.disconnectDatabase();
+        }
+    }
+
+    public static void main(String[] args) throws SQLException {
+        LessonRepository lessonRepository = new LessonRepository();
+        Lesson lesson = new Lesson("lesson 3.6", 1, LessonType.SUBJECT_TOPIC, 1);
+        if (lessonRepository.checkLessonExist(lesson) == null) {
+            System.out.println("not had");
+        } else {
+            System.out.println("had");
         }
     }
 }

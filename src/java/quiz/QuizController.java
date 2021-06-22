@@ -59,20 +59,6 @@ public class QuizController extends HttpServlet implements Controller {
                 case "PAGINATION":
                     getItemInPage(request, response);
                     break;
-                case "ADDQUIZOVERVIEW":
-                    quizId = request.getParameter("quizId");
-                    if (quizId.equalsIgnoreCase("")) {
-                        addQuizOverview(request, response);
-                    } else {
-                        updateQuizOverview(request, response);
-                    }
-                    break;
-                case "ADDQUIZSETTING":
-                    int id = Integer.parseInt(request.getParameter("quizId"));
-                    HttpSession session = request.getSession();
-                    Quiz quiz = (Quiz) session.getAttribute("quiz");
-                    addQuizSetting(request, response, quiz);
-                    break;
                 default:
                     response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
             }
@@ -86,6 +72,23 @@ public class QuizController extends HttpServlet implements Controller {
 
         if (operation.equals("FILTER")) {
             processInputForQuiz(request, response);
+        } else {
+            switch (operation) {
+                case "ADDQUIZSETTING":
+                    int id = Integer.parseInt(request.getParameter("quizId"));
+                    HttpSession session = request.getSession();
+                    Quiz quiz = (Quiz) session.getAttribute("quiz");
+                    addQuizSetting(request, response, quiz);
+                    break;
+                case "ADDQUIZOVERVIEW":
+                    String quizId = request.getParameter("quizId");
+                    if (quizId.equalsIgnoreCase("") || quizId == null) {
+                        addQuizOverview(request, response);
+                    } else {
+                        updateQuizOverview(request, response);
+                    }
+                    break;
+            }
         }
     }
 
@@ -229,6 +232,8 @@ public class QuizController extends HttpServlet implements Controller {
             if (quizService.addQuizSetting(quiz, question.getId())) {
             }
         }
+        HttpSession session = request.getSession();
+        session.setAttribute("quiz", null);
     }
 
     public void updateQuizOverview(HttpServletRequest request, HttpServletResponse response)

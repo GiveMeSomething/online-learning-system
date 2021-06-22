@@ -93,6 +93,12 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
+                    <div class="add-lesson">
+                        <a role="button" class="btn btn-success px-3 py-2" 
+                           href="${path}/auth/teacher/quiz?operation=VIEW">
+                            Add New Quiz
+                        </a>
+                    </div>
                 </form>
             </div>
             <div class="row my-5">
@@ -108,11 +114,11 @@
                             <h4>Number of questions: ${item.questionNum}</h4>
                             <p>Duration: ${item.duration}</p>
                             <p>Pass rate: ${item.passRate}%</p>
-                            <p>Type: ${item.quizType}%</p>
+                            <p>Type: ${item.quizType}</p>
                         </div>
                     </div>
                     <div class="col-3 d-flex align-items-center justify-content-center m-2">
-                        <a href="/auth/teacher/quiz?operation=VIEW&subjectId=${item.id}" class="m-2">
+                        <a href="${path}/auth/teacher/quiz?operation=VIEW&quizId=${item.id}" class="m-2">
                             <button class="btn btn-sm btn-primary px-3 py-2">
                                 View and Edit
                             </button>

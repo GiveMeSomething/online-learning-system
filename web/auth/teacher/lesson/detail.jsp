@@ -20,7 +20,7 @@
             <h1>Lesson Detail</h1>
             <form action="${path}/auth/teacher/lesson" method="POST" class="needs-validatation" novalidate>
                 <div class="request-info">
-                    <input name="previousPage" value="/auth/teacher/lesson/detail.jsp" hidden="true" />
+                    <input name="previousPage" value="${path}/auth/teacher/lesson/detail.jsp" hidden="true" />
                     <div class="invalid-feedback"></div>
                     <input name="operation" value="ADDNEWLESSON" hidden="true" />
                     <div class="invalid-feedback"></div>

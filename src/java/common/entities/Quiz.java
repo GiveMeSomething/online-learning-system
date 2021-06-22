@@ -5,7 +5,6 @@
  */
 package common.entities;
 
-import java.util.List;
 //my quiz
 
 public class Quiz {

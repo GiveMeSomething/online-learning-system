@@ -33,14 +33,14 @@
             <!-- content -->
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                    <form action="${path}/auth/teacher/quiz" method="GET" class="needs-validatation" novalidate>
+                    <form action="${path}/auth/teacher/quiz" method="POST" class="needs-validatation" novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="/auth/teacher/subject/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
                             <input name="operation" value="ADDQUIZOVERVIEW" hidden="true" />
                             <div class="invalid-feedback"></div>
                         </div>
-                        <input name="id" value="${quiz.id}" hidden/>
+                        <input name="quizId" value="${quiz.id}" hidden/>
                         <div class="form-row">
                             <div class="mb-3 col-md-12">
                                 <label for="quiz-name">Quiz name</label>
@@ -67,9 +67,9 @@
                             <div class="mb-3 col-md-5">
                                 <label for="exam-level">Exam Level</label>
                                 <select class="custom-select" id="exam-level" name="exam-level" required>
-                                    <option value="EASY" ${quiz.quizLevel == "EASY"?"selected":""}>Easy</option>
-                                    <option value="MEDIUM" ${quiz.quizLevel == "MEDIUM"?"selected":""}>Medium</option>
-                                    <option value="HARD" ${quiz.quizLevel == "HARD"?"selected":""}>Hard</option>
+                                    <option value="EASY" ${quiz.level == "EASY"?"selected":""}>Easy</option>
+                                    <option value="MEDIUM" ${quiz.level == "MEDIUM"?"selected":""}>Medium</option>
+                                    <option value="HARD" ${quiz.level == "HARD"?"selected":""}>Hard</option>
                                 </select>
                                 <div class="invalid-feedback"></div>
                             </div>
@@ -114,7 +114,7 @@
                 </div>
                 <!-- setting -->
                 <div class="tab-pane fade" id="setting" role="tabpanel" aria-labelledby="setting-tab">
-                    <form action="${path}/auth/teacher/quiz" method="GET" class="needs-validatation" novalidate>
+                    <form action="${path}/auth/teacher/quiz" method="POST" class="needs-validatation" novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="/auth/teacher/subject/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
@@ -122,7 +122,7 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <input value="${quiz.subjectId}" hidden name="subject"/>
-                        <input value="1" hidden name="id"/>
+                        <input value="${quiz.id}" hidden name="quizId"/>
                         <div class="form-row">
                             <div class="mb-3">
                                 <label for="total-question">Total Questions</label>

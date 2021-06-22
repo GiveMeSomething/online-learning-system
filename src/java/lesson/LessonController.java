@@ -80,13 +80,7 @@ public class LessonController extends HttpServlet implements Controller {
                         response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
                     }
                     break;
-                case "ADDNEWLESSON":
-                    lessonId = request.getParameter("lessonId");
-                    if (lessonId == null || lessonId.equals("")) {
-                        addLesson(request, response);
-                    } else {
-                        editLesson(request, response);
-                    }
+                default:
                     break;
             }
         }
@@ -95,7 +89,16 @@ public class LessonController extends HttpServlet implements Controller {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        String lessonId;
+        String operation = request.getParameter("operation");
+        if (operation.equals("ADDNEWLESSON")) {
+            lessonId = request.getParameter("lessonId");
+            if (lessonId == null || lessonId.equals("")) {
+                addLesson(request, response);
+            } else {
+                editLesson(request, response);
+            }
+        }
     }
 
     private void processGetLesson(HttpServletRequest request, HttpServletResponse response)
@@ -188,24 +191,29 @@ public class LessonController extends HttpServlet implements Controller {
         if (lessonType.equals(LessonType.valueOf("SUBJECT_TOPIC"))) {
             Lesson lesson = new Lesson(lessonName, order, lessonType, courseId);
             if (lessonService.checkLessonExist(lesson) == null) {
-                lessonService.addLessonDetail(lesson);
+                if (lessonService.addLessonDetail(lesson)) {
+                    response.sendRedirect(request.getContextPath() + "/auth/teacher/lesson");
+                }
             }
         } else if (lessonType.equals(LessonType.valueOf("LESSON"))) {
             String videoLink = request.getParameter("video-link");
             String html = request.getParameter("html-content");
             Lesson lesson = new Lesson(lessonName, order, lessonType, courseId, videoLink, html);
             if (lessonService.checkLessonExist(lesson) == null) {
-                lessonService.addLessonDetail(lesson);
+                if (lessonService.addLessonDetail(lesson)) {
+                    response.sendRedirect(request.getContextPath() + "/auth/teacher/lesson");
+                }
             }
         } else {
             int quizId = Integer.parseInt(request.getParameter("quiz"));
             String html = request.getParameter("html-quiz");
             Lesson lesson = new Lesson(lessonName, order, lessonType, courseId, html, quizId);
             if (lessonService.checkLessonExist(lesson) == null) {
-                lessonService.addLessonDetail(lesson);
+                if (lessonService.addLessonDetail(lesson)) {
+                    response.sendRedirect(request.getContextPath() + "/auth/teacher/lesson");
+                }
             }
         }
-        response.sendRedirect(request.getContextPath()+"/auth/teacher/lesson");
     }
 
     private void editLesson(HttpServletRequest request, HttpServletResponse response)
@@ -231,13 +239,13 @@ public class LessonController extends HttpServlet implements Controller {
             lesson = new Lesson(lessonName, order, lessonType, courseId, html, quizId);
             lessonService.updateLessonDetail(lesson, id);
         }
-        response.sendRedirect("/auth/teacher/lesson");
+        response.sendRedirect(request.getContextPath() + "/auth/teacher/lesson");
     }
 
     private void viewLesson(HttpServletRequest request, HttpServletResponse response, Lesson lesson)
             throws ServletException, IOException {
         HashMap<Integer, String> getCourses = courseService.getCourses();
-//        ArrayList<Quiz> quizList = quizService.getQuizList(1, "", null);
+//        ArrayList<Quiz> quizList = quizService.getQuizList(lesson.getCourseId();
 
         request.setAttribute("course", getCourses);
 //        request.setAttribute("quiz", quizList);
