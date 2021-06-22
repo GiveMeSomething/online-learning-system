@@ -118,8 +118,8 @@
                                     <div id="courseStatus" class="col-md-2" style="display: flex">
                                         <label style="margin-top: -.5rem; margin-right: .2rem">Status</label>
                                         <select name="status" style="height: max-content">
-                                            <option value="1" ${detail.status=="ACTIVE"?"selected":""}>Active</option>
-                                            <option value="0" ${detail.status=="INACTIVE"?"selected":""}>Inactive</option>
+                                            <option value="1" ${detail.status=="ACTIVE"?"selected":""}>Published</option>
+                                            <option value="0" ${detail.status=="INACTIVE"?"selected":""}>Unpublished</option>
                                         </select>           
                                     </div>
                                 </div>
