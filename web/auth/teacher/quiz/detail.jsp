@@ -33,7 +33,7 @@
             <!-- content -->
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                    <form action="${path}/auth/teacher/quiz" method="POST" class="needs-validatation" novalidate>
+                    <form action="${path}/auth/teacher/quiz" method="GET" class="needs-validatation" novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="/auth/teacher/subject/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
@@ -114,7 +114,7 @@
                 </div>
                 <!-- setting -->
                 <div class="tab-pane fade" id="setting" role="tabpanel" aria-labelledby="setting-tab">
-                    <form action="${path}/auth/teacher/quiz" class="needs-validatation" novalidate>
+                    <form action="${path}/auth/teacher/quiz" method="GET" class="needs-validatation" novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="/auth/teacher/subject/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>

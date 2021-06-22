@@ -27,7 +27,7 @@ public class LessonController extends HttpServlet implements Controller {
     private CourseService courseService;
     private QuizService quizService;
 
-    private int itemPerPage = 5;
+    private final int itemPerPage = 5;
 
     @Override
     public void init() throws ServletException {

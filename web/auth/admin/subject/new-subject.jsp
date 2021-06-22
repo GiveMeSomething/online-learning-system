@@ -21,7 +21,7 @@
     <body>
         <div class="container">
             <h1>New Subject</h1>
-            <form action="/auth/admin/subject" method="POST" class="needs-validatation" enctype="multipart/form-data" novalidate>
+            <form action="/auth/admin/subject" method="GET" class="needs-validatation" enctype="multipart/form-data" novalidate>
                 <div class="request-info">
                     <input name="previousPage" value="home.jsp" hidden="true" />
                     <div class="invalid-feedback"></div>
