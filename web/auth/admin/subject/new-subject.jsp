@@ -21,9 +21,9 @@
     <body>
         <div class="container">
             <h1>New Subject</h1>
-            <form action="/auth/admin/subject" method="GET" class="needs-validatation" enctype="multipart/form-data" novalidate>
+            <form action="${path}/auth/teacher/subject" method="POST" class="needs-validatation" enctype="multipart/form-data" novalidate>
                 <div class="request-info">
-                    <input name="previousPage" value="home.jsp" hidden="true" />
+                    <input name="previousPage" value="${path}/auth/teacher/subject" hidden="true" />
                     <div class="invalid-feedback"></div>
                     <input name="operation" value="ADDNEWSUBJECT" hidden="true" />
                     <div class="invalid-feedback"></div>

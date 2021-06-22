@@ -99,6 +99,12 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
+                    <div class="add-lesson">
+                        <a role="button" class="btn btn-success px-3 py-2" 
+                           href="${path}/auth/teacher/subject?operation=TONEWSUBJECT">
+                            Add new Subject
+                        </a>
+                    </div>
                 </form>
             </div>
             <div class="row my-5">

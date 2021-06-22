@@ -205,7 +205,7 @@ public class LessonController extends HttpServlet implements Controller {
                 lessonService.addLessonDetail(lesson);
             }
         }
-        response.sendRedirect("/auth/teacher/lesson");
+        response.sendRedirect(request.getContextPath()+"/auth/teacher/lesson");
     }
 
     private void editLesson(HttpServletRequest request, HttpServletResponse response)

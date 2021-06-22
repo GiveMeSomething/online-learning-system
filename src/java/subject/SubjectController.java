@@ -98,9 +98,6 @@ public class SubjectController extends HttpServlet implements Controller {
                     request.setAttribute("owner", owner);
                     request.getRequestDispatcher("/auth/admin/subject/new-subject.jsp").forward(request, response);
                     break;
-                case "ADDNEWSUBJECT":
-                    addNewSubject(request, response);
-                    break;
                 case "GETSUBJECT":
                     processInputForSubject(request, response);
                     break;
@@ -167,6 +164,9 @@ public class SubjectController extends HttpServlet implements Controller {
             case "FILTER":
                 processInputForSubject(request, response);
                 break;
+            case "ADDNEWSUBJECT":
+                addNewSubject(request, response);
+                break;
             default:
                 response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
                 break;
@@ -200,7 +200,7 @@ public class SubjectController extends HttpServlet implements Controller {
         } else {
             courseService.addNewSubject(course, inputStream);
             // Navigating to subject list
-            response.sendRedirect("/auth/admin/subject/new-subject.jsp");
+            response.sendRedirect(request.getContextPath()+"/auth/teacher/subject");
         }
     }
 

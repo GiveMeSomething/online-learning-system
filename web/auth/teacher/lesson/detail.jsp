@@ -54,13 +54,13 @@
                     <div class="mb-3 col-md-5">
                         <label for="type">Type</label>
                         <select class="custom-select" id="type" name="type" required>
+                            <option value="SUBJECT_TOPIC" ${lesson.lessonType == "SUBJECT_TOPIC"?"selected":""}>Subject Topic</option>
                             <option value="LESSON" ${lesson.lessonType == "LESSON"?"selected":""}>Lesson</option>
                             <option value="QUIZ" ${lesson.lessonType == "QUIZ"?"selected":""}>Quiz</option>
-                            <option value="SUBJECT_TOPIC" ${lesson.lessonType == "SUBJECT_TOPIC"?"selected":""}>Subject Topic</option>
                         </select>
                     </div>
                 </div>
-                <div id="lesson" style="display: block">
+                <div id="lesson" style="display: none">
                     <div class="mb-3">
                         <label for="link">Video link</label>
                         <input type="text" name="video-link" value="${lesson.videoLink}" id="video-link" data-value-missing="Can't be empty"
@@ -72,7 +72,7 @@
                         <div class="invalid-feedback"></div>
                     </div>
                 </div>
-                <div id="subject" style="display: none"  aria-labelledby="subject-tab">
+                <div id="subject" style="display: block"  aria-labelledby="subject-tab">
                     <br>
                 </div>
                 <div  id="quiz" style="display: none" aria-labelledby="quiz-tab">

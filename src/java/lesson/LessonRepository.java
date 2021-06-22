@@ -169,7 +169,7 @@ public class LessonRepository extends Repository {
         this.connectDatabase();
 
         String isLessonExist = "SELECT lesson_name FROM lesson "
-                + "WHERE lesson_name = ? AND order = ? AND course_id = ? AND type_id = ?";
+                + "WHERE lesson_name = ? AND lesson.order = ? AND course_id = ? AND type_id = ?";
         try (PreparedStatement statment = this.connection.prepareStatement(isLessonExist)) {
             statment.setString(1, lesson.getLessonName());
             statment.setInt(2, lesson.getOrder());
@@ -178,10 +178,8 @@ public class LessonRepository extends Repository {
             ResultSet result = statment.executeQuery();
             while (result.next()) {
                 lesson = new Lesson(result.getString("lesson_name"));
-                return lesson;
             }
-
-            return null;
+            return lesson;
         } finally {
             this.disconnectDatabase();
         }
