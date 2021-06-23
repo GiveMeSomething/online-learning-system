@@ -245,6 +245,7 @@ public class QuizController extends HttpServlet implements Controller {
         }
         HttpSession session = request.getSession();
         session.setAttribute("quiz", null);
+        response.sendRedirect(request.getContextPath()+"/auth/teacher/quiz");
     }
 
     public void updateQuizOverview(HttpServletRequest request, HttpServletResponse response)
