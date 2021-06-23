@@ -19,7 +19,7 @@ public class QuestionRepository extends Repository {
 
     public List<Question> getQuestionsWithCondition(int courseId, String keyword, Level level, Status status, String dimensionName) throws SQLException {
         this.connectDatabase();
-        String condition = "where c.id = ? AND 1=1 ";
+        String condition = "where 1=1 AND c.id = ? ";
 
         if (keyword != null && !keyword.equals("")) {
             keyword = "%" + keyword + "%";
@@ -35,7 +35,7 @@ public class QuestionRepository extends Repository {
 
         }
         if (dimensionName != null) {
-            condition += "AND d.name = '%" + dimensionName + "%' ";
+            condition += "AND d.name LIKE '%" + dimensionName + "%' ";
         }
 
         String sql = "SELECT q.id ,q.status_id, q.content, c.title, d.name as 'dimension_name', l.lesson_name,ql.type, s.value as 'status' "

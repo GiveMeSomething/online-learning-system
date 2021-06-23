@@ -28,19 +28,20 @@
             <div class="row">
                 <form action="${path}/auth/teacher/question?operation=SEARCHQUESTION"
                       method="POST">
-                    <div class="my-2 d-flex justify-content-center align-items-center gap-3">
+                    <div class="my-2 d-flex justify-content-center align-items-center gap-1">
                         <div>
                             <input class="form-control"
                                    name="keyword"
                                    type="text"
                                    id="keyword"
+                                   onchange="resetRadio()"
                                    value="${requestScope.selectedKeyword != null ? requestScope.selectedKeyword: ''}"
                                    placeholder="Search subjects"
-                                   style="width: 43vh"/>
+                                   style="width: 40vh"/>
                         </div>
-                        <div id="category" class="d-flex justify-content-center align-items-center m-2" >
+                        <div id="dimension" class="d-flex justify-content-center align-items-center m-2" >
                             <label for="category-select" class="mx-2">Categories</label>
-                            <select class="form-control" name="dimension" style="width: 20vh">
+                            <select onchange="resetRadio()" class="form-control" name="dimension" style="width: 20vh">
                                 <option value="" ${requestScope.selectedDimension == null ? 'selected': ''}>All</option>
                                 <c:forEach items="${requestScope.dimensionList}" var="o">
                                     <option value="${o.dimension_name}" ${requestScope.selectedDimension == o.dimension_name ? 'selected': ''}>
@@ -72,9 +73,9 @@
                                 <label class="custom-control-label" for="inactive">INACTIVE</label>
                                 <div class="invalid-feedback"></div>
                             </div>
-                            
+
                         </div>
-                                <div id="level" class="d-flex justify-content-center align-items-center m-2">
+                        <div id="level" class="d-flex justify-content-center align-items-center m-2">
                             <div class="mx-2">Level</div>
                             <div class="custom-control custom-radio custom-control m-2">
                                 <input
@@ -113,10 +114,11 @@
                 </form> 
             </div>
             <div id="question-table">
+
                 <table id="myTable" class="table table-light table-striped">
                     <thead>
                         <tr>
-                            <th >
+                            <th>
                                 ID
                             </th>
                             <th>
@@ -143,22 +145,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach items="${requestScope.pageItems}" var="o">
-                            <tr>
-                                <td>${o.id}</td>
-                                <td>${o.course}</td>
-                                <td>${o.lesson_name}</td>
-                                <td>${o.dimension_name}</td>
-                                <td>${o.content}</td>
-                                <td>${o.level}</td>
-                                <td>${o.status}</td>
-                                <td>
-                                    <button class="btn btn-secondary">
-                                        <a href="#" class="btn btn-secondary" style="width: 5rem; font-size: 10px; font-weight: bold">View&Edit</a>
-                                    </button>
-                                </td>
-                            </tr>
-                        </c:forEach>
+
+                        <c:if test="${requestScope.questionList == null || requestScope.questionList.size() == 0}">
+                        <div>
+                            list not found
+                        </div>
+                    </c:if>
+                    <c:forEach items="${requestScope.pageItems}" var="o">
+
+                        <tr>
+                            <td>${o.id}</td>
+                            <td>${o.course}</td>
+                            <td>${o.lesson_name}</td>
+                            <td>${o.dimension_name}</td>
+                            <td>${o.content}</td>
+                            <td>${o.level}</td>
+                            <td>${o.status}</td>
+                            <td>
+                                <button class="btn btn-secondary">
+                                    <a href="#" class="btn btn-secondary" style="width: 5rem; font-size: 10px; font-weight: bold">View&Edit</a>
+                                </button>
+                            </td>
+                        </tr>
+                    </c:forEach>
                     </tbody>
                 </table>
             </div>
@@ -188,9 +197,16 @@
                     </li>
                 </ul>
             </nav>
-
-
         </div>
+        <script>
+            function resetRadio() {
+                document.getElementById("active").checked = false;
+                document.getElementById("inactive").checked = false;
+                document.getElementById("hard").checked = false;
+                document.getElementById("medium").checked = false;
+                document.getElementById("easy").checked = false;
+            }
+        </script>
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
