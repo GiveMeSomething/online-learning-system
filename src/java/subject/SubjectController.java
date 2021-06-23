@@ -42,10 +42,9 @@ public class SubjectController extends HttpServlet implements Controller {
         courseService = new CourseService();
     }
 
-    protected void displayData(HttpServletRequest request, HttpServletResponse response,int subjectId)
+    protected void displayData(HttpServletRequest request, HttpServletResponse response, int subjectId)
             throws ServletException, IOException {
         //Display subject dimesion detail of specified course
-//        int subjectId = 1;
         List<Dimension> listDimension = courseService.getSubjectDimensionByCourseId(subjectId);
         request.setAttribute("listDimension", listDimension);
         request.getRequestDispatcher("/auth/teacher/subject/detail.jsp").forward(request, response);
@@ -55,10 +54,6 @@ public class SubjectController extends HttpServlet implements Controller {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession currentSession = request.getSession();
-
-        int dimensionId;
-        int subjectId = 1;
-
         String operation = request.getParameter("operation");
         if (operation == null) {
             processInputForSubject(request, response);
@@ -67,26 +62,13 @@ public class SubjectController extends HttpServlet implements Controller {
                 case "VIEW":
                     currentSession.setAttribute("currentSubject", request.getParameter("subjectId"));
                     request.setAttribute("activeId", 1);
-                    displayData(request, response,Integer.parseInt((String) currentSession.getAttribute("currentSubject")));
+                    displayData(request, response, Integer.parseInt((String) currentSession.getAttribute("currentSubject")));
                     break;
                 case "DELETESUBJECT":
-                    subjectId = Integer.parseInt((String) currentSession.getAttribute("currentSubject"));
-                    dimensionId = Integer.parseInt(request.getParameter("dimensionId"));
-
-                    courseService.deleteSubjectDimensionByCourseId(subjectId, dimensionId);
-                    request.setAttribute("activeId", 2);
-                    displayData(request, response,Integer.parseInt((String) currentSession.getAttribute("currentSubject")));
+                    deleteSubjectDimension(request, response);
                     break;
                 case "GETDIMENSIONDETAIL":
-                    dimensionId = Integer.parseInt(request.getParameter("dimensionId"));
-                    Dimension dimensionDetail = courseService.getDimensionDetail(dimensionId);
-                    List<DimensionType> dimensionTypeList = courseService.getAllDimenstionType();
-
-                    request.setAttribute("dimensionDetail", dimensionDetail);
-                    request.setAttribute("dimensionId", dimensionId);
-                    request.setAttribute("dimensionTypeList", dimensionTypeList);
-
-                    request.getRequestDispatcher("/auth/teacher/subject/dimensionEditInfo.jsp").forward(request, response);
+                    getDimensionDetail(request, response);
                     break;
                 case "PAGINATION":
                     getItemInPage(request, response);
@@ -118,50 +100,11 @@ public class SubjectController extends HttpServlet implements Controller {
         String operation = request.getParameter("operation");
         switch (operation) {
             case "ADDSUBJECT": {
-                int subjectId = Integer.parseInt((String) currentSession.getAttribute("currentSubject"));
-                String type = request.getParameter("type");
-                String dimension = request.getParameter("dimension");
-                int typeInt = 0;
-                switch (type) {
-                    case "Domain":
-                        typeInt = 1;
-                        break;
-                    case "Group":
-                        typeInt = 2;
-                        break;
-                    default:
-                        courseService.addDimensionType(type);
-                        typeInt = courseService.getDimensionTypeDetail(type).getId();
-                        break;
-                }
-                String description = request.getParameter("description");
-                courseService.addDimension(typeInt, dimension, description);
-                Dimension dimensionAdd = courseService.getDimensionId(dimension);
-                courseService.addDimensionCourse(subjectId, dimensionAdd.getId());
-                request.setAttribute("activeId", 2);
-                displayData(request, response,Integer.parseInt((String) currentSession.getAttribute("currentSubject")));
+                addSubjectDimension(request, response);
                 break;
             }
             case "UPDATESUBJECT": {
-                int dimensionId = Integer.parseInt(request.getParameter("dimensionId"));
-                String type = request.getParameter("type");
-                int typeInt = 0;
-                switch (type) {
-                    case "domain":
-                        typeInt = 1;
-                        break;
-                    case "group":
-                        typeInt = 2;
-                        break;
-                    default:
-                        typeInt = courseService.getDimensionTypeDetail(type).getId();
-                        break;
-                }
-                String dimension = request.getParameter("dimension");
-                String description = request.getParameter("description");
-                courseService.updateSubjectDimension(typeInt, dimension, description, dimensionId);
-                request.setAttribute("activeId", 2);
-                displayData(request, response,Integer.parseInt((String) currentSession.getAttribute("currentSubject")));
+                updateSubjectDimension(request, response);
                 break;
             }
             case "FILTER":
@@ -171,6 +114,76 @@ public class SubjectController extends HttpServlet implements Controller {
                 response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
                 break;
         }
+    }
+
+    private void deleteSubjectDimension(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
+        int subjectId = Integer.parseInt((String) currentSession.getAttribute("currentSubject"));
+        int dimensionId = Integer.parseInt(request.getParameter("dimensionId"));
+        courseService.deleteSubjectDimensionByCourseId(subjectId, dimensionId);
+        request.setAttribute("activeId", 2);
+        displayData(request, response, Integer.parseInt((String) currentSession.getAttribute("currentSubject")));
+    }
+
+    private void getDimensionDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int dimensionId = Integer.parseInt(request.getParameter("dimensionId"));
+        Dimension dimensionDetail = courseService.getDimensionDetail(dimensionId);
+        List<DimensionType> dimensionTypeList = courseService.getAllDimenstionType();
+
+        request.setAttribute("dimensionDetail", dimensionDetail);
+        request.setAttribute("dimensionId", dimensionId);
+        request.setAttribute("dimensionTypeList", dimensionTypeList);
+
+        request.getRequestDispatcher("/auth/teacher/subject/dimensionEditInfo.jsp").forward(request, response);
+    }
+
+    private void addSubjectDimension(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
+        int subjectId = Integer.parseInt((String) currentSession.getAttribute("currentSubject"));
+        String type = request.getParameter("type");
+        String dimension = request.getParameter("dimension");
+        int typeInt = 0;
+        switch (type) {
+            case "Domain":
+                typeInt = 1;
+                break;
+            case "Group":
+                typeInt = 2;
+                break;
+            default:
+                courseService.addDimensionType(type);
+                typeInt = courseService.getDimensionTypeDetail(type).getId();
+                break;
+        }
+        String description = request.getParameter("description");
+        courseService.addDimension(typeInt, dimension, description);
+        Dimension dimensionAdd = courseService.getDimensionId(dimension);
+        courseService.addDimensionCourse(subjectId, dimensionAdd.getId());
+        request.setAttribute("activeId", 2);
+        displayData(request, response, Integer.parseInt((String) currentSession.getAttribute("currentSubject")));
+    }
+
+    private void updateSubjectDimension(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
+        int dimensionId = Integer.parseInt(request.getParameter("dimensionId"));
+        String type = request.getParameter("type");
+        int typeInt = 0;
+        switch (type) {
+            case "domain":
+                typeInt = 1;
+                break;
+            case "group":
+                typeInt = 2;
+                break;
+            default:
+                typeInt = courseService.getDimensionTypeDetail(type).getId();
+                break;
+        }
+        String dimension = request.getParameter("dimension");
+        String description = request.getParameter("description");
+        courseService.updateSubjectDimension(typeInt, dimension, description, dimensionId);
+        request.setAttribute("activeId", 2);
+        displayData(request, response, Integer.parseInt((String) currentSession.getAttribute("currentSubject")));
     }
 
     private void addNewSubject(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
