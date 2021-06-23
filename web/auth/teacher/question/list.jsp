@@ -167,45 +167,40 @@
                     </tbody>
                 </table>
             </div>
-            <nav aria-label="Page navigation example">
-                <c:set var="contentSize" value="${sessionScope.questionList.size()}" />
-                <c:set var="maxPage" value="${((contentSize - contentSize % 5) / 5) + 1}" />
-                <c:set var="currentPage" value="${pageContext.request.getParameter('page')}" />
-                <c:set var="prevPage" value="${currentPage == null ? 1 : currentPage - 1}" />
-                <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="${path}/auth/teacher/question?operation=PAGINATION&page=${prevPage > 0 ? prevPage: 1}">Previous</a>
-                    </li>
-                    <c:forEach begin="1" end="${maxPage}" varStatus="counter">
+            <nav aria-label="Page navigation example" class="d-flex">
+                <div>
+                    <c:set var="contentSize" value="${sessionScope.questionList.size()}" />
+                    <c:set var="maxPage" value="${((contentSize - contentSize % 5) / 5) + 1}" />
+                    <c:set var="currentPage" value="${pageContext.request.getParameter('page')}" />
+                    <c:set var="prevPage" value="${currentPage == null ? 1 : currentPage - 1}" />
+                    <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="${path}/auth/teacher/question?operation=PAGINATION&page=${prevPage > 0 ? prevPage: 1}">Previous</a>
+                        </li>
+                        <c:forEach begin="1" end="${maxPage}" varStatus="counter">
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="${path}/auth/teacher/question?operation=PAGINATION&page=${counter.index}">
+                                    ${counter.index}
+                                </a>
+                            </li>
+                        </c:forEach>
                         <li class="page-item">
                             <a class="page-link"
-                               href="${path}/auth/teacher/question?operation=PAGINATION&page=${counter.index}">
-                                ${counter.index}
+                               href="${path}/auth/teacher/question?operation=PAGINATION&page=${nextPage > maxPage ? maxPage: nextPage}">
+                                Next
                             </a>
                         </li>
-                    </c:forEach>
-                    <li class="page-item">
-                        <a class="page-link"
-                           href="${path}/auth/teacher/question?operation=PAGINATION&page=${nextPage > maxPage ? maxPage: nextPage}">
-                            Next
-                        </a>
-                    </li>
-                </ul>
+                    </ul>
+                </div>
+
+                <div>
+                    <button class="btn btn-success" 
+                            style="margin-left: 45rem">Import Question</button>
+                </div>  
             </nav>
-
-
         </div>
-        <script>
-            function resetRadioButton() {
-                document.getElementById('hard').checked = false;
-                document.getElementById('medium').checked = false;
-                document.getElementById('easy').checked = false;
-                document.getElementById('active').checked = false;
-                document.getElementById('inactive').checked = false;
-
-            }
-        </script>
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -219,4 +214,5 @@
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
             crossorigin="anonymous">
     </script>
+   <script type="text/javascript" src="${path}/utilities/reset-radio.js"></script>
 </html>

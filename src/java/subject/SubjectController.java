@@ -47,6 +47,7 @@ public class SubjectController extends HttpServlet {
 
     }
 
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -68,7 +69,7 @@ public class SubjectController extends HttpServlet {
                 courseService.updateSubjectInformation(subjectName, description, courseOwner, status, categoryBox, 0, 2);
             }
             request.setAttribute("activeId", 1);
-            response.sendRedirect(request.getContextPath() + "/auth/teacher/subjects");
+            response.sendRedirect(request.getContextPath() + "/auth/teacher/subject");
         }
     }
 }

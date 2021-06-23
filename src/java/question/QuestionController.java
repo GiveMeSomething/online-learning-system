@@ -9,18 +9,28 @@ import common.entities.Level;
 import common.entities.Question;
 import common.entities.Status;
 import java.io.IOException;
-
 import java.util.ArrayList;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+@MultipartConfig(maxFileSize = 16177215)
 public class QuestionController extends HttpServlet {
 
-    private QuestionService questionService;
+  private QuestionService questionService;
     private final int questionPerpage = 5;
 
     @Override
@@ -44,7 +54,7 @@ public class QuestionController extends HttpServlet {
             if (pageItems != null) {
                 request.setAttribute("dimensionList", questionService.getDimensionList(courseId));
                 request.setAttribute("pageItems", pageItems);
-                request.getRequestDispatcher("/auth/teacher/subject/quiz/question/list.jsp").forward(request, response);
+                request.getRequestDispatcher("/auth/teacher/question/list.jsp").forward(request, response);
             } else {
                 response.sendRedirect("/nauth/404.jsp");
             }
@@ -66,18 +76,10 @@ public class QuestionController extends HttpServlet {
         String dimensionName = "";
         String levelString = request.getParameter("level");
         String statusString = request.getParameter("status");
+
         Level level;
         Status status;
 
-        
-        try {
-            String dimension = request.getParameter("dimension");
-            System.out.println(dimension);
-            dimensionName = dimension;
-        } catch (NumberFormatException e) {
-            System.out.println(e.getMessage() + " at ~60 SubjectController");
-        }
-        
         if (levelString != null && !levelString.equals("")) {
             level = Level.valueOf(levelString);
         } else {
@@ -90,7 +92,12 @@ public class QuestionController extends HttpServlet {
             status = null;
         }
 
-        
+        try {
+            String dimension = request.getParameter("dimension");
+            dimensionName = dimension;
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage() + " at ~89 QuestionController");
+        }
 
         request.setAttribute("selectedDimension", dimensionName);
         request.setAttribute("selectedStatus", statusString);
@@ -107,23 +114,25 @@ public class QuestionController extends HttpServlet {
     }
 
     public void getQuestionList(HttpServletRequest request, HttpServletResponse response,
-            int courseId, String keyword, Level levels, Status status, String dimensionName)
+            int courseId, String keyword, Level level, Status status, String dimensionName)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        List<Question> questionList = questionService.getQuestionsWithCondition(courseId, keyword, levels, status, dimensionName);
-        if(questionList==null){
-            questionList= new ArrayList<>();
-        }
+        List<Question> questionList = questionService.getQuestionsWithCondition(courseId, keyword, level, status, dimensionName);
         session.setAttribute("questionList", questionList);
 
+        if (questionList == null || questionList.size() == 0) {
+            request.setAttribute("dimensionList", questionService.getDimensionList(courseId));
+            request.setAttribute("questionList", questionList);
+            request.getRequestDispatcher("/auth/teacher/question/list.jsp").forward(request, response);
+        }
         int page = processPageParameter(request, response, questionList.size());
         List<Question> pageItems = getQuestionPerPage(questionList, page);
 
         if (pageItems != null) {
             request.setAttribute("dimensionList", questionService.getDimensionList(courseId));
             request.setAttribute("pageItems", pageItems);
-            request.getRequestDispatcher("/auth/teacher/subject/quiz/question/list.jsp").forward(request, response);
+            request.getRequestDispatcher("/auth/teacher/question/list.jsp").forward(request, response);
         } else {
             response.sendRedirect("/nauth/404.jsp");
         }
@@ -158,4 +167,76 @@ public class QuestionController extends HttpServlet {
 
         return page;
     }
+
+
+
+    public void importQuestion(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        InputStream inputStream = null;
+        Part filePart = request.getPart("fileExcel");
+        if (filePart != null) {
+            // obtains input stream of the upload file
+            inputStream = filePart.getInputStream();
+        }
+        Workbook workbook = new XSSFWorkbook(inputStream);
+        QuestionService qs = new QuestionService();
+
+        Sheet firstSheet = workbook.getSheetAt(0);
+        Iterator<Row> rowIterator = firstSheet.iterator();
+        rowIterator.next(); // skip the header row
+        int status = 0;
+        String content = null,
+                media = null,
+                explaination = null,
+                answer = null,
+                option1 = null,
+                option2 = null,
+                option3 = null,
+                option4 = null;
+        while (rowIterator.hasNext()) {
+            Row nextRow = rowIterator.next();
+            Iterator<Cell> cellIterator = nextRow.cellIterator();
+
+            while (cellIterator.hasNext()) {
+                Cell nextCell = cellIterator.next();
+                int columnIndex = nextCell.getColumnIndex();
+
+                switch (columnIndex) {
+                    case 0:
+                        status = (int) nextCell.getNumericCellValue();
+                        break;
+                    case 1:
+                        content = nextCell.getStringCellValue();
+                        break;
+                    case 2:
+                        media = nextCell.getStringCellValue();
+                        break;
+                    case 3:
+                        explaination = nextCell.getStringCellValue();
+                        break;
+                    case 4:
+                        answer = nextCell.getStringCellValue();
+                        break;
+                    case 5:
+                        option1 = nextCell.getStringCellValue();
+                        break;
+                    case 6:
+                        option2 = nextCell.getStringCellValue();
+                        break;
+                    case 7:
+                        option3 = nextCell.getStringCellValue();
+                        break;
+                    case 8:
+                        option4 = nextCell.getStringCellValue();
+                        break;
+                }
+
+            }
+            qs.addQuestion(status, content, media, explaination, answer, option1, option2, option3, option4);
+        }
+        /*đoạn dưới này là đã import xong, muốn quay về trang nào thì code*/
+        out.print("Import Successfully OK!");
+    }
+
 }

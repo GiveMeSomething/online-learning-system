@@ -16,15 +16,17 @@
               crossorigin="anonymous">
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
               integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
-              crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="${path}/style/subject.css">
+              crossorigin="anonymous"> 
+       <link href="${path}/style/subject.css" rel="stylesheet" type="text/css"/> 
     </head>
     <body>        
         <div class="container container-fluid">
             <h3 class="mt-2 mb-3">Subject Details</h3> 
             <div>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
+                   
                     <li class="nav-item" role="presentation">
+
                         <a class="nav-link ${activeId == 1 ? "active":""}"
                            id="overview-tab" 
                            data-toggle="tab" 
@@ -60,11 +62,12 @@
                 </ul> 
             </div>
             <div class="tab-content" id="myTabContent">
+
                 <div class="tab-pane fade ${activeId == 1 ? "show active":""}" 
                      id="overview" 
                      role="tabpanel" 
                      aria-labelledby="overview-tab">
-                    <form action="${path}/auth/teacher/subjects"
+                    <form action="${path}/auth/teacher/subject"
                           method="POST"
                           class="col-md-7 needs-validation"
                           novalidate>
@@ -144,10 +147,12 @@
                      id="dimension" 
                      role="tabpanel" 
                      aria-labelledby="dimension-tab">whatup</div>
-                <div class="tab-pane fade ${activeId == 3 ? "show active":""}" 
-                     id="pricepackage" 
-                     role="tabpanel" 
-                     aria-labelledby="pricepackage-tab">what's up</div>
+               <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
+                    <div class="tab-pane fade ${activeId == 3 ? "show active":""}" id="pricepackage" role="tabpanel" aria-labelledby="pricepackage-tab">
+                        <jsp:include page="/auth/teacher/subject/price-package.jsp"/>
+                    </div>
+                </c:if>
+
             </div>
         </div>
     </body>
