@@ -120,12 +120,4 @@ public class QuestionService {
         return 0;
     }
     
-    public boolean addColumnAnswer(String columnAdded,String previousColumn){
-        try {
-          return questionRepository.addColumnAnswer(columnAdded, previousColumn);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 }
