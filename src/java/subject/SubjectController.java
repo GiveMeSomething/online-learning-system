@@ -42,10 +42,10 @@ public class SubjectController extends HttpServlet implements Controller {
         courseService = new CourseService();
     }
 
-    protected void displayData(HttpServletRequest request, HttpServletResponse response)
+    protected void displayData(HttpServletRequest request, HttpServletResponse response,int subjectId)
             throws ServletException, IOException {
         //Display subject dimesion detail of specified course
-        int subjectId = 1;
+//        int subjectId = 1;
         List<Dimension> listDimension = courseService.getSubjectDimensionByCourseId(subjectId);
         request.setAttribute("listDimension", listDimension);
         request.getRequestDispatcher("/auth/teacher/subject/detail.jsp").forward(request, response);
@@ -67,7 +67,7 @@ public class SubjectController extends HttpServlet implements Controller {
                 case "VIEW":
                     currentSession.setAttribute("currentSubject", request.getParameter("subjectId"));
                     request.setAttribute("activeId", 1);
-                    displayData(request, response);
+                    displayData(request, response,Integer.parseInt((String) currentSession.getAttribute("currentSubject")));
                     break;
                 case "DELETESUBJECT":
                     subjectId = Integer.parseInt((String) currentSession.getAttribute("currentSubject"));
@@ -75,7 +75,7 @@ public class SubjectController extends HttpServlet implements Controller {
 
                     courseService.deleteSubjectDimensionByCourseId(subjectId, dimensionId);
                     request.setAttribute("activeId", 2);
-                    displayData(request, response);
+                    displayData(request, response,Integer.parseInt((String) currentSession.getAttribute("currentSubject")));
                     break;
                 case "GETDIMENSIONDETAIL":
                     dimensionId = Integer.parseInt(request.getParameter("dimensionId"));
@@ -139,7 +139,7 @@ public class SubjectController extends HttpServlet implements Controller {
                 Dimension dimensionAdd = courseService.getDimensionId(dimension);
                 courseService.addDimensionCourse(subjectId, dimensionAdd.getId());
                 request.setAttribute("activeId", 2);
-                displayData(request, response);
+                displayData(request, response,Integer.parseInt((String) currentSession.getAttribute("currentSubject")));
                 break;
             }
             case "UPDATESUBJECT": {
@@ -161,7 +161,7 @@ public class SubjectController extends HttpServlet implements Controller {
                 String description = request.getParameter("description");
                 courseService.updateSubjectDimension(typeInt, dimension, description, dimensionId);
                 request.setAttribute("activeId", 2);
-                displayData(request, response);
+                displayData(request, response,Integer.parseInt((String) currentSession.getAttribute("currentSubject")));
                 break;
             }
             case "FILTER":
