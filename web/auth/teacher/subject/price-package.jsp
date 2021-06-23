@@ -317,21 +317,21 @@
                         <ul class="pagination">
                             <c:if test="${index>1}">
                                 <li class="page-item disabled">
-                                    <a href="${path}/auth/teacher/price-package?operation=LISTPACKAGE&page=${index-1}">
+                                    <a href="${path}/auth/teacher/subject?operation=LISTPACKAGE&page=${index-1}">
                                         Previous
                                     </a>
                                 </li>
                             </c:if>
                             <c:forEach var="i" begin="1" end="${endPage}">
                                 <li class="page-item ${index==i?"active":""}">
-                                    <a href="${path}/auth/teacher/price-package?operation=LISTPACKAGE&page=${i}" class="page-link">
+                                    <a href="${path}/auth/teacher/subject?operation=LISTPACKAGE&page=${i}" class="page-link">
                                         ${i}
                                     </a>
                                 </li>
                             </c:forEach>
                             <c:if test="${index<endPage}">
                                 <li class="page-item">
-                                    <a href="${path}/auth/teacher/price-package?operation=LISTPACKAGE&page=${index+1}" class="page-link">
+                                    <a href="${path}/auth/teacher/subject?operation=LISTPACKAGE&page=${index+1}" class="page-link">
                                         Next
                                     </a>
                                 </li>
@@ -345,7 +345,8 @@
         <div id="addEmployeeModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="${path}/auth/teacher/price-package?operation=addPackage" method="POST">
+                    <form action="${path}/auth/teacher/subject?operation=addPackage" method="POST">
+                    <!--<form action="/auth/teacher/subject?operation=addPackage" method="GET">-->
                         <div class="modal-header">						
                             <h4 class="modal-title">Add Package</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -391,7 +392,7 @@
         <div id="editPackageModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="${path}/auth/teacher/price-package?operation=editPackage" method="POST">
+                    <form action="${path}/auth/teacher/subject?operation=editPackage" method="POST">
                         <div class="modal-header">						
                             <h4 class="modal-title">Edit Package</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -441,7 +442,7 @@
         <div id="deletePackageModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="${path}/auth/teacher/price-package?operation=deletePackage" method="POST">
+                    <form action="${path}/auth/teacher/subject?operation=deletePackage" method="POST">
                         <input hidden="" type="text" id="txtId" name="id" value="" />
                         <div class="modal-header">						
                             <h4 class="modal-title">Delete Package</h4>

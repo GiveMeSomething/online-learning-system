@@ -17,14 +17,14 @@
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
               integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
               crossorigin="anonymous"> 
-       <link href="${path}/style/subject.css" rel="stylesheet" type="text/css"/> 
+        <link href="${path}/style/subject.css" rel="stylesheet" type="text/css"/> 
     </head>
     <body>        
         <div class="container container-fluid">
             <h3 class="mt-2 mb-3">Subject Details</h3> 
             <div>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
-                   
+
                     <li class="nav-item" role="presentation">
 
                         <a class="nav-link ${activeId == 1 ? "active":""}"
@@ -52,12 +52,12 @@
                         <a class="nav-link ${activeId == 3 ? "active":""}" 
                            id="pricepackage-tab" 
                            data-toggle="tab" 
-                           href="#pricepackage" 
+                           href="auth/teacher/subject?operation=LISTPACKAGE&page=1" 
                            role="tab" 
                            aria-controls="pricepackage" 
                            aria-selected="false">
-                            Price package
-                        </a>
+                            Price Package
+                        </a>      
                     </li>
                 </ul> 
             </div>
@@ -147,8 +147,8 @@
                      id="dimension" 
                      role="tabpanel" 
                      aria-labelledby="dimension-tab">whatup</div>
-               <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
-                    <div class="tab-pane fade show active" id="pricepackage" role="tabpanel" aria-labelledby="pricepackage-tab">
+                <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
+                    <div class="tab-pane fade ${activeId == 3?"show active":""}" id="pricepackage" role="tabpanel" aria-labelledby="pricepackage-tab">
                         <jsp:include page="/auth/teacher/subject/price-package.jsp"/>
                     </div>
                 </c:if>

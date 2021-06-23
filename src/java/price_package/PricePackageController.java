@@ -61,6 +61,7 @@ public class PricePackageController extends HttpServlet {
         request.setAttribute("index", index);
         request.setAttribute("endPage", endPage);
         request.setAttribute("listP", listPackage);
+        request.setAttribute("activeId", 3);
         request.setAttribute("totalPackage", service.countTotalPricePackage());
         request.setAttribute("totalPackageOfPage", listPackage.size());
         request.getRequestDispatcher("/auth/teacher/subject/detail.jsp").forward(request, response);
