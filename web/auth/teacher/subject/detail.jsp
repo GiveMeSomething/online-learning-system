@@ -67,7 +67,7 @@
                      id="overview" 
                      role="tabpanel" 
                      aria-labelledby="overview-tab">
-                    <form action="${path}/subject"
+                    <form action="${path}/auth/teacher/subject"
                           method="POST"
                           class="col-md-7 needs-validation"
                           novalidate>
@@ -147,8 +147,10 @@
                      id="dimension" 
                      role="tabpanel" 
                      aria-labelledby="dimension-tab">whatup</div>
+
                 <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
                     <div class="tab-pane fade ${activeId == 3?"show active":""}" id="pricepackage" role="tabpanel" aria-labelledby="pricepackage-tab">
+
                         <jsp:include page="/auth/teacher/subject/price-package.jsp"/>
                     </div>
                 </c:if>

@@ -5,19 +5,22 @@
  */
 package question;
 
+import common.entities.Level;
 import common.entities.Question;
+import common.entities.Status;
 import java.util.List;
 
 public class QuestionService {
-   private QuestionRepository questionRepository;
+
+    private QuestionRepository questionRepository;
 
     public QuestionService() {
         this.questionRepository = new QuestionRepository();
     }
-    
-    public List<Question> getQuestions(int courseId, int page) {
+
+    public List<Question> getQuestionsWithCondition(int courseId, String keyword, Level level, Status status, String dimensionName) {
         try {
-            List<Question> result = questionRepository.getQuestions(courseId, page);
+            List<Question> result = questionRepository.getQuestionsWithCondition(courseId, keyword, level, status, dimensionName);
 
             if (result == null || result.size() == 0) {
                 // redirect to 404
@@ -32,17 +35,25 @@ public class QuestionService {
 
         return null;
     }
-    
-    public int countTotalQuestion(int courseId) {
 
+    public List<Question> getDimensionList(int courseId) {
         try {
-            return questionRepository.countTotalQuestion(courseId);
+            List<Question> result = questionRepository.getDimensionList(courseId);
 
+            if (result == null || result.size() == 0) {
+                // redirect to 404
+                System.out.println("Something wrong");
+                return null;
+            }
+
+            return result;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
-        return 0;
+
+        return null;
     }
+
     public boolean addQuestion(int status, String content, String media, String explaination, String answer, String option1,
             String option2, String option3, String option4) {
         try {
@@ -54,24 +65,9 @@ public class QuestionService {
     }
     
     
-     public int countingQuestionListSearch(int courseId, String searchName) {
-        try {
-            return questionRepository.countingQuestionListSearch(courseId, searchName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
+
      
-     public List<Question> searchQuestion(int cateID, String searchName, int page) {
-        try {
-            return questionRepository.searchQuestion(cateID, searchName, page);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
-    
+
+
 
 }

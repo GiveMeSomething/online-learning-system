@@ -1,10 +1,9 @@
 /**
- * Jun 15, 1011
+ * Jun 22, 2021
  *
  * @author Dinh Kong Thanh
  */
 package subject;
-
 import common.entities.Category;
 import common.entities.Course;
 import common.entities.PricePack;
@@ -17,9 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import price_package.PricePackageService;
 import user.UserService;
-
 public class SubjectController extends HttpServlet {
 
     private UserService userService;
@@ -122,6 +119,7 @@ public class SubjectController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/auth/teacher/subject?operation=LISTPACKAGE&page=1");
     }
 
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
