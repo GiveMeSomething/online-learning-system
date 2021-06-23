@@ -224,14 +224,4 @@ public class LessonRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-
-    public static void main(String[] args) throws SQLException {
-        LessonRepository lessonRepository = new LessonRepository();
-        Lesson lesson = new Lesson("lesson 3.6", 1, LessonType.SUBJECT_TOPIC, 1);
-        if (lessonRepository.checkLessonExist(lesson) == null) {
-            System.out.println("not had");
-        } else {
-            System.out.println("had");
-        }
-    }
 }

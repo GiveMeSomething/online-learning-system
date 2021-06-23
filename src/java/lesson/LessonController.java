@@ -244,11 +244,11 @@ public class LessonController extends HttpServlet implements Controller {
 
     private void viewLesson(HttpServletRequest request, HttpServletResponse response, Lesson lesson)
             throws ServletException, IOException {
+        int courseId = 1;
         HashMap<Integer, String> getCourses = courseService.getCourses();
-//        ArrayList<Quiz> quizList = quizService.getQuizList(lesson.getCourseId();
-
+        HashMap<Integer, String>quizzesForLesson = quizService.getQuizForLesson(courseId);
         request.setAttribute("course", getCourses);
-//        request.setAttribute("quiz", quizList);
+        request.setAttribute("quiz", quizzesForLesson);
         request.setAttribute("lesson", lesson);
         request.getRequestDispatcher("/auth/teacher/lesson/detail.jsp").forward(request, response);
     }

@@ -125,6 +125,24 @@ public class QuizRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+    
+    public HashMap<Integer, String> getQuizForLesson(int courseId) throws SQLException {
+        this.connectDatabase();
+
+        String quizForLesson = "SELECT id, name FROM quiz WHERE subject_id = ?";
+        HashMap<Integer, String> getQuizForLesson = new HashMap<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(quizForLesson)) {
+            statement.setInt(1, courseId);
+
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                getQuizForLesson.put(result.getInt("id"), result.getString("name"));
+            }
+            return getQuizForLesson;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
 
     public HashMap<Integer, String> getQuizDimension(Quiz quiz) throws SQLException {
         this.connectDatabase();

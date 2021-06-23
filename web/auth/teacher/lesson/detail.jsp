@@ -54,11 +54,52 @@
                     <div class="mb-3 col-md-5">
                         <label for="type">Type</label>
                         <select class="custom-select" id="type" name="type" required>
-                            <option value="SUBJECT_TOPIC" ${lesson.lessonType == "SUBJECT_TOPIC"?"selected":""}>Subject Topic</option>
-                            <option value="LESSON" ${lesson.lessonType == "LESSON"?"selected":""}>Lesson</option>
-                            <option value="QUIZ" ${lesson.lessonType == "QUIZ"?"selected":""}>Quiz</option>
+                            <option value="SUBJECT_TOPIC" onclick="this.form.submit();" ${lesson.lessonType == "SUBJECT_TOPIC"?"selected":""}>Subject Topic</option>
+                            <option value="LESSON" onclick="this.form.submit();" ${lesson.lessonType == "LESSON"?"selected":""}>Lesson</option>
+                            <option value="QUIZ" onclick="this.form.submit();" ${lesson.lessonType == "QUIZ"?"selected":""}>Quiz</option>
                         </select>
                     </div>
+                </div>
+                <c:choose>
+                    <c:when test="${lesson.lessonType == 'SUBJECT_TOPIC'}">
+                        <div id="subject" style="display: block"  aria-labelledby="subject-tab">
+                            <br>
+                        </div>
+                    </c:when>
+                    <c:when test="${lesson.lessonType == 'LESSON'}">
+                        <div id="lesson" style="display: block">
+                            <div class="mb-3">
+                                <label for="link">Video link</label>
+                                <input type="text" name="video-link" value="${lesson.videoLink}" id="video-link" data-value-missing="Can't be empty"
+                                       class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="html-content">HTML content</label>
+                                <textarea class="form-control" id="html-content" name="html-content" required>${lesson.htmlContent}</textarea>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                    </c:when>
+                    <c:when test="${lesson.lessonType == 'QUIZ'}">
+                        <div  id="quiz" style="display: block" aria-labelledby="quiz-tab">
+                            <div class="mb-3">
+                                <label for="quiz">Quiz</label>
+                                <select class="custom-select" name="quiz" id="quiz" required>
+                                    <c:forEach items="${quiz}" var="q">
+                                        <option ${lesson.quizId == q.key?"selected":""} value="${q.key}">${q.value}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="html-content">HTML content</label>
+                                <textarea class="form-control" id="html-content" name="html-quiz" required>${lesson.htmlContent}</textarea>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                    </c:when>
+                </c:choose>
+                <div id="subject" style="display: none"  aria-labelledby="subject-tab">
+                    <br>
                 </div>
                 <div id="lesson" style="display: none">
                     <div class="mb-3">
@@ -72,15 +113,12 @@
                         <div class="invalid-feedback"></div>
                     </div>
                 </div>
-                <div id="subject" style="display: block"  aria-labelledby="subject-tab">
-                    <br>
-                </div>
                 <div  id="quiz" style="display: none" aria-labelledby="quiz-tab">
                     <div class="mb-3">
                         <label for="quiz">Quiz</label>
                         <select class="custom-select" name="quiz" id="quiz" required>
                             <c:forEach items="${quiz}" var="q">
-                                <option ${lesson.quizId == q.id?"selected":""} value="${q.id}">${q.quizName}</option>
+                                <option ${lesson.quizId == q.key?"selected":""} value="${q.key}">${q.value}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -90,7 +128,6 @@
                         <div class="invalid-feedback"></div>
                     </div>
                 </div>
-                <!--</div>-->
                 <div class="form-row">
                     <button class="btn btn-primary col-md-1" type="submit">Submit</button>
                     <div class="col-md-10"></div>

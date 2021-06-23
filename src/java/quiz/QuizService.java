@@ -101,4 +101,12 @@ public class QuizService {
         }
         return false;
     }
+    public HashMap<Integer, String> getQuizForLesson(int courseId){
+        try {
+            return quizRepository.getQuizForLesson(courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
