@@ -34,7 +34,7 @@ public class QuestionController extends HttpServlet {
     private QuestionService questionService;
     private CourseService courseService;
     private static final long SerialVersionUID = 1L;
-    private static final String UPLOAD_DIR = "assets";
+    private static final String UPLOAD_DIR = "assets/questionImg/";
 
     @Override
     public void init() throws ServletException {

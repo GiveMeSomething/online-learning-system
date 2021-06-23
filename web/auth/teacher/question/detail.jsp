@@ -194,7 +194,7 @@
                            id="media"
                            data-value-missing="Can't be empty"
                            required>
-                    <img src="${path}/assets/${image}" style="width: 50%"/>
+                    <img src="${path}/assets/questionImg/${image}" style="width: 50%"/>
                 </div>
 
 

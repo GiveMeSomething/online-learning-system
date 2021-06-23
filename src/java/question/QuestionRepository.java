@@ -249,22 +249,6 @@ public class QuestionRepository extends Repository {
         }
     }
 
-    public boolean addColumnAnswer(String columnAdded, String previousColumn) throws SQLException {
-        this.connectDatabase();
-        String addColumnAnswer = "ALTER TABLE db_ite1.questions_bank "
-                + "ADD COLUMN " + columnAdded + " TEXT AFTER " + previousColumn;
-        try (PreparedStatement statement = this.connection.prepareStatement(addColumnAnswer)) {
-            statement.setString(1, columnAdded);
-            statement.setString(2, previousColumn);
-            if (statement.executeUpdate() > 0) {
-                return true;
-            }
-            return false;
-        } finally {
-            this.disconnectDatabase();
-        }
-    }
-
     public int countAnswerOptions() throws SQLException {
         this.connectDatabase();
         String countAnswerOptions = "SELECT COUNT(*) AS count "
