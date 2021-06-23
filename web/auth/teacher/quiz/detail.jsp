@@ -151,7 +151,7 @@
                         <c:forEach  begin="1" end="3" var="i" varStatus="status">
                             <div class="form-row">
                                 <div class="mb-3 col-md-7">
-                                    <select class="custom-select" id="group-name" name="dimension-name${i}" required>
+                                    <select class="custom-select" id="group-name" name="dimension-name" required>
                                         <c:forEach items="${dimension}" var="o">
                                             <option selected value="${o.key}">${o.value}</option>
                                         </c:forEach>
@@ -160,11 +160,11 @@
                                 </div>
                                 <div class="col-md-1"></div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" name="number-of-question${i}" placeholder="Number of questions">
+                                    <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
                                 </div>
                                 <div class="col-md-1"></div>
                                 <div class="col-md-1">
-                                    <button class="btn btn-light">${not status.last ? "Delete":"Add"}</button>
+                                    <button type="button" class="btn btn-light">${not status.last ? "Delete":"Add"}</button>
                                 </div>
                             </div>
                         </c:forEach>

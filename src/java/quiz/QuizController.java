@@ -14,7 +14,9 @@ import course.CourseService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -222,14 +224,23 @@ public class QuizController extends HttpServlet implements Controller {
     public void addQuizSetting(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
             throws ServletException, IOException {
         ArrayList<Question> combination = new ArrayList<>();
-        for (int i = 1; i <= 3; i++) {
-            int numberOfQuestions = Integer.parseInt(request.getParameter("number-of-question" + i));
-            int dimensionId = Integer.parseInt(request.getParameter("dimension-name" + i));
-            ArrayList<Question> questions = quizService.getQuestionByDimension(1, dimensionId, numberOfQuestions);
+//        for (int i = 1; i <= 3; i++) {
+//            int numberOfQuestions = Integer.parseInt(request.getParameter("number-of-question" + i));
+//            int dimensionId = Integer.parseInt(request.getParameter("dimension-name" + i));
+//            ArrayList<Question> questions = quizService.getQuestionByDimension(1, dimensionId, numberOfQuestions);
+//            combination.addAll(questions);
+//        }
+        // Get value from Quiz Setting
+        String[] numberOfQues = request.getParameterValues("number-of-question");
+        String[] dimensionId = request.getParameterValues("dimension-name");
+        for (int i = 0; i < numberOfQues.length; i++) {
+            ArrayList<Question> questions = quizService.getQuestionByDimension(1, Integer.parseInt(dimensionId[i]), Integer.parseInt(numberOfQues[i]));
             combination.addAll(questions);
         }
+        
         for (Question question : combination) {
             if (quizService.addQuizSetting(quiz, question.getId())) {
+                // Do something
             }
         }
         HttpSession session = request.getSession();

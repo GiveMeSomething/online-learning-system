@@ -54,12 +54,13 @@
                     <div class="mb-3 col-md-5">
                         <label for="type">Type</label>
                         <select class="custom-select" id="type" name="type" required>
-                            <option value="SUBJECT_TOPIC" onclick="this.form.submit();" ${lesson.lessonType == "SUBJECT_TOPIC"?"selected":""}>Subject Topic</option>
-                            <option value="LESSON" onclick="this.form.submit();" ${lesson.lessonType == "LESSON"?"selected":""}>Lesson</option>
-                            <option value="QUIZ" onclick="this.form.submit();" ${lesson.lessonType == "QUIZ"?"selected":""}>Quiz</option>
+                            <option value="SUBJECT_TOPIC" ${lesson.lessonType == "SUBJECT_TOPIC"?"selected":""}>Subject Topic</option>
+                            <option value="LESSON" ${lesson.lessonType == "LESSON"?"selected":""}>Lesson</option>
+                            <option value="QUIZ" ${lesson.lessonType == "QUIZ"?"selected":""}>Quiz</option>
                         </select>
                     </div>
                 </div>
+                <!--Display when edit lesson-->
                 <c:choose>
                     <c:when test="${lesson.lessonType == 'SUBJECT_TOPIC'}">
                         <div id="subject" style="display: block"  aria-labelledby="subject-tab">
@@ -98,6 +99,7 @@
                         </div>
                     </c:when>
                 </c:choose>
+                <!--Can choose when add new lesson-->
                 <div id="subject" style="display: none"  aria-labelledby="subject-tab">
                     <br>
                 </div>
