@@ -98,12 +98,12 @@ public class QuestionController extends HttpServlet {
     }
 
     private void processUserInterface(HttpServletRequest request,
-            HttpServletResponse response, int questionId, int categoryId, int courseId)
+            HttpServletResponse response, int questionId, int categoryId, int subjectId)
             throws ServletException, IOException {
         Question questionDetail = questionService.getQuestionDetails(questionId);
         List<Course> courseList = courseService.getCourseByCateID(categoryId);
-        List<Lesson> lessonList = questionService.getLessonByCourseId(courseId);
-        List<Dimension> dimensionList = courseService.getSubjectDimensionByCourseId(courseId);
+        List<Lesson> lessonList = questionService.getLessonByCourseId(subjectId);
+        List<Dimension> dimensionList = courseService.getSubjectDimensionByCourseId(subjectId);
         Question answer = questionService.getAnswerByQuestionId(questionId);
         request.setAttribute("courseList", courseList);
         request.setAttribute("answer", answer);
@@ -120,13 +120,13 @@ public class QuestionController extends HttpServlet {
         String operation = request.getParameter("operation");
         int questionId = 1;
         int categoryId = 1;
-        int courseId = 1;
+        int subjectId = 1;
         if (request.getParameter("questionId") != null) {
             questionId = Integer.parseInt(request.getParameter("questionId"));
             categoryId = 6;
-            courseId = 72;
+            subjectId = Integer.parseInt(request.getParameter("subjectId"));
         }
-        if (operation == null) {
+        if (operation.equals("MANAGEQUESTION")) {
             processInputForQuestion(request, response);
 
         } else if (operation.equals("PAGINATION")) {
@@ -134,7 +134,7 @@ public class QuestionController extends HttpServlet {
 
             List<Question> pageItems = getQuestionPerPage((List<Question>) session.getAttribute("questionList"), page);
             if (pageItems != null) {
-                request.setAttribute("dimensionList", questionService.getDimensionList(courseId));
+                request.setAttribute("dimensionList", questionService.getDimensionList(subjectId));
                 request.setAttribute("pageItems", pageItems);
                 request.getRequestDispatcher("/auth/teacher/question/list.jsp").forward(request, response);
             } else {
@@ -142,7 +142,7 @@ public class QuestionController extends HttpServlet {
             }
         } else if (operation.equals("VIEW")) {
 
-            processUserInterface(request, response, questionId, categoryId, courseId);
+            processUserInterface(request, response, questionId, categoryId, subjectId);
             Question questionDetail = questionService.getQuestionDetails(questionId);
             String image = questionDetail.getMedia();
             int totalAnswerOptions = questionService.countAnswerOptions();
@@ -159,7 +159,7 @@ public class QuestionController extends HttpServlet {
             String media = request.getParameter("media");
             request.setAttribute("image", media);
             request.setAttribute("totalAnswerOptions", totalAnswerOptions);
-            processUserInterface(request, response, questionId, categoryId, courseId);
+            processUserInterface(request, response, questionId, categoryId, subjectId);
             request.getRequestDispatcher("/auth/teacher/question/detail.jsp").forward(request, response);
             //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/detail.jsp
         } else if (operation.equals("EDITANSWER")) {
@@ -193,18 +193,18 @@ public class QuestionController extends HttpServlet {
         String columnUpdated = request.getParameter("columnUpdated");
         int questionId = 1;
         int categoryId = 1;
-        int courseId = 1;
+        int subjectId = 1;
         if (request.getParameter("questionId") != null) {
             questionId = Integer.parseInt(request.getParameter("questionId"));
             categoryId = 6;
-            courseId = 72;
+            subjectId = Integer.parseInt(request.getParameter("subjectId"));
         }
         if (operation.equals("SEARCHQUESTION")) {
             processInputForQuestion(request, response);
         } else if (operation.equals("UPDATEANSWER")) {
             String content = request.getParameter("content");
             questionService.updateAnswerOptions(columnUpdated, content, questionId);
-            processUserInterface(request, response, questionId, categoryId, courseId);
+            processUserInterface(request, response, questionId, categoryId, subjectId);
             Question questionDetail = questionService.getQuestionDetails(questionId);
             String image = questionDetail.getMedia();
             int totalAnswerOptions = questionService.countAnswerOptions();
@@ -213,7 +213,6 @@ public class QuestionController extends HttpServlet {
             request.getRequestDispatcher("/auth/teacher/question/detail.jsp").forward(request, response);
 //            response.sendRedirect(request.getContextPath() + "/auth/teacher/question"); //sau khi merge code chỉnh lại đường dẫn
         } else if (operation.equals("UPDATEQUESTION")) {
-            int subjectId = Integer.parseInt(request.getParameter("subject"));
             int dimensionId = Integer.parseInt(request.getParameter("dimension"));
             int lessonId = Integer.parseInt(request.getParameter("lesson"));
             int statusId = Integer.parseInt(request.getParameter("status"));
@@ -230,7 +229,7 @@ public class QuestionController extends HttpServlet {
                     option1, option2, option3, option4, option5, explaination, answer, questionId);
             questionService.updateQuestionCourseDimLes(subjectId, dimensionId, lessonId, questionId);
             //NEED
-            processUserInterface(request, response, questionId, categoryId, courseId);
+            processUserInterface(request, response, questionId, categoryId, subjectId);
             Question questionDetail = questionService.getQuestionDetails(questionId);
             String image = questionDetail.getMedia();
             int totalAnswerOptions = questionService.countAnswerOptions();
@@ -258,7 +257,7 @@ public class QuestionController extends HttpServlet {
 //                questionService.addColumnAnswer("option5", "option4");
                 questionService.addAnswer("option5", answerContent, questionId);
             }
-            processUserInterface(request, response, questionId, categoryId, courseId);
+            processUserInterface(request, response, questionId, categoryId, subjectId);
             Question questionDetail = questionService.getQuestionDetails(questionId);
             String image = questionDetail.getMedia();
             int totalAnswerOptions = questionService.countAnswerOptions();
@@ -270,7 +269,7 @@ public class QuestionController extends HttpServlet {
             int totalAnswerOptions = questionService.countAnswerOptions();
             request.setAttribute("totalAnswerOptions", totalAnswerOptions);
             request.setAttribute("image", uploadFile(request));
-            processUserInterface(request, response, questionId, categoryId, courseId);
+            processUserInterface(request, response, questionId, categoryId, subjectId);
             request.getRequestDispatcher("/auth/teacher/question/detail.jsp").forward(request, response);
             //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/detail.jsp
         }
@@ -310,25 +309,25 @@ public class QuestionController extends HttpServlet {
         request.setAttribute("selectedLevel", levelString);
         request.setAttribute("selectedKeyword", keyword);
 
-//        int courseId = Integer.parseInt(request.getParameter("thong nhat sau"));
-        int courseId = 10;
+
+        int subjectId = Integer.parseInt(request.getParameter("subjectId"));
         if (keyword == null || keyword.equals("")) {
             keyword = "";
         }
 
-        getQuestionList(request, response, courseId, keyword, level, status, dimensionName);
+        getQuestionList(request, response, subjectId, keyword, level, status, dimensionName);
     }
 
     public void getQuestionList(HttpServletRequest request, HttpServletResponse response,
-            int courseId, String keyword, Level level, Status status, String dimensionName)
+            int subjectId, String keyword, Level level, Status status, String dimensionName)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        List<Question> questionList = questionService.getQuestionsWithCondition(courseId, keyword, level, status, dimensionName);
+        List<Question> questionList = questionService.getQuestionsWithCondition(subjectId, keyword, level, status, dimensionName);
         session.setAttribute("questionList", questionList);
 
         if (questionList == null || questionList.size() == 0) {
-            request.setAttribute("dimensionList", questionService.getDimensionList(courseId));
+            request.setAttribute("dimensionList", questionService.getDimensionList(subjectId));
             request.setAttribute("questionList", questionList);
             request.getRequestDispatcher("/auth/teacher/question/list.jsp").forward(request, response);
         }
@@ -336,7 +335,7 @@ public class QuestionController extends HttpServlet {
         List<Question> pageItems = getQuestionPerPage(questionList, page);
 
         if (pageItems != null) {
-            request.setAttribute("dimensionList", questionService.getDimensionList(courseId));
+            request.setAttribute("dimensionList", questionService.getDimensionList(subjectId));
             request.setAttribute("pageItems", pageItems);
             request.getRequestDispatcher("/auth/teacher/question/list.jsp").forward(request, response);
         } else {

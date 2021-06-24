@@ -135,7 +135,10 @@
                             </div>
                             <div id="button-area">
                                 <button type="submit" class="btn btn-secondary">Submit</button>
-                                <a href="#" class="btn btn-secondary">Back</a>
+                                <a href="${path}/auth/teacher/subject" class="btn btn-secondary">Back</a>
+                                <a href="${path}/auth/teacher/question?subjectId=${detail.id}&operation=MANAGEQUESTION">
+                                    <button type="button" class="btn btn-primary">Manage Question</button>
+                                </a>
                             </div>
                         </div>
                     </form>
