@@ -20,7 +20,12 @@ import java.util.List;
 
 
 public class UserCourseController extends HttpServlet {
-
+    
+    private UserCourseService userCourseService;
+    @Override
+     public void init() throws ServletException {
+        userCourseService = new UserCourseService();
+    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -51,23 +56,19 @@ public class UserCourseController extends HttpServlet {
     private void updateStatus(HttpServletRequest request, HttpServletResponse response, User u)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-
-        UserCourseService courseService = new UserCourseService();
       int userId = u.getId();
     //    int userId = 1;
         int courseId = Integer.parseInt(request.getParameter("courseId"));
         int status = 0;
-        courseService.updateStatus(userId, courseId, status);
+        userCourseService.updateStatus(userId, courseId, status);
         response.sendRedirect(request.getContextPath()+ "/auth/user/UserCourse?operation=");
     }
 
     private void searchCourseByTitle(HttpServletRequest request, HttpServletResponse response, User u)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-
-        UserCourseService courseService = new UserCourseService();
         String title = request.getParameter("title");
-        List<CourseRegistation> listC = courseService.searchCourseByTitle(u.getId(), title);
+        List<CourseRegistation> listC = userCourseService.searchCourseByTitle(u.getId(), title);
         for (CourseRegistation o : listC) {
             out.print("<tr>\n"
                     + "                                    <td>" + o.getId() + "</td>\n"
@@ -99,10 +100,8 @@ public class UserCourseController extends HttpServlet {
     private void searchCourseByCategory(HttpServletRequest request, HttpServletResponse response, User u)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-
-        UserCourseService courseService = new UserCourseService();
         String categoryId = request.getParameter("category");
-        List<CourseRegistation> listC = courseService.searchCourseByCategory(u.getId(), Integer.parseInt(categoryId));
+        List<CourseRegistation> listC = userCourseService.searchCourseByCategory(u.getId(), Integer.parseInt(categoryId));
         for (CourseRegistation o : listC) {
             out.print("<tr>\n"
                     + "                                    <td>" + o.getId() + "</td>\n"
@@ -134,16 +133,14 @@ public class UserCourseController extends HttpServlet {
     private void listCourseRegistation(HttpServletRequest request, HttpServletResponse response, User u)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        UserCourseService courseService = new UserCourseService();
-
         String index = request.getParameter("page");
         if (index == null || index.equals("")) {
             index = "1";
         }
-        int endPage = (courseService.countCourseUserRegis() / 5) + (courseService.countCourseUserRegis() % 5 == 0 ? 0 : 1);
+        int endPage = (userCourseService.countCourseUserRegis() / 5) + (userCourseService.countCourseUserRegis() % 5 == 0 ? 0 : 1);
         request.setAttribute("endPage", endPage);
         /*truyền cái u.getId() vào số 1 ở đây*/
-        List<CourseRegistation> listC = courseService.getCourseUserRegister(u.getId(), Integer.parseInt(index));
+        List<CourseRegistation> listC = userCourseService.getCourseUserRegister(u.getId(), Integer.parseInt(index));
         request.setAttribute("listC", listC);
         request.setAttribute("index", index);
         request.getRequestDispatcher("/auth/user/MyRegistation.jsp").forward(request, response);

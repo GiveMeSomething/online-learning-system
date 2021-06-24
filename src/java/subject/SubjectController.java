@@ -65,18 +65,18 @@ public class SubjectController extends HttpServlet {
 
     private void listPackagePrice(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CourseService service = new CourseService();
+        
         String index = request.getParameter("page");
         if (index == null || index.equals("")) {
             index = "1";
         }
-        List<PricePack> listPackage = service.getPricePackage(Integer.parseInt(index));
-        int endPage = (service.countTotalPricePackage() / 5) + (service.countTotalPricePackage() % 5 == 0 ? 0 : 1);
+        List<PricePack> listPackage = courseService.getPricePackage(Integer.parseInt(index));
+        int endPage = (courseService.countTotalPricePackage() / 5) + (courseService.countTotalPricePackage() % 5 == 0 ? 0 : 1);
         request.setAttribute("index", index);
         request.setAttribute("endPage", endPage);
         request.setAttribute("listP", listPackage);
         request.setAttribute("activeId", 3);
-        request.setAttribute("totalPackage", service.countTotalPricePackage());
+        request.setAttribute("totalPackage", courseService.countTotalPricePackage());
         request.setAttribute("totalPackageOfPage", listPackage.size());
         request.getRequestDispatcher("/auth/teacher/subject/detail.jsp").forward(request, response);
     }
@@ -89,19 +89,15 @@ public class SubjectController extends HttpServlet {
         double discount = Double.parseDouble(request.getParameter("discount"));
         int status = Integer.parseInt(request.getParameter("status"));
         String descriptions = request.getParameter("descriptions");
-
-        CourseService service = new CourseService();
-        service.addPackage(duration, name, price, status, descriptions, discount);
-        response.sendRedirect(request.getContextPath() + "/auth/teacher/subject?operation=LISTPACKAGE&page=1");
+        courseService.addPackage(duration, name, price, status, descriptions, discount);
+        response.sendRedirect(request.getContextPath() + "/auth/teacher/subject");
     }
 
     private void deletePackage(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-
-        CourseService service = new CourseService();
-        service.deletePackage(id);
-        response.sendRedirect(request.getContextPath() + "/auth/teacher/subject?operation=LISTPACKAGE&page=1");
+        courseService.deletePackage(id);
+        response.sendRedirect(request.getContextPath() + "/auth/teacher/subject");
     }
 
     private void editPackage(HttpServletRequest request, HttpServletResponse response)
@@ -113,10 +109,8 @@ public class SubjectController extends HttpServlet {
         double discount = Double.parseDouble(request.getParameter("discount"));
         int status = Integer.parseInt(request.getParameter("status"));
         String descriptions = request.getParameter("descriptions");
-
-        CourseService service = new CourseService();
-        service.editPackage(id, duration, name, price, status, descriptions, discount);
-        response.sendRedirect(request.getContextPath() + "/auth/teacher/subject?operation=LISTPACKAGE&page=1");
+        courseService.editPackage(id, duration, name, price, status, descriptions, discount);
+        response.sendRedirect(request.getContextPath() + "/auth/teacher/subject");
     }
 
     

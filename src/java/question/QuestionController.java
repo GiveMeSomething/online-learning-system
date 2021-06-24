@@ -180,8 +180,6 @@ public class QuestionController extends HttpServlet {
             inputStream = filePart.getInputStream();
         }
         Workbook workbook = new XSSFWorkbook(inputStream);
-        QuestionService qs = new QuestionService();
-
         Sheet firstSheet = workbook.getSheetAt(0);
         Iterator<Row> rowIterator = firstSheet.iterator();
         rowIterator.next(); // skip the header row
@@ -233,7 +231,7 @@ public class QuestionController extends HttpServlet {
                 }
 
             }
-            qs.addQuestion(status, content, media, explaination, answer, option1, option2, option3, option4);
+            questionService.addQuestion(status, content, media, explaination, answer, option1, option2, option3, option4);
         }
         /*đoạn dưới này là đã import xong, muốn quay về trang nào thì code*/
         out.print("Import Successfully OK!");

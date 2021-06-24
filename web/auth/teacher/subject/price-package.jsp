@@ -317,21 +317,21 @@
                         <ul class="pagination">
                             <c:if test="${index>1}">
                                 <li class="page-item disabled">
-                                    <a href="${path}/auth/teacher/subject?operation=LISTPACKAGE&page=${index-1}">
+                                    <a href="${path}/auth/teacher/subject?operation=&page=${index-1}">
                                         Previous
                                     </a>
                                 </li>
                             </c:if>
                             <c:forEach var="i" begin="1" end="${endPage}">
                                 <li class="page-item ${index==i?"active":""}">
-                                    <a href="${path}/auth/teacher/subject?operation=LISTPACKAGE&page=${i}" class="page-link">
+                                    <a href="${path}/auth/teacher/subject?operation=&page=${i}" class="page-link">
                                         ${i}
                                     </a>
                                 </li>
                             </c:forEach>
                             <c:if test="${index<endPage}">
                                 <li class="page-item">
-                                    <a href="${path}/auth/teacher/subject?operation=LISTPACKAGE&page=${index+1}" class="page-link">
+                                    <a href="${path}/auth/teacher/subject?operation=&page=${index+1}" class="page-link">
                                         Next
                                     </a>
                                 </li>
