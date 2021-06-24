@@ -4,12 +4,16 @@
  */
 package course;
 
-import java.util.List;
 import common.entities.Category;
 import common.entities.Course;
+import common.entities.Dimension;
+import common.entities.DimensionType;
 import common.entities.PricePackage;
+import java.io.InputStream;
 import common.entities.Status;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /*
@@ -113,7 +117,7 @@ public class CourseService {
 
     public List<Course> getCourseByCateID(int cateID) {
         try {
-            return courseRepository.getCourseByCateID(cateID);
+            return courseRepository.getCourseByCategoryId(cateID);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -152,6 +156,16 @@ public class CourseService {
     public List<Course> searchCourse(String searchName, int cateID) {
         try {
             return courseRepository.searchCourse(searchName, cateID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public Course checkCourseExist(String searchName, int cateID) {
+        try {
+            return courseRepository.checkCourseExist(searchName, cateID);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -214,13 +228,140 @@ public class CourseService {
         return null;
     }
 
-    public boolean updateSubjectInformation(String courseName, String description,int owner, int status_id, int category_id, int feature, int id) {
+    public boolean updateSubjectInformation(String courseName, String description, int owner, int status_id, int category_id, int feature, int id) {
         try {
-            return courseRepository.updateSubjectInformation(courseName, description,owner, status_id, category_id, feature, id);
+            return courseRepository.updateSubjectInformation(courseName, description, owner, status_id, category_id, feature, id);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
 
+    public List<Dimension> getSubjectDimensionByCourseId(int courseId) {
+        try {
+            return courseRepository.getSubjectDimensionByCourseId(courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean deleteSubjectDimensionByCourseId(int courseId, int dimensionId) {
+        try {
+            return courseRepository.deleteSubjectDimensionByCourseId(courseId, dimensionId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean addDimension(int typeId, String name, String description) {
+        try {
+            return courseRepository.addDimension(typeId, name, description);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Dimension getDimensionId(String dimension) {
+        try {
+            return courseRepository.getDimensionId(dimension);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean addDimensionCourse(int courseId, int dimensionId) {
+        try {
+            return courseRepository.addDimensionCourse(courseId, dimensionId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Dimension getDimensionDetail(int dimensionId) {
+        try {
+            return courseRepository.getDimensionDetail(dimensionId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateSubjectDimension(int typeId, String name, String description, int dimensionId) {
+        try {
+            return courseRepository.updateSubjectDimension(typeId, name, description, dimensionId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean addNewSubject(Course course, InputStream inputStream) {
+        try {
+            return courseRepository.addNewSubject(course, inputStream);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean addDimensionType(String dimension) {
+        try {
+            return courseRepository.addDimensionType(dimension);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public DimensionType getDimensionTypeDetail(String dimension) {
+        try {
+            return courseRepository.getDimensionTypeDetail(dimension);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public HashMap<Integer, String> getOwners() {
+        try {
+            return courseRepository.getOwners();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ArrayList<ArrayList<String>> getSubjectList(String keyword, int categoryId, Status status, int teacherId) {
+        try {
+            return courseRepository.getSubjectList(keyword, categoryId, status, teacherId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public List<DimensionType> getAllDimenstionType() {
+        try {
+            return courseRepository.getAllDimenstionType();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public HashMap<Integer, String> getCourses() {
+        try {
+            return courseRepository.getCourses();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

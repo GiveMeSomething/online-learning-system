@@ -19,30 +19,35 @@ public class Question {
     private String option2;
     private String option3;
     private String option4;
+    private String option5;
     private String answer;
     private String explaination;
 
     public Question() {
     }
 
-    public Question(int id, String course, String lesson_name, String dimension_name, Status status, String content, String level, String media, String option1, String option2, String option3, String option4, String answer, String explaination) {
-        this.id = id;
-        this.course = course;
-        this.lesson_name = lesson_name;
-        this.dimension_name = dimension_name;
-        this.status = status;
-        this.content = content;
-        this.level = level;
-        this.media = media;
+    public Question(String option1, String option2, String option3, String option4, String option5) {
         this.option1 = option1;
         this.option2 = option2;
         this.option3 = option3;
         this.option4 = option4;
-        this.answer = answer;
-        this.explaination = explaination;
+        this.option5 = option5;
     }
 
-    public Question(int id, String course, String lesson_name, String dimension_name, Status status, String content, String media, String option1, String option2, String option3, String option4, String answer, String explaination) {
+    public Question(String dimension_name) {
+        this.dimension_name = dimension_name;
+    }
+
+    public Question(int id, String answer) {
+        this.id = id;
+        this.answer = answer;
+    }
+
+    public Question(int id) {
+        this.id = id;
+    }
+
+    public Question(int id, String course, String lesson_name, String dimension_name, Status status, String content, String media, String option1, String option2, String option3, String option4, String option5, String answer, String explaination) {
         this.id = id;
         this.course = course;
         this.lesson_name = lesson_name;
@@ -54,6 +59,7 @@ public class Question {
         this.option2 = option2;
         this.option3 = option3;
         this.option4 = option4;
+        this.option5 = option5;
         this.answer = answer;
         this.explaination = explaination;
     }
@@ -68,11 +74,6 @@ public class Question {
         this.level = level;
     }
 
-    public Question(String dimension_name) {
-        this.dimension_name = dimension_name;
-    }
-    
-    
     public String getLevel() {
         return level;
     }
@@ -169,6 +170,14 @@ public class Question {
         this.option4 = option4;
     }
 
+    public String getOption5() {
+        return option5;
+    }
+
+    public void setOption5(String option5) {
+        this.option5 = option5;
+    }
+
     public String getAnswer() {
         return answer;
     }
@@ -186,10 +195,8 @@ public class Question {
     }
 
     @Override
+
     public String toString() {
-        return "Question{" + "id=" + id + ", course=" + course + ", lesson_name=" + lesson_name + ", dimension_name=" + dimension_name + ", status=" + status + ", content=" + content + ", level=" + level + ", media=" + media + ", option1=" + option1 + ", option2=" + option2 + ", option3=" + option3 + ", option4=" + option4 + ", answer=" + answer + ", explaination=" + explaination + '}';
+        return "Question{" + "id=" + id + ", course=" + course + ", lesson_name=" + lesson_name + ", dimension_name=" + dimension_name + ", status=" + status + ", content=" + content + ", level=" + level + ", media=" + media + ", option1=" + option1 + ", option2=" + option2 + ", option3=" + option3 + ", option4=" + option4 + ", option5=" + option5 + ", answer=" + answer + ", explaination=" + explaination + '}';
     }
-
-    
-
 }

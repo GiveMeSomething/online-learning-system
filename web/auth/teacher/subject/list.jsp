@@ -23,6 +23,11 @@
         <link rel="stylesheet" href="${path}/style/styles.css">
     </head>
     <body>
+        <c:if test="${requestScope.errorMessage != null}">
+            <div class="d-flex w-100 align-items-center justify-content-end">
+                <h5>${requestScope.errorMessage}</h5>
+            </div>
+        </c:if>
         <div class="container my-5">
             <div class="row">
                 <div class="d-flex justify-content-center align-items-center">
@@ -30,9 +35,9 @@
                 </div>
             </div>
             <div class="row">
-                <form action="${path}/auth/teacher/quiz" method="POST">
+                <form action="${path}/auth/teacher/subject" method="POST">
                     <div class="request-info">
-                        <input name="previousPage" value="${path}/auth/teacher/quiz" hidden="true" />
+                        <input name="previousPage" value="${path}/auth/teacher/subject" hidden="true" />
                         <div class="invalid-feedback"></div>
                         <input name="operation" value="FILTER" hidden="true" />
                         <div class="invalid-feedback"></div>
@@ -44,50 +49,51 @@
                                    type="text"
                                    id="keyword"
                                    value="${requestScope.selectedKeyword != null ? requestScope.selectedKeyword: ''}"
-                                   placeholder="Search quiz"
+                                   placeholder="Search subjects"
                                    style="width: 70vh"/>
                         </div>
-                        <div id="test-type" class="d-flex justify-content-center align-items-center m-2">
-                            <div class="mx-2">Test Type</div>
+                        <div id="category" class="d-flex justify-content-center align-items-center m-2" >
+                            <label for="category-select" class="mx-2">Categories</label>
+                            <select class="form-control" name="category" style="width: 20vh">
+                                <option value="-1" ${requestScope.selectedCategory == null ? 'selected': ''}>All</option>
+                                <c:forEach items="${requestScope.categories}" var="category">
+                                    <option value="${category.id}" ${requestScope.selectedCategory == category.id ? 'selected': ''}>
+                                        ${category.categoryName}
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div id="status" class="d-flex justify-content-center align-items-center m-2">
+                            <div class="mx-2">Status</div>
                             <div class="custom-control custom-radio custom-control m-2">
                                 <input
                                     type="radio"
-                                    id="simulation"
-                                    name="quizType"
+                                    id="active"
+                                    name="status"
                                     class="custom-control-input"
-                                    value="SIMULATION"
-                                    ${requestScope.selectedType == "SIMULATION" ? 'checked': ''}>
-                                <label class="custom-control-label" for="simulation">Simulation</label>
+                                    value="ACTIVE"
+                                    ${requestScope.selectedStatus == "ACTIVE" ? 'checked': ''}>
+                                <label class="custom-control-label" for="active">ACTIVE</label>
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="custom-control custom-radio custom-control m-2">
                                 <input type="radio"
-                                       id="test"
-                                       name="quizType"
+                                       id="inactive"
+                                       name="status"
                                        class="custom-control-input"
-                                       value="TEST"
-                                       ${requestScope.selectedType == "TEST" ? 'checked': ''}>
-                                <label class="custom-control-label" for="test">Test</label>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="custom-control custom-radio custom-control m-2">
-                                <input type="radio"
-                                       id="quiz"
-                                       name="quizType"
-                                       class="custom-control-input"
-                                       value="QUIZ"
-                                       ${requestScope.selectedType == "QUIZ" ? 'checked': ''}>
-                                <label class="custom-control-label" for="quiz">Quiz</label>
+                                       value="INACTIVE"
+                                       ${requestScope.selectedStatus == "INACTIVE" ? 'checked': ''}>
+                                <label class="custom-control-label" for="inactive">INACTIVE</label>
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="custom-control custom-radio custom-control m-2">
                                 <input type="radio"
                                        id="all"
-                                       name="quizType"
+                                       name="status"
                                        class="custom-control-input"
                                        value=""
-                                       ${requestScope.selectedType == null || requestScope.selectedType == '' ? 'checked': ''}>
-                                <label class="custom-control-label" for="all">All</label>
+                                       ${requestScope.selectedStatus == null || requestScope.selectedStatus == '' ? 'checked': ''}>
+                                <label class="custom-control-label" for="all">Both</label>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
@@ -95,8 +101,8 @@
                     </div>
                     <div class="add-lesson">
                         <a role="button" class="btn btn-success px-3 py-2" 
-                           href="${path}/auth/teacher/quiz?operation=VIEW">
-                            Add New Quiz
+                           href="${path}/auth/teacher/subject?operation=TONEWSUBJECT">
+                            Add new Subject
                         </a>
                     </div>
                 </form>
@@ -105,20 +111,19 @@
                 <c:forEach items="${requestScope.pageItems}" var="item">
                     <div class="col-2 d-flex align-items-center justify-content-center">
                         <h3>
-                            ${item.id}
+                            ${item.get(0)}
                         </h3>
                     </div>
                     <div class="col-6">
-                        <h3>${item.subjectName} (${item.level})</h3>
+                        <h3>${item.get(1)} (${item.get(2)})</h3>
                         <div>
-                            <h4>Number of questions: ${item.questionNum}</h4>
-                            <p>Duration: ${item.duration}</p>
-                            <p>Pass rate: ${item.passRate}%</p>
-                            <p>Type: ${item.quizType}</p>
+                            <h4>Number of lessons: ${item.get(3)}</h4>
+                            <p>Owner: ${item.get(4)}</p>
+                            <p>Status: ${item.get(5)}</p>
                         </div>
                     </div>
                     <div class="col-3 d-flex align-items-center justify-content-center m-2">
-                        <a href="${path}/auth/teacher/quiz?operation=VIEW&quizId=${item.id}" class="m-2">
+                        <a href="${path}/auth/teacher/subject?operation=VIEW&subjectId=${item.get(0)}" class="m-2">
                             <button class="btn btn-sm btn-primary px-3 py-2">
                                 View and Edit
                             </button>
@@ -134,19 +139,19 @@
                 <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" href="${path}/auth/teacher/quiz?operation=PAGINATION&page=${prevPage > 0 ? prevPage: 1}">Previous</a>
+                        <a class="page-link" href="${path}/auth/teacher/subject?operation=PAGINATION&page=${prevPage > 0 ? prevPage: 1}">Previous</a>
                     </li>
                     <c:forEach begin="1" end="${maxPage}" varStatus="counter">
                         <li class="page-item">
                             <a class="page-link"
-                               href="${path}/auth/teacher/quiz?operation=PAGINATION&page=${counter.index}">
+                               href="${path}/auth/teacher/subject?operation=PAGINATION&page=${counter.index}">
                                 ${counter.index}
                             </a>
                         </li>
                     </c:forEach>
                     <li class="page-item">
                         <a class="page-link"
-                           href="${path}/auth/teacher/quiz?operation=PAGINATION&page=${nextPage > maxPage ? maxPage: nextPage}">
+                           href="${path}/auth/teacher/subject?operation=PAGINATION&page=${nextPage > maxPage ? maxPage: nextPage}">
                             Next
                         </a>
                     </li>

@@ -24,4 +24,13 @@ public enum LessonType {
     public static int valueOf(LessonType lessonType) {
         return LESSON_TYPE_VALUE.get(lessonType);
     }
+    
+    public static void main(String[] args) {
+        String s = "SUBJECT_TOPIC";
+        LessonType lessonType = LessonType.valueOf(s);
+//        System.out.println(lessonType);
+        if(lessonType.equals(LessonType.valueOf("SUBJECT_TOPIC"))){
+            System.out.println("play");
+        }
+    }
 }

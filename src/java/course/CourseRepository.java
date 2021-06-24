@@ -11,6 +11,9 @@ package course;
  */
 import common.entities.Category;
 import common.entities.Course;
+import common.entities.CourseStatus;
+import common.entities.Dimension;
+import common.entities.DimensionType;
 import common.entities.PricePackage;
 import common.entities.Status;
 import java.sql.PreparedStatement;
@@ -18,7 +21,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import common.utilities.Repository;
+import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class CourseRepository extends Repository {
 
@@ -193,19 +198,19 @@ public class CourseRepository extends Repository {
         return null;
     }
 
-    public List<Course> getCourseByCateID(int cateID) throws SQLException {
+    public List<Course> getCourseByCategoryId(int categoryId) throws SQLException {
         this.connectDatabase();
-        String getCourseByCateID = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price)"
-                + " AS price from db_ite1.course c\n"
-                + "INNER JOIN db_ite1.course_package p\n"
-                + "on c.id = p.course_id\n"
-                + "INNER JOIN db_ite1.price_package pp\n"
-                + "on p.package_id = pp.id\n"
-                + "WHERE c.category_id = ?\n"
-                + "GROUP BY c.id\n";
+        String getCourseByCateID = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) "
+                + "AS price from db_ite1.course c "
+                + "INNER JOIN db_ite1.course_package p "
+                + "on c.id = p.course_id "
+                + "INNER JOIN db_ite1.price_package pp "
+                + "on p.package_id = pp.id "
+                + "WHERE c.category_id = ? "
+                + "GROUP BY c.id ";
         List<Course> list = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(getCourseByCateID)) {
-            statement.setInt(1, cateID);
+            statement.setInt(1, categoryId);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 list.add(new Course(
@@ -225,18 +230,18 @@ public class CourseRepository extends Repository {
 
     }
 
-    public List<Course> pagingCourseList(int cateID, int page) throws SQLException {
+    public List<Course> pagingCourseList(int categoryId, int page) throws SQLException {
         this.connectDatabase();
-        String pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
-                + "INNER JOIN db_ite1.course_package p\n"
-                + "on c.id = p.course_id\n"
-                + "INNER JOIN db_ite1.price_package pp\n"
-                + "on p.package_id = pp.id\n"
-                + "WHERE c.category_id = ?\n"
+        String pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c "
+                + "INNER JOIN db_ite1.course_package p "
+                + "on c.id = p.course_id "
+                + "INNER JOIN db_ite1.price_package pp "
+                + "on p.package_id = pp.id "
+                + "WHERE c.category_id = ? "
                 + "GROUP BY c.id LIMIT 8 OFFSET ?;";
         List<Course> list = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(pagingCourseList)) {
-            statement.setInt(1, cateID);
+            statement.setInt(1, categoryId);
             statement.setInt(2, (page - 1) * 8);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
@@ -257,11 +262,11 @@ public class CourseRepository extends Repository {
 
     }
 
-    public int countingCourseList(int cateID) throws SQLException {
+    public int countingCourseList(int categoryId) throws SQLException {
         this.connectDatabase();
         String countingCourseList = "SELECT COUNT(*) AS count FROM db_ite1.course where category_id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(countingCourseList)) {
-            statement.setInt(1, cateID);
+            statement.setInt(1, categoryId);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 return result.getInt("count");
@@ -273,12 +278,12 @@ public class CourseRepository extends Repository {
         return 0;
     }
 
-    public List<Course> getCourseFeature(int cateID) throws SQLException {
+    public List<Course> getCourseFeature(int categoryId) throws SQLException {
         this.connectDatabase();
         String getCourseFeature = "SELECT * FROM db_ite1.course where feature = 1 AND category_id = ?";
         List<Course> list = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(getCourseFeature)) {
-            statement.setInt(1, cateID);
+            statement.setInt(1, categoryId);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 list.add(new Course(
@@ -298,13 +303,13 @@ public class CourseRepository extends Repository {
 
     }
 
-    public List<Course> searchCourse(String searchName, int cateID) throws SQLException {
+    public List<Course> searchCourse(String searchName, int categoryId) throws SQLException {
         this.connectDatabase();
         String searchCourse = "SELECT * FROM db_ite1.course WHERE title LIKE ? AND category_id = ?";
         List<Course> list = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
             statement.setString(1, "%" + searchName + "%");
-            statement.setInt(2, cateID);
+            statement.setInt(2, categoryId);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 list.add(new Course(
@@ -315,6 +320,60 @@ public class CourseRepository extends Repository {
                         0,
                         result.getString("tag")
                 ));
+            }
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public Course checkCourseExist(String searchName, int cateID) throws SQLException {
+        this.connectDatabase();
+        String searchCourse = "SELECT * FROM db_ite1.course WHERE title LIKE ? AND category_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
+            statement.setString(1, "%" + searchName + "%");
+            statement.setInt(2, cateID);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new Course(
+                        result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        0,
+                        result.getString("tag")
+                );
+            }
+            return null;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public List<Course> searchCourse(int categoryId, String searchName) throws SQLException {
+        this.connectDatabase();
+        String searchCourse = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) "
+                + "AS price from db_ite1.course c "
+                + "INNER JOIN db_ite1.course_package p "
+                + "on c.id = p.course_id "
+                + "INNER JOIN db_ite1.price_package pp "
+                + "on p.package_id = pp.id "
+                + "WHERE c.category_id = ? AND title LIKE ? "
+                + "GROUP BY c.id LIMIT 8 OFFSET 0";
+        List<Course> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
+            statement.setInt(1, categoryId);
+            statement.setString(2, "%" + searchName + "%");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new Course(
+                        result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        result.getFloat("price"),
+                        result.getString("tag")
+                ));
 
             }
             return list;
@@ -323,86 +382,86 @@ public class CourseRepository extends Repository {
         }
     }
 
-    public List<Course> pagingCourseList(int cateID, String searchName, int page, String price, String alpha) throws SQLException {
+    public List<Course> pagingCourseList(int categoryId, String searchName, int page, String price, String alpha) throws SQLException {
         this.connectDatabase();
         String pagingCourseList = "";
         if (price.equals("1") && alpha.equals("ascAlpha")) {
-            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
-                    + "INNER JOIN db_ite1.course_package p\n"
-                    + "on c.id = p.course_id\n"
-                    + "INNER JOIN db_ite1.price_package pp\n"
-                    + "on p.package_id = pp.id\n"
-                    + "WHERE c.category_id = ? AND title like ?\n"
+            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c "
+                    + "INNER JOIN db_ite1.course_package p "
+                    + "on c.id = p.course_id "
+                    + "INNER JOIN db_ite1.price_package pp "
+                    + "on p.package_id = pp.id "
+                    + "WHERE c.category_id = ? AND title like ? "
                     + "GROUP BY c.id ORDER BY price asc,title asc LIMIT 8 OFFSET ?";
         } else if (price.equals("1") && alpha.equals("descAlpha")) {
-            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
-                    + "INNER JOIN db_ite1.course_package p\n"
-                    + "on c.id = p.course_id\n"
-                    + "INNER JOIN db_ite1.price_package pp\n"
-                    + "on p.package_id = pp.id\n"
-                    + "WHERE c.category_id = ? AND title like ?\n"
+            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c "
+                    + "INNER JOIN db_ite1.course_package p "
+                    + "on c.id = p.course_id "
+                    + "INNER JOIN db_ite1.price_package pp "
+                    + "on p.package_id = pp.id "
+                    + "WHERE c.category_id = ? AND title like ? "
                     + "GROUP BY c.id ORDER BY price asc,title desc LIMIT 8 OFFSET ?";
         } else if (price.equals("0") && alpha.equals("ascAlpha")) {
-            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
-                    + "INNER JOIN db_ite1.course_package p\n"
-                    + "on c.id = p.course_id\n"
-                    + "INNER JOIN db_ite1.price_package pp\n"
-                    + "on p.package_id = pp.id\n"
-                    + "WHERE c.category_id = ? AND title like ?\n"
+            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c "
+                    + "INNER JOIN db_ite1.course_package p "
+                    + "on c.id = p.course_id "
+                    + "INNER JOIN db_ite1.price_package pp "
+                    + "on p.package_id = pp.id "
+                    + "WHERE c.category_id = ? AND title like ? "
                     + "GROUP BY c.id ORDER BY price desc,title asc LIMIT 8 OFFSET ?";
         } else if (price.equals("0") && alpha.equals("descAlpha")) {
-            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
-                    + "INNER JOIN db_ite1.course_package p\n"
-                    + "on c.id = p.course_id\n"
-                    + "INNER JOIN db_ite1.price_package pp\n"
-                    + "on p.package_id = pp.id\n"
-                    + "WHERE c.category_id = ? AND title like ?\n"
+            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c "
+                    + "INNER JOIN db_ite1.course_package p "
+                    + "on c.id = p.course_id "
+                    + "INNER JOIN db_ite1.price_package pp "
+                    + "on p.package_id = pp.id "
+                    + "WHERE c.category_id = ? AND title like ? "
                     + "GROUP BY c.id ORDER BY price desc,title desc LIMIT 8 OFFSET ?";
         } else if (price.equals("1")) {
-            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
-                    + "INNER JOIN db_ite1.course_package p\n"
-                    + "on c.id = p.course_id\n"
-                    + "INNER JOIN db_ite1.price_package pp\n"
-                    + "on p.package_id = pp.id\n"
-                    + "WHERE c.category_id = ? AND title like ?\n"
+            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c "
+                    + "INNER JOIN db_ite1.course_package p "
+                    + "on c.id = p.course_id "
+                    + "INNER JOIN db_ite1.price_package pp "
+                    + "on p.package_id = pp.id "
+                    + "WHERE c.category_id = ? AND title like ? "
                     + "GROUP BY c.id ORDER BY price asc LIMIT 8 OFFSET ?";
         } else if (price.equals("0")) {
-            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
-                    + "INNER JOIN db_ite1.course_package p\n"
-                    + "on c.id = p.course_id\n"
-                    + "INNER JOIN db_ite1.price_package pp\n"
-                    + "on p.package_id = pp.id\n"
-                    + "WHERE c.category_id = ? AND title like ?\n"
+            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c "
+                    + "INNER JOIN db_ite1.course_package p "
+                    + "on c.id = p.course_id "
+                    + "INNER JOIN db_ite1.price_package pp "
+                    + "on p.package_id = pp.id "
+                    + "WHERE c.category_id = ? AND title like ? "
                     + "GROUP BY c.id ORDER BY price desc LIMIT 8 OFFSET ? ";
         } else if (alpha.equals("ascAlpha")) {
-            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
-                    + "INNER JOIN db_ite1.course_package p\n"
-                    + "on c.id = p.course_id\n"
-                    + "INNER JOIN db_ite1.price_package pp\n"
-                    + "on p.package_id = pp.id\n"
-                    + "WHERE c.category_id = ? AND title like ?\n"
+            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c "
+                    + "INNER JOIN db_ite1.course_package p "
+                    + "on c.id = p.course_id "
+                    + "INNER JOIN db_ite1.price_package pp "
+                    + "on p.package_id = pp.id "
+                    + "WHERE c.category_id = ? AND title like ? "
                     + "GROUP BY c.id ORDER BY c.title ASC LIMIT 8 OFFSET ? ";
         } else if (alpha.equals("descAlpha")) {
-            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
-                    + "INNER JOIN db_ite1.course_package p\n"
-                    + "on c.id = p.course_id\n"
-                    + "INNER JOIN db_ite1.price_package pp\n"
-                    + "on p.package_id = pp.id\n"
-                    + "WHERE c.category_id = ? AND title like ?\n"
+            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c "
+                    + "INNER JOIN db_ite1.course_package p "
+                    + "on c.id = p.course_id "
+                    + "INNER JOIN db_ite1.price_package pp "
+                    + "on p.package_id = pp.id "
+                    + "WHERE c.category_id = ? AND title like ? "
                     + "GROUP BY c.id ORDER BY c.title DESC LIMIT 8 OFFSET ? ";
         } else {
-            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c\n"
-                    + "INNER JOIN db_ite1.course_package p\n"
-                    + "on c.id = p.course_id\n"
-                    + "INNER JOIN db_ite1.price_package pp\n"
-                    + "on p.package_id = pp.id\n"
-                    + "WHERE c.category_id = ? AND title like ?\n"
+            pagingCourseList = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price) AS price from db_ite1.course c "
+                    + "INNER JOIN db_ite1.course_package p "
+                    + "on c.id = p.course_id "
+                    + "INNER JOIN db_ite1.price_package pp "
+                    + "on p.package_id = pp.id "
+                    + "WHERE c.category_id = ? AND title like ? "
                     + "GROUP BY c.id LIMIT 8 OFFSET ?";
         }
 
         List<Course> list = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(pagingCourseList)) {
-            statement.setInt(1, cateID);
+            statement.setInt(1, categoryId);
             statement.setString(2, "%" + searchName + "%");
             statement.setInt(3, (page - 1) * 8);
             ResultSet result = statement.executeQuery();
@@ -423,12 +482,12 @@ public class CourseRepository extends Repository {
         }
     }
 
-    public int countingCourseListSearch(int cateID, String searchName) throws SQLException {
+    public int countingCourseListSearch(int categoryId, String searchName) throws SQLException {
         this.connectDatabase();
         String sql = "SELECT COUNT(*) AS count FROM db_ite1.course "
                 + "where category_id = ? AND title LIKE ?";
         try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
-            statement.setInt(1, cateID);
+            statement.setInt(1, categoryId);
             statement.setString(2, "%" + searchName + "%");
             ResultSet result = statement.executeQuery();
             while (result.next()) {
@@ -441,38 +500,6 @@ public class CourseRepository extends Repository {
         return 0;
     }
 
-    public List<Course> searchCourse(int cateID, String searchName) throws SQLException {
-        this.connectDatabase();
-        String searchCourse = "select c.id,c.thumbnail,c.title,c.description,c.tag,MIN(pp.list_price)\n"
-                + "AS price from db_ite1.course c\n"
-                + "INNER JOIN db_ite1.course_package p\n"
-                + "on c.id = p.course_id\n"
-                + "INNER JOIN db_ite1.price_package pp\n"
-                + "on p.package_id = pp.id\n"
-                + "WHERE c.category_id = ? AND title LIKE ?\n"
-                + "GROUP BY c.id LIMIT 8 OFFSET 0";
-        List<Course> list = new ArrayList<>();
-        try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
-            statement.setInt(1, cateID);
-            statement.setString(2, "%" + searchName + "%");
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                list.add(new Course(
-                        result.getInt("id"),
-                        result.getString("thumbnail"),
-                        result.getString("title"),
-                        result.getString("description"),
-                        result.getFloat("price"),
-                        result.getString("tag")
-                ));
-
-            }
-            return list;
-        } finally {
-            this.disconnectDatabase();
-        }
-    }
-
     public List<Category> getAllCategory() throws SQLException {
         this.connectDatabase();
         String getAllCategory = "SELECT * FROM db_ite1.category;";
@@ -483,6 +510,222 @@ public class CourseRepository extends Repository {
                 list.add(new Category(result.getInt("id"), result.getString("category_name")));
             }
             return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean deleteSubjectDimensionByCourseId(int courseId, int dimensionId) throws SQLException {
+        this.connectDatabase();
+        String deleteSubjectDimension = "DELETE FROM db_ite1.course_dimension "
+                + "WHERE course_id = ? and dimension_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(deleteSubjectDimension)) {
+            statement.setInt(1, courseId);
+            statement.setInt(2, dimensionId);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public List<Dimension> getSubjectDimensionByCourseId(int courseId) throws SQLException {
+        this.connectDatabase();
+        String getSubjectDimension = "SELECT cd.dimension_id,dt.dimension_type_name,d.name,d.description "
+                + "FROM db_ite1.course_dimension cd "
+                + "INNER JOIN dimension d ON cd.dimension_id = d.id "
+                + "INNER JOIN dimension_type dt on d.type_id = dt.id "
+                + "WHERE course_id = ? ORDER BY type_id";
+        List<Dimension> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(getSubjectDimension)) {
+            statement.setInt(1, courseId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new Dimension(result.getInt("dimension_id"),
+                        result.getString("dimension_type_name"),
+                        result.getString("name"),
+                        result.getString("description")));
+            }
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean addDimension(int typeId, String name, String description) throws SQLException {
+        this.connectDatabase();
+        String addDimension = "INSERT INTO db_ite1.dimension (type_id,name,description) "
+                + "VALUES (?,?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(addDimension)) {
+            statement.setInt(1, typeId);
+            statement.setString(2, name);
+            statement.setString(3, description);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    public boolean addNewSubject(Course course, InputStream inputStream) throws SQLException {
+        this.connectDatabase();
+
+        String addNewSubject = "INSERT INTO course(title, thumbnails, description, "
+                + "owner, status_id, category_id, feature) VALUES(?,?,?,?,?,?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(addNewSubject)) {
+            statement.setString(1, course.getCourseName());
+            if (inputStream != null) {
+                // fetches input stream of the upload file for the blob column
+                statement.setBlob(2, inputStream);
+            }
+            statement.setString(3, course.getDescription());
+            statement.setInt(4, course.getOwnerId());
+            statement.setInt(5, CourseStatus.valueOf(course.getStatus()));
+            statement.setString(6, course.getCategory());
+            statement.setBoolean(7, course.isFeature());
+
+            return statement.executeUpdate() > 0;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public Dimension getDimensionId(String dimension) throws SQLException {
+        this.connectDatabase();
+        String getDimensionId = "SELECT * FROM db_ite1.dimension WHERE name = ?";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(getDimensionId)) {
+            statement.setString(1, dimension);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new Dimension(result.getInt("id"),
+                        result.getString("type_id"),
+                        result.getString("name"),
+                        result.getString("description"));
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return null;
+    }
+
+    public boolean addDimensionCourse(int courseId, int dimensionId) throws SQLException {
+        this.connectDatabase();
+        String addDimension = "INSERT INTO db_ite1.course_dimension "
+                + "VALUES (?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(addDimension)) {
+            statement.setInt(1, courseId);
+            statement.setInt(2, dimensionId);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public Dimension getDimensionDetail(int dimensionId) throws SQLException {
+        this.connectDatabase();
+        String getDimensionId = "SELECT d.id,dt.dimension_type_name,d.name,d.description FROM db_ite1.dimension d INNER JOIN dimension_type dt "
+                + "on d.type_id = dt.id "
+                + "WHERE d.id = ?";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(getDimensionId)) {
+            statement.setInt(1, dimensionId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new Dimension(result.getInt("id"),
+                        result.getString("dimension_type_name"),
+                        result.getString("name"),
+                        result.getString("description"));
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return null;
+    }
+
+    public boolean updateSubjectDimension(int typeId, String name, String description, int dimensionId) throws SQLException {
+        this.connectDatabase();
+        String addDimension = "UPDATE db_ite1.dimension SET type_id = ?,name= ?,description= ? "
+                + "WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(addDimension)) {
+            statement.setInt(1, typeId);
+            statement.setString(2, name);
+            statement.setString(3, description);
+            statement.setInt(4, dimensionId);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean addDimensionType(String type) throws SQLException {
+        this.connectDatabase();
+        String addDimension = "INSERT INTO db_ite1.dimension_type (dimension_type_name) "
+                + "VALUES (?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(addDimension)) {
+            statement.setString(1, type);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public DimensionType getDimensionTypeDetail(String type) throws SQLException {
+        this.connectDatabase();
+        String getDimensionType = "SELECT * FROM db_ite1.dimension_type WHERE dimension_type_name = ?";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(getDimensionType)) {
+            statement.setString(1, type);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new DimensionType(result.getInt("id"),
+                        result.getString("dimension_type_name"));
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return null;
+    }
+
+    public List<DimensionType> getAllDimenstionType() throws SQLException {
+        this.connectDatabase();
+        String getAllDimenstionType = "SELECT * FROM db_ite1.dimension_type";
+        List<DimensionType> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(getAllDimenstionType)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new DimensionType(result.getInt("id"),
+                        result.getString("dimension_type_name")));
+            }
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public HashMap<Integer, String> getOwners() throws SQLException {
+        this.connectDatabase();
+
+        HashMap<Integer, String> owners = new HashMap<>();
+        String getOwners = "SELECT user.id, user.full_name FROM user JOIN account"
+                + " ON user.email = account.user_email WHERE account.role_id = 1;";
+        try (PreparedStatement statement = this.connection.prepareStatement(getOwners)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                owners.put(result.getInt("id"), result.getString("full_name"));
+            }
+            return owners;
         } finally {
             this.disconnectDatabase();
         }
@@ -515,18 +758,18 @@ public class CourseRepository extends Repository {
                         result.getString("title"),
                         result.getString("description"),
                         result.getInt("owner"),
-                        result.getInt("status_id") == 0 ? Status.INACTIVE : Status.ACTIVE,
+                        result.getInt("status_id") == 0 ? CourseStatus.UNPUBLISHED : CourseStatus.PUBLISHED,
                         result.getString("category_name"),
                         result.getBoolean("feature"));
             }
 
-            return null;
         } finally {
             this.disconnectDatabase();
         }
+        return null;
     }
 
-    public boolean updateSubjectInformation(String courseName, String description,int owner, int status_id, int category_id,int feature, int id) throws SQLException {
+    public boolean updateSubjectInformation(String courseName, String description, int owner, int status_id, int category_id, int feature, int id) throws SQLException {
         this.connectDatabase();
 
         String updateUserInformation = "UPDATE db_ite1.course "
@@ -556,16 +799,93 @@ public class CourseRepository extends Repository {
 
     }
 
+    public HashMap<Integer, String> getCourses() throws SQLException {
+        this.connectDatabase();
+
+        HashMap<Integer, String> courses = new HashMap<>();
+        String getHmCourse = "SELECT id, title FROM course ORDER BY title";
+        try (PreparedStatement statement = this.connection.prepareStatement(getHmCourse)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                courses.put(result.getInt("id"), result.getString("title"));
+
+            }
+            return courses;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public ArrayList<ArrayList<String>> getSubjectList(String keyword, int categoryId, Status status, int teacherId) throws SQLException {
+        this.connectDatabase();
+
+        String option = "WHERE 1=1 ";
+
+        if (keyword != null && !keyword.equals("")) {
+            keyword = "%" + keyword + "%";
+            option += "AND c.title LIKE '" + keyword + "' ";
+        }
+
+        if (categoryId != -1) {
+            option += "AND c.category_id = " + categoryId + " ";
+        }
+
+        if (status != null) {
+            option += "AND c.status_id = " + Status.valueOf(status) + " ";
+        }
+
+        if (teacherId != -1) {
+            option += "AND c.owner = " + teacherId + " ";
+        }
+
+        String getSubject = "SELECT c.id, "
+                + "       c.title, "
+                + "       c2.category_name, "
+                + "       IF(COUNT(l.course_id) IS NULL, 0, COUNT(l.course_id)) AS lessonCount, "
+                + "       u.full_name, "
+                + "       c.status_id "
+                + "FROM course c "
+                + "         LEFT OUTER JOIN category c2 on c.category_id = c2.id "
+                + "         LEFT OUTER JOIN lesson l on c.id = l.course_id "
+                + "         LEFT OUTER JOIN user u on c.owner = u.id "
+                + option
+                + "GROUP BY c.id, c.title, c.category_id, c2.category_name, c.owner, u.full_name, c.status_id "
+                + "ORDER BY c.id";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(getSubject)) {
+            ResultSet result = statement.executeQuery();
+            ArrayList<ArrayList<String>> subjectInfo = new ArrayList<>();
+
+            while (result.next()) {
+                ArrayList<String> info = new ArrayList<>();
+
+                info.add(result.getString("id"));
+                info.add(result.getString("title"));
+                info.add(result.getString("category_name"));
+                info.add(result.getString("lessonCount"));
+                info.add(result.getString("full_name"));
+
+                Status statusInfo = result.getInt("status_id") == 0 ? Status.INACTIVE : Status.ACTIVE;
+                info.add(statusInfo.toString());
+
+                subjectInfo.add(info);
+            }
+
+            return subjectInfo;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         CourseRepository repo = new CourseRepository();
         try {
-            List<Category> list = repo.getAllCategory();
-            for (Category o : list) {
+            List<DimensionType> list = repo.getAllDimenstionType();
+//            Course list = repo.getSubject(2);
+            for (DimensionType o : list) {
                 System.out.println(o);
             }
         } catch (Exception e) {
         }
     }
-
-
 }

@@ -22,4 +22,8 @@ public enum CourseStatus {
     public static int valueOf(CourseStatus courseStatus) {
         return COURSE_STATUS_VALUE.get(courseStatus);
     }
+
+    public static int valueOf(Status status) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -36,23 +36,23 @@
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link ${activeId == 2 ? "active":""}" 
-                           id="dimension-tab" 
-                           data-toggle="tab" 
-                           href="#dimension" 
-                           role="tab" 
-                           aria-controls="dimension" 
+                        <a class="nav-link ${activeId == 2 ? "active":""}"
+                           id="dimension-tab"
+                           data-toggle="tab"
+                           href="#dimension"
+                           role="tab"
+                           aria-controls="dimension"
                            aria-selected="false">
                             Dimension
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link ${activeId == 3 ? "active":""}" 
-                           id="pricepackage-tab" 
-                           data-toggle="tab" 
-                           href="#pricepackage" 
-                           role="tab" 
-                           aria-controls="pricepackage" 
+                        <a class="nav-link ${activeId == 3 ? "active":""}"
+                           id="pricepackage-tab"
+                           data-toggle="tab"
+                           href="#pricepackage"
+                           role="tab"
+                           aria-controls="pricepackage"
                            aria-selected="false">
                             Price package
                         </a>
@@ -71,7 +71,7 @@
                         <div class="request-info">
                             <input name="previousPage" value="home" hidden="true" />
                             <div class="invalid-feedback"></div>
-                            <input name="operation" value="changeSubjectInformation" hidden="true" />
+                            <input name="operation" value="CHANGESUBJECTINFORMATION" hidden="true" />
                             <div class="invalid-feedback"></div>
                         </div>
                         <div id="upper" class="d-flex">
@@ -118,8 +118,8 @@
                                     <div id="courseStatus" class="col-md-2" style="display: flex">
                                         <label style="margin-top: -.5rem; margin-right: .2rem">Status</label>
                                         <select name="status" style="height: max-content">
-                                            <option value="1" ${detail.status=="ACTIVE"?"selected":""}>Published</option>
-                                            <option value="0" ${detail.status=="INACTIVE"?"selected":""}>Unpublished</option>
+                                            <option value="1" ${detail.status=="PUBLISHED"?"selected":""}>Published</option>
+                                            <option value="0" ${detail.status=="UNPUBLISHED"?"selected":""}>Unpublished</option>
                                         </select>           
                                     </div>
                                 </div>
@@ -140,14 +140,120 @@
                         </div>
                     </form>
                 </div>
-                <div class="tab-pane fade ${activeId == 2 ? "show active":""}" 
-                     id="dimension" 
-                     role="tabpanel" 
-                     aria-labelledby="dimension-tab">whatup</div>
-                <div class="tab-pane fade ${activeId == 3 ? "show active":""}" 
-                     id="pricepackage" 
-                     role="tabpanel" 
-                     aria-labelledby="pricepackage-tab">what's up</div>
+                <div class="tab-pane fade ${activeId == 2 ? "show active":""}"
+                     id="dimension"
+                     role="tabpanel"
+                     aria-labelledby="dimension-tab">      
+                    <div style='text-align: right'>
+                        <button class="btn mb-2" style='background-color: #4caf50'
+                                data-toggle="modal" data-target="#AddSubject">
+                            Add new
+                        </button>
+                        <div class="modal fade" id="AddSubject">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="font-weight-bold">Add new subject dimesion</h5>
+                                        <button data-dismiss="modal" class="close">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="${path}/auth/teacher/subject?operation=ADDSUBJECT"
+                                              method="post">
+                                            <div class="form-group">
+                                                <label class="d-block text-left" for="type">
+                                                    Type
+                                                </label>
+                                                <input name="type"
+                                                       type="text"
+                                                       class="form-control"
+                                                       id="type"
+                                                       data-value-missing="Can't be empty"
+                                                       required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="d-block text-left" for="dimension">
+                                                    Dimension
+                                                </label>
+                                                <input name="dimension"
+                                                       type="text"
+                                                       class="form-control"
+                                                       id="dimension"
+                                                       data-value-missing="Can't be empty"
+                                                       required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="d-block text-left"
+                                                       for="description">
+                                                    Description
+                                                </label>
+                                                <textarea rows="5"
+                                                          name="description"
+                                                          type="text"
+                                                          class="form-control"
+                                                          id="description"
+                                                          data-value-missing="Can't be empty"
+                                                          required></textarea>
+                                            </div>
+                                            <div class="modal-footer myModalFooter">
+                                                <button class="btn btn-success" type="submit">
+                                                    Add
+                                                </button> 
+                                                <button data-dismiss="modal" class="btn btn-danger">
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </form>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr style='background-color: rgb(204,204,204)'>
+                                <th style='border-bottom: 0px;width:5%' scope="col">#</th>
+                                <th style='border-bottom: 0px;width:10%' scope="col">Type</th>
+                                <th style='border-bottom: 0px;width:70%' scope="col">Dimension</th>
+                                <th style='border-bottom: 0px' scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${listDimension}" var="o">
+                                <tr>
+                                    <th scope="row">${o.id}</th>
+                                    <td>${o.type}</td>
+                                    <td>${o.name}</td>
+                                    <td>
+
+                                        <a style="color:white;" href="${path}/auth/teacher/subject?operation=GETDIMENSIONDETAIL&&dimensionId=${o.id}">
+                                            <button class="btn mb-2" style='background-color: #ff9800;color:white'>
+                                                Edit
+                                            </button>
+                                        </a>
+                                        <a href="${path}/auth/teacher/subject?operation=DELETESUBJECT&&courseId=1&&dimensionId=${o.id}">
+                                            <button class="btn btn-danger mb-2">
+                                                Delete
+                                            </button>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="tab-pane fade ${activeId == 3 ? "show active":""}"
+                     id="pricepackage"
+                     role="tabpanel"
+                     aria-labelledby="pricepackage-tab">
+                    what's up
+                </div>
             </div>
         </div>
     </body>

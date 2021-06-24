@@ -32,7 +32,7 @@ public class BlogController extends HttpServlet {
             throws ServletException, IOException {
         String operation = request.getParameter("operation");
 
-        if (operation.equals("BLOG")) {
+        if (operation == null) {
             // Get posts
             getBlogPagination(request, response);
         } else {

@@ -4,9 +4,11 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
 /* 
+
     Created on : Jun 15, 2021, 4:33:24 PM
     Author     : Admin
 */
+
 
 .tab-content{
     border:1px solid rgba(0,0,0,0.3);
@@ -15,7 +17,8 @@ and open the template in the editor.
 }
 .tab-content .tab-pane{
     padding:  0.5rem 1rem;
-    background: #fff
+    background: #F3F2ED
+
 }
 .nav-item{
     border-right:1px solid rgba(0,0,0,0.3);
@@ -38,3 +41,6 @@ and open the template in the editor.
 .nav-tabs{
     border-bottom: none
 }
+
+
+

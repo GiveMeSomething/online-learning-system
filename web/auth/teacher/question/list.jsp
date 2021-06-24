@@ -145,14 +145,7 @@
                         </tr>
                     </thead>
                     <tbody>
-
-                        <c:if test="${requestScope.questionList == null || requestScope.questionList.size() == 0}">
-                        <div>
-                            list not found
-                        </div>
-                    </c:if>
                     <c:forEach items="${requestScope.pageItems}" var="o">
-
                         <tr>
                             <td>${o.id}</td>
                             <td>${o.course}</td>
@@ -163,7 +156,7 @@
                             <td>${o.status}</td>
                             <td>
                                 <button class="btn btn-secondary">
-                                    <a href="#" class="btn btn-secondary" style="width: 5rem; font-size: 10px; font-weight: bold">View&Edit</a>
+                                    <a href="${path}/auth/teacher/question?operation=VIEW&&questionId=${o.id}" class="btn btn-secondary" style="width: 5rem; font-size: 10px; font-weight: bold">View&Edit</a>
                                 </button>
                             </td>
                         </tr>

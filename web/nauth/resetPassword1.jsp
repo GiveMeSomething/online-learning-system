@@ -19,6 +19,11 @@
     </head>
     <body>
         <jsp:include page="../components/global/navbar.jsp"/>
+        <c:if test="${requestScope.errorMessage != null}">
+            <div class="d-flex w-100 align-items-center justify-content-end">
+                <h5>${requestScope.errorMessage}</h5>
+            </div>
+        </c:if>
         <form action="${path}/authenticate" method="POST" 
               class="needs-validation w-25 bg-light d-block" 
               novalidate style="margin: auto;">
@@ -38,7 +43,7 @@
             </div>
             <button type="submit" class="btn btn-primary my-2 align-mid">Send reset request</button>
         </form>
-        <jsp:include page="../components/global/navbar.jsp"/>
+        <jsp:include page="../components/global/footer.jsp"/>
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
