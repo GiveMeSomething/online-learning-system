@@ -47,18 +47,20 @@
                             Dimension
                         </a>
                     </li>
+                    <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
                     <li class="nav-item" role="presentation">
                         <a style="text-align: center; align-items: center; padding-bottom: 1px;"
-                           class="nav-link ${activeId == 3 ? "active":""}"
+                         
                            id="pricepackage-tab"
                            data-toggle="tab"
                            href="#pricepackage"
                            role="tab"
                            aria-controls="auth/teacher/subject?operation=LISTPACKAGE&page=1"
                            aria-selected="false">
-                          <a href="${path}/auth/teacher/subject?operation=list">Price package</a>
+                            <a class="nav-link ${activeId == 3 ? "active":""}" style="text-decoration: none" href="${path}/auth/teacher/subject?operation=list">Price package</a>
                         </a>
                     </li>
+                    </c:if>
                 </ul> 
             </div>
             <div class="tab-content" id="myTabContent">
@@ -115,14 +117,21 @@
                                                 </option>
                                             </c:forEach>
                                         </select>
+                                           
+                                            
+                                   
                                         <div class="invalid-feedback"></div>
                                     </div>
                                     <div id="courseStatus" class="col-md-2" style="display: flex">
                                         <label style="margin-top: -.5rem; margin-right: .2rem">Status</label>
                                         <select name="status" style="height: max-content">
+                  
                                             <option value="1" ${detail.status=="PUBLISHED"?"selected":""}>Published</option>
                                             <option value="0" ${detail.status=="UNPUBLISHED"?"selected":""}>Unpublished</option>
-                                        </select>           
+                                        </select>     
+
+                                        
+                        
                                     </div>
                                 </div>
                             </div>
@@ -223,7 +232,7 @@
                             <tr style='background-color: rgb(204,204,204)'>
                                 <th style='border-bottom: 0px;width:5%' scope="col">#</th>
                                 <th style='border-bottom: 0px;width:10%' scope="col">Type</th>
-                                <th style='border-bottom: 0px;width:70%' scope="col">Dimension</th>
+                                <th style='border-bottom: 0px;width:68%' scope="col">Dimension</th>
                                 <th style='border-bottom: 0px' scope="col">Action</th>
                             </tr>
                         </thead>
@@ -254,7 +263,7 @@
 
                 </div>
                <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
-                    <div class="tab-pane fade ${activeId == 3?"show active":""}" id="pricepackage" role="tabpanel" aria-labelledby="pricepackage-tab">
+                    <div class="tab-pane fade ${activeId == 3 ? "show active":""}" id="pricepackage" role="tabpanel" aria-labelledby="pricepackage-tab">
 
                         <jsp:include page="/auth/teacher/subject/price-package.jsp"/>
                     </div>

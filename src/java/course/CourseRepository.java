@@ -877,7 +877,8 @@ public class CourseRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-      public boolean addPackage(int duration, String name, double price, int status, String descriptions, double discount) throws SQLException {
+
+    public boolean addPackage(int duration, String name, double price, int status, String descriptions, double discount) throws SQLException {
         this.connectDatabase();
         String query = "INSERT INTO `db_ite1`.`price_package` "
                 + "(`duration`, `name`, `list_price`, `status_id`, `description`, `discount`) "
@@ -935,7 +936,8 @@ public class CourseRepository extends Repository {
         }
         return false;
     }
- public List<PricePack> pagingPricePackage(int index) throws SQLException {
+
+    public List<PricePack> pagingPricePackage(int index) throws SQLException {
         this.connectDatabase();
         List<PricePack> list = new ArrayList<>();
         String getAllPricePackage = "SELECT id, duration, name, list_price, status_id, description, discount FROM db_ite1.price_package LIMIT 5 OFFSET ?";
@@ -971,14 +973,31 @@ public class CourseRepository extends Repository {
         return 0;
     }
 
+    public Course getCategoryByCourseId(int courseId) throws SQLException {
+        this.connectDatabase();
+        String searchCourse = "SELECT id,category_id FROM db_ite1.course WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
+            statement.setInt(1, courseId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new Course(
+                        result.getInt("id"),
+                        result.getString("category_id")
+                );
+
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return null;
+    }
+
     public static void main(String[] args) throws Exception {
         CourseRepository repo = new CourseRepository();
         try {
-            List<DimensionType> list = repo.getAllDimenstionType();
-//            Course list = repo.getSubject(2);
-            for (DimensionType o : list) {
-                System.out.println(o);
-            }
+            Course c = repo.getCategoryByCourseId(10);
+            System.out.println(c.getCategory());
         } catch (Exception e) {
         }
     }

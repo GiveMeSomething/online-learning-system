@@ -26,6 +26,11 @@ public class Course {
     public Course() {
     }
 
+    public Course(int id,String category){
+       this.id = id;
+       this.category = category;
+   }
+    
     public Course(int id, String imageLink, String courseName, float price, String description, int ownerId, CourseStatus status, String category, boolean feature, String tag) {
         this.id = id;
         this.imageLink = imageLink;

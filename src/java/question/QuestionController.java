@@ -128,15 +128,19 @@ public class QuestionController extends HttpServlet {
         int subjectId = 1;
         if (request.getParameter("questionId") != null) {
             questionId = Integer.parseInt(request.getParameter("questionId"));
-            categoryId = 6;
-            subjectId = Integer.parseInt(request.getParameter("subjectId"));
+            session.setAttribute("questionId", questionId);
         }
-        if (operation.equals("MANAGEQUESTION")) {
+        if (request.getParameter("subjectId") != null) {
+            subjectId = Integer.parseInt(request.getParameter("subjectId"));
+            session.setAttribute("subjectId", subjectId);
+            categoryId = Integer.parseInt(courseService.getCategoryByCourseId(subjectId).getCategory());
+        }
+        if (operation == null) {
             processInputForQuestion(request, response);
-
+        } else if (operation.equals("MANAGEQUESTION")) {
+            processInputForQuestion(request, response);
         } else if (operation.equals("PAGINATION")) {
             int page = Integer.parseInt(request.getParameter("page"));
-
             List<Question> pageItems = getQuestionPerPage((List<Question>) session.getAttribute("questionList"), page);
             if (pageItems != null) {
                 request.setAttribute("dimensionList", questionService.getDimensionList(subjectId));
@@ -146,7 +150,8 @@ public class QuestionController extends HttpServlet {
                 response.sendRedirect("/nauth/404.jsp");
             }
         } else if (operation.equals("VIEW")) {
-
+            subjectId = Integer.parseInt(session.getAttribute("subjectId") + "");
+            categoryId = Integer.parseInt(courseService.getCategoryByCourseId(Integer.parseInt(session.getAttribute("subjectId") + "")).getCategory());
             processUserInterface(request, response, questionId, categoryId, subjectId);
             Question questionDetail = questionService.getQuestionDetails(questionId);
             String image = questionDetail.getMedia();
@@ -196,14 +201,15 @@ public class QuestionController extends HttpServlet {
             throws ServletException, IOException {
         String operation = request.getParameter("operation");
         String columnUpdated = request.getParameter("columnUpdated");
+        HttpSession session = request.getSession();
         int questionId = 1;
-        int categoryId = 1;
-        int subjectId = 1;
-        if (request.getParameter("questionId") != null) {
-            questionId = Integer.parseInt(request.getParameter("questionId"));
-            categoryId = 6;
-            subjectId = Integer.parseInt(request.getParameter("subjectId"));
+        if(session.getAttribute("questionId") != null){
+            questionId = Integer.parseInt(session.getAttribute("questionId")+"");
         }
+        
+        int subjectId = Integer.parseInt(session.getAttribute("subjectId")+"");
+        int categoryId = Integer.parseInt(courseService.getCategoryByCourseId(subjectId).getCategory());
+            
         if (operation.equals("SEARCHQUESTION")) {
             processInputForQuestion(request, response);
         } else if (operation.equals("UPDATEANSWER")) {
@@ -221,6 +227,7 @@ public class QuestionController extends HttpServlet {
             int dimensionId = Integer.parseInt(request.getParameter("dimension"));
             int lessonId = Integer.parseInt(request.getParameter("lesson"));
             int statusId = Integer.parseInt(request.getParameter("status"));
+            subjectId = Integer.parseInt(request.getParameter("subject"));
             String content = request.getParameter("content");
             String media = request.getParameter("media");
             String option1 = request.getParameter("option1");
@@ -274,22 +281,22 @@ public class QuestionController extends HttpServlet {
             int totalAnswerOptions = questionService.countAnswerOptions();
             request.setAttribute("totalAnswerOptions", totalAnswerOptions);
             request.setAttribute("image", uploadFile(request));
+            
+            
             processUserInterface(request, response, questionId, categoryId, subjectId);
             request.getRequestDispatcher("/auth/teacher/question/detail.jsp").forward(request, response);
             //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/detail.jsp
-        }
-        else if (operation.equals("Import") ){
-                importQuestion(request, response);
-        }
-        else {
+        } else if (operation.equals("Import")) {
+            importQuestion(request, response);
+        } else {
             switch (operation) {
-            case "Import":
-                importQuestion(request, response);
-                break;
-            default:
-                response.sendRedirect("ImportQuestion.jsp");
-                break;
-        }
+                case "Import":
+                    importQuestion(request, response);
+                    break;
+                default:
+                    response.sendRedirect("ImportQuestion.jsp");
+                    break;
+            }
         }
     }
 
@@ -326,9 +333,14 @@ public class QuestionController extends HttpServlet {
         request.setAttribute("selectedStatus", statusString);
         request.setAttribute("selectedLevel", levelString);
         request.setAttribute("selectedKeyword", keyword);
+        HttpSession session = request.getSession();
+       
+        int subjectId = Integer.parseInt(session.getAttribute("subjectId")+"");
 
-
-        int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+//        int subjectId = 1;
+//        if (request.getParameter("subjectId") != null) {
+//            subjectId = Integer.parseInt(request.getParameter("subjectId"));
+//        }
         if (keyword == null || keyword.equals("")) {
             keyword = "";
         }
@@ -390,7 +402,8 @@ public class QuestionController extends HttpServlet {
 
         return page;
     }
-     public void importQuestion(HttpServletRequest request, HttpServletResponse response)
+
+    public void importQuestion(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         InputStream inputStream = null;

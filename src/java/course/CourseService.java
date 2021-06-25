@@ -408,4 +408,13 @@ public class CourseService {
         }
         return 0;
     }
+    
+    public Course getCategoryByCourseId(int courseId){
+        try {
+            return courseRepository.getCategoryByCourseId(courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
