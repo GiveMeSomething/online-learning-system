@@ -8,6 +8,7 @@ import common.entities.Category;
 import common.entities.Course;
 import common.entities.Dimension;
 import common.entities.DimensionType;
+import common.entities.PricePack;
 import common.entities.PricePackage;
 import java.io.InputStream;
 import common.entities.Status;
@@ -363,5 +364,48 @@ public class CourseService {
             e.printStackTrace();
         }
         return null;
+    }
+     public boolean addPackage(int duration, String name, double price, int status, String descriptions, double discount) {
+        try {
+            return courseRepository.addPackage(duration, name, price, status, descriptions, discount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean deletePackage(int id) {
+        try {
+            return courseRepository.deletePackage(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean editPackage(int id, int duration, String name, double price, int status, String descriptions, double discount) {
+        try {
+            return courseRepository.editPackage(id, duration, name, price, status, descriptions, discount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public List<PricePack> getPricePackage(int index) {
+        try {
+            return courseRepository.pagingPricePackage(index);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int countTotalPricePackage() {
+        try {
+            return courseRepository.countTotalPricePackage();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

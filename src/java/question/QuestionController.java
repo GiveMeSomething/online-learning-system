@@ -19,8 +19,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import javax.servlet.http.Part;
 import java.io.IOException;
-
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,6 +28,11 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 10,
@@ -273,6 +278,19 @@ public class QuestionController extends HttpServlet {
             request.getRequestDispatcher("/auth/teacher/question/detail.jsp").forward(request, response);
             //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/detail.jsp
         }
+        else if (operation.equals("Import") ){
+                importQuestion(request, response);
+        }
+        else {
+            switch (operation) {
+            case "Import":
+                importQuestion(request, response);
+                break;
+            default:
+                response.sendRedirect("ImportQuestion.jsp");
+                break;
+        }
+        }
     }
 
     public void processInputForQuestion(HttpServletRequest request, HttpServletResponse response)
@@ -372,5 +390,71 @@ public class QuestionController extends HttpServlet {
 
         return page;
     }
+     public void importQuestion(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        InputStream inputStream = null;
+        Part filePart = request.getPart("fileExcel");
+        if (filePart != null) {
+            // obtains input stream of the upload file
+            inputStream = filePart.getInputStream();
+        }
+        Workbook workbook = new XSSFWorkbook(inputStream);
+        Sheet firstSheet = workbook.getSheetAt(0);
+        Iterator<Row> rowIterator = firstSheet.iterator();
+        rowIterator.next(); // skip the header row
+        int status = 0;
+        String content = null,
+                media = null,
+                explaination = null,
+                answer = null,
+                option1 = null,
+                option2 = null,
+                option3 = null,
+                option4 = null;
+        while (rowIterator.hasNext()) {
+            Row nextRow = rowIterator.next();
+            Iterator<Cell> cellIterator = nextRow.cellIterator();
 
+            while (cellIterator.hasNext()) {
+                Cell nextCell = cellIterator.next();
+
+                int columnIndex = nextCell.getColumnIndex();
+
+                switch (columnIndex) {
+                    case 0:
+                        status = (int) nextCell.getNumericCellValue();
+                        break;
+                    case 1:
+                        content = nextCell.getStringCellValue();
+                        break;
+                    case 2:
+                        media = nextCell.getStringCellValue();
+                        break;
+                    case 3:
+                        explaination = nextCell.getStringCellValue();
+                        break;
+                    case 4:
+                        answer = nextCell.getStringCellValue();
+                        break;
+                    case 5:
+                        option1 = nextCell.getStringCellValue();
+                        break;
+                    case 6:
+                        option2 = nextCell.getStringCellValue();
+                        break;
+                    case 7:
+                        option3 = nextCell.getStringCellValue();
+                        break;
+                    case 8:
+                        option4 = nextCell.getStringCellValue();
+                        break;
+                }
+
+            }
+            questionService.addQuestion(status, content, media, explaination, answer, option1, option2, option3, option4);
+        }
+        /*đoạn dưới này là đã import xong, muốn quay về trang nào thì code*/
+        out.print("Import Successfully OK!");
+    }
 }

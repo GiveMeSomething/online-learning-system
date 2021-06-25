@@ -25,14 +25,15 @@
             <div>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link ${activeId == 1 ? "active":""}"
+                        <a  
+                           class="nav-link ${activeId == 1 ? "active":""}"
                            id="overview-tab" 
                            data-toggle="tab" 
                            href="#overview" 
                            role="tab" 
                            aria-controls="overview" 
                            aria-selected="true">
-                            Overview
+                           OverView
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -47,14 +48,15 @@
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link ${activeId == 3 ? "active":""}"
+                        <a style="text-align: center; align-items: center; padding-bottom: 1px;"
+                           class="nav-link ${activeId == 3 ? "active":""}"
                            id="pricepackage-tab"
                            data-toggle="tab"
                            href="#pricepackage"
                            role="tab"
-                           aria-controls="pricepackage"
+                           aria-controls="auth/teacher/subject?operation=LISTPACKAGE&page=1"
                            aria-selected="false">
-                            Price package
+                          <a href="${path}/auth/teacher/subject?operation=list">Price package</a>
                         </a>
                     </li>
                 </ul> 
@@ -251,12 +253,12 @@
                     </table>
 
                 </div>
-                <div class="tab-pane fade ${activeId == 3 ? "show active":""}"
-                     id="pricepackage"
-                     role="tabpanel"
-                     aria-labelledby="pricepackage-tab">
-                    what's up
-                </div>
+               <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
+                    <div class="tab-pane fade ${activeId == 3?"show active":""}" id="pricepackage" role="tabpanel" aria-labelledby="pricepackage-tab">
+
+                        <jsp:include page="/auth/teacher/subject/price-package.jsp"/>
+                    </div>
+                </c:if>
             </div>
         </div>
     </body>

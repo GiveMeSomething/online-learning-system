@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import common.entities.Category;
 import common.entities.Course;
 import common.entities.CourseStatus;
+import common.entities.PricePack;
 import common.utilities.Controller;
 import course.CourseService;
 import java.io.IOException;
@@ -61,7 +62,7 @@ public class SubjectController extends HttpServlet implements Controller {
         String operation = request.getParameter("operation");
         if (operation == null) {
             processInputForSubject(request, response);
-
+            //listPackagePrice(request, response);
         } else {
             switch (operation) {
                 case "VIEW":
@@ -69,6 +70,7 @@ public class SubjectController extends HttpServlet implements Controller {
                     request.setAttribute("activeId", 1);
                     processInputForOverview(request, response, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
                     displayData(request, response, Integer.parseInt((String) currentSession.getAttribute("currentSubject")));
+                    listPackagePrice(request, response);
                     break;
                 case "DELETESUBJECT":
                     deleteSubjectDimension(request, response);
@@ -89,8 +91,21 @@ public class SubjectController extends HttpServlet implements Controller {
                 case "GETSUBJECT":
                     processInputForSubject(request, response);
                     break;
+                case "addPackage":
+                    addPackage(request, response);
+                    break;
+                case "deletePackage":
+                    deletePackage(request, response);
+                    break;
+                case "editPackage":
+                    editPackage(request, response);
+                    break;
+                case "list":
+                    listPackagePrice(request, response);
+                    break;
                 default:
-                    response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+                    //response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+                    listPackagePrice(request, response);
             }
         }
     }
@@ -98,6 +113,7 @@ public class SubjectController extends HttpServlet implements Controller {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String operation = request.getParameter("operation");
         String subjectId = request.getParameter("subjectId");
         HttpSession currentSession = request.getSession();
@@ -137,8 +153,21 @@ public class SubjectController extends HttpServlet implements Controller {
             case "ADDNEWSUBJECT":
                 addNewSubject(request, response);
                 break;
+            case "addPackage":
+                addPackage(request, response);
+                break;
+            case "deletePackage":
+                deletePackage(request, response);
+                break;
+            case "editPackage":
+                editPackage(request, response);
+                break;
+            case "list":
+                listPackagePrice(request, response);
+                break;
             default:
-                response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+                //response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+                listPackagePrice(request, response);
                 break;
         }
     }
@@ -373,4 +402,55 @@ public class SubjectController extends HttpServlet implements Controller {
 
         return page;
     }
+
+    private void listPackagePrice(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String index = request.getParameter("page");
+        if (index == null || index.equals("")) {
+            index = "1";
+        }
+        List<PricePack> listPackage = courseService.getPricePackage(Integer.parseInt(index));
+        int endPage = (courseService.countTotalPricePackage() / 5) + (courseService.countTotalPricePackage() % 5 == 0 ? 0 : 1);
+        request.setAttribute("index", index);
+        request.setAttribute("endPage", endPage);
+        request.setAttribute("listP", listPackage);
+        request.setAttribute("activeId", 3);
+        request.setAttribute("totalPackage", courseService.countTotalPricePackage());
+        request.setAttribute("totalPackageOfPage", listPackage.size());
+        request.getRequestDispatcher("/auth/teacher/subject/detail.jsp").forward(request, response);
+    }
+
+    private void addPackage(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String name = request.getParameter("namepackage");
+        int duration = Integer.parseInt(request.getParameter("duration"));
+        double price = Double.parseDouble(request.getParameter("price"));
+        double discount = Double.parseDouble(request.getParameter("discount"));
+        int status = Integer.parseInt(request.getParameter("status"));
+        String descriptions = request.getParameter("descriptions");
+        courseService.addPackage(duration, name, price, status, descriptions, discount);
+        response.sendRedirect(request.getContextPath() + "/auth/teacher/subject?operation=list");
+    }
+
+    private void deletePackage(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        courseService.deletePackage(id);
+        response.sendRedirect(request.getContextPath() + "/auth/teacher/subject?operation=list");
+    }
+
+    private void editPackage(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("eId"));
+        String name = request.getParameter("editName");
+        int duration = Integer.parseInt(request.getParameter("duration"));
+        double price = Double.parseDouble(request.getParameter("price"));
+        double discount = Double.parseDouble(request.getParameter("discount"));
+        int status = Integer.parseInt(request.getParameter("status"));
+        String descriptions = request.getParameter("descriptions");
+        courseService.editPackage(id, duration, name, price, status, descriptions, discount);
+        response.sendRedirect(request.getContextPath() + "/auth/teacher/subject?operation=list");
+    }
+
 }

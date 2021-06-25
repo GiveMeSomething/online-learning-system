@@ -62,6 +62,10 @@
         <servlet-name>QuizController</servlet-name>
         <servlet-class>quiz.QuizController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserCourseController</servlet-name>
+        <servlet-class>user_course.UserCourseController</servlet-class>
+    </servlet>
     <!--Servlet Mapping-->
     <servlet>
         <servlet-name>LessonController</servlet-name>
@@ -130,6 +134,10 @@
     <servlet-mapping>
         <servlet-name>SubjectController</servlet-name>
         <url-pattern>/auth/teacher/subject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserCourseController</servlet-name>
+        <url-pattern>/auth/user/UserCourse</url-pattern>
     </servlet-mapping>
     <!-- SMTP settings -->
     <context-param>
