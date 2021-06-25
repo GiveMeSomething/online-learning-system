@@ -108,29 +108,50 @@
                                         <input type="checkbox" id="featuredSubject" name="featuredSubject" <c:if test="${detail.feature == true}">checked</c:if>>
                                             <label for="featuredSubject" style="margin-top: -0.5rem; margin-left: 0.2rem">Featured subject</label>
                                         </div>
-                                        <div id="teacher" class="col-md-2 d-flex" style="margin-left: 2rem; margin-right: 10rem">
+                                        <div id="teacher" class="col-md-2 d-flex" style="margin-right: 8.5rem">
                                             <label for="subjectName" style="margin-top: -.5rem; margin-right: .2rem">Owner</label>
+                                            <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
                                             <select name="courseOwner" style="width: max-content; height: max-content">
                                             <c:forEach items="${authorList}" var="o">
                                                 <option value="${o.id}" <c:if test="${detail.ownerId == o.id}">selected</c:if>>                                                    
                                                     ${o.name}
                                                 </option>
                                             </c:forEach>
+                                            </select>
+                                            </c:if>
+                                                
+                                            <c:if test="${sessionScope.isAdmin != true}">
+                                                <select name="courseOwner" style="width: max-content; height: max-content" disabled>
+                                            <c:forEach items="${authorList}" var="o">
+                                                <option value="${o.id}" <c:if test="${detail.ownerId == o.id}">selected</c:if>>                                                    
+                                                    ${o.name}
+                                                </option>
+                                            </c:forEach>
+                                            
                                         </select>
-                                           
+                                           </c:if>
                                             
                                    
                                         <div class="invalid-feedback"></div>
                                     </div>
                                     <div id="courseStatus" class="col-md-2" style="display: flex">
                                         <label style="margin-top: -.5rem; margin-right: .2rem">Status</label>
+                                        <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
                                         <select name="status" style="height: max-content">
                   
                                             <option value="1" ${detail.status=="PUBLISHED"?"selected":""}>Published</option>
                                             <option value="0" ${detail.status=="UNPUBLISHED"?"selected":""}>Unpublished</option>
                                         </select>     
-
+                                        </c:if>
                                         
+                                        
+                                        <c:if test="${sessionScope.isAdmin != true}">
+                                            <select name="status" style="height: max-content" disabled>
+                  
+                                            <option value="1" ${detail.status=="PUBLISHED"?"selected":""}>Published</option>
+                                            <option value="0" ${detail.status=="UNPUBLISHED"?"selected":""}>Unpublished</option>
+                                        </select>     
+                                        </c:if>
                         
                                     </div>
                                 </div>

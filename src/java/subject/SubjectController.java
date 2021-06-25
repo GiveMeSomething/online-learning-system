@@ -9,6 +9,7 @@
  */
 package subject;
 
+import common.entities.Account;
 import common.entities.Dimension;
 import common.entities.DimensionType;
 import common.entities.Status;
@@ -19,6 +20,7 @@ import common.entities.Category;
 import common.entities.Course;
 import common.entities.CourseStatus;
 import common.entities.PricePack;
+import common.entities.Role;
 import common.utilities.Controller;
 import course.CourseService;
 import java.io.IOException;
@@ -116,18 +118,35 @@ public class SubjectController extends HttpServlet implements Controller {
                 break;
             }
             case "CHANGESUBJECTINFORMATION": {
+                User currentUser = (User) currentSession.getAttribute("user");
+                Account account = courseService.getRoleByUserEmail(currentUser.getEmail());
                 String subjectName = request.getParameter("subjectName");
                 int categoryBox = Integer.parseInt(request.getParameter("categoryBox"));
                 String[] isFeatured = request.getParameterValues("featuredSubject");
-                int status = Integer.parseInt(request.getParameter("status"));
+                int status = 1;
+                int courseOwner = 1;
+                if (account.getRole().equals(Role.ADMIN)) {
+                    status = Integer.parseInt(request.getParameter("status"));
+                }
 
                 String description = request.getParameter("description");
-                int courseOwner = Integer.parseInt(request.getParameter("courseOwner"));
-                if (isFeatured != null && isFeatured[0] != null) {
-                    courseService.updateSubjectInformation(subjectName, description, courseOwner, status, categoryBox, 1, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
-                } else {
-                    courseService.updateSubjectInformation(subjectName, description, courseOwner, status, categoryBox, 0, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
+                if (account.getRole().equals(Role.ADMIN)) {
+                    courseOwner = Integer.parseInt(request.getParameter("courseOwner"));
                 }
+                if (account.getRole().equals(Role.ADMIN)) {
+                    if (isFeatured != null && isFeatured[0] != null) {
+                        courseService.updateSubjectInformation(subjectName, description, courseOwner, status, categoryBox, 1, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
+                    } else {
+                        courseService.updateSubjectInformation(subjectName, description, courseOwner, status, categoryBox, 0, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
+                    } 
+                } else if(account.getRole().equals(Role.TEACHER)){
+                     if (isFeatured != null && isFeatured[0] != null) {
+                        courseService.updateSubjectInformation(subjectName, description, categoryBox, 1, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
+                    } else {
+                        courseService.updateSubjectInformation(subjectName, description, categoryBox, 0, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
+                    } 
+                }
+                
                 request.setAttribute("activeId", 1);
 //                response.sendRedirect("subject");
                 processInputForOverview(request, response, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));

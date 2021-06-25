@@ -4,6 +4,7 @@
  */
 package course;
 
+import common.entities.Account;
 import common.entities.Category;
 import common.entities.Course;
 import common.entities.Dimension;
@@ -416,5 +417,23 @@ public class CourseService {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public Account getRoleByUserEmail(String email){
+        try {
+            return courseRepository.getRoleByUserEmail(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public boolean updateSubjectInformation(String courseName, String description, int category_id, int feature, int id){
+        try {
+            return courseRepository.updateSubjectInformation(courseName, description, category_id, feature, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

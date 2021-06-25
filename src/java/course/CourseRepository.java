@@ -9,6 +9,7 @@ package course;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import common.entities.Account;
 import common.entities.Category;
 import common.entities.Course;
 import common.entities.CourseStatus;
@@ -16,6 +17,7 @@ import common.entities.Dimension;
 import common.entities.DimensionType;
 import common.entities.PricePack;
 import common.entities.PricePackage;
+import common.entities.Role;
 import common.entities.Status;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -799,6 +801,32 @@ public class CourseRepository extends Repository {
         }
 
     }
+    
+    public boolean updateSubjectInformation(String courseName, String description, int category_id, int feature, int id) throws SQLException {
+        this.connectDatabase();
+
+        String updateUserInformation = "UPDATE db_ite1.course "
+                + "SET course.title = ?, "
+                + "course.description = ?, "
+                + "course.category_id = ?, "
+                + "course.feature = ? "
+                + "WHERE course.id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(updateUserInformation)) {
+            statement.setString(1, courseName);
+            statement.setString(2, description);
+            statement.setInt(3, category_id);
+            statement.setInt(4, feature);
+            statement.setInt(5, id);
+            statement.executeUpdate();
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+
+    }
 
     public HashMap<Integer, String> getCourses() throws SQLException {
         this.connectDatabase();
@@ -996,9 +1024,42 @@ public class CourseRepository extends Repository {
     public static void main(String[] args) throws Exception {
         CourseRepository repo = new CourseRepository();
         try {
-            Course c = repo.getCategoryByCourseId(10);
-            System.out.println(c.getCategory());
+            Account a = repo.getRoleByUserEmail("toannkhe150086@fpt.edu.vn");
+            System.out.println(a);
         } catch (Exception e) {
         }
+    }
+
+    public Account getRoleByUserEmail(String email) throws SQLException {
+        this.connectDatabase();
+        String getRoleByUserEmail = "SELECT a.* FROM db_ite1.account a "
+                + "INNER JOIN db_ite1.user u "
+                + "ON a.user_email = u.email "
+                + "WHERE u.email = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(getRoleByUserEmail)) {
+            statement.setString(1, email);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                Role role = null;
+                switch (result.getInt("role_id")) {
+                    case 0:
+                        role = Role.ADMIN;
+                        break;
+                    case 1:
+                        role = Role.TEACHER;
+                        break;
+                    default:
+                        role = Role.STUDENT;
+                        break;
+                }
+                return new Account(result.getString("user_email"),
+                        result.getString("password"),
+                        role);
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return null;
     }
 }

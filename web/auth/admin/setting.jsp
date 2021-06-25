@@ -25,7 +25,7 @@
             <hr>
             <a href="#" onclick="postCategoryOn()">Post Categories</a>
             <hr>
-            <a href="#" onclick="subjectCategoryOn()">Subject Categories</a>
+            <a href="${path}/auth/teacher/subject" onclick="subjectCategoryOn()">Subject Categories</a>
             <hr>
             <a href="#" onclick="testTypeOn()">Test Types</a>
             <hr>

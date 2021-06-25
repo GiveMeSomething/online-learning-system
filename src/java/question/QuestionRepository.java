@@ -24,7 +24,7 @@ public class QuestionRepository extends Repository {
 
         if (keyword != null && !keyword.equals("")) {
             keyword = "%" + keyword + "%";
-            condition += "AND d.name LIKE '" + keyword + "' ";
+            condition += "AND q.content LIKE '" + keyword + "' ";
         }
 
         if (level != null) {

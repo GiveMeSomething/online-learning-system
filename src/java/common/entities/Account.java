@@ -56,4 +56,10 @@ public class Account {
         this.token = token;
     }
 
+    @Override
+    public String toString() {
+        return "Account{" + "email=" + email + ", password=" + password + ", role=" + role + ", token=" + token + '}';
+    }
+
+    
 }
