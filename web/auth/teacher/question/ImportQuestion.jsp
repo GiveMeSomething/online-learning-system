@@ -32,10 +32,8 @@
     <body>
     <center></center>
     <div class="w3-container">
-        <h2>Modal Tabs</h2>
-        <p>In this example we add tabbed content inside the modal.</p>
 
-        <button onclick="document.getElementById('id01').style.display = 'block'" class="w3-button w3-black">Open Tabbed Modal</button>
+        <button onclick="document.getElementById('id01').style.display = 'block'" class="w3-button w3-black">Import Question</button>
 
         <div id="id01" class="w3-modal">
             <div class="w3-modal-content w3-card-4 w3-animate-zoom">
