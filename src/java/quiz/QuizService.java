@@ -66,9 +66,9 @@ public class QuizService {
         return null;
     }
 
-    public ArrayList<Question> getQuestionByDimension(int courseId, int dimensionId, int num) {
+    public ArrayList<Question> getQuestionByDimension(int courseId, int dimensionId, int lessonId, int level, int num) {
         try {
-            return quizRepository.getQuestionByDimension(courseId, dimensionId, num);
+            return quizRepository.getQuestion(courseId, dimensionId, lessonId, level, num);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,9 +84,9 @@ public class QuizService {
         return 0;
     }
 
-    public HashMap<Integer, String> getDimension(Quiz quiz) {
+    public HashMap<Integer, String> getDimension(Quiz quiz, int dimensionType) {
         try {
-            return quizRepository.getDimension(quiz);
+            return quizRepository.getDimensionByType(quiz, dimensionType);
         } catch (Exception e) {
             e.printStackTrace();
         }

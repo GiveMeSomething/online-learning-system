@@ -263,19 +263,31 @@ public class QuizController extends HttpServlet implements Controller {
 //            combination.addAll(questions);
 //        }
         // Get value from Quiz Setting
+        HttpSession session = request.getSession();
+        int type = (Integer) session.getAttribute("type");
         String[] numberOfQues = request.getParameterValues("number-of-question");
-        String[] dimensionId = request.getParameterValues("dimension-name");
-        for (int i = 0; i < numberOfQues.length; i++) {
-            ArrayList<Question> questions = quizService.getQuestionByDimension(1, Integer.parseInt(dimensionId[i]), Integer.parseInt(numberOfQues[i]));
-            combination.addAll(questions);
+        if (type == 1) {
+            String[] lessonId = request.getParameterValues("dimension-name");
+            int level = Level.valueOf(quiz.getLevel());
+            for (int i = 0; i < numberOfQues.length; i++) {
+                ArrayList<Question> questions = quizService.getQuestionByDimension(1, 0, Integer.parseInt(lessonId[i]),
+                        level, Integer.parseInt(numberOfQues[i]));
+                combination.addAll(questions);
+            }
+        } else {
+            String[] dimensionId = request.getParameterValues("dimension-name");
+            int level = Level.valueOf(quiz.getLevel());
+            for (int i = 0; i < numberOfQues.length; i++) {
+                ArrayList<Question> questions = quizService.getQuestionByDimension(1, Integer.parseInt(dimensionId[i]), 0,
+                        level, Integer.parseInt(numberOfQues[i]));
+                combination.addAll(questions);
+            }
         }
-
         for (Question question : combination) {
             if (quizService.addQuizSetting(quiz, question.getId())) {
                 // Do something
             }
         }
-        HttpSession session = request.getSession();
         session.setAttribute("quiz", null);
         response.sendRedirect(request.getContextPath() + "/auth/teacher/quiz");
     }
@@ -317,12 +329,13 @@ public class QuizController extends HttpServlet implements Controller {
     public void viewQuiz(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
             throws ServletException, IOException {
         HashMap<Integer, String> getHmCourse = courseService.getCourses();
-        HashMap<Integer, String> getDimension = quizService.getDimension(quiz);
+
+//        HashMap<Integer, String> getDimension = quizService.getDimension(quiz);
         int countQuestion = quizService.countQuestion(quiz);
         request.setAttribute("course", getHmCourse);
         request.setAttribute("quiz", quiz);
         request.setAttribute("questionNumber", countQuestion);
-        request.setAttribute("dimension", getDimension);
+//        request.setAttribute("dimension", getDimension);
         request.getRequestDispatcher("/auth/teacher/quiz/detail.jsp").forward(request, response);
     }
 }

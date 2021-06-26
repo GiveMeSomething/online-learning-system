@@ -15,6 +15,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
               integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <title>Quiz Detail</title>
     </head>
 
@@ -134,15 +135,15 @@
                         <div class="form-row">
                             <span class="col-md-2">Question type</span>
                             <div class="custom-control custom-radio col-md-2">
-                                <input type="radio" checked="true" class="custom-control-input" id="topic" name="type" required>
+                                <input type="radio" checked="true" value="1" class="type custom-control-input" id="topic" name="type" required>
                                 <label class="custom-control-label" for="topic">Topic</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">
-                                <input type="radio" class="custom-control-input" id="group" name="type" required>
+                                <input type="radio" class="type custom-control-input" value="2" id="group" name="type" required>
                                 <label class="custom-control-label" for="group">Group</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">
-                                <input type="radio" class="custom-control-input" id="domain" name="type" required>
+                                <input type="radio" class="type custom-control-input" value="3" id="domain" name="type" required>
                                 <label class="custom-control-label" for="domain">Domain</label>
                                 <div class="invalid-feedback">More example invalid feedback text</div>
                             </div>
@@ -151,10 +152,8 @@
                         <c:forEach  begin="1" end="3" var="i" varStatus="status">
                             <div class="form-row">
                                 <div class="mb-3 col-md-7">
-                                    <select class="custom-select" id="group-name" name="dimension-name" required>
-                                        <c:forEach items="${dimension}" var="o">
-                                            <option selected value="${o.key}">${o.value}</option>
-                                        </c:forEach>
+                                    <select class="custom-select" id="dimension-name" name="dimension-name" required>
+                                            <option>Select dimension name</option>
                                     </select>
                                     <div class="invalid-feedback"></div>
                                 </div>
@@ -187,7 +186,92 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
                 integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
         crossorigin="anonymous"></script>
-        <script src="${path}/utilities/form-validator.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script type="text/javascript" src="${path}/utilities/form-validator.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+//                $.ajax({
+//                    url: "/online-learning-system/auth/teacher/quiz",
+//                    method: "GET",
+//                    data: {operation: 'type'},
+//                    success: function (data, textStatus, jqXHR) {
+//                        console.log(data);
+//                        let obj = $.parseJSON(data);
+//                        $.each(obj, function (key, value) {
+//                            $('#topic').append('<option value="' + value.id + '">' + value.name + '</option>')
+//                        });
+//                        $('select').formSelect();
+//                    },
+//                    error: function (jqXHR, textStatus, errorThrown) {
+//                        $('#country').append('wrong');
+//                    },
+//                    cache: false
+//                });
+
+
+                $('#dimension-name').ready(function () {
+//                    $('#state').find('option').remove();
+//                    $('#state').append('<option>Select State</option>');
+//                    $('#city').find('option').remove();
+//                    $('#city').append('<option>Select City</option>');
+
+                    let type = $('.type:checked').val();
+                    let data = {
+                        operation: "dimensionType",
+                        type: type
+                    };
+
+                    $.ajax({
+                        url: "/online-learning-system/auth/teacher/quiz",
+                        method: "GET",
+                        data: data,
+                        success: function (data, textStatus, jqXHR) {
+                            console.log(data);
+                            let obj = $.parseJSON(data);
+                            $.each(obj, function (key, value) {
+                                $('#state').append('<option value="' + value.id + '">' + value.name + '</option>')
+                            });
+                            $('select').formSelect();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            $('#state').append('<option>State Unavailable</option>');
+                        },
+                        cache: false
+                    });
+                });
+
+//                $('#state').change(function () {
+//                    $('#city').find('option').remove();
+//                    $('#city').append('<option>Select City</option>');
+//
+//                    let sid = $('#state').val();
+//                    let data = {
+//                        operation: "city",
+//                        id: sid
+//                    };
+//
+//                    $.ajax({
+//                        url: "GetCountryStateservlet",
+//                        method: "GET",
+//                        data: data,
+//                        success: function (data, textStatus, jqXHR) {
+//                            console.log(data);
+//                            let obj = $.parseJSON(data);
+//                            $.each(obj, function (key, value) {
+//                                $('#city').append('<option value="' + value.id + '">' + value.name + '</option>')
+//                            });
+//                            $('select').formSelect();
+//                        },
+//                        error: function (jqXHR, textStatus, errorThrown) {
+//                            $('#city').append('<option>City Unavailable</option>');
+//                        },
+//                        cache: false
+//                    });
+//                });
+
+            });
+        </script>
     </body>
 
 </html>
