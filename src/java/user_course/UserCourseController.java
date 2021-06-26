@@ -15,28 +15,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import common.entities.User;
+import common.utilities.Controller;
 import java.util.List;
 
+public class UserCourseController extends HttpServlet implements Controller {
 
-
-public class UserCourseController extends HttpServlet {
-    
     private UserCourseService userCourseService;
+
     @Override
-     public void init() throws ServletException {
+    public void init() throws ServletException {
         userCourseService = new UserCourseService();
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         User u = (User) session.getAttribute("user");
-//        if (u == null) {
-//            out.println("You must login first to view registation!");
-//            return;
-//        }
+
         String operation = request.getParameter("operation");
+
         switch (operation) {
             case "SearchByCategory":
                 searchCourseByCategory(request, response, u);
@@ -47,21 +45,75 @@ public class UserCourseController extends HttpServlet {
             case "UpdateStatus":
                 updateStatus(request, response, u);
                 break;
+            case "VIEWALL":
+                processViewRegistration(request, response);
+                break;
+            case "PAGINATION":
+                processRegistrationPagination(request, response);
+                break;
+            case "VIEWDETAIL":
+                processViewRegistrationDetail(request, response);
+                break;
             default:
                 listCourseRegistation(request, response, u);
                 break;
         }
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String operation = request.getParameter("operation");
+        if (operation == null) {
+
+        } else {
+            switch (operation) {
+                case "EDITINFO":
+                    processEditRegistrationInfo(request, response);
+                    break;
+                case "FILTER":
+                    processFilterRegistration(request, response);
+                    break;
+                default:
+                    send404(request, response);
+                    break;
+            }
+        }
+    }
+
+    private void processViewRegistration(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+    }
+
+    private void processFilterRegistration(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+    }
+
+    private void processRegistrationPagination(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+    }
+
+    private void processViewRegistrationDetail(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+    }
+
+    private void processEditRegistrationInfo(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
     }
 
     private void updateStatus(HttpServletRequest request, HttpServletResponse response, User u)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-      int userId = u.getId();
-    //    int userId = 1;
+        int userId = u.getId();
         int courseId = Integer.parseInt(request.getParameter("courseId"));
         int status = 0;
         userCourseService.updateStatus(userId, courseId, status);
-        response.sendRedirect(request.getContextPath()+ "/auth/user/UserCourse?operation=");
+        response.sendRedirect(request.getContextPath() + "/auth/user/UserCourse?operation=");
     }
 
     private void searchCourseByTitle(HttpServletRequest request, HttpServletResponse response, User u)
@@ -145,29 +197,5 @@ public class UserCourseController extends HttpServlet {
         request.setAttribute("index", index);
         request.getRequestDispatcher("/auth/user/MyRegistation.jsp").forward(request, response);
     }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

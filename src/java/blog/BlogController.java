@@ -6,6 +6,7 @@
 package blog;
 
 import common.entities.Post;
+import common.utilities.Controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author AS
  */
-public class BlogController extends HttpServlet {
+public class BlogController extends HttpServlet implements Controller {
 
     private BlogService blogService;
 
@@ -37,18 +38,17 @@ public class BlogController extends HttpServlet {
             getBlogPagination(request, response);
         } else {
             switch (operation) {
-                case "blogDetail":
-                    // Get post detail
-                    getBlogDetail(request, response);
+                case "VIEWALLPOST":
+                    processViewAllPost(request, response);
                     break;
-                case "postByCategory":
-                    // Gets posts by category
-                    getBlogPaginationByCategory(request, response);
+                case "PAGINATIONPOST":
+                    processPaginationPost(request, response);
                     break;
-                case "SearchByTitle":
-                    getBlogByTitle(request, response);
+                case "VIEWPOSTDETAIL":
+                    processViewPostDetail(request, response);
                     break;
                 default:
+                    send404(request, response);
                     break;
             }
         }
@@ -58,7 +58,49 @@ public class BlogController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        String operation = request.getParameter("operation");
+
+        if (operation == null) {
+            // Get posts
+            getBlogPagination(request, response);
+        } else {
+            switch (operation) {
+                case "UPDATEPOSTINFO":
+                    processUpdatePostInfo(request, response);
+                    break;
+                case "ADDPOST":
+                    processAddPost(request, response);
+                    break;
+                default:
+                    send404(request, response);
+                    break;
+            }
+        }
+    }
+
+    private void processUpdatePostInfo(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+    }
+
+    private void processViewAllPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+    }
+
+    private void processAddPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+    }
+
+    private void processPaginationPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+    }
+
+    private void processViewPostDetail(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
     }
 
     private void getBlogPagination(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -72,14 +114,14 @@ public class BlogController extends HttpServlet {
         }
         doPagination(request, response, totalPosts, Integer.parseInt(curPage), 4);
         ArrayList<Post> hmPost = blogService.getPostsList(Integer.parseInt(curPage), 4);
-        
+
         request.setAttribute("hmCategory", hmCategory);
         request.setAttribute("hmPost", hmPost);
         request.setAttribute("latest", latestPost);
 
         request.getRequestDispatcher("nauth/blog/blogList.jsp").forward(request, response);
     }
-    
+
     private void doPagination(HttpServletRequest request, HttpServletResponse response, int totalPosts, int currentPage, int postsPerPage) {
         String page = request.getParameter("curPage");
         if (page == null) {
@@ -127,7 +169,7 @@ public class BlogController extends HttpServlet {
         int totalPosts = blogService.getTotalPostsByCategory(Integer.parseInt(categoryID));
         doPagination(request, response, totalPosts, Integer.parseInt(page), 4);
         ArrayList<Post> hmPost = blogService.getPostsByCategory(Integer.parseInt(categoryID), currentPage, 4);
-        
+
         request.setAttribute("hmCategory", hmCategory);
         request.setAttribute("hmPost", hmPost);
         request.setAttribute("latest", latestPost);
@@ -152,7 +194,7 @@ public class BlogController extends HttpServlet {
         int totalPosts = blogService.getTotalPostsByTitle(title);
         doPagination(request, response, totalPosts, currentPage, 4);
         ArrayList<Post> hmPost = blogService.getPostsByTitle(title, currentPage, 4);
-        
+
         request.setAttribute("hmCategory", hmCategory);
         request.setAttribute("hmPost", hmPost);
         request.setAttribute("latest", latestPost);

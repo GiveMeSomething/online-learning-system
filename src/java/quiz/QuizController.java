@@ -14,16 +14,13 @@ import course.CourseService;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.HEAD;
 
 public class QuizController extends HttpServlet implements Controller {
 
@@ -61,8 +58,18 @@ public class QuizController extends HttpServlet implements Controller {
                 case "PAGINATION":
                     getItemInPage(request, response);
                     break;
+                case "VIEWQUIZHANDLE":
+                    processViewQuizHandle(request, response);
+                    break;
+                case "VIEWQUIZRESULT":
+                    processQuizResult(request, response);
+                    break;
+                case "VIEWQUIZREVIEW":
+                    processQuizReview(request, response);
+                    break;
                 default:
-                    response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+                    send404(request, response);
+                    break;
             }
         }
     }
@@ -77,21 +84,46 @@ public class QuizController extends HttpServlet implements Controller {
         } else {
             switch (operation) {
                 case "ADDQUIZSETTING":
-                    int id = Integer.parseInt(request.getParameter("quizId"));
                     HttpSession session = request.getSession();
                     Quiz quiz = (Quiz) session.getAttribute("quiz");
                     addQuizSetting(request, response, quiz);
                     break;
                 case "ADDQUIZOVERVIEW":
                     String quizId = request.getParameter("quizId");
-                    if (quizId.equalsIgnoreCase("") || quizId == null) {
+                    if (quizId == null || quizId.equalsIgnoreCase("")) {
                         addQuizOverview(request, response);
                     } else {
                         updateQuizOverview(request, response);
                     }
                     break;
+                case "QUIZHANDLE":
+                    processQuizHandle(request, response);
+                    break;
+                default:
+                    send404(request, response);
+                    break;
             }
         }
+    }
+
+    private void processViewQuizHandle(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+    }
+
+    private void processQuizHandle(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+    }
+
+    private void processQuizResult(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+    }
+
+    private void processQuizReview(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
     }
 
     private void processInputForQuiz(HttpServletRequest request, HttpServletResponse response)
@@ -237,7 +269,7 @@ public class QuizController extends HttpServlet implements Controller {
             ArrayList<Question> questions = quizService.getQuestionByDimension(1, Integer.parseInt(dimensionId[i]), Integer.parseInt(numberOfQues[i]));
             combination.addAll(questions);
         }
-        
+
         for (Question question : combination) {
             if (quizService.addQuizSetting(quiz, question.getId())) {
                 // Do something
@@ -245,7 +277,7 @@ public class QuizController extends HttpServlet implements Controller {
         }
         HttpSession session = request.getSession();
         session.setAttribute("quiz", null);
-        response.sendRedirect(request.getContextPath()+"/auth/teacher/quiz");
+        response.sendRedirect(request.getContextPath() + "/auth/teacher/quiz");
     }
 
     public void updateQuizOverview(HttpServletRequest request, HttpServletResponse response)

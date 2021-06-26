@@ -32,32 +32,6 @@ public class CourseController extends HttpServlet {
         courseService = new CourseService();
     }
 
-    private void handleFilterPriceAlpha(HttpServletRequest request,
-            HttpServletResponse response, int categoryIndicator, String searchName,
-            int indexPage, String price, String alpha)
-            throws ServletException, IOException {
-        //When user click both filter by price and alpha
-        if (price != null && alpha != null && price != "" && alpha != "") {
-            List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
-            request.setAttribute("course", listCoursePagingDetail);
-        } else if (price != null && price != "") { //When user click filter by price
-            List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
-            request.setAttribute("course", listCoursePagingDetail);
-        } else if (alpha != null && alpha != "") { //When user click filter by alpha
-            List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
-            request.setAttribute("course", listCoursePagingDetail);
-        } else { //When user do not click fiter radio button
-            if (price == null && alpha == null) {
-                List<Course> listCoursePaging = courseService.pagingCourseList(categoryIndicator, indexPage);
-                request.setAttribute("course", listCoursePaging);
-            } else { //When paging search
-                List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
-                request.setAttribute("course", listCoursePagingDetail);
-            }
-
-        }
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -154,7 +128,32 @@ public class CourseController extends HttpServlet {
             request.setAttribute("courseFeature", courseFeature);
             request.getRequestDispatcher("nauth/course/list.jsp").forward(request, response);
         }
+    }
 
+    private void handleFilterPriceAlpha(HttpServletRequest request,
+            HttpServletResponse response, int categoryIndicator, String searchName,
+            int indexPage, String price, String alpha)
+            throws ServletException, IOException {
+        //When user click both filter by price and alpha
+        if (price != null && alpha != null && price != "" && alpha != "") {
+            List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
+            request.setAttribute("course", listCoursePagingDetail);
+        } else if (price != null && price != "") { //When user click filter by price
+            List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
+            request.setAttribute("course", listCoursePagingDetail);
+        } else if (alpha != null && alpha != "") { //When user click filter by alpha
+            List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
+            request.setAttribute("course", listCoursePagingDetail);
+        } else { //When user do not click fiter radio button
+            if (price == null && alpha == null) {
+                List<Course> listCoursePaging = courseService.pagingCourseList(categoryIndicator, indexPage);
+                request.setAttribute("course", listCoursePaging);
+            } else { //When paging search
+                List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
+                request.setAttribute("course", listCoursePagingDetail);
+            }
+
+        }
     }
 
     private void getTitle(HttpServletRequest request, HttpServletResponse response, int categoryId)

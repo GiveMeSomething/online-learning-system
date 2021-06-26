@@ -20,4 +20,9 @@ public interface Controller {
         request.setAttribute("errorMessage", message);
         request.getRequestDispatcher(forwardTo).forward(request, response);
     }
+
+    default void send404(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+    }
 }

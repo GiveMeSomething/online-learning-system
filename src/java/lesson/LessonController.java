@@ -39,48 +39,29 @@ public class LessonController extends HttpServlet implements Controller {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession currentSession = request.getSession();
-
         String operation = request.getParameter("operation");
 
         if (operation == null) {
             processGetLesson(request, response);
         } else {
-            String lessonId;
             switch (operation) {
                 case "VIEW":
-                    // View lesson details
-                    lessonId = request.getParameter("lessonId");
-                    int id;
-                    if (lessonId == null || lessonId.equals("")) {
-                        Lesson lesson = null;
-                        viewLesson(request, response, lesson);
-                    } else {
-                        id = Integer.parseInt(lessonId);
-                        Lesson lesson = lessonService.getLesson(id);
-                        viewLesson(request, response, lesson);
-                    }
+                    processViewLesson(request, response);
                     break;
                 case "UPDATESTATUS":
                     processUpdateLessonStatus(request, response);
                     break;
                 case "PAGINATION":
-                    ArrayList<Lesson> lessonList = (ArrayList<Lesson>) currentSession.getAttribute("lessonList");
-                    int page = processPageParameter(request, response, lessonList.size());
-                    if (page == -1) {
-                        return;
-                    }
-
-                    ArrayList<Lesson> pageItems = getItemInPage(lessonList, page);
-
-                    if (pageItems != null) {
-                        request.setAttribute("pageItems", pageItems);
-                        request.getRequestDispatcher("/auth/teacher/lesson/list.jsp").forward(request, response);
-                    } else {
-                        response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
-                    }
+                    processPagination(request, response);
+                    break;
+                case "VIEWUSERLESSON":
+                    processViewUserLesson(request, response);
+                    break;
+                case "VIEWUSERLESSONDETAIL":
+                    processViewUserLessonDetail(request, response);
                     break;
                 default:
+                    response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
                     break;
             }
         }
@@ -98,6 +79,41 @@ public class LessonController extends HttpServlet implements Controller {
             } else {
                 editLesson(request, response);
             }
+        }
+    }
+
+    private void processViewLesson(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // View lesson details
+        String lessonId = request.getParameter("lessonId");
+        int id;
+        if (lessonId == null || lessonId.equals("")) {
+            Lesson lesson = null;
+            viewLesson(request, response, lesson);
+        } else {
+            id = Integer.parseInt(lessonId);
+            Lesson lesson = lessonService.getLesson(id);
+            viewLesson(request, response, lesson);
+        }
+    }
+
+    private void processPagination(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
+
+        ArrayList<Lesson> lessonList = (ArrayList<Lesson>) currentSession.getAttribute("lessonList");
+        int page = processPageParameter(request, response, lessonList.size());
+        if (page == -1) {
+            return;
+        }
+
+        ArrayList<Lesson> pageItems = getItemInPage(lessonList, page);
+
+        if (pageItems != null) {
+            request.setAttribute("pageItems", pageItems);
+            request.getRequestDispatcher("/auth/teacher/lesson/list.jsp").forward(request, response);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
         }
     }
 
@@ -130,6 +146,16 @@ public class LessonController extends HttpServlet implements Controller {
         }
     }
 
+    private void processViewUserLesson(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+    }
+
+    private void processViewUserLessonDetail(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+    }
+
     private void processUpdateLessonStatus(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int lessonId = Integer.parseInt(request.getParameter("lessonId"));
@@ -139,46 +165,6 @@ public class LessonController extends HttpServlet implements Controller {
         if (isUpdate) {
             response.sendRedirect(request.getContextPath() + "/auth/teacher/lesson");
         }
-    }
-
-    private ArrayList<Lesson> getItemInPage(ArrayList<Lesson> lessonList, int page) {
-        if (page > ((lessonList.size() / 5) + 1)) {
-            return null;
-        }
-        int startItem = (page - 1) * itemPerPage;
-        int endItem = (startItem + itemPerPage) > lessonList.size() ? lessonList.size() : startItem + itemPerPage;
-
-        ArrayList<Lesson> itemInPage = new ArrayList<>();
-        for (int i = startItem; i < endItem; i++) {
-            itemInPage.add(lessonList.get(i));
-        }
-
-        return itemInPage;
-    }
-
-    private int processPageParameter(HttpServletRequest request, HttpServletResponse response, int listSize)
-            throws ServletException, IOException {
-        // If not yet receive page param (first time in page) change it to 1
-        int page = 1;
-        try {
-            page = Integer.parseInt(request.getParameter("page"));
-
-            int pageNum;
-            if (listSize % itemPerPage == 0) {
-                pageNum = listSize / itemPerPage;
-            } else {
-                pageNum = (listSize / itemPerPage) + 1;
-            }
-
-            if (page < 1 || page > pageNum) {
-                response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
-                return -1;
-            }
-        } catch (NumberFormatException e) {
-            System.out.println(e.getMessage() + " at ~96 LessonController");
-        }
-
-        return page;
     }
 
     private void addLesson(HttpServletRequest request, HttpServletResponse response)
@@ -246,11 +232,51 @@ public class LessonController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         int courseId = 1;
         HashMap<Integer, String> getCourses = courseService.getCourses();
-        HashMap<Integer, String>quizzesForLesson = quizService.getQuizForLesson(courseId);
+        HashMap<Integer, String> quizzesForLesson = quizService.getQuizForLesson(courseId);
         request.setAttribute("course", getCourses);
         request.setAttribute("quiz", quizzesForLesson);
         request.setAttribute("lesson", lesson);
         request.getRequestDispatcher("/auth/teacher/lesson/detail.jsp").forward(request, response);
+    }
+
+    private ArrayList<Lesson> getItemInPage(ArrayList<Lesson> lessonList, int page) {
+        if (page > ((lessonList.size() / 5) + 1)) {
+            return null;
+        }
+        int startItem = (page - 1) * itemPerPage;
+        int endItem = (startItem + itemPerPage) > lessonList.size() ? lessonList.size() : startItem + itemPerPage;
+
+        ArrayList<Lesson> itemInPage = new ArrayList<>();
+        for (int i = startItem; i < endItem; i++) {
+            itemInPage.add(lessonList.get(i));
+        }
+
+        return itemInPage;
+    }
+
+    private int processPageParameter(HttpServletRequest request, HttpServletResponse response, int listSize)
+            throws ServletException, IOException {
+        // If not yet receive page param (first time in page) change it to 1
+        int page = 1;
+        try {
+            page = Integer.parseInt(request.getParameter("page"));
+
+            int pageNum;
+            if (listSize % itemPerPage == 0) {
+                pageNum = listSize / itemPerPage;
+            } else {
+                pageNum = (listSize / itemPerPage) + 1;
+            }
+
+            if (page < 1 || page > pageNum) {
+                response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+                return -1;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage() + " at ~96 LessonController");
+        }
+
+        return page;
     }
 
 }
