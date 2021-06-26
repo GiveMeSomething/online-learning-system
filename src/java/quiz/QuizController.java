@@ -11,7 +11,8 @@ import common.entities.Quiz;
 import common.entities.TestType;
 import common.utilities.Controller;
 import course.CourseService;
-
+import com.google.gson.Gson;
+import common.entities.Dimension;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,6 +58,11 @@ public class QuizController extends HttpServlet implements Controller {
                     break;
                 case "PAGINATION":
                     getItemInPage(request, response);
+                    break;
+                case "dimensionType":
+                    HttpSession session = request.getSession();
+                    Quiz quiz = (Quiz) session.getAttribute("quiz");
+                    getDimensionByType(request, response, quiz);
                     break;
                 case "VIEWQUIZHANDLE":
                     processViewQuizHandle(request, response);
@@ -256,12 +262,6 @@ public class QuizController extends HttpServlet implements Controller {
     public void addQuizSetting(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
             throws ServletException, IOException {
         ArrayList<Question> combination = new ArrayList<>();
-//        for (int i = 1; i <= 3; i++) {
-//            int numberOfQuestions = Integer.parseInt(request.getParameter("number-of-question" + i));
-//            int dimensionId = Integer.parseInt(request.getParameter("dimension-name" + i));
-//            ArrayList<Question> questions = quizService.getQuestionByDimension(1, dimensionId, numberOfQuestions);
-//            combination.addAll(questions);
-//        }
         // Get value from Quiz Setting
         HttpSession session = request.getSession();
         int type = (Integer) session.getAttribute("type");
@@ -289,6 +289,7 @@ public class QuizController extends HttpServlet implements Controller {
             }
         }
         session.setAttribute("quiz", null);
+        session.setAttribute("type", null);
         response.sendRedirect(request.getContextPath() + "/auth/teacher/quiz");
     }
 
@@ -337,5 +338,17 @@ public class QuizController extends HttpServlet implements Controller {
         request.setAttribute("questionNumber", countQuestion);
 //        request.setAttribute("dimension", getDimension);
         request.getRequestDispatcher("/auth/teacher/quiz/detail.jsp").forward(request, response);
+    }
+
+    public void getDimensionByType(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int type = Integer.parseInt(request.getParameter("type"));
+        session.setAttribute("type", type);
+        ArrayList<Dimension> getDimension = quizService.getDimension(quiz, type);
+        Gson json = new Gson();
+        String dimension = json.toJson(getDimension);
+        response.setContentType("text/html");
+        response.getWriter().write(dimension);
     }
 }

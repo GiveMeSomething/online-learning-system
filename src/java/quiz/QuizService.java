@@ -5,6 +5,7 @@
  */
 package quiz;
 
+import common.entities.Dimension;
 import common.entities.Question;
 import common.entities.Quiz;
 import common.entities.TestType;
@@ -84,7 +85,7 @@ public class QuizService {
         return 0;
     }
 
-    public HashMap<Integer, String> getDimension(Quiz quiz, int dimensionType) {
+    public ArrayList<Dimension> getDimension(Quiz quiz, int dimensionType) {
         try {
             return quizRepository.getDimensionByType(quiz, dimensionType);
         } catch (Exception e) {

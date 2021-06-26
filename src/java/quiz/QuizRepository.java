@@ -5,6 +5,7 @@
  */
 package quiz;
 
+import common.entities.Dimension;
 import common.entities.Level;
 import common.entities.Question;
 import common.entities.Quiz;
@@ -117,20 +118,23 @@ public class QuizRepository extends Repository {
         }
     }
 
-    public HashMap<Integer, String> getDimensionByType(Quiz quiz, int dimensionType) throws SQLException {
+    public ArrayList<Dimension> getDimensionByType(Quiz quiz, int dimensionType) throws SQLException {
         this.connectDatabase();
 
         String questionByLesson = "SELECT DISTINCT qcdl.dimension_id, d.name "
                 + "FROM db_ite1.question_course_dim_les qcdl JOIN dimension d "
                 + "ON qcdl.dimension_id = d.id WHERE course_id = ? AND d.type_id = ?";
-        HashMap<Integer, String> getHmDimesion = new HashMap<>();
+        ArrayList<Dimension> getHmDimesion = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(questionByLesson)) {
             statement.setInt(1, quiz.getSubjectId());
             statement.setInt(2, dimensionType);
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                getHmDimesion.put(result.getInt("dimension_id"), result.getString("name"));
+                Dimension dim = new Dimension();
+                dim.setId(result.getInt("dimension_id"));
+                dim.setName(result.getString("name"));
+                getHmDimesion.add(dim);
             }
             return getHmDimesion;
         } finally {
@@ -170,7 +174,7 @@ public class QuizRepository extends Repository {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 getQuizDimesion.put(result.getInt("dimension_id"),
-                        getDimensionByType(quiz, result.getInt("dimension_id")).get(result.getInt("dimension_id")));
+                        result.getString("name"));
             }
             return getQuizDimesion;
         } finally {
@@ -357,5 +361,12 @@ public class QuizRepository extends Repository {
         }
         return 0;
     }
-
+    public static void main(String[] args) throws SQLException {
+        QuizRepository quizRepository = new QuizRepository();
+        Quiz quiz = new Quiz(1, "Exam 4", 1, Level.EASY, 1, TestType.QUIZ, 66, "new");
+        ArrayList<Dimension> dim = quizRepository.getDimensionByType(quiz, 1);
+        for (Dimension dimension : dim) {
+            System.out.println(dimension.getId()+" "+dimension.getName());
+        }
+    }
 }

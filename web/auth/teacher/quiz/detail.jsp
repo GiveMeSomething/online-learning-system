@@ -210,11 +210,9 @@
 //                });
 
 
-                $('#dimension-name').ready(function () {
-//                    $('#state').find('option').remove();
-//                    $('#state').append('<option>Select State</option>');
-//                    $('#city').find('option').remove();
-//                    $('#city').append('<option>Select City</option>');
+                $('.type').click(function () {
+                    $('#dimension-name').find('option').remove();
+                    $('#dimension-name').append('<option>Select Dimension</option>');
 
                     let type = $('.type:checked').val();
                     let data = {
@@ -230,12 +228,12 @@
                             console.log(data);
                             let obj = $.parseJSON(data);
                             $.each(obj, function (key, value) {
-                                $('#state').append('<option value="' + value.id + '">' + value.name + '</option>')
+                                $('#dimension-name').append('<option value="' + value.id + '">' + value.name + '</option>')
                             });
                             $('select').formSelect();
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
-                            $('#state').append('<option>State Unavailable</option>');
+                            $('#dimension-name').append('<option>State Unavailable</option>');
                         },
                         cache: false
                     });
