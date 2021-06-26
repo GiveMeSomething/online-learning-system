@@ -1024,8 +1024,10 @@ public class CourseRepository extends Repository {
     public static void main(String[] args) throws Exception {
         CourseRepository repo = new CourseRepository();
         try {
-            Account a = repo.getRoleByUserEmail("toannkhe150086@fpt.edu.vn");
-            System.out.println(a);
+            List<DimensionType> list = repo.getAllDimenstionType();
+            for (DimensionType o : list) {
+                System.out.println(o);
+            }
         } catch (Exception e) {
         }
     }

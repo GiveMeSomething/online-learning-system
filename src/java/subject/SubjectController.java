@@ -138,15 +138,15 @@ public class SubjectController extends HttpServlet implements Controller {
                         courseService.updateSubjectInformation(subjectName, description, courseOwner, status, categoryBox, 1, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
                     } else {
                         courseService.updateSubjectInformation(subjectName, description, courseOwner, status, categoryBox, 0, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
-                    } 
-                } else if(account.getRole().equals(Role.TEACHER)){
-                     if (isFeatured != null && isFeatured[0] != null) {
+                    }
+                } else if (account.getRole().equals(Role.TEACHER)) {
+                    if (isFeatured != null && isFeatured[0] != null) {
                         courseService.updateSubjectInformation(subjectName, description, categoryBox, 1, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
                     } else {
                         courseService.updateSubjectInformation(subjectName, description, categoryBox, 0, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
-                    } 
+                    }
                 }
-                
+
                 request.setAttribute("activeId", 1);
 //                response.sendRedirect("subject");
                 processInputForOverview(request, response, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
@@ -209,23 +209,27 @@ public class SubjectController extends HttpServlet implements Controller {
         HttpSession currentSession = request.getSession();
         int subjectId = Integer.parseInt((String) currentSession.getAttribute("currentSubject"));
         String type = request.getParameter("type");
-        String dimension = request.getParameter("dimension");
+        List<DimensionType> dimensionList = courseService.getAllDimenstionType();
         int typeInt = 0;
-        switch (type) {
-            case "Domain":
-                typeInt = 1;
-                break;
-            case "Group":
-                typeInt = 2;
-                break;
-            default:
-                courseService.addDimensionType(type);
-                typeInt = courseService.getDimensionTypeDetail(type).getId();
-                break;
+        int count = 0;
+        for (int i = 0; i < dimensionList.size(); i++) {
+            if (dimensionList.get(i).getDimension_type_name().equals(type)) {
+                count++;
+            }
         }
+        if(count == 1){
+            typeInt = courseService.getDimensionTypeDetail(type).getId();
+        }else {
+            courseService.addDimensionType(type);
+            typeInt = courseService.getDimensionTypeDetail(type).getId();
+        }
+        String dimension = request.getParameter("dimension");
+        //DUYỆT DIMENSION TYPE NẾU = THÌ KO PHẢI ADD THÊM
         String description = request.getParameter("description");
-        courseService.addDimension(typeInt, dimension, description);
+        courseService.addDimension(typeInt, dimension, description); //Thêm vào bảng
+        //dimension
         Dimension dimensionAdd = courseService.getDimensionId(dimension);
+        //Lấy dimension id
         courseService.addDimensionCourse(subjectId, dimensionAdd.getId());
         request.setAttribute("activeId", 2);
         processInputForOverview(request, response, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
