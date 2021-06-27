@@ -6,6 +6,7 @@
 package quiz;
 
 import common.entities.Dimension;
+import common.entities.Lesson;
 import common.entities.Question;
 import common.entities.Quiz;
 import common.entities.TestType;
@@ -94,6 +95,15 @@ public class QuizService {
         return null;
     }
 
+    public ArrayList<Lesson> getTopic(Quiz quiz) {
+        try {
+            return quizRepository.getTopic(quiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public boolean addQuizSetting(Quiz quiz, int quesId) {
         try {
             return quizRepository.addQuizSetting(quiz, quesId);
@@ -102,7 +112,8 @@ public class QuizService {
         }
         return false;
     }
-    public HashMap<Integer, String> getQuizForLesson(int courseId){
+
+    public HashMap<Integer, String> getQuizForLesson(int courseId) {
         try {
             return quizRepository.getQuizForLesson(courseId);
         } catch (Exception e) {

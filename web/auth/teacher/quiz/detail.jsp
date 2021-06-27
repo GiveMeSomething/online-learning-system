@@ -15,7 +15,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
               integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <title>Quiz Detail</title>
     </head>
 
@@ -135,7 +134,7 @@
                         <div class="form-row">
                             <span class="col-md-2">Question type</span>
                             <div class="custom-control custom-radio col-md-2">
-                                <input type="radio" checked="true" value="1" class="type custom-control-input" id="topic" name="type" required>
+                                <input type="radio" value="1" class="type custom-control-input" id="topic" name="type" required>
                                 <label class="custom-control-label" for="topic">Topic</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">
@@ -149,24 +148,66 @@
                             </div>
                         </div>
                         <p>Choose number of Questions corresponding their group</p>
-                        <c:forEach  begin="1" end="3" var="i" varStatus="status">
-                            <div class="form-row">
-                                <div class="mb-3 col-md-7">
-                                    <select class="custom-select" id="dimension-name" name="dimension-name" required>
-                                            <option>Select dimension name</option>
-                                    </select>
-                                    <div class="invalid-feedback"></div>
-                                </div>
-                                <div class="col-md-1"></div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
-                                </div>
-                                <div class="col-md-1"></div>
-                                <div class="col-md-1">
-                                    <button type="button" class="btn btn-light">${not status.last ? "Delete":"Add"}</button>
-                                </div>
+                        <div class="form-row">
+                            <table id="myTable" class="table table-borderless">
+                                <tr>
+                                    <td>
+                                        <div class="mb-3 col-md-7">
+                                            <select class="group-question custom-select" name="dimension-name" required>
+                                                <option>Select Group</option>
+                                            </select>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="mb-3 col-md-7">
+                                            <select class="group-question custom-select"  name="dimension-name" required>
+                                                <option>Select Group</option>
+                                            </select>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="mb-3 col-md-7">
+                                            <select class="group-question custom-select"  name="dimension-name" required>
+                                                <option>Select Group</option>
+                                            </select>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-md-2">
+                                            <a href="#" id="delBtn">Delete</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="col-md-1 mt-2">
+                                <a id="addBtn" href="#">Add new Group</a>
                             </div>
-                        </c:forEach>
+                        </div>
                         <div class="form-row">
                             <button class="btn btn-primary col-md-1" type="submit">Save</button>
                             <div class="col-md-10"></div>
@@ -188,31 +229,31 @@
         crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
         <script type="text/javascript" src="${path}/utilities/form-validator.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-//                $.ajax({
-//                    url: "/online-learning-system/auth/teacher/quiz",
-//                    method: "GET",
-//                    data: {operation: 'type'},
-//                    success: function (data, textStatus, jqXHR) {
-//                        console.log(data);
-//                        let obj = $.parseJSON(data);
-//                        $.each(obj, function (key, value) {
-//                            $('#topic').append('<option value="' + value.id + '">' + value.name + '</option>')
-//                        });
-//                        $('select').formSelect();
-//                    },
-//                    error: function (jqXHR, textStatus, errorThrown) {
-//                        $('#country').append('wrong');
-//                    },
-//                    cache: false
-//                });
+                var addNew = $('#myTable');
+                var i = $('#myTable tr').size() + 1;
 
+                $('#addBtn').click(function () {
+                    addNew.append('<tr><td><div class="mb-3 col-md-7"><select class="group-question custom-select" name="dimension-name" required><option>Select Group</option></select><div class="invalid-feedback"></div></div></td><td></td><td><div class="col-md-2"><input type="text" class="form-control" name="number-of-question" placeholder="Number of questions"></div></td><td></td><td><div class="col-md-2"><a href="#" id="delBtn">Delete</a></div></td></tr>');
+                    i++;
+                    return false;
+                });
+
+                //Remove button
+                $(document).on('click', '#delBtn', function () {
+                    if (i > 2) {
+                        $(this).closest('tr').remove();
+                        i--;
+                    }
+                    return false;
+                });
 
                 $('.type').click(function () {
-                    $('#dimension-name').find('option').remove();
-                    $('#dimension-name').append('<option>Select Dimension</option>');
+                    $('.group-question').find('option').remove();
+                    $('.group-question').append('<option>Select Group</option>');
 
                     let type = $('.type:checked').val();
                     let data = {
@@ -228,45 +269,16 @@
                             console.log(data);
                             let obj = $.parseJSON(data);
                             $.each(obj, function (key, value) {
-                                $('#dimension-name').append('<option value="' + value.id + '">' + value.name + '</option>')
+                                $('.group-question').append('<option value="' + value.id + '">' + value.name + '</option>')
                             });
-                            $('select').formSelect();
+
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
-                            $('#dimension-name').append('<option>State Unavailable</option>');
+                            $('.group-question').append('<option>State Unavailable</option>');
                         },
                         cache: false
                     });
                 });
-
-//                $('#state').change(function () {
-//                    $('#city').find('option').remove();
-//                    $('#city').append('<option>Select City</option>');
-//
-//                    let sid = $('#state').val();
-//                    let data = {
-//                        operation: "city",
-//                        id: sid
-//                    };
-//
-//                    $.ajax({
-//                        url: "GetCountryStateservlet",
-//                        method: "GET",
-//                        data: data,
-//                        success: function (data, textStatus, jqXHR) {
-//                            console.log(data);
-//                            let obj = $.parseJSON(data);
-//                            $.each(obj, function (key, value) {
-//                                $('#city').append('<option value="' + value.id + '">' + value.name + '</option>')
-//                            });
-//                            $('select').formSelect();
-//                        },
-//                        error: function (jqXHR, textStatus, errorThrown) {
-//                            $('#city').append('<option>City Unavailable</option>');
-//                        },
-//                        cache: false
-//                    });
-//                });
 
             });
         </script>

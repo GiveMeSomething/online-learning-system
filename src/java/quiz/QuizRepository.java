@@ -6,6 +6,7 @@
 package quiz;
 
 import common.entities.Dimension;
+import common.entities.Lesson;
 import common.entities.Level;
 import common.entities.Question;
 import common.entities.Quiz;
@@ -93,9 +94,10 @@ public class QuizRepository extends Repository {
         } else if (lessonId == 0) {
             sql = "AND dimension_id = ?";
         }
-        String questionByLesson = "select qcdl.question_id "
+        String questionByLesson = "SELECT qcdl.question_id "
                 + "FROM db_ite1.question_course_dim_les qcdl "
-                + "WHERE course_id = ? " + sql + " ORDER BY RAND() LIMIT ?";
+                + "JOIN questions_bank qb ON qcdl.question_id = qb.id "
+                + "WHERE course_id = ? " + sql + " AND level_id = ? ORDER BY RAND() LIMIT ?";
         ArrayList<Question> questions = new ArrayList<>();
 
         try (PreparedStatement statement = this.connection.prepareStatement(questionByLesson)) {
@@ -105,7 +107,8 @@ public class QuizRepository extends Repository {
             } else {
                 statement.setInt(2, lessonId);
             }
-            statement.setInt(3, numberOfQuestion);
+            statement.setInt(3, level);
+            statement.setInt(4, numberOfQuestion);
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
@@ -121,11 +124,11 @@ public class QuizRepository extends Repository {
     public ArrayList<Dimension> getDimensionByType(Quiz quiz, int dimensionType) throws SQLException {
         this.connectDatabase();
 
-        String questionByLesson = "SELECT DISTINCT qcdl.dimension_id, d.name "
+        String dimensionByType = "SELECT DISTINCT qcdl.dimension_id, d.name "
                 + "FROM db_ite1.question_course_dim_les qcdl JOIN dimension d "
                 + "ON qcdl.dimension_id = d.id WHERE course_id = ? AND d.type_id = ?";
         ArrayList<Dimension> getHmDimesion = new ArrayList<>();
-        try (PreparedStatement statement = this.connection.prepareStatement(questionByLesson)) {
+        try (PreparedStatement statement = this.connection.prepareStatement(dimensionByType)) {
             statement.setInt(1, quiz.getSubjectId());
             statement.setInt(2, dimensionType);
 
@@ -137,6 +140,28 @@ public class QuizRepository extends Repository {
                 getHmDimesion.add(dim);
             }
             return getHmDimesion;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public ArrayList<Lesson> getTopic(Quiz quiz) throws SQLException {
+        this.connectDatabase();
+
+        String topic = "SELECT id, lesson_name as name FROM lesson "
+                + "WHERE course_id = ? AND type_id = 1";
+        ArrayList<Lesson> getTopic = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(topic)) {
+            statement.setInt(1, quiz.getSubjectId());
+
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                Lesson lesson = new Lesson();
+                lesson.setId(result.getInt("id"));
+                lesson.setName(result.getString("name"));
+                getTopic.add(lesson);
+            }
+            return getTopic;
         } finally {
             this.disconnectDatabase();
         }
@@ -167,6 +192,28 @@ public class QuizRepository extends Repository {
                 + "JOIN question_quiz qq "
                 + "ON qq.question_id = qcdl.question_id "
                 + "WHERE quiz_id = ?";
+        HashMap<Integer, String> getQuizDimesion = new HashMap<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(questionByLesson)) {
+            statement.setInt(1, quiz.getId());
+
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                getQuizDimesion.put(result.getInt("dimension_id"),
+                        result.getString("name"));
+            }
+            return getQuizDimesion;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public HashMap<Integer, String> getDimensionTypeForEdit(Quiz quiz) throws SQLException {
+        this.connectDatabase();
+
+        String questionByLesson = "select distinct d.name, type_id "
+                + "from db_ite1.question_course_dim_les qcdl "
+                + "join question_quiz qq on qcdl.question_id = qq.question_id "
+                + "join dimension d on d.id = qcdl.dimension_id";
         HashMap<Integer, String> getQuizDimesion = new HashMap<>();
         try (PreparedStatement statement = this.connection.prepareStatement(questionByLesson)) {
             statement.setInt(1, quiz.getId());
@@ -361,12 +408,14 @@ public class QuizRepository extends Repository {
         }
         return 0;
     }
+
     public static void main(String[] args) throws SQLException {
         QuizRepository quizRepository = new QuizRepository();
         Quiz quiz = new Quiz(1, "Exam 4", 1, Level.EASY, 1, TestType.QUIZ, 66, "new");
         ArrayList<Dimension> dim = quizRepository.getDimensionByType(quiz, 1);
-        for (Dimension dimension : dim) {
-            System.out.println(dimension.getId()+" "+dimension.getName());
+        ArrayList<Lesson> les = quizRepository.getTopic(quiz);
+        for (Lesson le : les) {
+            System.out.println(le.getId() + " " + le.getName());
         }
     }
 }

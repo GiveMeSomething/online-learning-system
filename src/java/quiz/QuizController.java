@@ -13,6 +13,7 @@ import common.utilities.Controller;
 import course.CourseService;
 import com.google.gson.Gson;
 import common.entities.Dimension;
+import common.entities.Lesson;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -240,7 +241,7 @@ public class QuizController extends HttpServlet implements Controller {
     public void addQuizOverview(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String forwardTo = request.getParameter("previousPage");
+        String forwardTo = "/auth/teacher/quiz";
         String quizName = request.getParameter("quiz-name");
         String subject = request.getParameter("subject-name");
         Level level = Level.valueOf(request.getParameter("exam-level"));
@@ -264,23 +265,36 @@ public class QuizController extends HttpServlet implements Controller {
         ArrayList<Question> combination = new ArrayList<>();
         // Get value from Quiz Setting
         HttpSession session = request.getSession();
-        int type = (Integer) session.getAttribute("type");
+        String forwardTo = "/auth/teacher/quiz";
+//        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        int courseId = 1;
+        int type = Integer.parseInt(request.getParameter("type"));
         String[] numberOfQues = request.getParameterValues("number-of-question");
+        if (numberOfQues == null || numberOfQues.equals("")) {
+            session.setAttribute("quiz", null);
+            this.forwardErrorMessage(request, response, "There is no question in this group", forwardTo);
+        }
         if (type == 1) {
             String[] lessonId = request.getParameterValues("dimension-name");
             int level = Level.valueOf(quiz.getLevel());
             for (int i = 0; i < numberOfQues.length; i++) {
-                ArrayList<Question> questions = quizService.getQuestionByDimension(1, 0, Integer.parseInt(lessonId[i]),
+                ArrayList<Question> questions = quizService.getQuestionByDimension(courseId, 0, Integer.parseInt(lessonId[i]),
                         level, Integer.parseInt(numberOfQues[i]));
-                combination.addAll(questions);
+                if (questions != null) {
+                    combination.addAll(questions);
+                }
             }
         } else {
             String[] dimensionId = request.getParameterValues("dimension-name");
             int level = Level.valueOf(quiz.getLevel());
             for (int i = 0; i < numberOfQues.length; i++) {
-                ArrayList<Question> questions = quizService.getQuestionByDimension(1, Integer.parseInt(dimensionId[i]), 0,
-                        level, Integer.parseInt(numberOfQues[i]));
-                combination.addAll(questions);
+                if (numberOfQues[i] != null) {
+                    ArrayList<Question> questions = quizService.getQuestionByDimension(courseId, Integer.parseInt(dimensionId[i]), 0,
+                            level, Integer.parseInt(numberOfQues[i]));
+                    if (questions != null) {
+                        combination.addAll(questions);
+                    }
+                }
             }
         }
         for (Question question : combination) {
@@ -289,7 +303,6 @@ public class QuizController extends HttpServlet implements Controller {
             }
         }
         session.setAttribute("quiz", null);
-        session.setAttribute("type", null);
         response.sendRedirect(request.getContextPath() + "/auth/teacher/quiz");
     }
 
@@ -330,25 +343,30 @@ public class QuizController extends HttpServlet implements Controller {
     public void viewQuiz(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
             throws ServletException, IOException {
         HashMap<Integer, String> getHmCourse = courseService.getCourses();
-
-//        HashMap<Integer, String> getDimension = quizService.getDimension(quiz);
         int countQuestion = quizService.countQuestion(quiz);
         request.setAttribute("course", getHmCourse);
         request.setAttribute("quiz", quiz);
         request.setAttribute("questionNumber", countQuestion);
-//        request.setAttribute("dimension", getDimension);
         request.getRequestDispatcher("/auth/teacher/quiz/detail.jsp").forward(request, response);
     }
 
     public void getDimensionByType(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
         int type = Integer.parseInt(request.getParameter("type"));
-        session.setAttribute("type", type);
-        ArrayList<Dimension> getDimension = quizService.getDimension(quiz, type);
-        Gson json = new Gson();
-        String dimension = json.toJson(getDimension);
-        response.setContentType("text/html");
-        response.getWriter().write(dimension);
+        ArrayList<Dimension> getDimension;
+        ArrayList<Lesson> getTopic;
+        if (type == 1) {
+            getTopic = quizService.getTopic(quiz);
+            Gson json = new Gson();
+            String topic = json.toJson(getTopic);
+            response.setContentType("text/html");
+            response.getWriter().write(topic);
+        } else {
+            getDimension = quizService.getDimension(quiz, type);
+            Gson json = new Gson();
+            String dimension = json.toJson(getDimension);
+            response.setContentType("text/html");
+            response.getWriter().write(dimension);
+        }
     }
 }
