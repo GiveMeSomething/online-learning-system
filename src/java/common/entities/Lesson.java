@@ -8,6 +8,7 @@ package common.entities;
 public class Lesson {
 
     private int id;
+    // Change lessonName to name for ajax: Anhvd
     private String name;
     private int order;
     private Status status;
@@ -16,7 +17,8 @@ public class Lesson {
     private String videoLink;
     private String htmlContent;
     private int quizId;
-
+    
+    // Add default constructor: Anhvd
     public Lesson() {
     }
 

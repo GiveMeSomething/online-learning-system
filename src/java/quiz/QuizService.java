@@ -77,6 +77,31 @@ public class QuizService {
         return null;
     }
 
+    public HashMap<Integer, String> getQuizDimension(Quiz quiz) {
+        try {
+            return quizRepository.getQuizDimension(quiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public HashMap<Integer, String> getDimensionIDByQuizID(Quiz quiz) {
+        try {
+            return quizRepository.getDimensionIDByQuizID(quiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public int countQuestionForEachDimension(Quiz quiz, int dimensionId){
+        try {
+            return quizRepository.countQuestionForEachDimension(quiz, dimensionId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
     public int countQuestion(Quiz quiz) {
         try {
             return quizRepository.countQuestion(quiz);

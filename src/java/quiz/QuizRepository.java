@@ -126,11 +126,14 @@ public class QuizRepository extends Repository {
 
         String dimensionByType = "SELECT DISTINCT qcdl.dimension_id, d.name "
                 + "FROM db_ite1.question_course_dim_les qcdl JOIN dimension d "
-                + "ON qcdl.dimension_id = d.id WHERE course_id = ? AND d.type_id = ?";
+                + "ON qcdl.dimension_id = d.id "
+                + "JOIN questions_bank qb ON qb.id = qcdl.question_id "
+                + "WHERE course_id = ? AND d.type_id = ? AND level_id = ?";
         ArrayList<Dimension> getHmDimesion = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(dimensionByType)) {
             statement.setInt(1, quiz.getSubjectId());
             statement.setInt(2, dimensionType);
+            statement.setInt(3, Level.valueOf(quiz.getLevel()));
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
@@ -145,6 +148,7 @@ public class QuizRepository extends Repository {
         }
     }
 
+    // Not done yet
     public ArrayList<Lesson> getTopic(Quiz quiz) throws SQLException {
         this.connectDatabase();
 
@@ -188,9 +192,35 @@ public class QuizRepository extends Repository {
     public HashMap<Integer, String> getQuizDimension(Quiz quiz) throws SQLException {
         this.connectDatabase();
 
-        String questionByLesson = "SELECT DISTINCT dimension_id FROM question_course_dim_les qcdl "
+        String questionByLesson = "SELECT DISTINCT d.type_id FROM question_course_dim_les qcdl "
                 + "JOIN question_quiz qq "
                 + "ON qq.question_id = qcdl.question_id "
+                + "JOIN dimension d "
+                + "ON d.id = qcdl.dimension_id "
+                + "WHERE quiz_id = ?";
+        HashMap<Integer, String> getQuizDimesion = new HashMap<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(questionByLesson)) {
+            statement.setInt(1, quiz.getId());
+
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                getQuizDimesion.put(result.getInt("type_id"),
+                        result.getInt("type_id") == 1 ? "DOMAIN" : "GROUP");
+            }
+            return getQuizDimesion;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public HashMap<Integer, String> getDimensionIDByQuizID(Quiz quiz) throws SQLException {
+        this.connectDatabase();
+
+        String questionByLesson = "SELECT distinct dimension_id, d.name FROM question_quiz qq "
+                + "JOIN question_course_dim_les qcdl "
+                + "ON qq.question_id = qcdl.question_id "
+                + "join dimension d "
+                + "ON d.id = qcdl.dimension_id "
                 + "WHERE quiz_id = ?";
         HashMap<Integer, String> getQuizDimesion = new HashMap<>();
         try (PreparedStatement statement = this.connection.prepareStatement(questionByLesson)) {
@@ -205,6 +235,26 @@ public class QuizRepository extends Repository {
         } finally {
             this.disconnectDatabase();
         }
+    }
+
+    public int countQuestionForEachDimension(Quiz quiz, int dimensionId) throws SQLException {
+        this.connectDatabase();
+
+        String questionCount = "SELECT count(qq.question_id) AS questionPerDim "
+                + "FROM question_quiz qq JOIN question_course_dim_les qcdl "
+                + "ON qq.question_id = qcdl.question_id "
+                + "WHERE quiz_id = ? and dimension_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(questionCount)) {
+            statement.setInt(1, quiz.getId());
+            statement.setInt(2, dimensionId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("questionPerDim");
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
     }
 
     public HashMap<Integer, String> getDimensionTypeForEdit(Quiz quiz) throws SQLException {
@@ -285,6 +335,7 @@ public class QuizRepository extends Repository {
         }
     }
 
+    // Not done yet
     public boolean updateQuizSetting(Quiz quiz) throws SQLException {
         this.connectDatabase();
 

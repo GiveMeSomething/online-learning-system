@@ -39,6 +39,7 @@ public class QuizController extends HttpServlet implements Controller {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         String operation = request.getParameter("operation");
 
         String quizId;
@@ -54,6 +55,7 @@ public class QuizController extends HttpServlet implements Controller {
                         viewQuiz(request, response, quiz);
                     } else {
                         Quiz quiz = quizService.getQuiz(Integer.parseInt(quizId));
+                        session.setAttribute("quiz", quiz);
                         viewQuiz(request, response, quiz);
                     }
                     break;
@@ -61,7 +63,6 @@ public class QuizController extends HttpServlet implements Controller {
                     getItemInPage(request, response);
                     break;
                 case "dimensionType":
-                    HttpSession session = request.getSession();
                     Quiz quiz = (Quiz) session.getAttribute("quiz");
                     getDimensionByType(request, response, quiz);
                     break;
@@ -266,6 +267,7 @@ public class QuizController extends HttpServlet implements Controller {
         // Get value from Quiz Setting
         HttpSession session = request.getSession();
         String forwardTo = "/auth/teacher/quiz";
+
 //        int courseId = Integer.parseInt(request.getParameter("courseId"));
         int courseId = 1;
         int type = Integer.parseInt(request.getParameter("type"));
@@ -274,7 +276,7 @@ public class QuizController extends HttpServlet implements Controller {
             session.setAttribute("quiz", null);
             this.forwardErrorMessage(request, response, "There is no question in this group", forwardTo);
         }
-        if (type == 1) {
+        if (type == 0) {
             String[] lessonId = request.getParameterValues("dimension-name");
             int level = Level.valueOf(quiz.getLevel());
             for (int i = 0; i < numberOfQues.length; i++) {
@@ -310,7 +312,7 @@ public class QuizController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(request.getParameter("quizId"));
         String quizName = request.getParameter("quiz-name");
         int subject = Integer.parseInt(request.getParameter("subject-name"));
         Level level = Level.valueOf(request.getParameter("exam-level"));
@@ -342,10 +344,20 @@ public class QuizController extends HttpServlet implements Controller {
 
     public void viewQuiz(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
             throws ServletException, IOException {
+        HashMap<Integer, Integer> questionPerDim = new HashMap<>();
         HashMap<Integer, String> getHmCourse = courseService.getCourses();
+        HashMap<Integer, String> dimension = quizService.getQuizDimension(quiz);
+        HashMap<Integer, String> dimensionId = quizService.getDimensionIDByQuizID(quiz);
+        for (Integer id : dimensionId.keySet()) {
+            int countQuestionPerDimension = quizService.countQuestionForEachDimension(quiz, id);
+            questionPerDim.put(id, countQuestionPerDimension);
+        }
         int countQuestion = quizService.countQuestion(quiz);
         request.setAttribute("course", getHmCourse);
         request.setAttribute("quiz", quiz);
+        request.setAttribute("dimension", dimension);
+        request.setAttribute("dimensionName", dimensionId);
+        request.setAttribute("questionPerDimension", questionPerDim);
         request.setAttribute("questionNumber", countQuestion);
         request.getRequestDispatcher("/auth/teacher/quiz/detail.jsp").forward(request, response);
     }
@@ -355,7 +367,7 @@ public class QuizController extends HttpServlet implements Controller {
         int type = Integer.parseInt(request.getParameter("type"));
         ArrayList<Dimension> getDimension;
         ArrayList<Lesson> getTopic;
-        if (type == 1) {
+        if (type == 0) {
             getTopic = quizService.getTopic(quiz);
             Gson json = new Gson();
             String topic = json.toJson(getTopic);

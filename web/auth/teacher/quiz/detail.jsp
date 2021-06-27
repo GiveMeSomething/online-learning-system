@@ -19,7 +19,7 @@
     </head>
 
     <body>
-        <div class="container">
+        <div class="container mt-5">
             <ul class="nav nav-tabs" id="quiz-detail" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab"
@@ -33,7 +33,7 @@
             <!-- content -->
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                    <form action="${path}/auth/teacher/quiz" method="POST" class="needs-validatation" novalidate>
+                    <form action="${path}/auth/teacher/quiz" method="POST" class="shadow-sm p-2 needs-validatation" novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="/auth/teacher/subject/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
@@ -114,7 +114,7 @@
                 </div>
                 <!-- setting -->
                 <div class="tab-pane fade" id="setting" role="tabpanel" aria-labelledby="setting-tab">
-                    <form action="${path}/auth/teacher/quiz" method="POST" class="needs-validatation" novalidate>
+                    <form action="${path}/auth/teacher/quiz" method="POST" class="shadow-sm p-2 needs-validatation" novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="/auth/teacher/subject/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
@@ -134,15 +134,18 @@
                         <div class="form-row">
                             <span class="col-md-2">Question type</span>
                             <div class="custom-control custom-radio col-md-2">
-                                <input type="radio" value="1" class="type custom-control-input" id="topic" name="type" required>
+                                <input type="radio" value="0" ${dimension.key==0?"checked":""} 
+                                       class="type custom-control-input" id="topic" name="type" required>
                                 <label class="custom-control-label" for="topic">Topic</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">
-                                <input type="radio" class="type custom-control-input" value="2" id="group" name="type" required>
+                                <input type="radio" class="type custom-control-input" 
+                                       value="2" ${dimension.key==2?"checked":""} id="group" name="type" required>
                                 <label class="custom-control-label" for="group">Group</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">
-                                <input type="radio" class="type custom-control-input" value="3" id="domain" name="type" required>
+                                <input type="radio" class="type custom-control-input" 
+                                       value="1" ${dimension.key==1?"checked":""} id="domain" name="type" required>
                                 <label class="custom-control-label" for="domain">Domain</label>
                                 <div class="invalid-feedback">More example invalid feedback text</div>
                             </div>
@@ -152,61 +155,42 @@
                             <table id="myTable" class="table table-borderless">
                                 <tr>
                                     <td>
-                                        <div class="mb-3 col-md-7">
-                                            <select class="group-question custom-select" name="dimension-name" required>
-                                                <option>Select Group</option>
-                                            </select>
-                                            <div class="invalid-feedback"></div>
-                                        </div>
+                                        <select class="group-question custom-select" name="dimension-name" required>
+                                            <option>Select Group</option>
+                                        </select>
                                     </td>
-                                    <td></td>
                                     <td>
-                                        <div class="col-md-2">
-                                            <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
-                                        </div>
+                                        <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <div class="mb-3 col-md-7">
-                                            <select class="group-question custom-select"  name="dimension-name" required>
-                                                <option>Select Group</option>
-                                            </select>
-                                            <div class="invalid-feedback"></div>
-                                        </div>
+                                        <select class="group-question custom-select"  name="dimension-name" required>
+                                            <option>Select Group</option>
+                                        </select>
                                     </td>
-                                    <td></td>
                                     <td>
-                                        <div class="col-md-2">
-                                            <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
-                                        </div>
+                                        <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <div class="mb-3 col-md-7">
-                                            <select class="group-question custom-select"  name="dimension-name" required>
-                                                <option>Select Group</option>
-                                            </select>
-                                            <div class="invalid-feedback"></div>
-                                        </div>
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <div class="col-md-2">
-                                            <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
-                                        </div>
+                                        <select class="group-question custom-select"  name="dimension-name" required>
+                                            <option>Select Group</option>
+                                        </select>
                                     </td>
                                     <td>
-                                        <div class="col-md-2">
-                                            <a href="#" id="delBtn">Delete</a>
-                                        </div>
+                                        <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button>
                                     </td>
                                 </tr>
                             </table>
-                            <div class="col-md-1 mt-2">
-                                <a id="addBtn" href="#">Add new Group</a>
-                            </div>
+                            <button id="addBtn" class="btn btn-outline-primary btn-sm mb-5" type="button">Add new Group</button>
                         </div>
                         <div class="form-row">
                             <button class="btn btn-primary col-md-1" type="submit">Save</button>
@@ -237,7 +221,7 @@
                 var i = $('#myTable tr').size() + 1;
 
                 $('#addBtn').click(function () {
-                    addNew.append('<tr><td><div class="mb-3 col-md-7"><select class="group-question custom-select" name="dimension-name" required><option>Select Group</option></select><div class="invalid-feedback"></div></div></td><td></td><td><div class="col-md-2"><input type="text" class="form-control" name="number-of-question" placeholder="Number of questions"></div></td><td></td><td><div class="col-md-2"><a href="#" id="delBtn">Delete</a></div></td></tr>');
+                    addNew.append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option>Select Group</option></select></td><td><input type="text" class="form-control" name="number-of-question" placeholder="Number of questions"></td><td><button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button></td></tr>');
                     i++;
                     return false;
                 });
