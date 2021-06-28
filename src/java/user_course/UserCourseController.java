@@ -9,7 +9,6 @@ import common.entities.CourseRegistation;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +33,6 @@ public class UserCourseController extends HttpServlet implements Controller {
         User u = (User) session.getAttribute("user");
 
         String operation = request.getParameter("operation");
-
         switch (operation) {
             case "SearchByCategory":
                 searchCourseByCategory(request, response, u);
@@ -58,7 +56,6 @@ public class UserCourseController extends HttpServlet implements Controller {
                 listCourseRegistation(request, response, u);
                 break;
         }
-
     }
 
     @Override
