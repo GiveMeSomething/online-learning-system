@@ -53,19 +53,19 @@
                             <li class="nav-item nav-hover">
                                 <a class="nav-link active" aria-current="page" href="${path}/blog">Blogs</a>
                             </li>
-                            <c:if test="${sessionScope.isAdmin} != true">
+                            <c:if test="${sessionScope.isAdmin != true}">
                                 <c:choose>
-                                    <c:when test="${sessionScope.isTeacher} == true">
-                                        <li id="li-top">
+                                    <c:when test="${sessionScope.isTeacher == true}">
+                                        <li class="nav-link nav-item">
                                             <a href="${path}/auth/teacher/subject" style="padding-top: 5px; padding-bottom: 5px">
-                                                Courses<br/>Management
+                                                Management
                                             </a>
                                         </li>
                                     </c:when>
                                     <c:otherwise>
-                                        <li id="li-top">
+                                        <li class="nav-link nav-item">
                                             <a href="${path}/auth/user/course" style="padding-top: 5px; padding-bottom: 5px">
-                                                My<br/>Courses
+                                                Courses
                                             </a>
                                         </li>
                                     </c:otherwise>
