@@ -186,7 +186,7 @@ public class QuestionController extends HttpServlet {
                 request.setAttribute("answerDetail", answerDetail.getOption3());
             } else if (column.equals("option4")) {
                 request.setAttribute("answerDetail", answerDetail.getOption4());
-            } else {
+            } else if(column.equals("option5")) {
                 request.setAttribute("answerDetail", answerDetail.getOption5());
             }
             request.setAttribute("id", id);
