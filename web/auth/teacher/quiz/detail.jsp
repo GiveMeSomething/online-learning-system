@@ -134,13 +134,13 @@
                         <div class="form-row">
                             <span class="col-md-2">Question type</span>
                             <div class="custom-control custom-radio col-md-2">
-                                <input type="radio" value="0" ${dimension.key==0?"checked":""} 
+                                <input type="radio" value="0" ${dimension.key == 0?"checked":""} 
                                        class="type custom-control-input" id="topic" name="type" required>
                                 <label class="custom-control-label" for="topic">Topic</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">
                                 <input type="radio" class="type custom-control-input" 
-                                       value="2" ${dimension.key==2?"checked":""} id="group" name="type" required>
+                                       value="2" ${requestScope.dimension.key == 2?"checked":""} id="group" name="type" required>
                                 <label class="custom-control-label" for="group">Group</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">

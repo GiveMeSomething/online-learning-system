@@ -348,10 +348,6 @@ public class QuizController extends HttpServlet implements Controller {
         HashMap<Integer, String> getHmCourse = courseService.getCourses();
         HashMap<Integer, String> dimension = quizService.getQuizDimension(quiz);
         HashMap<Integer, String> dimensionId = quizService.getDimensionIDByQuizID(quiz);
-        for (Integer id : dimensionId.keySet()) {
-            int countQuestionPerDimension = quizService.countQuestionForEachDimension(quiz, id);
-            questionPerDim.put(id, countQuestionPerDimension);
-        }
         int countQuestion = quizService.countQuestion(quiz);
         request.setAttribute("course", getHmCourse);
         request.setAttribute("quiz", quiz);

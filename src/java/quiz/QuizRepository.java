@@ -462,11 +462,15 @@ public class QuizRepository extends Repository {
 
     public static void main(String[] args) throws SQLException {
         QuizRepository quizRepository = new QuizRepository();
-        Quiz quiz = new Quiz(1, "Exam 4", 1, Level.EASY, 1, TestType.QUIZ, 66, "new");
-        ArrayList<Dimension> dim = quizRepository.getDimensionByType(quiz, 1);
-        ArrayList<Lesson> les = quizRepository.getTopic(quiz);
-        for (Lesson le : les) {
-            System.out.println(le.getId() + " " + le.getName());
+        Quiz quiz = new Quiz(40, "Exam 4", 1, Level.EASY, 1, TestType.QUIZ, 66, "new");
+//        ArrayList<Dimension> dim = quizRepository.getDimensionByType(quiz, 1);
+//        ArrayList<Lesson> les = quizRepository.getTopic(quiz);
+//        for (Lesson le : les) {
+//            System.out.println(le.getId() + " " + le.getName());
+//        }
+        HashMap<Integer, String> dime = quizRepository.getQuizDimension(quiz);
+        for(Integer inte : dime.keySet()){
+            System.out.println(inte);
         }
     }
 }
