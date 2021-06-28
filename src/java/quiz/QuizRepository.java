@@ -6,6 +6,7 @@
 package quiz;
 
 import common.entities.Dimension;
+import common.entities.DimensionType;
 import common.entities.Lesson;
 import common.entities.Level;
 import common.entities.Question;
@@ -189,7 +190,7 @@ public class QuizRepository extends Repository {
         }
     }
 
-    public HashMap<Integer, String> getQuizDimension(Quiz quiz) throws SQLException {
+    public DimensionType getQuizDimension(Quiz quiz) throws SQLException {
         this.connectDatabase();
 
         String questionByLesson = "SELECT DISTINCT d.type_id FROM question_course_dim_les qcdl "
@@ -198,16 +199,15 @@ public class QuizRepository extends Repository {
                 + "JOIN dimension d "
                 + "ON d.id = qcdl.dimension_id "
                 + "WHERE quiz_id = ?";
-        HashMap<Integer, String> getQuizDimesion = new HashMap<>();
         try (PreparedStatement statement = this.connection.prepareStatement(questionByLesson)) {
             statement.setInt(1, quiz.getId());
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                getQuizDimesion.put(result.getInt("type_id"),
-                        result.getInt("type_id") == 1 ? "DOMAIN" : "GROUP");
+                return new DimensionType(result.getInt("type_id"), 
+                    result.getInt("type_id")==2?"GROUP":"DOMAIN");
             }
-            return getQuizDimesion;
+            return null;
         } finally {
             this.disconnectDatabase();
         }
@@ -313,30 +313,95 @@ public class QuizRepository extends Repository {
         }
     }
 
-    public boolean updateQuizOverView(Quiz quiz) throws SQLException {
+    public boolean addNewQuizSetting(Quiz quiz, int dimensionId, int lessonId, int numberOfQuestion) throws SQLException {
         this.connectDatabase();
 
-        String updateQuizOverview = "UPDATE quiz SET name= ?, subject_id= ?, "
-                + "level_id = ?, duration = ?, pass_rate = ?, quiz_type_id = ?, "
-                + "description = ? "
-                + "WHERE id = ?";
-        try (PreparedStatement statement = this.connection.prepareStatement(updateQuizOverview)) {
-            statement.setString(1, quiz.getQuizName());
-            statement.setInt(2, quiz.getSubjectId());
-            statement.setInt(3, Level.valueOf(quiz.getLevel()));
-            statement.setInt(4, quiz.getDuration());
-            statement.setFloat(5, quiz.getPassRate());
-            statement.setInt(6, TestType.valueOf(quiz.getQuizType()));
-            statement.setString(7, quiz.getDescription());
-            statement.setInt(8, quiz.getId());
+        String sql;
+        if (lessonId == 0) {
+            sql = "dimension_id";
+        } else {
+            sql = "lesson_id";
+        }
+        String addQuizSetting = "INSERT INTO quiz_dimension_lesson(quiz_id, " + sql + ", number_of_question)"
+                + " VALUES(?,?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(addQuizSetting)) {
+            statement.setInt(1, quiz.getId());
+            if (lessonId == 0) {
+                statement.setInt(2, dimensionId);
+            } else {
+                statement.setInt(2, lessonId);
+            }
+            statement.setInt(3, numberOfQuestion);
             return statement.executeUpdate() > 0;
         } finally {
             this.disconnectDatabase();
         }
     }
 
-    // Not done yet
-    public boolean updateQuizSetting(Quiz quiz) throws SQLException {
+    public boolean updateQuizSetting(Quiz quiz, int dimensionId, int lessonId, int numberOfQuestion) throws SQLException {
+        this.connectDatabase();
+
+        String sql;
+        if (lessonId == 0) {
+            sql = "dimension_id";
+        } else {
+            sql = "lesson_id";
+        }
+        String addQuizSetting = "UPDATE quiz_dimension_lesson "
+                + "SET " + sql + " = ?, number_of_question = ? "
+                + "WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(addQuizSetting)) {
+            if (lessonId == 0) {
+                statement.setInt(1, dimensionId);
+            } else {
+                statement.setInt(1, lessonId);
+            }
+            statement.setInt(2, numberOfQuestion);
+            statement.setInt(3, getQuizSetting(quiz, dimensionId, lessonId).get(0));
+            return statement.executeUpdate() > 0;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public ArrayList<Integer> getQuizSetting(Quiz quiz, int dimensionId, int lessonId) throws SQLException {
+        this.connectDatabase();
+
+        ArrayList<Integer> quizSetting = new ArrayList<>();
+        String sql1;
+        String sql2;
+        if (lessonId == 0) {
+            sql1 = "dimension_id";
+            sql2 = "lesson_id";
+        } else {
+            sql1 = "lesson_id";
+            sql2 = "dimension_id";
+        }
+        String getQuizSetting = "SELECT id, quiz_id, dimension_id, lesson_id, number_of_question "
+                + "FROM quiz_dimension_lesson "
+                + "WHERE quiz_id = ? AND " + sql1 + " = ? AND " + sql2 + " IS NULL";
+        try (PreparedStatement statement = this.connection.prepareStatement(getQuizSetting)) {
+            statement.setInt(1, quiz.getId());
+            if (lessonId == 0) {
+                statement.setInt(2, dimensionId);
+            } else {
+                statement.setInt(2, lessonId);
+            }
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                quizSetting.add(result.getInt("id"));
+                quizSetting.add(result.getInt("quiz_id"));
+                quizSetting.add(result.getInt("dimension_id"));
+                quizSetting.add(result.getInt("lesson_id"));
+                quizSetting.add(result.getInt("number_of_question"));
+            }
+            return quizSetting;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean updateQuizOverView(Quiz quiz) throws SQLException {
         this.connectDatabase();
 
         String updateQuizOverview = "UPDATE quiz SET name= ?, subject_id= ?, "
@@ -462,15 +527,12 @@ public class QuizRepository extends Repository {
 
     public static void main(String[] args) throws SQLException {
         QuizRepository quizRepository = new QuizRepository();
-        Quiz quiz = new Quiz(40, "Exam 4", 1, Level.EASY, 1, TestType.QUIZ, 66, "new");
-//        ArrayList<Dimension> dim = quizRepository.getDimensionByType(quiz, 1);
-//        ArrayList<Lesson> les = quizRepository.getTopic(quiz);
-//        for (Lesson le : les) {
-//            System.out.println(le.getId() + " " + le.getName());
-//        }
-        HashMap<Integer, String> dime = quizRepository.getQuizDimension(quiz);
-        for(Integer inte : dime.keySet()){
-            System.out.println(inte);
+        Quiz quiz = new Quiz(2, "Exam 4", 1, Level.EASY, 1, TestType.QUIZ, 66, "new");
+        ArrayList<Dimension> dim = quizRepository.getDimensionByType(quiz, 1);
+        ArrayList<Lesson> les = quizRepository.getTopic(quiz);
+        ArrayList<Integer> lesson = quizRepository.getQuizSetting(quiz, 7, 0);
+        for (int i = 0; i < lesson.size(); i++) {
+            System.out.println(lesson.get(i));
         }
     }
 }

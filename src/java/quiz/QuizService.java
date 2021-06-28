@@ -6,6 +6,7 @@
 package quiz;
 
 import common.entities.Dimension;
+import common.entities.DimensionType;
 import common.entities.Lesson;
 import common.entities.Question;
 import common.entities.Quiz;
@@ -77,7 +78,7 @@ public class QuizService {
         return null;
     }
 
-    public HashMap<Integer, String> getQuizDimension(Quiz quiz) {
+    public DimensionType getQuizDimension(Quiz quiz) {
         try {
             return quizRepository.getQuizDimension(quiz);
         } catch (Exception e) {
@@ -94,7 +95,8 @@ public class QuizService {
         }
         return null;
     }
-    public int countQuestionForEachDimension(Quiz quiz, int dimensionId){
+
+    public int countQuestionForEachDimension(Quiz quiz, int dimensionId) {
         try {
             return quizRepository.countQuestionForEachDimension(quiz, dimensionId);
         } catch (Exception e) {
@@ -102,6 +104,7 @@ public class QuizService {
         }
         return 0;
     }
+
     public int countQuestion(Quiz quiz) {
         try {
             return quizRepository.countQuestion(quiz);
@@ -132,6 +135,33 @@ public class QuizService {
     public boolean addQuizSetting(Quiz quiz, int quesId) {
         try {
             return quizRepository.addQuizSetting(quiz, quesId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public ArrayList<Integer> getQuizSetting(Quiz quiz, int dimensionId, int lessonId) {
+        try {
+            return quizRepository.getQuizSetting(quiz, dimensionId, lessonId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateQuizSetting(Quiz quiz, int dimensionId, int lessonId, int numberOfQuestion) {
+        try {
+            return quizRepository.updateQuizSetting(quiz, dimensionId, lessonId, numberOfQuestion);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean addNewQuizSetting(Quiz quiz, int dimensionId, int lessonId, int numberOfQuestion){
+        try {
+            return quizRepository.addNewQuizSetting(quiz, dimensionId, lessonId, numberOfQuestion);
         } catch (Exception e) {
             e.printStackTrace();
         }

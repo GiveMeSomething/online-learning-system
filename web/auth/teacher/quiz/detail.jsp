@@ -122,7 +122,7 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <input value="${quiz.subjectId}" hidden name="subject"/>
-                        <input value="${quiz.id}" hidden name="quizId"/>
+                        <input value="${quiz.id}" hidden id="quizId" name="quizId"/>
                         <div class="form-row">
                             <div class="mb-3">
                                 <label for="total-question">Total Questions</label>
@@ -134,18 +134,18 @@
                         <div class="form-row">
                             <span class="col-md-2">Question type</span>
                             <div class="custom-control custom-radio col-md-2">
-                                <input type="radio" value="0" ${dimension.key == 0?"checked":""} 
+                                <input type="radio" value="LESSON"
                                        class="type custom-control-input" id="topic" name="type" required>
                                 <label class="custom-control-label" for="topic">Topic</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">
                                 <input type="radio" class="type custom-control-input" 
-                                       value="2" ${requestScope.dimension.key == 2?"checked":""} id="group" name="type" required>
+                                       value="GROUP"  id="group" name="type" required>
                                 <label class="custom-control-label" for="group">Group</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">
                                 <input type="radio" class="type custom-control-input" 
-                                       value="1" ${dimension.key==1?"checked":""} id="domain" name="type" required>
+                                       value="DOMAIN" id="domain" name="type" required>
                                 <label class="custom-control-label" for="domain">Domain</label>
                                 <div class="invalid-feedback">More example invalid feedback text</div>
                             </div>
@@ -219,13 +219,13 @@
             $(document).ready(function () {
                 var addNew = $('#myTable');
                 var i = $('#myTable tr').size() + 1;
-
+                
                 $('#addBtn').click(function () {
                     addNew.append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option>Select Group</option></select></td><td><input type="text" class="form-control" name="number-of-question" placeholder="Number of questions"></td><td><button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button></td></tr>');
                     i++;
                     return false;
                 });
-
+                
                 //Remove button
                 $(document).on('click', '#delBtn', function () {
                     if (i > 2) {
@@ -234,17 +234,42 @@
                     }
                     return false;
                 });
-
+                
+                $('#setting-tab').click(function () {
+                    let existType = $('.type').val();
+                    let quizId = $('#quizId').val();
+                    $.ajax({
+                        url: "/online-learning-system/auth/teacher/quiz",
+                        method: "GET",
+                        data: {operation: 'dimension',
+                            quizId: quizId},
+                        success: function (data) {
+                            console.log(data);
+                            let obj = $.parseJSON(data);
+                            console.log(obj.dimension_type_name);
+                            if ($('#group').val() == obj.dimension_type_name) {
+                                $('#group').prop("checked", true);
+                            } else if ($('#topic').val() == obj.dimension_type_name) {
+                                $('#topic').prop("checked", true);
+                            }else{
+                                $('#domain').prop("checked", true);
+                            }
+                            
+                        },
+                        cache: false
+                    });
+                });
+                
                 $('.type').click(function () {
                     $('.group-question').find('option').remove();
                     $('.group-question').append('<option>Select Group</option>');
-
+                    
                     let type = $('.type:checked').val();
                     let data = {
                         operation: "dimensionType",
                         type: type
                     };
-
+                    
                     $.ajax({
                         url: "/online-learning-system/auth/teacher/quiz",
                         method: "GET",
@@ -255,7 +280,7 @@
                             $.each(obj, function (key, value) {
                                 $('.group-question').append('<option value="' + value.id + '">' + value.name + '</option>')
                             });
-
+                            
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                             $('.group-question').append('<option>State Unavailable</option>');
@@ -263,7 +288,7 @@
                         cache: false
                     });
                 });
-
+                
             });
         </script>
     </body>

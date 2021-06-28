@@ -13,6 +13,7 @@ import common.utilities.Controller;
 import course.CourseService;
 import com.google.gson.Gson;
 import common.entities.Dimension;
+import common.entities.DimensionType;
 import common.entities.Lesson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,6 +66,11 @@ public class QuizController extends HttpServlet implements Controller {
                 case "dimensionType":
                     Quiz quiz = (Quiz) session.getAttribute("quiz");
                     getDimensionByType(request, response, quiz);
+                    break;
+                case "dimension":
+                    quizId = request.getParameter("quizId");
+                    Quiz eQuiz = quizService.getQuiz(Integer.parseInt(quizId));
+                    getDimensionByTypeForQuiz(request, response, eQuiz);
                     break;
                 case "VIEWQUIZHANDLE":
                     processViewQuizHandle(request, response);
@@ -270,7 +276,15 @@ public class QuizController extends HttpServlet implements Controller {
 
 //        int courseId = Integer.parseInt(request.getParameter("courseId"));
         int courseId = 1;
-        int type = Integer.parseInt(request.getParameter("type"));
+        String typeInString = request.getParameter("type");
+        int type;
+        if(typeInString.equalsIgnoreCase("GROUP")){
+            type = 2;
+        }else if(typeInString.equals("LESSON")){
+            type = 0;
+        }else{
+            type = 1;
+        }
         String[] numberOfQues = request.getParameterValues("number-of-question");
         if (numberOfQues == null || numberOfQues.equals("")) {
             session.setAttribute("quiz", null);
@@ -328,6 +342,7 @@ public class QuizController extends HttpServlet implements Controller {
         viewQuiz(request, response, quiz);
     }
 
+    // Not done yet
     public void updateQuizSetting(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
@@ -346,12 +361,10 @@ public class QuizController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         HashMap<Integer, Integer> questionPerDim = new HashMap<>();
         HashMap<Integer, String> getHmCourse = courseService.getCourses();
-        HashMap<Integer, String> dimension = quizService.getQuizDimension(quiz);
         HashMap<Integer, String> dimensionId = quizService.getDimensionIDByQuizID(quiz);
         int countQuestion = quizService.countQuestion(quiz);
         request.setAttribute("course", getHmCourse);
         request.setAttribute("quiz", quiz);
-        request.setAttribute("dimension", dimension);
         request.setAttribute("dimensionName", dimensionId);
         request.setAttribute("questionPerDimension", questionPerDim);
         request.setAttribute("questionNumber", countQuestion);
@@ -360,7 +373,15 @@ public class QuizController extends HttpServlet implements Controller {
 
     public void getDimensionByType(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
             throws ServletException, IOException {
-        int type = Integer.parseInt(request.getParameter("type"));
+        String typeInString = request.getParameter("type");
+        int type = 0;
+        if(typeInString.equalsIgnoreCase("GROUP")){
+            type = 2;
+        }else if(typeInString.equals("LESSON")){
+            type = 0;
+        }else{
+            type = 1;
+        }
         ArrayList<Dimension> getDimension;
         ArrayList<Lesson> getTopic;
         if (type == 0) {
@@ -376,5 +397,15 @@ public class QuizController extends HttpServlet implements Controller {
             response.setContentType("text/html");
             response.getWriter().write(dimension);
         }
+    }
+
+    public void getDimensionByTypeForQuiz(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
+            throws ServletException, IOException {
+        DimensionType dimension = quizService.getQuizDimension(quiz);
+        System.out.println(dimension);
+        Gson json = new Gson();
+        String group = json.toJson(dimension);
+        response.setContentType("text/html");
+        response.getWriter().write(group);
     }
 }
