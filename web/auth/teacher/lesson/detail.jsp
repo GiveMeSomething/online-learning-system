@@ -29,7 +29,7 @@
                     <div class="mb-3 col-md-5">
                         <input hidden="true" value="${lesson.id}" name="lessonId"/>
                         <label for="lesson-name">Lesson Name</label>
-                        <input class="form-control" name="lesson-name" value="${lesson.lessonName}" type="text" id="lesson-name"
+                        <input class="form-control" name="lesson-name" value="${lesson.name}" type="text" id="lesson-name"
                                placeholder="Enter Lesson Name" data-value-missing="Can't be empty" required />
                         <div class="invalid-feedback"></div>
                     </div>

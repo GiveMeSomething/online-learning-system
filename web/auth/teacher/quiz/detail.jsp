@@ -19,7 +19,7 @@
     </head>
 
     <body>
-        <div class="container">
+        <div class="container mt-5">
             <ul class="nav nav-tabs" id="quiz-detail" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab"
@@ -33,7 +33,7 @@
             <!-- content -->
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                    <form action="${path}/auth/teacher/quiz" method="POST" class="needs-validatation" novalidate>
+                    <form action="${path}/auth/teacher/quiz" method="POST" class="shadow-sm p-2 needs-validatation" novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="/auth/teacher/subject/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
@@ -114,7 +114,7 @@
                 </div>
                 <!-- setting -->
                 <div class="tab-pane fade" id="setting" role="tabpanel" aria-labelledby="setting-tab">
-                    <form action="${path}/auth/teacher/quiz" method="POST" class="needs-validatation" novalidate>
+                    <form action="${path}/auth/teacher/quiz" method="POST" class="shadow-sm p-2 needs-validatation" novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="/auth/teacher/subject/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
@@ -122,7 +122,7 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <input value="${quiz.subjectId}" hidden name="subject"/>
-                        <input value="${quiz.id}" hidden name="quizId"/>
+                        <input value="${quiz.id}" hidden id="quizId" name="quizId"/>
                         <div class="form-row">
                             <div class="mb-3">
                                 <label for="total-question">Total Questions</label>
@@ -134,40 +134,64 @@
                         <div class="form-row">
                             <span class="col-md-2">Question type</span>
                             <div class="custom-control custom-radio col-md-2">
-                                <input type="radio" checked="true" class="custom-control-input" id="topic" name="type" required>
+                                <input type="radio" value="Lesson"
+                                       class="type custom-control-input" id="topic" name="type" required>
                                 <label class="custom-control-label" for="topic">Topic</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">
-                                <input type="radio" class="custom-control-input" id="group" name="type" required>
+                                <input type="radio" class="type custom-control-input" 
+                                       value="Group"  id="group" name="type" required>
                                 <label class="custom-control-label" for="group">Group</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">
-                                <input type="radio" class="custom-control-input" id="domain" name="type" required>
+                                <input type="radio" class="type custom-control-input" 
+                                       value="Domain" id="domain" name="type" required>
                                 <label class="custom-control-label" for="domain">Domain</label>
                                 <div class="invalid-feedback">More example invalid feedback text</div>
                             </div>
                         </div>
                         <p>Choose number of Questions corresponding their group</p>
-                        <c:forEach  begin="1" end="3" var="i" varStatus="status">
-                            <div class="form-row">
-                                <div class="mb-3 col-md-7">
-                                    <select class="custom-select" id="group-name" name="dimension-name" required>
-                                        <c:forEach items="${dimension}" var="o">
-                                            <option selected value="${o.key}">${o.value}</option>
-                                        </c:forEach>
-                                    </select>
-                                    <div class="invalid-feedback"></div>
-                                </div>
-                                <div class="col-md-1"></div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
-                                </div>
-                                <div class="col-md-1"></div>
-                                <div class="col-md-1">
-                                    <button type="button" class="btn btn-light">${not status.last ? "Delete":"Add"}</button>
-                                </div>
-                            </div>
-                        </c:forEach>
+                        <div class="form-row">
+                            <table id="myTable" class="table table-borderless">
+                                <tr>
+                                    <td>
+                                        <select class="group-question custom-select" name="dimension-name" required>
+                                            <option>Select Group</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select class="group-question custom-select"  name="dimension-name" required>
+                                            <option>Select Group</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select class="group-question custom-select"  name="dimension-name" required>
+                                            <option>Select Group</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="number-of-question" placeholder="Number of questions">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <button id="addBtn" class="btn btn-outline-primary btn-sm mb-5" type="button">Add new Group</button>
+                        </div>
                         <div class="form-row">
                             <button class="btn btn-primary col-md-1" type="submit">Save</button>
                             <div class="col-md-10"></div>
@@ -187,7 +211,89 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
                 integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
         crossorigin="anonymous"></script>
-        <script src="${path}/utilities/form-validator.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="${path}/utilities/form-validator.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var addNew = $('#myTable');
+                var i = $('#myTable tr').size() + 1;
+
+                $('#addBtn').click(function () {
+                    addNew.append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option>Select Group</option></select></td><td><input type="text" class="form-control" name="number-of-question" placeholder="Number of questions"></td><td><button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button></td></tr>');
+                    i++;
+                    return false;
+                });
+                //Remove button
+                $(document).on('click', '#delBtn', function () {
+                    if (i > 2) {
+                        $(this).closest('tr').remove();
+                        i--;
+                    }
+                    return false;
+                });
+
+                $('#setting-tab').click(function () {
+                    $('#myTable').find('tr').remove();
+                    let existType = $('.type').val();
+                    let quizId = $('#quizId').val();
+                    $.ajax({
+                        url: "/online-learning-system/auth/teacher/quiz",
+                        method: "GET",
+                        data: {operation: 'dimension',
+                            quizId: quizId},
+                        success: function (data) {
+                            console.log(data);
+                            let dim = $.parseJSON(data);
+                            $.each(dim, function (key, value) {
+                                console.log(value.type)
+                                console.log($('#group').val())
+                                if ($('#group').val() === value.type) {
+                                    $('#group').prop("checked", true);
+                                } else if ($('#domain').val() === value.type) {
+                                    $('#domain').prop("checked", true);
+                                } else {
+                                    $('#topic').prop("checked", true);
+                                }
+                                $('#myTable').append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option value="">' + value.name + '</option></select></td><td><input type="text" class="form-control" name="number-of-question" placeholder="Number of questions"></td></tr>');
+                            });
+                        },
+                        cache: false
+                    });
+                });
+
+                $('.type').click(function () {
+                    $('.group-question').find('option').remove();
+                    $('.group-question').append('<option>Select Group</option>');
+
+                    let type = $('.type:checked').val();
+                    let data = {
+                        operation: "dimensionType",
+                        type: type
+                    };
+
+                    $.ajax({
+                        url: "/online-learning-system/auth/teacher/quiz",
+                        method: "GET",
+                        data: data,
+                        success: function (data, textStatus, jqXHR) {
+                            console.log(data);
+                            let obj = $.parseJSON(data);
+                            $.each(obj, function (key, value) {
+                                $('.group-question').append('<option value="' + value.id + '">' + value.name + '</option>')
+                            });
+
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            $('.group-question').append('<option>State Unavailable</option>');
+                        },
+                        cache: false
+                    });
+                });
+
+            });
+        </script>
     </body>
 
 </html>

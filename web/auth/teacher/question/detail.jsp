@@ -75,9 +75,9 @@
                     </label>
                     <select name="lesson" class="form-control">
                         <c:forEach items="${lessonList}" var="o">
-                            <option ${o.lessonName == questionDetail.lesson_name ? "selected":""} 
+                            <option ${o.name == questionDetail.lesson_name ? "selected":""} 
                                 value="${o.id}">
-                                ${o.lessonName}
+                                ${o.name}
                             </option>
                         </c:forEach>
                     </select>

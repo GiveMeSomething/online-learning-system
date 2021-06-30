@@ -5,6 +5,9 @@
  */
 package quiz;
 
+import common.entities.Dimension;
+import common.entities.DimensionType;
+import common.entities.Lesson;
 import common.entities.Question;
 import common.entities.Quiz;
 import common.entities.TestType;
@@ -66,13 +69,47 @@ public class QuizService {
         return null;
     }
 
-    public ArrayList<Question> getQuestionByDimension(int courseId, int dimensionId, int num) {
+    public ArrayList<Question> getQuestionByDimension(int courseId, int dimensionId, int lessonId, int level, int num) {
         try {
-            return quizRepository.getQuestionByDimension(courseId, dimensionId, num);
+            return quizRepository.getQuestion(courseId, dimensionId, lessonId, level, num);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public DimensionType getQuizDimension(Quiz quiz) {
+        try {
+            return quizRepository.getQuizDimension(quiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public HashMap<Integer, String> getDimensionIDByQuizID(Quiz quiz) {
+        try {
+            return quizRepository.getDimensionIDByQuizID(quiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public ArrayList<Dimension> getDimensionTypeForEdit(Quiz quiz){
+        try {
+            return quizRepository.getDimensionTypeForEdit(quiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public int countQuestionForEachDimension(Quiz quiz, int dimensionId) {
+        try {
+            return quizRepository.countQuestionForEachDimension(quiz, dimensionId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public int countQuestion(Quiz quiz) {
@@ -84,9 +121,18 @@ public class QuizService {
         return 0;
     }
 
-    public HashMap<Integer, String> getDimension(Quiz quiz) {
+    public ArrayList<Dimension> getDimension(Quiz quiz, int dimensionType) {
         try {
-            return quizRepository.getDimension(quiz);
+            return quizRepository.getDimensionByType(quiz, dimensionType);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ArrayList<Lesson> getTopic(Quiz quiz) {
+        try {
+            return quizRepository.getTopic(quiz);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -101,7 +147,35 @@ public class QuizService {
         }
         return false;
     }
-    public HashMap<Integer, String> getQuizForLesson(int courseId){
+
+    public ArrayList<Integer> getQuizSetting(Quiz quiz, int dimensionId, int lessonId) {
+        try {
+            return quizRepository.getQuizSetting(quiz, dimensionId, lessonId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateQuizSetting(Quiz quiz, int dimensionId, int lessonId, int numberOfQuestion) {
+        try {
+            return quizRepository.updateQuizSetting(quiz, dimensionId, lessonId, numberOfQuestion);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean addNewQuizSetting(Quiz quiz, int dimensionId, int lessonId, int numberOfQuestion){
+        try {
+            return quizRepository.addNewQuizSetting(quiz, dimensionId, lessonId, numberOfQuestion);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public HashMap<Integer, String> getQuizForLesson(int courseId) {
         try {
             return quizRepository.getQuizForLesson(courseId);
         } catch (Exception e) {

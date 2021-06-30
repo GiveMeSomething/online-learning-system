@@ -24,6 +24,11 @@
     </head>
     <body>
         <div class="container my-5">
+            <c:if test="${requestScope.errorMessage != null}">
+                <div class="d-flex w-100 align-items-center justify-content-end">
+                    <h5>${requestScope.errorMessage}</h5>
+                </div>
+            </c:if>
             <div class="row">
                 <div class="d-flex justify-content-center align-items-center">
                     <h2>Subjects List</h2>
