@@ -134,18 +134,18 @@
                         <div class="form-row">
                             <span class="col-md-2">Question type</span>
                             <div class="custom-control custom-radio col-md-2">
-                                <input type="radio" value="LESSON"
+                                <input type="radio" value="Lesson"
                                        class="type custom-control-input" id="topic" name="type" required>
                                 <label class="custom-control-label" for="topic">Topic</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">
                                 <input type="radio" class="type custom-control-input" 
-                                       value="GROUP"  id="group" name="type" required>
+                                       value="Group"  id="group" name="type" required>
                                 <label class="custom-control-label" for="group">Group</label>
                             </div>
                             <div class="custom-control custom-radio mb-3 col-md-2">
                                 <input type="radio" class="type custom-control-input" 
-                                       value="DOMAIN" id="domain" name="type" required>
+                                       value="Domain" id="domain" name="type" required>
                                 <label class="custom-control-label" for="domain">Domain</label>
                                 <div class="invalid-feedback">More example invalid feedback text</div>
                             </div>
@@ -219,13 +219,12 @@
             $(document).ready(function () {
                 var addNew = $('#myTable');
                 var i = $('#myTable tr').size() + 1;
-                
+
                 $('#addBtn').click(function () {
                     addNew.append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option>Select Group</option></select></td><td><input type="text" class="form-control" name="number-of-question" placeholder="Number of questions"></td><td><button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button></td></tr>');
                     i++;
                     return false;
                 });
-                
                 //Remove button
                 $(document).on('click', '#delBtn', function () {
                     if (i > 2) {
@@ -234,8 +233,9 @@
                     }
                     return false;
                 });
-                
+
                 $('#setting-tab').click(function () {
+                    $('#myTable').find('tr').remove();
                     let existType = $('.type').val();
                     let quizId = $('#quizId').val();
                     $.ajax({
@@ -245,31 +245,34 @@
                             quizId: quizId},
                         success: function (data) {
                             console.log(data);
-                            let obj = $.parseJSON(data);
-                            console.log(obj.dimension_type_name);
-                            if ($('#group').val() == obj.dimension_type_name) {
-                                $('#group').prop("checked", true);
-                            } else if ($('#topic').val() == obj.dimension_type_name) {
-                                $('#topic').prop("checked", true);
-                            }else{
-                                $('#domain').prop("checked", true);
-                            }
-                            
+                            let dim = $.parseJSON(data);
+                            $.each(dim, function (key, value) {
+                                console.log(value.type)
+                                console.log($('#group').val())
+                                if ($('#group').val() === value.type) {
+                                    $('#group').prop("checked", true);
+                                } else if ($('#domain').val() === value.type) {
+                                    $('#domain').prop("checked", true);
+                                } else {
+                                    $('#topic').prop("checked", true);
+                                }
+                                $('#myTable').append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option value="">' + value.name + '</option></select></td><td><input type="text" class="form-control" name="number-of-question" placeholder="Number of questions"></td></tr>');
+                            });
                         },
                         cache: false
                     });
                 });
-                
+
                 $('.type').click(function () {
                     $('.group-question').find('option').remove();
                     $('.group-question').append('<option>Select Group</option>');
-                    
+
                     let type = $('.type:checked').val();
                     let data = {
                         operation: "dimensionType",
                         type: type
                     };
-                    
+
                     $.ajax({
                         url: "/online-learning-system/auth/teacher/quiz",
                         method: "GET",
@@ -280,7 +283,7 @@
                             $.each(obj, function (key, value) {
                                 $('.group-question').append('<option value="' + value.id + '">' + value.name + '</option>')
                             });
-                            
+
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                             $('.group-question').append('<option>State Unavailable</option>');
@@ -288,7 +291,7 @@
                         cache: false
                     });
                 });
-                
+
             });
         </script>
     </body>

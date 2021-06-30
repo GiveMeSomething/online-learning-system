@@ -67,6 +67,10 @@ public class QuizController extends HttpServlet implements Controller {
                     Quiz quiz = (Quiz) session.getAttribute("quiz");
                     getDimensionByType(request, response, quiz);
                     break;
+                case "dimensionName":
+                    Quiz existQuiz = (Quiz) session.getAttribute("quiz");
+                    getDimensionNameForQuiz(request, response, existQuiz);
+                    break;
                 case "dimension":
                     quizId = request.getParameter("quizId");
                     Quiz eQuiz = quizService.getQuiz(Integer.parseInt(quizId));
@@ -278,9 +282,9 @@ public class QuizController extends HttpServlet implements Controller {
         int courseId = 1;
         String typeInString = request.getParameter("type");
         int type;
-        if(typeInString.equalsIgnoreCase("GROUP")){
+        if(typeInString.equalsIgnoreCase("Group")){
             type = 2;
-        }else if(typeInString.equals("LESSON")){
+        }else if(typeInString.equalsIgnoreCase("Lesson")){
             type = 0;
         }else{
             type = 1;
@@ -375,9 +379,9 @@ public class QuizController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         String typeInString = request.getParameter("type");
         int type = 0;
-        if(typeInString.equalsIgnoreCase("GROUP")){
+        if(typeInString.equalsIgnoreCase("Group")){
             type = 2;
-        }else if(typeInString.equals("LESSON")){
+        }else if(typeInString.equalsIgnoreCase("Lesson")){
             type = 0;
         }else{
             type = 1;
@@ -401,7 +405,17 @@ public class QuizController extends HttpServlet implements Controller {
 
     public void getDimensionByTypeForQuiz(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
             throws ServletException, IOException {
-        DimensionType dimension = quizService.getQuizDimension(quiz);
+        ArrayList<Dimension> dimension = quizService.getDimensionTypeForEdit(quiz);
+        System.out.println(dimension);
+        Gson json = new Gson();
+        String group = json.toJson(dimension);
+        response.setContentType("text/html");
+        response.getWriter().write(group);
+    }
+    
+    public void getDimensionNameForQuiz(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
+            throws ServletException, IOException {
+        ArrayList<Dimension> dimension = quizService.getDimensionTypeForEdit(quiz);
         System.out.println(dimension);
         Gson json = new Gson();
         String group = json.toJson(dimension);

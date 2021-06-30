@@ -204,8 +204,8 @@ public class QuizRepository extends Repository {
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                return new DimensionType(result.getInt("type_id"), 
-                    result.getInt("type_id")==2?"GROUP":"DOMAIN");
+                return new DimensionType(result.getInt("type_id"),
+                        result.getInt("type_id") == 2 ? "GROUP" : "DOMAIN");
             }
             return null;
         } finally {
@@ -257,21 +257,26 @@ public class QuizRepository extends Repository {
         return 0;
     }
 
-    public HashMap<Integer, String> getDimensionTypeForEdit(Quiz quiz) throws SQLException {
+    public ArrayList<Dimension> getDimensionTypeForEdit(Quiz quiz) throws SQLException {
         this.connectDatabase();
 
-        String questionByLesson = "select distinct d.name, type_id "
-                + "from db_ite1.question_course_dim_les qcdl "
-                + "join question_quiz qq on qcdl.question_id = qq.question_id "
-                + "join dimension d on d.id = qcdl.dimension_id";
-        HashMap<Integer, String> getQuizDimesion = new HashMap<>();
+        String questionByLesson = "select distinct type_id, d.name, dt.dimension_type_name\n"
+                + "                from db_ite1.question_course_dim_les qcdl \n"
+                + "                join question_quiz qq on qcdl.question_id = qq.question_id\n"
+                + "                join dimension d on d.id = qcdl.dimension_id\n"
+                + "                join dimension_type dt on dt.id = d.type_id\n"
+                + "                where quiz_id = ?";
+        ArrayList<Dimension> getQuizDimesion = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(questionByLesson)) {
             statement.setInt(1, quiz.getId());
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                getQuizDimesion.put(result.getInt("dimension_id"),
-                        result.getString("name"));
+                Dimension dim = new Dimension();
+                dim.setId(result.getInt("type_id"));
+                dim.setName(result.getString("name"));
+                dim.setType(result.getString("dimension_type_name"));
+                getQuizDimesion.add(dim);
             }
             return getQuizDimesion;
         } finally {

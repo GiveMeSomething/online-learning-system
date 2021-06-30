@@ -95,7 +95,14 @@ public class QuizService {
         }
         return null;
     }
-
+    public ArrayList<Dimension> getDimensionTypeForEdit(Quiz quiz){
+        try {
+            return quizRepository.getDimensionTypeForEdit(quiz);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public int countQuestionForEachDimension(Quiz quiz, int dimensionId) {
         try {
             return quizRepository.countQuestionForEachDimension(quiz, dimensionId);
