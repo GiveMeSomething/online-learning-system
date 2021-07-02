@@ -139,7 +139,6 @@ public class QuizController extends HttpServlet implements Controller {
         Quiz quiz = quizService.getQuiz(getDataForQuestion.get(0));
         ArrayList<Question> questions = quizService.getQuestionByDimension(courseId, getDataForQuestion.get(1),
                 getDataForQuestion.get(2), Level.valueOf(quiz.getLevel()), getDataForQuestion.get(3));
-
         if (session.getAttribute("question") == null) {
             session.setAttribute("question", questions);
         }

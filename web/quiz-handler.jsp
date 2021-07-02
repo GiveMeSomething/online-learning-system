@@ -53,7 +53,7 @@
                                             <h3 class="text-danger pl-3">Q.</h3>
                                             <h5 class="mt-1 ml-2">${q.content}</h5>
                                         </div>
-                                        <div class="ans ml">
+                                        <div class="ans ml-2">
                                             <label class="radio" for="a1"> 
                                                 <input type="radio" id="a1" name="q1" value="brazil"> <span>${q.option1}</span>
                                             </label>
@@ -70,6 +70,12 @@
                                             <label class="radio"> <input type="radio" id="a4" name="q1" value="Russia"> <span>${q.option4}</span>
                                             </label>
                                         </div>
+                                        <c:if test="${not empty q.option5}">
+                                            <div class="ans ml-2">
+                                                <label class="radio"> <input type="radio" id="a4" name="q1" value="Russia"> <span>${q.option5}</span>
+                                                </label>
+                                            </div>
+                                        </c:if>
                                     </div>
                                     <div class="other-function d-flex flex-row justify-content-end mt-3">
                                         <label class="check order-2">
@@ -86,18 +92,31 @@
                                     <div>
                                         <button type="button" class="btn btn-primary mx-3" data-toggle="modal" data-target="#review">Review Progress</button>
                                     </div>
-                                    <input hidden name="page" value="2"/>
+                                    <input hidden name="page" value="${nextPage}"/>
                                     <input hidden name="nextPage" value="${nextPage > maxPage ? maxPage: nextPage}"/>
                                     <div class="d-flex flex-row justify-content-end align-items-center p-3 bg-white">
-                                        <a href="${path}/quiz?operation=VIEWQUIZHANDLE&page=${prevPage > 0 ? prevPage: 1}">
-                                            <button class="btn btn-primary d-flex align-items-center btn-danger mx-1" type="button">
-                                                <i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous
-                                            </button>
-                                        </a>
-                                        <button class="btn btn-primary border-success align-items-center btn-success" type="submit">
-                                            Next
-                                            <i class="fa fa-angle-right ml-2"></i>
-                                        </button>
+                                        <c:if test="${not empty currentPage && currentPage != 1}">
+                                            <a href="${path}/quiz?operation=VIEWQUIZHANDLE&page=${prevPage > 0 ? prevPage: 1}">
+                                                <button class="btn btn-primary d-flex align-items-center btn-danger mx-1" type="button">
+                                                    <i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous
+                                                </button>
+                                            </a>    
+                                        </c:if>
+                                        <c:choose>
+                                            <c:when test="${currentPage == maxPage}">
+                                                <button type="button"
+                                                        class="btn btn-outline-danger mr-2 order-1" 
+                                                        data-toggle="modal" data-target="#score-exam">
+                                                    Score Exam Now
+                                                </button>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <button class="btn btn-primary border-success align-items-center btn-success" type="submit">
+                                                    Next
+                                                    <i class="fa fa-angle-right ml-2"></i>
+                                                </button>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
                             </c:forEach>
@@ -207,14 +226,18 @@
                                              aria-labelledby="instance-0-header"
                                              >
                                         <div class="card-body p-3">
-                                            <h5 id="instance-0-header" class="card-title d-inline"><span id="mod_quiz_navblock_title">Quiz navigation</span></h5>
+                                            <h5 id="instance-0-header" class="card-title d-inline">
+                                                <span id="mod_quiz_navblock_title">Quiz navigation</span></h5>
                                             <div class="card-text content mt-3">
                                                 <div class="qn_buttons clearfix multipages">
                                                     <c:forEach begin="1" end="${questionSize}" var="q">
-                                                        <a class="qnbutton notyetanswered free btn btn-secondary" id="quiznavbutton2" title="Not yet answered" data-quiz-page="1">
-                                                            <span class="thispageholder"></span>
-                                                            <span class="trafficlight"></span>
-                                                            <span class="accesshide">Question </span>${q}<span class="accesshide"> <span class="flagstate"></span></span>
+                                                        <a class="qnbutton notyetanswered free btn btn-outline-secondary" 
+                                                           id="quiznavbutton2" 
+                                                           title="Not yet answered">
+                                                            ${q}
+                                                            <span class="accesshide"> 
+                                                                <span class="flagstate"></span>
+                                                            </span>
                                                         </a>
                                                     </c:forEach>
                                                 </div>
