@@ -161,12 +161,12 @@ public class QuizController extends HttpServlet implements Controller {
         HttpSession session = request.getSession();
         String page = request.getParameter("page");
         int pages = Integer.parseInt(page);
-
+        System.out.println(page);
         ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
 
         int startItem = (pages - 1) * 1;
         int endItem = (startItem + 1) > questions.size() ? questions.size() : startItem + 1;
-
+        doQuizHandle(request, response);
         ArrayList<Question> quesInPage = new ArrayList<>();
         for (int i = startItem; i < endItem; i++) {
             quesInPage.add(questions.get(i));
@@ -174,6 +174,32 @@ public class QuizController extends HttpServlet implements Controller {
         request.setAttribute("question", quesInPage);
         request.setAttribute("questionSize", questions.size());
         request.getRequestDispatcher("quiz-handler.jsp").forward(request, response);
+    }
+
+    private void doQuizHandle(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int page = Integer.parseInt(request.getParameter("thisPage"));
+        System.out.println("vaof page " + page);
+        System.out.println(page);
+        boolean flag = request.getParameter("mark") != null;
+
+        String answer = request.getParameter("q" + (page));
+        HashMap<String, String> userAnswers = new HashMap<>();
+        if (session.getAttribute("answer") != null) {
+            userAnswers = (HashMap<String, String>)session.getAttribute("answer");
+            userAnswers.put(""+page,answer);
+        }else{
+            userAnswers.put(""+page,answer);
+            session.setAttribute("answer", userAnswers);
+        }
+        System.out.println(userAnswers.get("1"));
+        System.out.println(userAnswers.get("2"));
+        boolean checkAnswer = false;
+        ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
+//        if(answer.equalsIgnoreCase(questions.get(page-2).getAnswer())){
+//            checkAnswer = true;
+//        }
     }
 
     private void processQuizResult(HttpServletRequest request, HttpServletResponse response)

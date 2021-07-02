@@ -24,6 +24,7 @@
     <body>
         <c:set var="maxPage" value="${questionSize}" />
         <c:set var="currentPage" value="${pageContext.request.getParameter('page')}" />
+        <c:set var="getCurrentPage" value="${currentPage == null ? 1:currentPage}" />
         <div class="container-fluid">
             <div class="d-flex justify-content-center align-items-center row mt-5">
                 <div class="col-md-10 align-self-center col-lg-10">
@@ -53,33 +54,53 @@
                                             <h3 class="text-danger pl-3">Q.</h3>
                                             <h5 class="mt-1 ml-2">${q.content}</h5>
                                         </div>
+                                        <input hidden ${sessionScope.answer['0']}/>
                                         <div class="ans ml-2">
                                             <label class="radio" for="a1"> 
-                                                <input type="radio" id="a1" name="q1" value="brazil"> <span>${q.option1}</span>
+                                                <input type="radio" id="a1" 
+                                                       ${sessionScope.answer[getCurrentPage] == q.option1?"checked":""}
+                                                       name="q${getCurrentPage}" value="${q.option1}"> <span>${q.option1}</span>
                                             </label>
                                         </div>
-                                        <div class="ans ml-2">
-                                            <label class="radio"> <input type="radio" id="a2" name="q1" value="Germany"> <span>${q.option2}</span>
+                                        <div class="ans ml-2" for="a2">
+                                            <label class="radio"> 
+                                                <input type="radio" 
+                                                       id="a2"
+                                                       ${sessionScope.answer[getCurrentPage] == q.option2?"checked":""}
+                                                       name="q${getCurrentPage}" 
+                                                       value="${q.option2}"> <span>${q.option2}</span>
                                             </label>
                                         </div>
-                                        <div class="ans ml-2">
-                                            <label class="radio"> <input type="radio" id="a3" name="q1" value="Indonesia"> <span>${q.option3}</span>
+                                        <div class="ans ml-2" for="a3">
+                                            <label class="radio"> 
+                                                <input type="radio" 
+                                                       ${sessionScope.answer[getCurrentPage] == q.option3?"checked":""}
+                                                       id="a3" name="q${getCurrentPage}" value="${q.option3}"> <span>${q.option3}</span>
                                             </label>
                                         </div>
-                                        <div class="ans ml-2">
-                                            <label class="radio"> <input type="radio" id="a4" name="q1" value="Russia"> <span>${q.option4}</span>
+                                        <div class="ans ml-2" for="a4">
+                                            <label class="radio"> 
+                                                <input type="radio" id="a4" 
+                                                       ${sessionScope.answer[getCurrentPage] == q.option4?"checked":""}
+                                                       name="q${getCurrentPage}" value="${q.option4}"> <span>${q.option4}</span>
                                             </label>
                                         </div>
                                         <c:if test="${not empty q.option5}">
-                                            <div class="ans ml-2">
-                                                <label class="radio"> <input type="radio" id="a4" name="q1" value="Russia"> <span>${q.option5}</span>
+                                            <div class="ans ml-2" for="a5">
+                                                <label class="radio"> 
+                                                    <input type="radio" id="a5" 
+                                                           ${sessionScope.answer[getCurrentPage] == q.option5?"checked":""}
+                                                           name="q${getCurrentPage}" value="${q.option5}"> <span>${q.option5}</span>
                                                 </label>
                                             </div>
                                         </c:if>
                                     </div>
                                     <div class="other-function d-flex flex-row justify-content-end mt-3">
                                         <label class="check order-2">
-                                            <input type="checkbox" name="mark" id="mark" value="false"/><span><i class="far fa-bookmark"></i> Mark For Review</span>
+                                            <input type="checkbox" name="mark" id="mark" value="false"/>
+                                            <span><i class="far fa-bookmark"></i> 
+                                                Mark For Review
+                                            </span>
                                         </label>
                                         <div>
                                             <button type="button" class="btn btn-outline-danger mr-2 order-1" data-toggle="modal" data-target="#peek-at-answer">
@@ -92,15 +113,16 @@
                                     <div>
                                         <button type="button" class="btn btn-primary mx-3" data-toggle="modal" data-target="#review">Review Progress</button>
                                     </div>
-                                    <input hidden name="page" value="${nextPage}"/>
-                                    <input hidden name="nextPage" value="${nextPage > maxPage ? maxPage: nextPage}"/>
                                     <div class="d-flex flex-row justify-content-end align-items-center p-3 bg-white">
                                         <c:if test="${not empty currentPage && currentPage != 1}">
-                                            <a href="${path}/quiz?operation=VIEWQUIZHANDLE&page=${prevPage > 0 ? prevPage: 1}">
-                                                <button class="btn btn-primary d-flex align-items-center btn-danger mx-1" type="button">
-                                                    <i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous
-                                                </button>
-                                            </a>    
+                                            <!--<a href="${path}/quiz?operation=VIEWQUIZHANDLE&page=${prevPage > 0 ? prevPage: 1}">-->
+                                            <button class="btn btn-primary d-flex align-items-center btn-danger mx-1" 
+                                                    type="submit"
+                                                    formmethod="POST"
+                                                    formaction="${path}/quiz?operation=QUIZHANDLE&page=${prevPage > 0 ? prevPage: 1}">
+                                                <i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous
+                                            </button>
+                                            <!--</a>-->    
                                         </c:if>
                                         <c:choose>
                                             <c:when test="${currentPage == maxPage}">
@@ -111,7 +133,10 @@
                                                 </button>
                                             </c:when>
                                             <c:otherwise>
-                                                <button class="btn btn-primary border-success align-items-center btn-success" type="submit">
+                                                <button class="btn btn-primary border-success align-items-center btn-success" 
+                                                        type="submit"
+                                                        formmethod="POST"
+                                                        formaction="${path}/quiz?operation=QUIZHANDLE&page=${nextPage > maxPage ? maxPage: nextPage}">
                                                     Next
                                                     <i class="fa fa-angle-right ml-2"></i>
                                                 </button>
@@ -119,6 +144,8 @@
                                         </c:choose>
                                     </div>
                                 </div>
+                                <input hidden name="thisPage" value="${getCurrentPage}"/>
+                                <input hidden name="nextPage" value="${nextPage > maxPage ? maxPage: nextPage}"/>
                             </c:forEach>
                         </form>
                     </div>
