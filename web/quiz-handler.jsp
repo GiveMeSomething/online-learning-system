@@ -65,7 +65,7 @@
                                         <input type="checkbox" name="mark" id="mark" value="false"/><span><i class="far fa-bookmark"></i> Mark For Review</span>
                                     </label>
                                     <div>
-                                        <button type="button" class="btn btn-danger mr-2 order-1" data-toggle="modal" data-target="#peek-at-answer">
+                                        <button type="button" class="btn btn-outline-danger mr-2 order-1" data-toggle="modal" data-target="#peek-at-answer">
                                             <i class="fas fa-eye"></i> Peek at answer
                                         </button>    
                                     </div>
@@ -113,8 +113,10 @@
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel">Review Progress</h3>
-                        <h6>Review before scoring exam</h6>
+                        <div class="flex-column">
+                            <h2 class="modal-title" id="exampleModalLabel">Review Progress</h2>
+                            <h6>Review before scoring exam</h6>
+                        </div>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
