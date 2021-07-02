@@ -126,12 +126,55 @@ public class QuizController extends HttpServlet implements Controller {
 
     private void processViewQuizHandle(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int quizId = 14;
+        int courseId = 1;
+        String page = request.getParameter("page");
+        int pages = 1;
+        if (page == null) {
+            pages = 1;
+        }
 
+        ArrayList<Integer> getDataForQuestion = quizService.getDataForQuestion(quizId);
+        Quiz quiz = quizService.getQuiz(getDataForQuestion.get(0));
+        ArrayList<Question> questions = quizService.getQuestionByDimension(courseId, getDataForQuestion.get(1),
+                getDataForQuestion.get(2), Level.valueOf(quiz.getLevel()), getDataForQuestion.get(3));
+        int startItem = (pages - 1) * 1;
+        int endItem = (startItem + 1) > questions.size() ? questions.size() : startItem + 1;
+
+        ArrayList<Question> quesInPage = new ArrayList<>();
+        for (int i = startItem; i < endItem; i++) {
+            quesInPage.add(questions.get(i));
+        }
+        request.setAttribute("question", quesInPage);
+        request.setAttribute("questionSize", questions.size());
+        request.getRequestDispatcher("quiz-handler.jsp").forward(request, response);
     }
 
     private void processQuizHandle(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int quizId = 14;
+        int courseId = 1;
+        String page = request.getParameter("page");
+        int pages = Integer.parseInt(page);
+        if (page == null) {
+            pages = 1;
+        }
 
+        ArrayList<Integer> getDataForQuestion = quizService.getDataForQuestion(quizId);
+        Quiz quiz = quizService.getQuiz(getDataForQuestion.get(0));
+        ArrayList<Question> questions = quizService.getQuestionByDimension(courseId, getDataForQuestion.get(1),
+                getDataForQuestion.get(2), Level.valueOf(quiz.getLevel()), getDataForQuestion.get(3));
+        int startItem = (pages - 1) * 1;
+        int endItem = (startItem + 1) > questions.size() ? questions.size() : startItem + 1;
+
+        ArrayList<Question> quesInPage = new ArrayList<>();
+        for (int i = startItem; i < endItem; i++) {
+            quesInPage.add(questions.get(i));
+        }
+        System.out.println(questions.size());
+        request.setAttribute("question", quesInPage);
+        request.setAttribute("questionSize", questions.size());
+        request.getRequestDispatcher("quiz-handler.jsp").forward(request, response);
     }
 
     private void processQuizResult(HttpServletRequest request, HttpServletResponse response)
@@ -282,11 +325,11 @@ public class QuizController extends HttpServlet implements Controller {
         int courseId = 1;
         String typeInString = request.getParameter("type");
         int type;
-        if(typeInString.equalsIgnoreCase("Group")){
+        if (typeInString.equalsIgnoreCase("Group")) {
             type = 2;
-        }else if(typeInString.equalsIgnoreCase("Lesson")){
+        } else if (typeInString.equalsIgnoreCase("Lesson")) {
             type = 0;
-        }else{
+        } else {
             type = 1;
         }
         String[] numberOfQues = request.getParameterValues("number-of-question");
@@ -379,11 +422,11 @@ public class QuizController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         String typeInString = request.getParameter("type");
         int type = 0;
-        if(typeInString.equalsIgnoreCase("Group")){
+        if (typeInString.equalsIgnoreCase("Group")) {
             type = 2;
-        }else if(typeInString.equalsIgnoreCase("Lesson")){
+        } else if (typeInString.equalsIgnoreCase("Lesson")) {
             type = 0;
-        }else{
+        } else {
             type = 1;
         }
         ArrayList<Dimension> getDimension;
@@ -412,7 +455,7 @@ public class QuizController extends HttpServlet implements Controller {
         response.setContentType("text/html");
         response.getWriter().write(group);
     }
-    
+
     public void getDimensionNameForQuiz(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
             throws ServletException, IOException {
         ArrayList<Dimension> dimension = quizService.getDimensionTypeForEdit(quiz);
