@@ -126,6 +126,7 @@ public class QuizController extends HttpServlet implements Controller {
 
     private void processViewQuizHandle(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         int quizId = 14;
         int courseId = 1;
         String page = request.getParameter("page");
@@ -138,32 +139,32 @@ public class QuizController extends HttpServlet implements Controller {
         Quiz quiz = quizService.getQuiz(getDataForQuestion.get(0));
         ArrayList<Question> questions = quizService.getQuestionByDimension(courseId, getDataForQuestion.get(1),
                 getDataForQuestion.get(2), Level.valueOf(quiz.getLevel()), getDataForQuestion.get(3));
+
+        if (session.getAttribute("question") == null) {
+            session.setAttribute("question", questions);
+        }
+        ArrayList<Question> questionInSession = (ArrayList<Question>) session.getAttribute("question");
         int startItem = (pages - 1) * 1;
-        int endItem = (startItem + 1) > questions.size() ? questions.size() : startItem + 1;
+        int endItem = (startItem + 1) > questionInSession.size() ? questionInSession.size() : startItem + 1;
 
         ArrayList<Question> quesInPage = new ArrayList<>();
         for (int i = startItem; i < endItem; i++) {
-            quesInPage.add(questions.get(i));
+            quesInPage.add(questionInSession.get(i));
         }
+
         request.setAttribute("question", quesInPage);
-        request.setAttribute("questionSize", questions.size());
+        request.setAttribute("questionSize", questionInSession.size());
         request.getRequestDispatcher("quiz-handler.jsp").forward(request, response);
     }
 
     private void processQuizHandle(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int quizId = 14;
-        int courseId = 1;
+        HttpSession session = request.getSession();
         String page = request.getParameter("page");
         int pages = Integer.parseInt(page);
-        if (page == null) {
-            pages = 1;
-        }
 
-        ArrayList<Integer> getDataForQuestion = quizService.getDataForQuestion(quizId);
-        Quiz quiz = quizService.getQuiz(getDataForQuestion.get(0));
-        ArrayList<Question> questions = quizService.getQuestionByDimension(courseId, getDataForQuestion.get(1),
-                getDataForQuestion.get(2), Level.valueOf(quiz.getLevel()), getDataForQuestion.get(3));
+        ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
+
         int startItem = (pages - 1) * 1;
         int endItem = (startItem + 1) > questions.size() ? questions.size() : startItem + 1;
 
@@ -171,7 +172,6 @@ public class QuizController extends HttpServlet implements Controller {
         for (int i = startItem; i < endItem; i++) {
             quesInPage.add(questions.get(i));
         }
-        System.out.println(questions.size());
         request.setAttribute("question", quesInPage);
         request.setAttribute("questionSize", questions.size());
         request.getRequestDispatcher("quiz-handler.jsp").forward(request, response);

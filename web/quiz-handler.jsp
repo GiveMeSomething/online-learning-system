@@ -22,6 +22,8 @@
         <title>Quiz</title>
     </head>
     <body>
+        <c:set var="maxPage" value="${questionSize}" />
+        <c:set var="currentPage" value="${pageContext.request.getParameter('page')}" />
         <div class="container-fluid">
             <div class="d-flex justify-content-center align-items-center row mt-5">
                 <div class="col-md-10 align-self-center col-lg-10">
@@ -29,67 +31,82 @@
                         <div class="question bg-white p-3 border-bottom">
                             <div class="d-flex flex-row justify-content-between align-items-center mcq">
                                 <h4>MCQ Quiz</h4>
-                                <div class="">
-                                    <span>(5 of 20)</span>
+                                <div>
+                                    <span>(${currentPage == null ? 1:currentPage} of ${maxPage})</span>
                                     <span class="timer bg-info p-2 ml-4"><i class="fal fa-hourglass-half"></i> 00:10:29</span>
                                 </div>
                             </div>
                         </div>
-                        <c:forEach items="${question}" var="q">
-                            <div class="question bg-white p-3 border-bottom d-flex flex-column">
-                                <div class="answer">
-                                    <div class="d-flex flex-row align-items-center bg-warning mb-3 question-title">
-                                        <h3 class="text-danger pl-3">Q.</h3>
-                                        <h5 class="mt-1 ml-2">${q.content}</h5>
+                        <form method="POST" action="quiz">
+                            <c:set var="prevPage" value="${currentPage == null ? 1 : currentPage - 1}" />
+                            <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>
+                            <div class="request-info">
+                                <input name="previousPage" value="${path}/quiz" hidden="true" />
+                                <div class="invalid-feedback"></div>
+                                <input name="operation" value="QUIZHANDLE" hidden="true" />
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <c:forEach items="${question}" var="q" varStatus="counter">
+                                <div class="question bg-white p-3 border-bottom d-flex flex-column">
+                                    <div class="answer">
+                                        <div class="d-flex flex-row align-items-center bg-warning mb-3 question-title">
+                                            <h3 class="text-danger pl-3">Q.</h3>
+                                            <h5 class="mt-1 ml-2">${q.content}</h5>
+                                        </div>
+                                        <div class="ans ml">
+                                            <label class="radio" for="a1"> 
+                                                <input type="radio" id="a1" name="q1" value="brazil"> <span>${q.option1}</span>
+                                            </label>
+                                        </div>
+                                        <div class="ans ml-2">
+                                            <label class="radio"> <input type="radio" id="a2" name="q1" value="Germany"> <span>${q.option2}</span>
+                                            </label>
+                                        </div>
+                                        <div class="ans ml-2">
+                                            <label class="radio"> <input type="radio" id="a3" name="q1" value="Indonesia"> <span>${q.option3}</span>
+                                            </label>
+                                        </div>
+                                        <div class="ans ml-2">
+                                            <label class="radio"> <input type="radio" id="a4" name="q1" value="Russia"> <span>${q.option4}</span>
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="ans ml">
-                                        <label class="radio" for="a1"> 
-                                            <input type="radio" id="a1" name="q1" value="brazil"> <span>${q.option1}</span>
+                                    <div class="other-function d-flex flex-row justify-content-end mt-3">
+                                        <label class="check order-2">
+                                            <input type="checkbox" name="mark" id="mark" value="false"/><span><i class="far fa-bookmark"></i> Mark For Review</span>
                                         </label>
-                                    </div>
-                                    <div class="ans ml-2">
-                                        <label class="radio"> <input type="radio" id="a2" name="q1" value="Germany"> <span>${q.option2}</span>
-                                        </label>
-                                    </div>
-                                    <div class="ans ml-2">
-                                        <label class="radio"> <input type="radio" id="a3" name="q1" value="Indonesia"> <span>${q.option3}</span>
-                                        </label>
-                                    </div>
-                                    <div class="ans ml-2">
-                                        <label class="radio"> <input type="radio" id="a4" name="q1" value="Russia"> <span>${q.option4}</span>
-                                        </label>
+                                        <div>
+                                            <button type="button" class="btn btn-outline-danger mr-2 order-1" data-toggle="modal" data-target="#peek-at-answer">
+                                                <i class="fas fa-eye"></i> Peek at answer
+                                            </button>    
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="other-function d-flex flex-row justify-content-end mt-3">
-                                    <label class="check order-2">
-                                        <input type="checkbox" name="mark" id="mark" value="false"/><span><i class="far fa-bookmark"></i> Mark For Review</span>
-                                    </label>
+                                <div class="d-flex flex-row bg-white align-items-center justify-content-between">
                                     <div>
-                                        <button type="button" class="btn btn-outline-danger mr-2 order-1" data-toggle="modal" data-target="#peek-at-answer">
-                                            <i class="fas fa-eye"></i> Peek at answer
-                                        </button>    
+                                        <button type="button" class="btn btn-primary mx-3" data-toggle="modal" data-target="#review">Review Progress</button>
+                                    </div>
+                                    <input hidden name="page" value="2"/>
+                                    <input hidden name="nextPage" value="${nextPage > maxPage ? maxPage: nextPage}"/>
+                                    <div class="d-flex flex-row justify-content-end align-items-center p-3 bg-white">
+                                        <a href="${path}/quiz?operation=VIEWQUIZHANDLE&page=${prevPage > 0 ? prevPage: 1}">
+                                            <button class="btn btn-primary d-flex align-items-center btn-danger mx-1" type="button">
+                                                <i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous
+                                            </button>
+                                        </a>
+                                        <button class="btn btn-primary border-success align-items-center btn-success" type="submit">
+                                            Next
+                                            <i class="fa fa-angle-right ml-2"></i>
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="d-flex flex-row bg-white align-items-center justify-content-between">
-                                <div>
-                                    <button type="button" class="btn btn-primary mx-3" data-toggle="modal" data-target="#review">Review Progress</button>
-                                </div>
-                                <div class="d-flex flex-row justify-content-end align-items-center p-3 bg-white">
-                                    <button class="btn btn-primary d-flex align-items-center btn-danger mx-1" type="button">
-                                        <i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous
-                                    </button>
-                                    <button class="btn btn-primary border-success align-items-center btn-success" type="button">
-                                        Next
-                                        <i class="fa fa-angle-right ml-2"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </c:forEach>
+                            </c:forEach>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+        <!--peek at answer-->
         <div class="modal fade" id="peek-at-answer" tabindex="-1">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -109,6 +126,32 @@
                 </div>
             </div>
         </div>
+        <!--score exam-->
+        <div class="modal fade" id="score-exam" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header p-3">
+                        <h4 class="modal-title">Score Exam</h4>
+                        <c:if test="${requestScope.errorMessage != null}">
+                            <div class="d-flex w-100 align-items-center justify-content-end">
+                                <h5>${requestScope.errorMessage}</h5>
+                            </div>
+                        </c:if>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-5">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-outline-dark">Back</button>
+                        <a href="#"><button type="button" class="btn btn-outline-success">Score</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--review-->
         <div class="modal fade" id="review" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -141,8 +184,12 @@
                                     </ul>  
                                 </div>
                                 <div class="col-4">
-                                    <div class="othernav">
-                                        <a class="endtestlink" href="https://cmshn.fpt.edu.vn/mod/quiz/summary.php?attempt=185905&amp;cmid=130222">Finish attempt ...</a>
+                                    <div class="other-nav">
+                                        <button type="button" id="score-exam-btn"
+                                                class="btn btn-outline-danger mr-2 order-1" 
+                                                data-toggle="modal" data-target="#score-exam">
+                                            Score Exam Now
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -192,6 +239,12 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
                 integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
                 crossorigin="anonymous">
+        </script>
+        <script type="text/javascript">
+            $('#score-exam-btn').click(function () {
+                $('#review').modal('hide');
+                $('#score-exam').modal('show');
+            });
         </script>
     </body>
 </html>
