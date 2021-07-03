@@ -97,7 +97,7 @@
                                     </div>
                                     <div class="other-function d-flex flex-row justify-content-end mt-3">
                                         <label class="check order-2">
-                                            <input type="checkbox" name="mark" id="mark" value="false"/>
+                                            <input type="checkbox" ${sessionScope.marked[getCurrentPage]? "checked":""} name="mark" id="mark" value="false"/>
                                             <span><i class="far fa-bookmark"></i> 
                                                 Mark For Review
                                             </span>
@@ -115,14 +115,12 @@
                                     </div>
                                     <div class="d-flex flex-row justify-content-end align-items-center p-3 bg-white">
                                         <c:if test="${not empty currentPage && currentPage != 1}">
-                                            <!--<a href="${path}/quiz?operation=VIEWQUIZHANDLE&page=${prevPage > 0 ? prevPage: 1}">-->
                                             <button class="btn btn-primary d-flex align-items-center btn-danger mx-1" 
                                                     type="submit"
                                                     formmethod="POST"
                                                     formaction="${path}/quiz?operation=QUIZHANDLE&page=${prevPage > 0 ? prevPage: 1}">
                                                 <i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous
                                             </button>
-                                            <!--</a>-->    
                                         </c:if>
                                         <c:choose>
                                             <c:when test="${currentPage == maxPage}">
@@ -240,10 +238,105 @@
                                 </div>
                             </div>
                         </div>
+                        <!--content-->
                         <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade" id="unanswered" role="tabpanel" aria-labelledby="unanswered-tab">...</div>
-                            <div class="tab-pane fade" id="marked" role="tabpanel" aria-labelledby="marked-tab">...</div>
-                            <div class="tab-pane fade" id="answered" role="tabpanel" aria-labelledby="answered-tab">...</div>
+                            <!--unanswered question-->
+                            <div class="tab-pane fade" id="unanswered" role="tabpanel" aria-labelledby="unanswered-tab">
+                                <section data-region="blocks-column" class="d-print-none">
+                                    <section id="mod_quiz_navblock"
+                                             class=" block block__fake  card mb-3"
+                                             role="navigation"
+                                             data-block="_fake"
+                                             aria-labelledby="instance-0-header">
+                                        <div class="card-body p-3">
+                                            <h5 id="instance-0-header" class="card-title d-inline">
+                                                <span id="mod_quiz_navblock_title">Quiz navigation</span></h5>
+                                            <div class="card-text content mt-3">
+                                                <div class="qn_buttons clearfix multipages">
+                                                    <c:forEach items="${sessionScope.answer}" var="q">
+                                                        <c:if test="${empty q.value}">
+                                                            <a class="qnbutton notyetanswered free btn btn-outline-secondary" 
+                                                               id="quiznavbutton2" 
+                                                               title="answered"
+                                                               href="${path}/quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}">
+                                                                ${q.key}
+                                                                <span class="accesshide"> 
+                                                                    <span class="flagstate"></span>
+                                                                </span>
+                                                            </a>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </section>
+                            </div>
+                            <!--marked-->
+                            <div class="tab-pane fade" id="marked" role="tabpanel" aria-labelledby="marked-tab">
+                                <section data-region="blocks-column" class="d-print-none">
+                                    <section id="mod_quiz_navblock"
+                                             class=" block block__fake  card mb-3"
+                                             role="navigation"
+                                             data-block="_fake"
+                                             aria-labelledby="instance-0-header">
+                                        <div class="card-body p-3">
+                                            <h5 id="instance-0-header" class="card-title d-inline">
+                                                <span id="mod_quiz_navblock_title">Quiz navigation</span></h5>
+                                            <div class="card-text content mt-3">
+                                                <div class="qn_buttons clearfix multipages">
+                                                    <c:forEach items="${sessionScope.marked}" var="q">
+                                                        <c:if test="${q.value == true}">
+                                                            <a class="qnbutton notyetanswered free btn btn-outline-secondary" 
+                                                               id="quiznavbutton2" 
+                                                               title="answered"
+                                                               href="${path}/quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}&mark=${q.value}">
+                                                                ${q.key}
+                                                                <span class="accesshide"> 
+                                                                    <span class="flagstate"></span>
+                                                                </span>
+                                                            </a>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </section>
+                            </div>
+                            <!--answered question-->
+                            <div class="tab-pane fade" id="answered" role="tabpanel" aria-labelledby="answered-tab">
+                                <section data-region="blocks-column" class="d-print-none">
+                                    <section id="mod_quiz_navblock"
+                                             class=" block block__fake  card mb-3"
+                                             role="navigation"
+                                             data-block="_fake"
+                                             aria-labelledby="instance-0-header">
+                                        <div class="card-body p-3">
+                                            <h5 id="instance-0-header" class="card-title d-inline">
+                                                <span id="mod_quiz_navblock_title">Quiz navigation</span></h5>
+                                            <div class="card-text content mt-3">
+                                                <div class="qn_buttons clearfix multipages">
+                                                    <c:forEach items="${sessionScope.answer}" var="q">
+                                                        <c:if test="${not empty q.value}">
+                                                            <a class="qnbutton notyetanswered free btn btn-outline-secondary" 
+                                                               id="quiznavbutton2" 
+                                                               title="answered"
+                                                               href="${path}/quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}">
+                                                                ${q.key}
+                                                                <span class="accesshide"> 
+                                                                    <span class="flagstate"></span>
+                                                                </span>
+                                                            </a>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </section>
+                            </div>
+                            <!--all-->
                             <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                                 <section data-region="blocks-column" class="d-print-none">
                                     <section id="mod_quiz_navblock"
