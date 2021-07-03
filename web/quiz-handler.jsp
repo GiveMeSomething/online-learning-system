@@ -97,7 +97,7 @@
                                     </div>
                                     <div class="other-function d-flex flex-row justify-content-end mt-3">
                                         <label class="check order-2">
-                                            <input type="checkbox" ${sessionScope.marked[getCurrentPage]? "checked":""} name="mark" id="mark" value="false"/>
+                                            <input onclick="this.form.submit()" type="checkbox" ${sessionScope.marked[getCurrentPage] == true? "checked":""} name="mark" id="mark" value="false"/>
                                             <span><i class="far fa-bookmark"></i> 
                                                 Mark For Review
                                             </span>
@@ -143,6 +143,7 @@
                                     </div>
                                 </div>
                                 <input hidden name="thisPage" value="${getCurrentPage}"/>
+                                <input hidden name="page" value="${getCurrentPage}"/>
                                 <input hidden name="nextPage" value="${nextPage > maxPage ? maxPage: nextPage}"/>
                             </c:forEach>
                         </form>
@@ -290,7 +291,7 @@
                                                             <a class="qnbutton notyetanswered free btn btn-outline-secondary" 
                                                                id="quiznavbutton2" 
                                                                title="answered"
-                                                               href="${path}/quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}&mark=${q.value}">
+                                                               href="${path}/quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}&mark=${q.key}">
                                                                 ${q.key}
                                                                 <span class="accesshide"> 
                                                                     <span class="flagstate"></span>
@@ -322,7 +323,7 @@
                                                             <a class="qnbutton notyetanswered free btn btn-outline-secondary" 
                                                                id="quiznavbutton2" 
                                                                title="answered"
-                                                               href="${path}/quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}">
+                                                               href="${path}/quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}${sessionScope.marked[q.key] == true?"&mark=value":""}">
                                                                 ${q.key}
                                                                 <span class="accesshide"> 
                                                                     <span class="flagstate"></span>

@@ -214,6 +214,7 @@ public class QuizController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         boolean mark = request.getParameter("mark") != null;
+        System.out.println("This is getMarked "+mark);
         HashMap<String, Boolean> marked = new HashMap<>();
         if (session.getAttribute("marked") == null) {
             marked.put(page + "", mark);
@@ -222,6 +223,7 @@ public class QuizController extends HttpServlet implements Controller {
             marked = (HashMap<String, Boolean>) session.getAttribute("marked");
             marked.put(page + "", mark);
         }
+        System.out.println(marked.get("1"));
         return marked;
     }
 
