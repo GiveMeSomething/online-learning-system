@@ -123,10 +123,10 @@ public class QuizRepository extends Repository {
                 question.setAnswer(result.getString("answer"));
                 question.setExplaination(result.getString("explaination"));
                 question.setContent(result.getString("content"));
-                
+
                 questions.add(question);
             }
-            
+
             return questions;
         } finally {
             this.disconnectDatabase();
@@ -148,6 +148,24 @@ public class QuizRepository extends Repository {
                 getDataForQuestion.add(result.getInt("number_of_question"));
             }
             return getDataForQuestion;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean getAnswerFromUser(int userQuizId, String userChoice, 
+            int quesitionId, boolean questionStatus) throws SQLException {
+        this.connectDatabase();
+
+        String getAnsFromUser = "INSERT INTO user_question(user_quiz_id, user_choice, question_id, question_status) "
+                + "VALUES(?,?,?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(getAnsFromUser)) {
+            statement.setInt(1, userQuizId);
+            statement.setString(2, userChoice);
+            statement.setInt(3, quesitionId);
+            statement.setBoolean(4, questionStatus);
+
+            return statement.executeUpdate() > 0;
         } finally {
             this.disconnectDatabase();
         }

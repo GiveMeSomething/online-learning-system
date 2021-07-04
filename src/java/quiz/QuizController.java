@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import common.entities.Dimension;
 import common.entities.DimensionType;
 import common.entities.Lesson;
+import common.entities.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -130,6 +131,12 @@ public class QuizController extends HttpServlet implements Controller {
     private void processViewQuizHandle(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null) {
+            System.out.println(-1);
+        } else {
+            int userId = ((User) session.getAttribute("user")).getId();
+            System.out.println(userId);
+        }
         int quizId = 14;
         int courseId = 1;
         String page = request.getParameter("page");
@@ -156,7 +163,7 @@ public class QuizController extends HttpServlet implements Controller {
 
         request.setAttribute("question", quesInPage);
         request.setAttribute("questionSize", questionInSession.size());
-        request.getRequestDispatcher("quiz-handler.jsp").forward(request, response);
+        request.getRequestDispatcher("/auth/user/quiz/quiz-handler.jsp").forward(request, response);
     }
 
     private void processQuizHandle(HttpServletRequest request, HttpServletResponse response)
@@ -176,7 +183,7 @@ public class QuizController extends HttpServlet implements Controller {
         }
         request.setAttribute("question", quesInPage);
         request.setAttribute("questionSize", questions.size());
-        request.getRequestDispatcher("quiz-handler.jsp").forward(request, response);
+        request.getRequestDispatcher("/auth/user/quiz/quiz-handler.jsp").forward(request, response);
     }
 
     private void doQuizHandle(HttpServletRequest request, HttpServletResponse response)
@@ -200,21 +207,16 @@ public class QuizController extends HttpServlet implements Controller {
             userAnswers.put("" + page, answer);
             session.setAttribute("answer", userAnswers);
         }
-        System.out.println(userAnswers.get("1"));
-        System.out.println(userAnswers.get("2"));
 
         boolean checkAnswer = false;
         ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
-//        if(answer.equalsIgnoreCase(questions.get(page-2).getAnswer())){
-//            checkAnswer = true;
-//        }
     }
 
     private HashMap<String, Boolean> getMarkedQuestion(HttpServletRequest request, HttpServletResponse response, int page, int pageFromProcess)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         boolean mark = request.getParameter("mark") != null;
-        System.out.println("This is getMarked "+mark);
+        System.out.println("This is getMarked " + mark);
         HashMap<String, Boolean> marked = new HashMap<>();
         if (session.getAttribute("marked") == null) {
             marked.put(page + "", mark);
@@ -223,13 +225,11 @@ public class QuizController extends HttpServlet implements Controller {
             marked = (HashMap<String, Boolean>) session.getAttribute("marked");
             marked.put(page + "", mark);
         }
-        System.out.println(marked.get("1"));
         return marked;
     }
 
     private void processQuizResult(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        boolean flag = request.getParameter("mark") != null;
 
     }
 

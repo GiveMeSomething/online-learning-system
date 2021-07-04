@@ -194,4 +194,14 @@ public class QuizService {
         }
         return null;
     }
+
+    public boolean getAnswerFromUser(int userQuizId, String userChoice,
+            int quesitionId, boolean questionStatus) {
+        try {
+            return quizRepository.getAnswerFromUser(userQuizId, userChoice, quesitionId, questionStatus);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
