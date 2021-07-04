@@ -143,6 +143,10 @@
         <servlet-name>UserCourseController</servlet-name>
         <url-pattern>/auth/user/UserCourse</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserCourseController</servlet-name>
+        <url-pattern>/auth/teacher/registration</url-pattern>
+    </servlet-mapping>
     <!-- SMTP settings -->
     <context-param>
         <param-name>host</param-name>
