@@ -78,7 +78,7 @@ public class LessonRepository extends Repository {
         switch (LessonType.valueOf(lesson.getLessonType())) {
             case 1:
                 try (PreparedStatement statement = this.connection.prepareStatement(addLessonType1)) {
-                    statement.setString(1, lesson.getLessonName());
+                    statement.setString(1, lesson.getName());
                     statement.setInt(2, lesson.getOrder());
                     statement.setInt(3, lesson.getCourseId());
 
@@ -88,7 +88,7 @@ public class LessonRepository extends Repository {
                 }
             case 2:
                 try (PreparedStatement statement = this.connection.prepareStatement(addLessonType2)) {
-                    statement.setString(1, lesson.getLessonName());
+                    statement.setString(1, lesson.getName());
                     statement.setInt(2, lesson.getOrder());
                     statement.setInt(3, lesson.getCourseId());
                     statement.setString(4, lesson.getVideoLink());
@@ -100,7 +100,7 @@ public class LessonRepository extends Repository {
                 }
             default:
                 try (PreparedStatement statement = this.connection.prepareStatement(addLessonType3)) {
-                    statement.setString(1, lesson.getLessonName());
+                    statement.setString(1, lesson.getName());
                     statement.setInt(2, lesson.getOrder());
                     statement.setInt(3, lesson.getCourseId());
                     statement.setString(4, lesson.getHtmlContent());
@@ -127,7 +127,7 @@ public class LessonRepository extends Repository {
         switch (LessonType.valueOf(lesson.getLessonType())) {
             case 1:
                 try (PreparedStatement statement = this.connection.prepareStatement(updateLessonWithType1)) {
-                    statement.setString(1, lesson.getLessonName());
+                    statement.setString(1, lesson.getName());
                     statement.setInt(2, lesson.getOrder());
                     statement.setInt(3, lesson.getCourseId());
                     statement.setInt(4, id);
@@ -138,7 +138,7 @@ public class LessonRepository extends Repository {
                 }
             case 2:
                 try (PreparedStatement statement = this.connection.prepareStatement(updateLessonWithType2)) {
-                    statement.setString(1, lesson.getLessonName());
+                    statement.setString(1, lesson.getName());
                     statement.setInt(2, lesson.getOrder());
                     statement.setInt(3, lesson.getCourseId());
                     statement.setString(4, lesson.getVideoLink());
@@ -151,7 +151,7 @@ public class LessonRepository extends Repository {
                 }
             default:
                 try (PreparedStatement statement = this.connection.prepareStatement(updateLessonWithType3)) {
-                    statement.setString(1, lesson.getLessonName());
+                    statement.setString(1, lesson.getName());
                     statement.setInt(2, lesson.getOrder());
                     statement.setInt(3, lesson.getCourseId());
                     statement.setString(4, lesson.getHtmlContent());
@@ -171,7 +171,7 @@ public class LessonRepository extends Repository {
         String isLessonExist = "SELECT lesson_name FROM lesson "
                 + "WHERE lesson_name = ? AND lesson.order = ? AND course_id = ? AND type_id = ?";
         try (PreparedStatement statment = this.connection.prepareStatement(isLessonExist)) {
-            statment.setString(1, lesson.getLessonName());
+            statment.setString(1, lesson.getName());
             statment.setInt(2, lesson.getOrder());
             statment.setInt(3, lesson.getCourseId());
             statment.setInt(4, LessonType.valueOf(lesson.getLessonType()));

@@ -737,15 +737,9 @@ public class CourseRepository extends Repository {
 //    Subject part
     public Course getSubject(int id) throws SQLException {
         this.connectDatabase();
-        String getCourse = "SELECT c.id, c.thumbnail, c.title, c.description, ca.category_name,c.feature, c.status_id, c.owner "
-                + "from db_ite1.course c "
-                + "INNER JOIN db_ite1.status s "
-                + "on c.status_id = s.id "
-                + "INNER JOIN db_ite1.course_package p "
-                + "ON c.id = p.course_id "
-                + "INNER JOIN db_ite1.price_package pp  "
-                + "ON p.package_id = pp.id "
-                + "INNER JOIN db_ite1.category ca "
+        String getCourse = "SELECT c.id, c.thumbnail, c.title, c.description, ca.category_name, c.feature, c.status_id, c.owner "
+                + "FROM db_ite1.course c "
+                + "JOIN db_ite1.category ca "
                 + "ON ca.id = c.category_id "
                 + "WHERE c.id = ? "
                 + "GROUP BY c.id";
@@ -801,7 +795,7 @@ public class CourseRepository extends Repository {
         }
 
     }
-    
+
     public boolean updateSubjectInformation(String courseName, String description, int category_id, int feature, int id) throws SQLException {
         this.connectDatabase();
 
