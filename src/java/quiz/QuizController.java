@@ -89,6 +89,9 @@ public class QuizController extends HttpServlet implements Controller {
                 case "VIEWQUIZREVIEW":
                     processQuizReview(request, response);
                     break;
+                case "SUBMITQUIZ":
+                    getUserAnswer(request, response);
+                    break;
                 default:
                     send404(request, response);
                     break;
@@ -131,12 +134,8 @@ public class QuizController extends HttpServlet implements Controller {
     private void processViewQuizHandle(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if (session.getAttribute("user") == null) {
-            System.out.println(-1);
-        } else {
-            int userId = ((User) session.getAttribute("user")).getId();
-            System.out.println(userId);
-        }
+
+        int userId = ((User) session.getAttribute("user")).getId();
         int quizId = 14;
         int courseId = 1;
         String page = request.getParameter("page");
@@ -152,7 +151,14 @@ public class QuizController extends HttpServlet implements Controller {
         if (session.getAttribute("question") == null) {
             session.setAttribute("question", questions);
         }
+
         ArrayList<Question> questionInSession = (ArrayList<Question>) session.getAttribute("question");
+        for (Question question : questionInSession) {
+            if (quizService.addQuizSetting(quiz, question.getId())) {
+                // Do something
+            }
+        }
+
         int startItem = (pages - 1) * 1;
         int endItem = (startItem + 1) > questionInSession.size() ? questionInSession.size() : startItem + 1;
 
@@ -226,6 +232,24 @@ public class QuizController extends HttpServlet implements Controller {
             marked.put(page + "", mark);
         }
         return marked;
+    }
+
+    private void getUserAnswer(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int userQuizId = 2;
+
+        HashMap<String, String> userAnswer = (HashMap<String, String>) session.getAttribute("answer");
+        ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
+        HashMap<String, Boolean> questionStatus = (HashMap<String, Boolean>) session.getAttribute("marked");
+        for (int i = 0; i < questions.size(); i++) {
+            String questionPage = (i + 1) + "";
+            quizService.getAnswerFromUser(userQuizId, userAnswer.get(questionPage), questions.get(i).getId(), questionStatus.get(questionPage));
+            System.out.println(userQuizId);
+            System.out.println(userAnswer.get(questionPage));
+            System.out.println(questionStatus.get(questionPage));
+            System.out.println(questions.get(i).getId());
+        }
     }
 
     private void processQuizResult(HttpServletRequest request, HttpServletResponse response)
