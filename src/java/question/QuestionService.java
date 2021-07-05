@@ -169,4 +169,13 @@ public class QuestionService {
         }
         return false;
     }
+    
+    public boolean deleteQuestionById(int questionId) {
+        try {
+            return questionRepository.deleteQuestionById(questionId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

@@ -1018,8 +1018,8 @@ public class CourseRepository extends Repository {
     public static void main(String[] args) throws Exception {
         CourseRepository repo = new CourseRepository();
         try {
-            Account a = repo.getRoleByUserEmail("toannkhe150086@fpt.edu.vn");
-            System.out.println(a);
+            Course c = repo.getCourseNameLessonList(1);
+            System.out.println(c);
         } catch (Exception e) {
         }
     }
@@ -1049,6 +1049,96 @@ public class CourseRepository extends Repository {
                 return new Account(result.getString("user_email"),
                         result.getString("password"),
                         role);
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return null;
+    }
+
+    //Dashboard
+    public int countingTotalCourse(int date) throws SQLException {
+        this.connectDatabase();
+        String countingCourseList = "SELECT COUNT(*) AS count FROM db_ite1.course c where DATE_FORMAT(c.created_time, \"%y-%m-%d\") "
+                + "NOT BETWEEN  DATE_SUB(CURDATE(), interval ? day) "
+                + "AND CURDATE();";
+        try (PreparedStatement statement = this.connection.prepareStatement(countingCourseList)) {
+            statement.setInt(1, date);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("count");
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
+    }
+
+    public int countingNewCourse() throws SQLException {
+        this.connectDatabase();
+        String countingCourseList = " SELECT COUNT(*) AS count FROM db_ite1.course c "
+                + "where DATE_FORMAT(c.created_time, \"%y-%m-%d\") >= DATE(NOW()) - INTERVAL 6 DAY "
+                + "AND DATE_FORMAT(c.created_time, \"%y-%m-%d\") <= DATE(NOW()) - INTERVAL 0 DAY";
+        try (PreparedStatement statement = this.connection.prepareStatement(countingCourseList)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("count");
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
+    }
+
+    //my-course
+    public List<Course> getMyCourse(int userId) throws SQLException {
+        this.connectDatabase();
+        String getMyCourse = "SELECT c.id, c.thumbnail, c.title, c.description FROM db_ite1.user_course uc "
+                + "inner join db_ite1.user u "
+                + "on uc.user_id = u.id "
+                + "inner join db_ite1.course c "
+                + "on c.id = uc.course_id "
+                + "where u.id = ? ";
+        List<Course> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(getMyCourse)) {
+            statement.setInt(1, userId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new Course(
+                        result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description")
+                ));
+
+            }
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+
+    }
+
+    
+    public Course getCourseNameLessonList(int courseId) throws SQLException {
+        this.connectDatabase();
+        String searchCourse = "SELECT * FROM db_ite1.course  where id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
+            statement.setInt(1, courseId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new Course(
+                   result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        0,
+                        result.getString("tag")
+                );
+
             }
 
         } finally {

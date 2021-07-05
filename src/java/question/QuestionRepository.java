@@ -345,7 +345,8 @@ public class QuestionRepository extends Repository {
         }
         return 0;
     }
-  public boolean addQuestion(int status, String content, String media, String explaination, String answer, String option1,
+
+    public boolean addQuestion(int status, String content, String media, String explaination, String answer, String option1,
             String option2, String option3, String option4) throws SQLException {
         this.connectDatabase();
         String query = "INSERT INTO `db_ite1`.`questions_bank` (`status_id`, `content`, `media`, `explaination`, `answer`, `option1`, `option2`, `option3`, `option4`) "
@@ -368,6 +369,22 @@ public class QuestionRepository extends Repository {
         }
         return false;
     }
+
+    public boolean deleteQuestionById(int questionId) throws SQLException {
+        this.connectDatabase();
+        String deleteQuestionById = "DELETE FROM db_ite1.questions_bank "
+                + "WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(deleteQuestionById)) {
+            statement.setInt(1, questionId);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         QuestionRepository repo = new QuestionRepository();
         try {

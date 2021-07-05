@@ -366,7 +366,8 @@ public class CourseService {
         }
         return null;
     }
-     public boolean addPackage(int duration, String name, double price, int status, String descriptions, double discount) {
+
+    public boolean addPackage(int duration, String name, double price, int status, String descriptions, double discount) {
         try {
             return courseRepository.addPackage(duration, name, price, status, descriptions, discount);
         } catch (Exception e) {
@@ -392,6 +393,7 @@ public class CourseService {
         }
         return false;
     }
+
     public List<PricePack> getPricePackage(int index) {
         try {
             return courseRepository.pagingPricePackage(index);
@@ -409,8 +411,8 @@ public class CourseService {
         }
         return 0;
     }
-    
-    public Course getCategoryByCourseId(int courseId){
+
+    public Course getCategoryByCourseId(int courseId) {
         try {
             return courseRepository.getCategoryByCourseId(courseId);
         } catch (Exception e) {
@@ -418,8 +420,8 @@ public class CourseService {
         }
         return null;
     }
-    
-    public Account getRoleByUserEmail(String email){
+
+    public Account getRoleByUserEmail(String email) {
         try {
             return courseRepository.getRoleByUserEmail(email);
         } catch (Exception e) {
@@ -427,13 +429,51 @@ public class CourseService {
         }
         return null;
     }
-    
-    public boolean updateSubjectInformation(String courseName, String description, int category_id, int feature, int id){
+
+    public boolean updateSubjectInformation(String courseName, String description, int category_id, int feature, int id) {
         try {
             return courseRepository.updateSubjectInformation(courseName, description, category_id, feature, id);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+//Dashboard
+    public int countTotalCourse(int date) {
+        try {
+            return courseRepository.countingTotalCourse(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int countNewCourse() {
+        try {
+            return courseRepository.countingNewCourse();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    //my-course
+    public List<Course> getMyCourse(int userId) {
+        try {
+            return courseRepository.getMyCourse(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Course getCourseNameLessonList(int courseId) {
+        try {
+            return courseRepository.getCourseNameLessonList(courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
