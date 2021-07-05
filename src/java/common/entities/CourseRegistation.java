@@ -12,8 +12,10 @@ import java.sql.Date;
  * @author ADMIN
  */
 public class CourseRegistation {
+
     private int id;
     private String title;
+    private User user;
     private Date registationTime;
     private String packages;
     private double totalCost;
@@ -22,6 +24,18 @@ public class CourseRegistation {
     private Date validTo;
 
     public CourseRegistation() {
+    }
+
+    public CourseRegistation(int id, String title, User user,
+            String packages, double totalCost, int status, Date validFrom, Date validTo) {
+        this.id = id;
+        this.title = title;
+        this.user = user;
+        this.packages = packages;
+        this.status = status;
+        this.totalCost = totalCost;
+        this.validFrom = validFrom;
+        this.validTo = validTo;
     }
 
     public CourseRegistation(int id, String title, Date registationTime, String packages, double totalCost, int status, Date validFrom, Date validTo) {
@@ -33,6 +47,14 @@ public class CourseRegistation {
         this.status = status;
         this.validFrom = validFrom;
         this.validTo = validTo;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getId() {
@@ -103,5 +125,5 @@ public class CourseRegistation {
     public String toString() {
         return "CourseRegistation{" + "id=" + id + ", title=" + title + ", registationTime=" + registationTime + ", packages=" + packages + ", totalCost=" + totalCost + ", status=" + status + ", validFrom=" + validFrom + ", validTo=" + validTo + '}';
     }
-    
+
 }

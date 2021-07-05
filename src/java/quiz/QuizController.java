@@ -136,8 +136,12 @@ public class QuizController extends HttpServlet implements Controller {
         HttpSession session = request.getSession();
 
         int userId = ((User) session.getAttribute("user")).getId();
+//        int userQuizId = Integer.parseInt(request.getParameter("user-quiz-id"));
+//        session.setAttribute("userQuizId", userQuizId);
         int quizId = 14;
+//        int quizId = Integer.parseInt(request.getParameter("quiz-dimension-lesson-id"));
         int courseId = 1;
+//        int courseId = Integer.parseInt(request.getParameter("courseId"));
         String page = request.getParameter("page");
         int pages = 1;
         if (page == null) {
@@ -197,25 +201,23 @@ public class QuizController extends HttpServlet implements Controller {
         HttpSession session = request.getSession();
         int page = Integer.parseInt(request.getParameter("thisPage"));
         int pageFromProcess = Integer.parseInt(request.getParameter("page"));
-        System.out.println("Day laf page from doQuizHandle " + page);
+        System.out.println("Day la page from doQuizHandle " + page);
 
         HashMap<String, Boolean> markedQuestion = getMarkedQuestion(request, response, page, pageFromProcess);
 
         String answer = request.getParameter("q" + (page));
         HashMap<String, String> userAnswers = new HashMap<>();
 
+        // all question save in answer session
         if (session.getAttribute("answer") != null && page != pageFromProcess) {
-            System.out.println("session not null");
             userAnswers = (HashMap<String, String>) session.getAttribute("answer");
             userAnswers.put("" + page, answer);
         } else if (session.getAttribute("answer") == null && page != pageFromProcess) {
-            System.out.println("session null");
             userAnswers.put("" + page, answer);
             session.setAttribute("answer", userAnswers);
         }
 
         boolean checkAnswer = false;
-        ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
     }
 
     private HashMap<String, Boolean> getMarkedQuestion(HttpServletRequest request, HttpServletResponse response, int page, int pageFromProcess)
@@ -224,6 +226,8 @@ public class QuizController extends HttpServlet implements Controller {
         boolean mark = request.getParameter("mark") != null;
         System.out.println("This is getMarked " + mark);
         HashMap<String, Boolean> marked = new HashMap<>();
+
+        // getAttribute("marked") saves marked status
         if (session.getAttribute("marked") == null) {
             marked.put(page + "", mark);
             session.setAttribute("marked", marked);
@@ -234,23 +238,49 @@ public class QuizController extends HttpServlet implements Controller {
         return marked;
     }
 
+    //After Press Score button
     private void getUserAnswer(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+
+        // Set default fot user_quiz_id
         int userQuizId = 2;
 
+        // get user_quiz_id from Quiz lesson
+//        int userQuizId = (Integer)session.getAttribute("userQuizId");
         HashMap<String, String> userAnswer = (HashMap<String, String>) session.getAttribute("answer");
         ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
         HashMap<String, Boolean> questionStatus = (HashMap<String, Boolean>) session.getAttribute("marked");
+
         for (int i = 0; i < questions.size(); i++) {
             String questionPage = (i + 1) + "";
-            quizService.getAnswerFromUser(userQuizId, userAnswer.get(questionPage), questions.get(i).getId(), questionStatus.get(questionPage));
-            System.out.println(userQuizId);
+            quizService.getAnswerFromUser(userQuizId, userAnswer.get(questionPage),
+                    questions.get(i).getId(), questionStatus.get(questionPage));
             System.out.println(userAnswer.get(questionPage));
             System.out.println(questionStatus.get(questionPage));
             System.out.println(questions.get(i).getId());
+            System.out.println(userQuizId);
         }
+        checkUserAnswer(request, response);
     }
+    
+    private void checkUserAnswer(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        HashMap<String, String> userAnswer = (HashMap<String, String>) session.getAttribute("answer");
+        ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
+        int countTrueAnswer = 0;
+        for (int i = 0; i < questions.size(); i++) {
+            int questionNumber = i+1;
+            if(questions.get(i).getAnswer().equalsIgnoreCase(userAnswer.get(questionNumber+""))){
+                countTrueAnswer++;
+            }
+        }
+        float score = (float)countTrueAnswer/questions.size();
+        //Lay diem o day
+        System.out.println(score);
+    }
+    
 
     private void processQuizResult(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

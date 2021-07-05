@@ -177,7 +177,7 @@
         </div>
         <!--score exam-->
         <div class="modal fade" id="score-exam" tabindex="-1">
-            <div class="modal-dialog modal-sm">
+            <div class="modal-dialog modal">
                 <div class="modal-content">
                     <div class="modal-header p-3">
                         <h4 class="modal-title">Score Exam</h4>
@@ -191,11 +191,14 @@
                         </button>
                     </div>
                     <div class="modal-body p-5">
-
+                        Do you want to submit now ?
+                        <b>Please carefully check again before submitting.</b>
                     </div>
                     <div class="modal-footer">
                         <button type="button" data-dismiss="modal" class="btn btn-outline-dark">Back</button>
-                        <a href="${path}/auth/teacher/quiz?operation=SUBMITQUIZ"><button type="button" class="btn btn-outline-success">Score</button></a>
+                        <a href="${path}/auth/teacher/quiz?operation=SUBMITQUIZ">
+                            <button type="button" class="btn btn-outline-success">Score</button>
+                        </a>
                     </div>
                 </div>
             </div>
