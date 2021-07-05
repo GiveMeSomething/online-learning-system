@@ -95,7 +95,8 @@ public class QuizService {
         }
         return null;
     }
-    public ArrayList<Dimension> getDimensionTypeForEdit(Quiz quiz){
+
+    public ArrayList<Dimension> getDimensionTypeForEdit(Quiz quiz) {
         try {
             return quizRepository.getDimensionTypeForEdit(quiz);
         } catch (Exception e) {
@@ -103,6 +104,7 @@ public class QuizService {
         }
         return null;
     }
+
     public int countQuestionForEachDimension(Quiz quiz, int dimensionId) {
         try {
             return quizRepository.countQuestionForEachDimension(quiz, dimensionId);
@@ -165,8 +167,8 @@ public class QuizService {
         }
         return false;
     }
-    
-    public boolean addNewQuizSetting(Quiz quiz, int dimensionId, int lessonId, int numberOfQuestion){
+
+    public boolean addNewQuizSetting(Quiz quiz, int dimensionId, int lessonId, int numberOfQuestion) {
         try {
             return quizRepository.addNewQuizSetting(quiz, dimensionId, lessonId, numberOfQuestion);
         } catch (Exception e) {
@@ -181,6 +183,16 @@ public class QuizService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public ArrayList<ArrayList<String>> getQuizReview(int quizId) {
+        try {
+            return quizRepository.getQuizReview(quizId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 }

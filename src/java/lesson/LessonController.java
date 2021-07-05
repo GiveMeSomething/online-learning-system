@@ -7,7 +7,6 @@ package lesson;
 
 import common.entities.Lesson;
 import common.entities.LessonType;
-import common.entities.Quiz;
 import common.entities.Status;
 import common.utilities.Controller;
 import course.CourseService;

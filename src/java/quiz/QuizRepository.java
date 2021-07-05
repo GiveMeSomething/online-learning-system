@@ -260,11 +260,11 @@ public class QuizRepository extends Repository {
     public ArrayList<Dimension> getDimensionTypeForEdit(Quiz quiz) throws SQLException {
         this.connectDatabase();
 
-        String questionByLesson = "select distinct type_id, d.name, dt.dimension_type_name\n"
-                + "                from db_ite1.question_course_dim_les qcdl \n"
-                + "                join question_quiz qq on qcdl.question_id = qq.question_id\n"
-                + "                join dimension d on d.id = qcdl.dimension_id\n"
-                + "                join dimension_type dt on dt.id = d.type_id\n"
+        String questionByLesson = "select distinct type_id, d.name, dt.dimension_type_name "
+                + "                from db_ite1.question_course_dim_les qcdl "
+                + "                join question_quiz qq on qcdl.question_id = qq.question_id "
+                + "                join dimension d on d.id = qcdl.dimension_id "
+                + "                join dimension_type dt on dt.id = d.type_id "
                 + "                where quiz_id = ?";
         ArrayList<Dimension> getQuizDimesion = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(questionByLesson)) {
@@ -538,6 +538,50 @@ public class QuizRepository extends Repository {
         ArrayList<Integer> lesson = quizRepository.getQuizSetting(quiz, 7, 0);
         for (int i = 0; i < lesson.size(); i++) {
             System.out.println(lesson.get(i));
+        }
+    }
+
+    public ArrayList<ArrayList<String>> getQuizReview(int quizId) throws SQLException {
+        this.connectDatabase();
+
+        String sql = "select qb.content, "
+                + "       qb.option1, "
+                + "       qb.option2, "
+                + "       qb.option3, "
+                + "       qb.option4, "
+                + "       u.user_choice, "
+                + "       qb.answer, "
+                + "       IF(STRCMP(u.user_choice, qb.answer) = 0, 1, 0) result, "
+                + "       qb.explaination "
+                + "from user_quiz uq "
+                + "         inner join user_question u on uq.id = u.user_quiz_id "
+                + "         inner join questions_bank qb on u.question_id = qb.id "
+                + "where uq.id = ?";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+            statement.setInt(1, quizId);
+
+            ArrayList<ArrayList<String>> questionList = new ArrayList<>();
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                ArrayList<String> questionInfo = new ArrayList<>();
+                questionInfo.add(result.getString("content"));
+                questionInfo.add(result.getString("option1"));
+                questionInfo.add(result.getString("option2"));
+                questionInfo.add(result.getString("option3"));
+                questionInfo.add(result.getString("option4"));
+                questionInfo.add(result.getString("user_choice"));
+                questionInfo.add(result.getString("answer"));
+                questionInfo.add(result.getString("result"));
+                questionInfo.add(result.getString("explaination"));
+
+                questionList.add(questionInfo);
+            }
+
+            return questionList;
+        } finally {
+            this.disconnectDatabase();
         }
     }
 }

@@ -13,7 +13,6 @@ import common.utilities.Controller;
 import course.CourseService;
 import com.google.gson.Gson;
 import common.entities.Dimension;
-import common.entities.DimensionType;
 import common.entities.Lesson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,6 +43,7 @@ public class QuizController extends HttpServlet implements Controller {
         String operation = request.getParameter("operation");
 
         String quizId;
+        System.out.println(operation);
         if (operation == null) {
             processInputForQuiz(request, response);
         } else {
@@ -141,7 +141,33 @@ public class QuizController extends HttpServlet implements Controller {
 
     private void processQuizReview(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
 
+        int quizId = 1;
+        int selectedQuestion = 0;
+
+        try {
+            quizId = Integer.parseInt(request.getParameter("userQuizId"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            selectedQuestion = Integer.parseInt(request.getParameter("questionNum"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<ArrayList<String>> questionList = (ArrayList<ArrayList<String>>) currentSession.getAttribute("questionList");
+        if (questionList == null) {
+            questionList = quizService.getQuizReview(quizId);
+        }
+
+        currentSession.setAttribute("questionList", questionList);
+        request.setAttribute("questionNum", selectedQuestion);
+
+        request.setAttribute("pageItem", questionList.get(selectedQuestion));
+        request.getRequestDispatcher("/auth/user/quiz/quiz-review.jsp").forward(request, response);
     }
 
     private void processInputForQuiz(HttpServletRequest request, HttpServletResponse response)
@@ -162,7 +188,7 @@ public class QuizController extends HttpServlet implements Controller {
         try {
             subjectId = Integer.parseInt(request.getParameter("subjectId"));
         } catch (NumberFormatException e) {
-            System.out.println(e.getMessage() + " at ~70 in LessonController");
+            System.out.println(e.getMessage() + " at ~70 in QuizController");
         }
 
         // Save selected value to request
@@ -243,7 +269,7 @@ public class QuizController extends HttpServlet implements Controller {
                 return -1;
             }
         } catch (NumberFormatException e) {
-            System.out.println(e.getMessage() + " at ~96 LessonController");
+            System.out.println(e.getMessage() + " at ~96 QuizController");
         }
 
         return page;
@@ -282,11 +308,11 @@ public class QuizController extends HttpServlet implements Controller {
         int courseId = 1;
         String typeInString = request.getParameter("type");
         int type;
-        if(typeInString.equalsIgnoreCase("Group")){
+        if (typeInString.equalsIgnoreCase("Group")) {
             type = 2;
-        }else if(typeInString.equalsIgnoreCase("Lesson")){
+        } else if (typeInString.equalsIgnoreCase("Lesson")) {
             type = 0;
-        }else{
+        } else {
             type = 1;
         }
         String[] numberOfQues = request.getParameterValues("number-of-question");
@@ -379,11 +405,11 @@ public class QuizController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         String typeInString = request.getParameter("type");
         int type = 0;
-        if(typeInString.equalsIgnoreCase("Group")){
+        if (typeInString.equalsIgnoreCase("Group")) {
             type = 2;
-        }else if(typeInString.equalsIgnoreCase("Lesson")){
+        } else if (typeInString.equalsIgnoreCase("Lesson")) {
             type = 0;
-        }else{
+        } else {
             type = 1;
         }
         ArrayList<Dimension> getDimension;
@@ -412,7 +438,7 @@ public class QuizController extends HttpServlet implements Controller {
         response.setContentType("text/html");
         response.getWriter().write(group);
     }
-    
+
     public void getDimensionNameForQuiz(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
             throws ServletException, IOException {
         ArrayList<Dimension> dimension = quizService.getDimensionTypeForEdit(quiz);
