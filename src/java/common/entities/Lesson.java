@@ -8,7 +8,8 @@ package common.entities;
 public class Lesson {
 
     private int id;
-    private String lessonName;
+    // Change lessonName to name for ajax: Anhvd
+    private String name;
     private int order;
     private Status status;
     private LessonType lessonType;
@@ -16,11 +17,15 @@ public class Lesson {
     private String videoLink;
     private String htmlContent;
     private int quizId;
+    
+    // Add default constructor: Anhvd
+    public Lesson() {
+    }
 
     public Lesson(int id, String lessonName, int order, Status status,
             LessonType lessonType, int courseId, String videoLink, String htmlContent, int quizId) {
         this.id = id;
-        this.lessonName = lessonName;
+        this.name = lessonName;
         this.order = order;
         this.status = status;
         this.lessonType = lessonType;
@@ -32,23 +37,23 @@ public class Lesson {
 
     public Lesson(int id, String lessonName) {
         this.id = id;
-        this.lessonName = lessonName;
+        this.name = lessonName;
     }
 
     public Lesson(String lessonName, int order, LessonType lessonType, int courseId) {
-        this.lessonName = lessonName;
+        this.name = lessonName;
         this.order = order;
         this.lessonType = lessonType;
         this.courseId = courseId;
     }
 
     public Lesson(String lessonName) {
-        this.lessonName = lessonName;
+        this.name = lessonName;
     }
 
     public Lesson(String lessonName, int order,
             LessonType lessonType, int courseId, String videoLink, String htmlContent) {
-        this.lessonName = lessonName;
+        this.name = lessonName;
         this.order = order;
         this.lessonType = lessonType;
         this.courseId = courseId;
@@ -58,7 +63,7 @@ public class Lesson {
 
     public Lesson(String lessonName, int order, LessonType lessonType,
             int courseId, String htmlContent, int quizId) {
-        this.lessonName = lessonName;
+        this.name = lessonName;
         this.order = order;
         this.lessonType = lessonType;
         this.courseId = courseId;
@@ -74,12 +79,12 @@ public class Lesson {
         this.id = id;
     }
 
-    public String getLessonName() {
-        return lessonName;
+    public String getName() {
+        return name;
     }
 
-    public void setLessonName(String lessonName) {
-        this.lessonName = lessonName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getOrder() {

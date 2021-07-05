@@ -140,12 +140,20 @@
         <url-pattern>/auth/teacher/quiz</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>QuizController</servlet-name>
+        <url-pattern>/auth/user/user_quiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>SubjectController</servlet-name>
         <url-pattern>/auth/teacher/subject</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserCourseController</servlet-name>
         <url-pattern>/auth/user/UserCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserCourseController</servlet-name>
+        <url-pattern>/auth/teacher/registration</url-pattern>
     </servlet-mapping>
     <!-- SMTP settings -->
     <context-param>

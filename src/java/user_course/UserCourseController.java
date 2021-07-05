@@ -15,11 +15,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import common.entities.User;
 import common.utilities.Controller;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserCourseController extends HttpServlet implements Controller {
 
     private UserCourseService userCourseService;
+    private final int itemPerPage = 5;
 
     @Override
     public void init() throws ServletException {
@@ -81,17 +87,17 @@ public class UserCourseController extends HttpServlet implements Controller {
 
     private void processViewRegistration(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        processFilterInput(request, response);
     }
 
     private void processFilterRegistration(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        processFilterInput(request, response);
     }
 
     private void processRegistrationPagination(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        getItemInPage(request, response);
     }
 
     private void processViewRegistrationDetail(HttpServletRequest request, HttpServletResponse response)
@@ -193,6 +199,132 @@ public class UserCourseController extends HttpServlet implements Controller {
         request.setAttribute("listC", listC);
         request.setAttribute("index", index);
         request.getRequestDispatcher("/auth/user/MyRegistation.jsp").forward(request, response);
+    }
+
+    private void processFilterInput(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
+
+        String keyword = request.getParameter("keyword");
+        String fromString = request.getParameter("validFrom");
+        String toString = request.getParameter("validTo");
+
+        Date validFrom = null;
+        Date validTo = null;
+
+        String orderBy = request.getParameter("orderBy");
+
+        if (keyword == null || keyword.equals("")) {
+            keyword = "";
+        }
+
+        if (orderBy == null || orderBy.equals("")) {
+            orderBy = "";
+        }
+
+        // Change date input to Date object
+        DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        if (fromString != null && !fromString.equals("")
+                && toString != null && !toString.equals("")) {
+            try {
+                validFrom = formatter.parse(fromString);
+                validTo = formatter.parse(toString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        currentSession.setAttribute("selectedKeyword", keyword);
+        currentSession.setAttribute("selectedFrom", fromString);
+        currentSession.setAttribute("selectedTo", toString);
+
+        processGetAllRegistration(request, response, keyword, validFrom, validTo, orderBy);
+    }
+
+    private void processGetAllRegistration(HttpServletRequest request, HttpServletResponse response,
+            String keyword, Date from, Date to, String orderBy)
+            throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
+
+        // Get current user (teacher/admin) id to get the according subject list
+        int teacherId;
+        if (currentSession.getAttribute("isAdmin") != null) {
+            teacherId = -1;
+        } else {
+            teacherId = ((User) currentSession.getAttribute("user")).getId();
+        }
+
+        System.out.println(keyword);
+        System.out.println(orderBy);
+        System.out.println(teacherId);
+
+        ArrayList<ArrayList<String>> registrationList = userCourseService.getCourseRegistations(keyword, from, to, orderBy, teacherId);
+        currentSession.setAttribute("registrationList", registrationList);
+
+        // Send data to the list page
+        int page = processPageParameter(request, response, registrationList.size());
+        ArrayList<ArrayList<String>> pageItems = getItemInPage(registrationList, page);
+        if (pageItems != null) {
+            request.setAttribute("pageItems", pageItems);
+            request.getRequestDispatcher("/auth/teacher/registration/list.jsp").forward(request, response);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+        }
+    }
+
+    private int processPageParameter(HttpServletRequest request, HttpServletResponse response, int listSize)
+            throws ServletException, IOException {
+        // If not yet receive page param (first time in page) change it to 1
+        int page = 1;
+        try {
+            page = Integer.parseInt(request.getParameter("page"));
+
+            int pageNum;
+            if (listSize % itemPerPage == 0) {
+                pageNum = listSize / itemPerPage;
+            } else {
+                pageNum = (listSize / itemPerPage) + 1;
+            }
+
+            if (page < 1 || page > pageNum) {
+                response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+                return -1;
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return page;
+    }
+
+    private ArrayList<ArrayList<String>> getItemInPage(ArrayList<ArrayList<String>> registrationList, int page) {
+        if (page > ((registrationList.size() / 5) + 1)) {
+            return null;
+        }
+        int startItem = (page - 1) * itemPerPage;
+        int endItem = (startItem + itemPerPage) > registrationList.size() ? registrationList.size() : startItem + itemPerPage;
+
+        ArrayList<ArrayList<String>> subjectInPage = new ArrayList<>();
+        for (int i = startItem; i < endItem; i++) {
+            subjectInPage.add(registrationList.get(i));
+        }
+
+        return subjectInPage;
+    }
+
+    private void getItemInPage(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
+
+        int page = Integer.parseInt(request.getParameter("page"));
+
+        ArrayList<ArrayList<String>> pageItems = getItemInPage((ArrayList<ArrayList<String>>) currentSession.getAttribute("registrationList"), page);
+        if (pageItems != null) {
+            request.setAttribute("pageItems", pageItems);
+            request.getRequestDispatcher("/auth/teacher/registration/list.jsp").forward(request, response);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+        }
     }
 
 }

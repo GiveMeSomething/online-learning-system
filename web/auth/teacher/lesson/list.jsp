@@ -50,6 +50,11 @@
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
                 </form>
+                <a href="${path}/auth/teacher/lesson?operation=VIEW">
+                    <button class="btn btn-primary mx-5 m-2">
+                        ADD NEW LESSON
+                    </button>
+                </a>             
             </div>
             <div class="row my-5">
                 <c:forEach items="${requestScope.pageItems}" var="item">
@@ -59,7 +64,7 @@
                         </h3>
                     </div>
                     <div class="col-6">
-                        <h3>${item.lessonName} (${item.lessonType})</h3>
+                        <h3>${item.name} (${item.lessonType})</h3>
                         <div>
                             <p>Status: ${item.status}</p>
                         </div>

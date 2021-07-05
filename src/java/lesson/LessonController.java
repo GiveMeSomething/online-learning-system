@@ -7,7 +7,6 @@ package lesson;
 
 import common.entities.Lesson;
 import common.entities.LessonType;
-import common.entities.Quiz;
 import common.entities.Status;
 import common.utilities.Controller;
 import course.CourseService;
@@ -128,7 +127,7 @@ public class LessonController extends HttpServlet implements Controller {
         try {
             subjectId = Integer.parseInt(request.getParameter("subjectId"));
         } catch (NumberFormatException e) {
-            System.out.println(e.getMessage() + " at ~70 in LessonController");
+            System.out.println(e.getMessage() + " at ~130 in LessonController");
         }
 
         // Save the base array into current session

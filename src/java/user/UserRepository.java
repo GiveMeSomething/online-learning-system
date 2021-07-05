@@ -388,7 +388,10 @@ public class UserRepository extends Repository {
 
     public User getUserById(int id) throws SQLException {
         this.connectDatabase();
-        String getUserById = "SELECT id, image, full_name, gender, email, role_id, address, status_id, mobile FROM db_ite1.user join account on user.email = account.user_email WHERE id = ?;";
+        String getUserById = "SELECT id, image, full_name, gender, email, role_id, "
+                + "address, status_id, mobile FROM db_ite1.user "
+                + "JOIN account ON user.email = account.user_email "
+                + "WHERE id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(getUserById)) {
 
             statement.setInt(1, id);

@@ -7,11 +7,15 @@ package user_course;
 
 import common.entities.Category;
 import common.entities.CourseRegistation;
+import common.entities.Status;
 import common.utilities.Repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -202,6 +206,69 @@ public class UserCourseRepository extends Repository {
             this.disconnectDatabase();
         }
         return list;
+    }
+
+    public ArrayList<ArrayList<String>> getCourseRegistations(String keyword, Date from, Date to, String orderBy, int userId) throws SQLException {
+        this.connectDatabase();
+
+        String options = "WHERE 1 = 1 ";
+
+        if (keyword != null && !keyword.equals("")) {
+            options += "AND c.title LIKE '%" + keyword + "%' OR u.email LIKE '%" + keyword + "%' ";
+        }
+
+        if (from != null && to != null) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            String validFrom = dateFormat.format(from);
+            String validTo = dateFormat.format(to);
+
+            options += "AND (valid_from BETWEEN '" + validFrom + "' AND '" + validTo + "') "
+                    + "AND (valid_to BETWEEN '" + validFrom + "' AND '" + validTo + "') ";
+        }
+
+        if (userId != -1) {
+            options += "AND c.owner = " + userId + " ";
+        }
+
+        if (orderBy != null && !orderBy.equals("")) {
+            options += "ORDER BY " + orderBy + " ";
+        }
+
+        String sql = "SELECT uc.course_id, u.email, uc.registration_time, c.title, pp.name, "
+                + "TRUNCATE((pp.list_price * pp.discount) / 100, 2) as cost, uc.registration_status, "
+                + "uc.registration_time as valid_from, DATE_ADD(uc.registration_time, INTERVAL pp.duration MONTH) as valid_to "
+                + "FROM user_course uc LEFT OUTER JOIN user u on uc.user_id = u.id "
+                + "LEFT OUTER JOIN course c on uc.course_id = c.id "
+                + "LEFT OUTER JOIN price_package pp on uc.valid_to = pp.id "
+                + options;
+        System.out.println(sql);
+        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+            ResultSet result = statement.executeQuery();
+
+            ArrayList<ArrayList<String>> resultList = new ArrayList<>();
+            while (result.next()) {
+                ArrayList<String> dataRow = new ArrayList<>();
+
+                dataRow.add(result.getString("email"));
+                dataRow.add(result.getString("registration_time"));
+                dataRow.add(result.getString("title"));
+                dataRow.add(result.getString("name"));
+                dataRow.add(result.getString("cost"));
+                dataRow.add(
+                        result.getInt("registration_status") == 0
+                        ? Status.INACTIVE.toString()
+                        : Status.ACTIVE.toString()
+                );
+                dataRow.add(result.getString("valid_from"));
+                dataRow.add(result.getString("valid_to"));
+
+                resultList.add(dataRow);
+            }
+
+            return resultList;
+        } finally {
+            this.disconnectDatabase();
+        }
     }
 
 }

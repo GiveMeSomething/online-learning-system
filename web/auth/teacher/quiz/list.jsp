@@ -24,6 +24,11 @@
     </head>
     <body>
         <div class="container my-5">
+            <c:if test="${requestScope.errorMessage != null}">
+                <div class="d-flex w-100 align-items-center justify-content-end">
+                    <h5>${requestScope.errorMessage}</h5>
+                </div>
+            </c:if>
             <div class="row">
                 <div class="d-flex justify-content-center align-items-center">
                     <h2>Subjects List</h2>
@@ -94,7 +99,7 @@
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
                     <div class="add-lesson">
-                        <a role="button" class="btn btn-success px-3 py-2" 
+                        <a role="button" class="btn btn-success px-3 py-2"
                            href="${path}/auth/teacher/quiz?operation=VIEW">
                             Add New Quiz
                         </a>
@@ -127,26 +132,26 @@
                 </c:forEach>
             </div>
             <nav aria-label="Page navigation example">
-                <c:set var="contentSize" value="${sessionScope.subjectList.size()}" />
+                <c:set var="contentSize" value="${sessionScope.quizList.size()}" />
                 <c:set var="maxPage" value="${((contentSize - contentSize % 5) / 5) + 1}" />
                 <c:set var="currentPage" value="${pageContext.request.getParameter('page')}" />
                 <c:set var="prevPage" value="${currentPage == null ? 1 : currentPage - 1}" />
                 <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" href="${path}/auth/teacher/quiz?operation=PAGINATION&page=${prevPage > 0 ? prevPage: 1}">Previous</a>
+                        <a class="page-link" href="${path}/auth/teacher/quiz?subjectId=${requestScope.subjectId}&operation=PAGINATION&page=${prevPage > 0 ? prevPage: 1}">Previous</a>
                     </li>
                     <c:forEach begin="1" end="${maxPage}" varStatus="counter">
                         <li class="page-item">
                             <a class="page-link"
-                               href="${path}/auth/teacher/quiz?operation=PAGINATION&page=${counter.index}">
+                               href="${path}/auth/teacher/quiz?subjectId=${requestScope.subjectId}&operation=PAGINATION&page=${counter.index}">
                                 ${counter.index}
                             </a>
                         </li>
                     </c:forEach>
                     <li class="page-item">
                         <a class="page-link"
-                           href="${path}/auth/teacher/quiz?operation=PAGINATION&page=${nextPage > maxPage ? maxPage: nextPage}">
+                           href="${path}/auth/teacher/quiz?subjectId=${requestScope.subjectId}&operation=PAGINATION&page=${nextPage > maxPage ? maxPage: nextPage}">
                             Next
                         </a>
                     </li>

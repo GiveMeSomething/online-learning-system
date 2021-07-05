@@ -8,6 +8,7 @@ package user_course;
 import common.entities.Category;
 import common.entities.CourseRegistation;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,15 +17,15 @@ import java.util.List;
  */
 public class UserCourseService {
 
-    private final UserCourseRepository userRepository;
+    private final UserCourseRepository userCourseRepository;
 
     public UserCourseService() {
-        this.userRepository = new UserCourseRepository();
+        this.userCourseRepository = new UserCourseRepository();
     }
 
     public boolean updateStatus(int userId, int courseId, int status) {
         try {
-            return userRepository.updateStatus(userId, courseId, status);
+            return userCourseRepository.updateStatus(userId, courseId, status);
         } catch (Exception e) {
         }
         return false;
@@ -32,7 +33,7 @@ public class UserCourseService {
 
     public List<Category> getAllCategory() {
         try {
-            return userRepository.getAllCategory();
+            return userCourseRepository.getAllCategory();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,7 +42,7 @@ public class UserCourseService {
 
     public int countCourseUserRegis() {
         try {
-            return userRepository.countCourseUserRegis();
+            return userCourseRepository.countCourseUserRegis();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,7 +51,7 @@ public class UserCourseService {
 
     public List<CourseRegistation> getCourseUserRegister(int userId, int index) {
         try {
-            return userRepository.getCourseUserRegister(userId, index);
+            return userCourseRepository.getCourseUserRegister(userId, index);
         } catch (Exception e) {
         }
         return null;
@@ -58,7 +59,7 @@ public class UserCourseService {
 
     public List<CourseRegistation> searchCourseByCategory(int userId, int categoryId) {
         try {
-            return userRepository.searchCourseByCategory(userId, categoryId);
+            return userCourseRepository.searchCourseByCategory(userId, categoryId);
         } catch (Exception e) {
         }
         return null;
@@ -66,17 +67,19 @@ public class UserCourseService {
 
     public List<CourseRegistation> searchCourseByTitle(int userId, String txtSearch) {
         try {
-            return userRepository.searchCourseByTitle(userId, txtSearch);
+            return userCourseRepository.searchCourseByTitle(userId, txtSearch);
         } catch (Exception e) {
         }
         return null;
     }
 
-    public static void main(String[] args) {
-        UserCourseService dao = new UserCourseService();
-        List<Category> list = dao.getAllCategory();
-        for (Category o : list) {
-            System.out.println(o);
+    public ArrayList<ArrayList<String>> getCourseRegistations(String keyword, Date from, Date to, String orderBy, int userId) {
+        try {
+            return userCourseRepository.getCourseRegistations(keyword, from, to, orderBy, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        return null;
     }
 }
