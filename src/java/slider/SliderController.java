@@ -90,7 +90,7 @@ public class SliderController extends HttpServlet {
         String operation = request.getParameter("operation");
 
         if (operation == null) {
-            processViewDetail(request, response); //Khi merge code sẽ bỏ dòng này
+           
         } else {
             switch (operation) {
                 case "VIEWDETAIL":

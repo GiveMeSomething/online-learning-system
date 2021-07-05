@@ -43,14 +43,7 @@ public class LessonController extends HttpServlet implements Controller {
         String operation = request.getParameter("operation");
 
         if (operation == null) {
-            //processGetLesson(request, response);
-            int courseId = 1;
-            List<Lesson> lessonList = lessonService.getLessonsByCourseId(courseId);
-            Course courseName = courseService.getCourseNameLessonList(courseId);
-            request.setAttribute("lessonList", lessonList);
-            request.setAttribute("courseName", courseName.getCourseName());
-            request.getRequestDispatcher("/auth/user/course/lesson/view.jsp").forward(request, response);
-            //Chỉnh lại url auth/user/course/lesson/view.jsp
+            processGetLesson(request, response);
         } else {
             switch (operation) {
                 case "VIEW":
@@ -164,7 +157,7 @@ public class LessonController extends HttpServlet implements Controller {
     }
 
     private void processViewUserLesson(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException {        
         int courseId = 1;
         List<Lesson> lessonList = lessonService.getLessonsByCourseId(courseId);
         Course courseName = courseService.getCourseNameLessonList(courseId);

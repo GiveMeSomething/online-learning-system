@@ -50,7 +50,6 @@ public class QuestionController extends HttpServlet {
     @Override
     public void init() throws ServletException {
         questionService = new QuestionService();
-
         courseService = new CourseService();
     }
 
