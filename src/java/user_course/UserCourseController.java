@@ -102,7 +102,13 @@ public class UserCourseController extends HttpServlet implements Controller {
 
     private void processViewRegistrationDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        int userId = 1;
+        int courseId = 1;
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        CourseRegistation regisDetail = userCourseService.getRegistrationDetail(userId, courseId);
+        request.setAttribute("detail", regisDetail);
+        request.getRequestDispatcher("/auth/user/registration/detail.jsp").forward(request, response);
     }
 
     private void processEditRegistrationInfo(HttpServletRequest request, HttpServletResponse response)

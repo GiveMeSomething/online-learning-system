@@ -95,13 +95,13 @@ public class QuizRepository extends Repository {
         } else if (lessonId == 0) {
             sql = "AND dimension_id = ?";
         }
-        String questionByLesson = "SELECT qcdl.question_id "
+        String getQuestion = "SELECT qcdl.question_id, option1, option2, option3, option4, option5, answer, explaination, content "
                 + "FROM db_ite1.question_course_dim_les qcdl "
                 + "JOIN questions_bank qb ON qcdl.question_id = qb.id "
                 + "WHERE course_id = ? " + sql + " AND level_id = ? ORDER BY RAND() LIMIT ?";
         ArrayList<Question> questions = new ArrayList<>();
 
-        try (PreparedStatement statement = this.connection.prepareStatement(questionByLesson)) {
+        try (PreparedStatement statement = this.connection.prepareStatement(getQuestion)) {
             statement.setInt(1, courseId);
             if (dimensionId != 0) {
                 statement.setInt(2, dimensionId);
@@ -113,10 +113,59 @@ public class QuizRepository extends Repository {
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                questions.add(new Question(result.getInt("question_id")));
+                Question question = new Question();
+                question.setId(result.getInt("question_id"));
+                question.setOption1(result.getString("option1"));
+                question.setOption2(result.getString("option2"));
+                question.setOption3(result.getString("option3"));
+                question.setOption4(result.getString("option4"));
+                question.setOption5(result.getString("option5"));
+                question.setAnswer(result.getString("answer"));
+                question.setExplaination(result.getString("explaination"));
+                question.setContent(result.getString("content"));
+
+                questions.add(question);
             }
 
             return questions;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public ArrayList<Integer> getDataForQuestion(int quizId) throws SQLException {
+        this.connectDatabase();
+
+        String getData = "SELECT * FROM quiz_dimension_lesson WHERE id = ?";
+        ArrayList<Integer> getDataForQuestion = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(getData)) {
+            statement.setInt(1, quizId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                getDataForQuestion.add(result.getInt("quiz_id"));
+                getDataForQuestion.add(result.getInt("dimension_id"));
+                getDataForQuestion.add(result.getInt("lesson_id"));
+                getDataForQuestion.add(result.getInt("number_of_question"));
+            }
+            return getDataForQuestion;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean getAnswerFromUser(int userQuizId, String userChoice, 
+            int quesitionId, boolean questionStatus) throws SQLException {
+        this.connectDatabase();
+
+        String getAnsFromUser = "INSERT INTO user_question(user_quiz_id, user_choice, question_id, question_status) "
+                + "VALUES(?,?,?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(getAnsFromUser)) {
+            statement.setInt(1, userQuizId);
+            statement.setString(2, userChoice);
+            statement.setInt(3, quesitionId);
+            statement.setBoolean(4, questionStatus);
+
+            return statement.executeUpdate() > 0;
         } finally {
             this.disconnectDatabase();
         }
@@ -533,12 +582,14 @@ public class QuizRepository extends Repository {
     public static void main(String[] args) throws SQLException {
         QuizRepository quizRepository = new QuizRepository();
         Quiz quiz = new Quiz(2, "Exam 4", 1, Level.EASY, 1, TestType.QUIZ, 66, "new");
-        ArrayList<Dimension> dim = quizRepository.getDimensionByType(quiz, 1);
-        ArrayList<Lesson> les = quizRepository.getTopic(quiz);
-        ArrayList<Integer> lesson = quizRepository.getQuizSetting(quiz, 7, 0);
-        for (int i = 0; i < lesson.size(); i++) {
-            System.out.println(lesson.get(i));
+        ArrayList<Integer> dim = quizRepository.getDataForQuestion(14);
+        ArrayList<Question> dims = quizRepository.getQuestion(1, 5, 0, 1, 2);
+//        ArrayList<Lesson> les = quizRepository.getTopic(quiz);
+//        ArrayList<Integer> lesson = quizRepository.getQuizSetting(quiz, 7, 0);
+        for (Question dim1 : dims) {
+            System.out.println(dim1.getContent());
         }
+//        System.out.println(dim.get(2));
     }
 
     public ArrayList<ArrayList<String>> getQuizReview(int quizId) throws SQLException {

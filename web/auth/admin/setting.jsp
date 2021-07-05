@@ -21,7 +21,7 @@
             <!--<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
             <a href="#" onclick="userRoleOn()">User Roles</a>
             <hr>
-            <a href="#" onclick="systemMenuOn()">System Menu</a>
+            <a href="${path}/auth/admin/dashboard" onclick="systemMenuOn()">Dashboard</a>
             <hr>
             <a href="${path}/auth/admin/admin_blog?operation=VIEWALLPOST" onclick="postCategoryOn()">Post Categories</a>
             <hr>
@@ -39,12 +39,13 @@
             <button id="openNav" class="openbtn" onclick="openNav()">&#9776; Open Sidebar</button>
             <button id="closeNav" class="openbtn" onclick="closeNav()" style="display: none">&#9776; Close Sidebar</button>
             <div id="userRole" style="display: block">
-                <h1>Welcome to user role</h1>
-                <p>User Role's content</p>
+                <!--                                <h1>Welcome to user role</h1>
+                                                <p>User Role's content</p>-->
+                
             </div>            
             <div id="systemMenu" style="display: none">
-                <h1>Welcome to System Menu</h1>
-                <p>System Menu's content</p>
+<!--                <h1>Welcome to System Menu</h1>
+                <p>System Menu's content</p>-->
             </div>          
             <div id="postCategory" style="display: none">
                 <h1>Welcome to Post Category</h1>
@@ -151,7 +152,7 @@
                 lessonType.style.display = 'none';
                 subjectDimension.style.display = 'none';
             }
-            
+
             function  testTypeOn() {
                 var userRole = document.getElementById('userRole');
                 var systemMenu = document.getElementById('systemMenu');
@@ -171,7 +172,7 @@
                 lessonType.style.display = 'none';
                 subjectDimension.style.display = 'none';
             }
-            
+
             function  questionLevelOn() {
                 var userRole = document.getElementById('userRole');
                 var systemMenu = document.getElementById('systemMenu');
@@ -191,7 +192,7 @@
                 lessonType.style.display = 'none';
                 subjectDimension.style.display = 'none';
             }
-            
+
             function  lessonTypeOn() {
                 var userRole = document.getElementById('userRole');
                 var systemMenu = document.getElementById('systemMenu');
@@ -211,7 +212,7 @@
                 lessonType.style.display = 'block';
                 subjectDimension.style.display = 'none';
             }
-            
+
             function  subjectDimensionOn() {
                 var userRole = document.getElementById('userRole');
                 var systemMenu = document.getElementById('systemMenu');
@@ -231,7 +232,7 @@
                 lessonType.style.display = 'none';
                 subjectDimension.style.display = 'block';
             }
-            
+
 
             /* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
             function openNav() {

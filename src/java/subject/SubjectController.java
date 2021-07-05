@@ -155,7 +155,6 @@ public class SubjectController extends HttpServlet implements Controller {
             }
             case "UPDATESUBJECT": {
                 updateSubjectDimension(request, response);
-
                 break;
             }
             case "FILTER":

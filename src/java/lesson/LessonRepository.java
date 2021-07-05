@@ -19,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LessonRepository extends Repository {
 
@@ -222,6 +223,166 @@ public class LessonRepository extends Repository {
             return isUpdate;
         } finally {
             this.disconnectDatabase();
+        }
+    }
+
+    public List<Lesson> getLessonsByCourseId(int courseId) throws SQLException {
+        this.connectDatabase();
+        String getLessonsByCourseId = "SELECT * FROM db_ite1.lesson WHERE course_id = ?";
+        List<Lesson> lessonList = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(getLessonsByCourseId)) {
+            statement.setInt(1, courseId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                lessonList.add(new Lesson(result.getInt("id"),
+                        result.getString("lesson_name"),
+                        result.getInt("order"),
+                        result.getInt("status_id") == 1 ? Status.ACTIVE : Status.INACTIVE,
+                        result.getInt("type_id") == 1 ? LessonType.SUBJECT_TOPIC
+                        : (result.getInt("type_id") == 2 ? LessonType.LESSON : LessonType.QUIZ),
+                        result.getInt("course_id"),
+                        result.getString("video_link"),
+                        result.getString("html_content"),
+                        result.getInt("quiz_id")));
+            }
+
+            return lessonList;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public Lesson getLessonDetailByLessonId(int lessonId) throws SQLException {
+        this.connectDatabase();
+
+        String getLesson = "SELECT * FROM db_ite1.lesson WHERE id= ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(getLesson)) {
+            statement.setInt(1, lessonId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new Lesson(result.getInt("id"),
+                        result.getString("lesson_name"),
+                        result.getInt("order"),
+                        result.getInt("status_id") == 1 ? Status.ACTIVE : Status.INACTIVE,
+                        result.getInt("type_id") == 1 ? LessonType.SUBJECT_TOPIC
+                        : (result.getInt("type_id") == 2 ? LessonType.LESSON : LessonType.QUIZ),
+                        result.getInt("course_id"),
+                        result.getString("video_link"),
+                        result.getString("html_content"), result.getInt("quiz_id"));
+            }
+
+            return null;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public Lesson getMinLessonIdByCourseId(int courseId) throws SQLException {
+        this.connectDatabase();
+        String getLesson = "SELECT * FROM db_ite1.lesson where course_id = ? ORDER BY id ASC LIMIT 1";
+        try (PreparedStatement statement = this.connection.prepareStatement(getLesson)) {
+            statement.setInt(1, courseId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new Lesson(result.getInt("id"),
+                        result.getString("lesson_name"),
+                        result.getInt("order"),
+                        result.getInt("status_id") == 1 ? Status.ACTIVE : Status.INACTIVE,
+                        result.getInt("type_id") == 1 ? LessonType.SUBJECT_TOPIC
+                        : (result.getInt("type_id") == 2 ? LessonType.LESSON : LessonType.QUIZ),
+                        result.getInt("course_id"),
+                        result.getString("video_link"),
+                        result.getString("html_content"), result.getInt("quiz_id"));
+            }
+            return null;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public Lesson getMaxLessonIdByCourseId(int courseId) throws SQLException {
+        this.connectDatabase();
+        String getLesson = "SELECT * FROM db_ite1.lesson where course_id = ? ORDER BY id DESC LIMIT 1";
+        try (PreparedStatement statement = this.connection.prepareStatement(getLesson)) {
+            statement.setInt(1, courseId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new Lesson(result.getInt("id"),
+                        result.getString("lesson_name"),
+                        result.getInt("order"),
+                        result.getInt("status_id") == 1 ? Status.ACTIVE : Status.INACTIVE,
+                        result.getInt("type_id") == 1 ? LessonType.SUBJECT_TOPIC
+                        : (result.getInt("type_id") == 2 ? LessonType.LESSON : LessonType.QUIZ),
+                        result.getInt("course_id"),
+                        result.getString("video_link"),
+                        result.getString("html_content"), result.getInt("quiz_id"));
+            }
+            return null;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean updateDoneLesson(String lessonId) throws SQLException {
+        this.connectDatabase();
+        String updateDoneLesson = "UPDATE db_ite1.lesson SET status_id = 1 WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(updateDoneLesson)) {
+            statement.setString(1, lessonId);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+
+    }
+
+    public boolean updateUndoneLesson(String lessonId) throws SQLException {
+        this.connectDatabase();
+
+        String updateDoneLesson = "UPDATE db_ite1.lesson SET status_id = 0 WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(updateDoneLesson)) {
+            statement.setString(1, lessonId);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } finally {
+            this.disconnectDatabase();
+        }
+
+    }
+
+    public List<Lesson> getAllLesson() throws SQLException {
+        this.connectDatabase();
+        String getAllLesson = "SELECT * FROM db_ite1.lesson";
+        List<Lesson> lessonList = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(getAllLesson)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                lessonList.add(new Lesson(result.getInt("id"),
+                        result.getString("lesson_name"),
+                        result.getInt("order"),
+                        result.getInt("status_id") == 1 ? Status.ACTIVE : Status.INACTIVE,
+                        result.getInt("type_id") == 1 ? LessonType.SUBJECT_TOPIC
+                        : (result.getInt("type_id") == 2 ? LessonType.LESSON : LessonType.QUIZ),
+                        result.getInt("course_id"),
+                        result.getString("video_link"),
+                        result.getString("html_content"), result.getInt("quiz_id")));
+            }
+
+            return lessonList;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        LessonRepository repo = new LessonRepository();
+        List<Lesson> lessonList = repo.getAllLesson();
+        for (Lesson o : lessonList) {
+            System.out.println(o);
         }
     }
 }

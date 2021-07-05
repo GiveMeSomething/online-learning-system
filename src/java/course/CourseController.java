@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import common.entities.Category;
 import common.entities.PricePackage;
+import common.entities.User;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
@@ -37,59 +38,63 @@ public class CourseController extends HttpServlet {
             throws ServletException, IOException {
         String courseId = request.getParameter("courseId");
         String categoryId = request.getParameter("cID");
+        String operation = request.getParameter("operation");
+        if (operation == null) {
+            if (courseId != null) {
+                Course courseDetail = courseService.getCourse(Integer.parseInt(courseId));
+                List<Course> siderCourse = courseService.getSiderCourseDetail();
+                List<Category> categoryList = courseService.getAllCategory();
+                ArrayList<PricePackage> coursePackages = courseService.getCoursePackage(courseDetail.getId());
 
-        if (courseId != null) {
-            Course courseDetail = courseService.getCourse(Integer.parseInt(courseId));
-            List<Course> siderCourse = courseService.getSiderCourseDetail();
-            List<Category> categoryList = courseService.getAllCategory();
-            ArrayList<PricePackage> coursePackages = courseService.getCoursePackage(courseDetail.getId());
+                request.setAttribute("detail", courseDetail);
+                request.setAttribute("siderCourse", siderCourse);
+                request.setAttribute("categoryList", categoryList);
+                request.setAttribute("coursePackages", coursePackages);
 
-            request.setAttribute("detail", courseDetail);
-            request.setAttribute("siderCourse", siderCourse);
-            request.setAttribute("categoryList", categoryList);
-            request.setAttribute("coursePackages", coursePackages);
-
-            request.getRequestDispatcher("nauth/course/detail.jsp").forward(request, response);
-        } else if (categoryId != null) {
-            int categoryIndicator = Integer.parseInt(categoryId);
-            HttpSession session = request.getSession();
-            session.setAttribute("categoryId", categoryId);
-            List<Course> courseFeature = courseService.getCourseFeature(categoryIndicator);
-            String searchName = request.getParameter("searchName");
-            //assign first slider image active to display in UI
-            int idFeature = 0;
-            for (int i = 0; i < courseFeature.size(); i++) {
-                idFeature = courseFeature.get(0).getId();
+                request.getRequestDispatcher("nauth/course/detail.jsp").forward(request, response);
+            } else if (categoryId != null) {
+                int categoryIndicator = Integer.parseInt(categoryId);
+                HttpSession session = request.getSession();
+                session.setAttribute("categoryId", categoryId);
+                List<Course> courseFeature = courseService.getCourseFeature(categoryIndicator);
+                String searchName = request.getParameter("searchName");
+                //assign first slider image active to display in UI
+                int idFeature = 0;
+                for (int i = 0; i < courseFeature.size(); i++) {
+                    idFeature = courseFeature.get(0).getId();
+                }
+                //Get title corresponding to category id
+                getTitle(request, response, categoryIndicator);
+                String index = request.getParameter("index");
+                if (index == null) {
+                    index = "1";
+                }
+                int indexPage = Integer.parseInt(index);
+                //show the category list dropdown
+                List<Category> categoryList = courseService.getAllCategory();
+                //filter price,alpha
+                String price = request.getParameter("price");
+                String alpha = request.getParameter("alpha");
+                //handle filter
+                handleFilterPriceAlpha(request, response, categoryIndicator, searchName, indexPage, price, alpha);
+                session.setAttribute("price", price);
+                session.setAttribute("alpha", alpha);
+                request.setAttribute("categoryList", categoryList);
+                request.setAttribute("tag", index);
+                request.setAttribute("price", price);
+                if (searchName != null) {
+                    request.setAttribute("end", getTotalPageSearch(request, response, categoryIndicator, searchName));
+                } else {
+                    request.setAttribute("end", getTotalPage(request, response, categoryIndicator));
+                }
+                request.setAttribute("categoryId", categoryId);
+                request.setAttribute("courseFeature", courseFeature);
+                session.removeAttribute("searchName");
+                request.setAttribute("id", idFeature);
+                request.getRequestDispatcher("nauth/course/list.jsp").forward(request, response);
             }
-            //Get title corresponding to category id
-            getTitle(request, response, categoryIndicator);
-            String index = request.getParameter("index");
-            if (index == null) {
-                index = "1";
-            }
-            int indexPage = Integer.parseInt(index);
-            //show the category list dropdown
-            List<Category> categoryList = courseService.getAllCategory();
-            //filter price,alpha
-            String price = request.getParameter("price");
-            String alpha = request.getParameter("alpha");
-            //handle filter
-            handleFilterPriceAlpha(request, response, categoryIndicator, searchName, indexPage, price, alpha);
-            session.setAttribute("price", price);
-            session.setAttribute("alpha", alpha);
-            request.setAttribute("categoryList", categoryList);
-            request.setAttribute("tag", index);
-            request.setAttribute("price", price);
-            if (searchName != null) {
-                request.setAttribute("end", getTotalPageSearch(request, response, categoryIndicator, searchName));
-            } else {
-                request.setAttribute("end", getTotalPage(request, response, categoryIndicator));
-            }
-            request.setAttribute("categoryId", categoryId);
-            request.setAttribute("courseFeature", courseFeature);
-            session.removeAttribute("searchName");
-            request.setAttribute("id", idFeature);
-            request.getRequestDispatcher("nauth/course/list.jsp").forward(request, response);
+        } else if (operation.equals("VIEWMYCOURSE")) {
+            getMyCourse(request, response);
         }
     }
 
@@ -212,4 +217,18 @@ public class CourseController extends HttpServlet {
 
     }
 
+    private void getMyCourse(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
+
+        // Get current user (teacher/admin) id to get the according subject list 
+         int userId = ((User) currentSession.getAttribute("user")).getId();
+        
+        List<Course> myCourse = courseService.getMyCourse(userId);
+        List<Category> categoryList = courseService.getAllCategory();
+        request.setAttribute("categoryList", categoryList);
+        request.setAttribute("myCourse", myCourse);
+        System.out.println(myCourse);
+        request.getRequestDispatcher("/auth/user/course/my-course.jsp").forward(request, response);
+    }
 }

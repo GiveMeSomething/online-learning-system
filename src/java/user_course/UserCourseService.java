@@ -73,6 +73,52 @@ public class UserCourseService {
         return null;
     }
 
+    //Dashboard
+    public int countRegistationStatus(int status, int date) {
+        try {
+            return userCourseRepository.countRegistationStatus(status, date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int countingTotalRegistration(int date) {
+        try {
+            return userCourseRepository.countingTotalRegistration(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int countTotalRegistationSuccess(int date) {
+        try {
+            return userCourseRepository.countTotalRegistationSuccess(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int countingTotalProfit() {
+        try {
+            return userCourseRepository.countingTotalProfit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int countingTotalProfitByCategoryId(int categoryId) {
+        try {
+            return userCourseRepository.countingTotalProfitByCategoryId(categoryId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public ArrayList<ArrayList<String>> getCourseRegistations(String keyword, Date from, Date to, String orderBy, int userId) {
         try {
             return userCourseRepository.getCourseRegistations(keyword, from, to, orderBy, userId);
@@ -80,6 +126,15 @@ public class UserCourseService {
             e.printStackTrace();
         }
 
+        return null;
+    }
+
+    public CourseRegistation getRegistrationDetail(int userId, int courseId) {
+        try {
+            return userCourseRepository.getRegistrationDetail(userId, courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

@@ -40,7 +40,7 @@
                                    style="width: 40vh"/>
                         </div>
                         <div id="dimension" class="d-flex justify-content-center align-items-center m-2" >
-                            <label for="category-select" class="mx-2">Categories</label>
+                            <label for="category-select" class="mx-2">Dimension</label>
                             <select onchange="resetRadio()" class="form-control" name="dimension" style="width: 20vh">
                                 <option value="" ${requestScope.selectedDimension == null ? 'selected': ''}>All</option>
                                 <c:forEach items="${requestScope.dimensionList}" var="o">
@@ -145,22 +145,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${requestScope.pageItems}" var="o">
-                        <tr>
-                            <td>${o.id}</td>
-                            <td>${o.course}</td>
-                            <td>${o.lesson_name}</td>
-                            <td>${o.dimension_name}</td>
-                            <td>${o.content}</td>
-                            <td>${o.level}</td>
-                            <td>${o.status}</td>
-                            <td>
-                                <button class="btn btn-secondary">
-                                    <a href="${path}/auth/teacher/question?operation=VIEW&&questionId=${o.id}" class="btn btn-secondary" style="width: 5rem; font-size: 10px; font-weight: bold">View&Edit</a>
-                                </button>
-                            </td>
-                        </tr>
-                    </c:forEach>
+                        <c:forEach items="${requestScope.pageItems}" var="o">
+                            <tr>
+                                <td>${o.id}</td>
+                                <td>${o.course}</td>
+                                <td>${o.lesson_name}</td>
+                                <td>${o.dimension_name}</td>
+                                <td>${o.content}</td>
+                                <td>${o.level}</td>
+                                <td>${o.status}</td>
+                                <td>
+                                    <a href="${path}/auth/teacher/question?operation=VIEW&&questionId=${o.id}" class="btn btn-secondary" style="width: 5rem; font-size: 10px; font-weight: bold">
+                                        <button class="btn btn-secondary">
+                                            View&Edit
+                                        </button>
+                                    </a>
+                                    <a href="${path}/auth/teacher/question?operation=DELETEQUESTION&questionId=${o.id}">
+                                        <button class="btn btn-danger mb-2">
+                                            Delete
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </c:forEach>
                     </tbody>
                 </table>
             </div>
@@ -191,6 +198,11 @@
                     <jsp:include page="/auth/teacher/question/ImportQuestion.jsp"/>
                 </ul>
             </nav>
+            <div>
+                <a href="${path}/auth/teacher/subject" class="m-2 btn btn-light" style="margin-top: -6rem!important;margin-left: 69rem!important; border-radius: none!important">
+                    Back
+                </a>
+            </div>
         </div>
         <script>
             function resetRadio() {

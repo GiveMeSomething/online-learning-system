@@ -17,7 +17,7 @@ public class Lesson {
     private String videoLink;
     private String htmlContent;
     private int quizId;
-    
+
     // Add default constructor: Anhvd
     public Lesson() {
     }
