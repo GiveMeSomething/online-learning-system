@@ -23,7 +23,7 @@
             <hr>
             <a href="#" onclick="systemMenuOn()">System Menu</a>
             <hr>
-            <a href="#" onclick="postCategoryOn()">Post Categories</a>
+            <a href="${path}/auth/admin/admin_blog?operation=VIEWALLPOST" onclick="postCategoryOn()">Post Categories</a>
             <hr>
             <a href="${path}/auth/teacher/subject" onclick="subjectCategoryOn()">Subject Categories</a>
             <hr>

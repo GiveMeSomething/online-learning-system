@@ -25,13 +25,24 @@ public class Post {
     public Post() {
     }
 
+    public Post(String postId, String thumbnail, String categoryId, String title, String briefInfo, String description, String feature, String statusId) {
+        this.postId = postId;
+        this.thumbnail = thumbnail;
+        this.categoryId = categoryId;
+        this.title = title.trim();
+        this.briefInfo = briefInfo.trim();
+        this.description = description.trim();
+        this.feature = feature;
+        this.statusId = statusId;
+    }
+
     public Post(String postId, String thumbnail, String categoryId, String title, String briefInfo, String description, String feature, String statusId, String authorId, String updatedDate) {
         this.postId = postId;
         this.thumbnail = thumbnail;
         this.categoryId = categoryId;
         this.title = title;
         this.briefInfo = briefInfo;
-        this.description = description;
+        this.description = description.trim();
         this.feature = feature;
         this.statusId = statusId;
         this.authorId = authorId;
@@ -95,7 +106,7 @@ public class Post {
     }
 
     public String getDescription() {
-        return description;
+        return description.trim();
     }
 
     public void setDescription(String description) {
@@ -123,5 +134,4 @@ public class Post {
         return "Post{" + "postId=" + postId + ", thumbnail=" + thumbnail + ", categoryId=" + categoryId + ", title=" + title + ", briefInfo=" + briefInfo + ", description=" + description + ", feature=" + feature + ", statusId=" + statusId + ", authorId=" + authorId + ", updatedDate=" + updatedDate + '}';
     }
 
-    
 }

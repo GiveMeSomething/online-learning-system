@@ -10,31 +10,204 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>404 LOL</title>
-        <!--        Bootstrap-->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-              integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
-              crossorigin="anonymous">
-        <!--        FontAwesome-->
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-              integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
-              crossorigin="anonymous">
-        <link rel="stylesheet" href="${path}/style/styles.css">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>List Posts</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <jsp:useBean id="dal" scope="page" class="blog.BlogRepository" />
+        <style>
+            body {
+                color: #566787;
+                background: #f5f5f5;
+                font-family: 'Roboto', sans-serif;
+            }
+            .table-responsive {
+                margin: 30px 0;
+            }
+            .table-wrapper {
+                min-width: 1000px;
+                background: #fff;
+                padding: 20px;
+                box-shadow: 0 1px 1px rgba(0,0,0,.05);
+            }
+            .table-title {
+                padding-bottom: 10px;
+                margin: 0 0 10px;
+                min-width: 100%;
+            }
+            .table-title h2 {
+                margin: 8px 0 0;
+                font-size: 22px;
+            }
+            .search-box {
+                position: relative;        
+                float: right;
+            }
+            .search-box input {
+                height: 34px;
+                border-radius: 20px;
+                padding-left: 35px;
+                border-color: #ddd;
+                box-shadow: none;
+            }
+            .search-box input:focus {
+                border-color: #3FBAE4;
+            }
+            .search-box i {
+                color: #a0a5b1;
+                position: absolute;
+                font-size: 19px;
+                top: 8px;
+                left: 10px;
+            }
+            table.table tr th, table.table tr td {
+                border-color: #e9e9e9;
+            }
+            table.table-striped tbody tr:nth-of-type(odd) {
+                background-color: #fcfcfc;
+            }
+            table.table-striped.table-hover tbody tr:hover {
+                background: #f5f5f5;
+            }
+            table.table th i {
+                font-size: 13px;
+                margin: 0 5px;
+                cursor: pointer;
+            }
+            table.table td:last-child {
+                width: 130px;
+            }
+            table.table td a {
+                color: #a0a5b1;
+                display: inline-block;
+                margin: 0 5px;
+            }
+            table.table td a.view {
+                color: #03A9F4;
+            }
+            table.table td a.edit {
+                color: #FFC107;
+            }
+            table.table td a.delete {
+                color: #E34724;
+            }
+            table.table td i {
+                font-size: 19px;
+            }    
+            .pagination {
+                float: right;
+                margin: 0 0 5px;
+            }
+            .pagination li a {
+                border: none;
+                font-size: 95%;
+                width: 30px;
+                height: 30px;
+                color: #999;
+                margin: 0 2px;
+                line-height: 30px;
+                border-radius: 30px !important;
+                text-align: center;
+                padding: 0;
+            }
+            .pagination li a:hover {
+                color: #666;
+            }	
+            .pagination li.active a {
+                background: #03A9F4;
+            }
+            .pagination li.active a:hover {        
+                background: #0397d6;
+            }
+            .pagination li.disabled i {
+                color: #ccc;
+            }
+            .pagination li i {
+                font-size: 16px;
+                padding-top: 6px
+            }
+            .hint-text {
+                float: left;
+                margin-top: 6px;
+                font-size: 95%;
+            }    
+        </style>
     </head>
     <body>
+        <div class="container-xl">
+            <div class="table-responsive">
+                <div class="table-wrapper">
+                    <div class="table-title">
+                        <div class="row">
+                            <div class="col-sm-8"><h2>List <b>Posts</b></h2></div>
+                            <div class="col-sm-4">
+                                <button style="float: right; background-color: lightblue ;">
+                                    <a style="color: blue" href="${path}/auth/admin/post/add.jsp">
+                                        Add Post
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <!--<th>Thumbnail </th>-->
+                                <th>Title </th>
+                                <th>Category</th>
+                                <th>Brief info</th>
+                                <!--<th>Description </th>-->
+                                <th>Feature </th>
+                                <th>Status </th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!--String postId, String thumbnail, String categoryId, String title, String briefInfo, String description, String feature, String statusId-->
+                            <c:forEach var="o" items="${listPost}">
+                                <tr>
+                                    <td>${o.postId}</td>
+                                    <!--<td>${o.thumbnail}</td>-->
+                                    <td>${o.title}</td>
+                                    <td>
+                                        ${dal.getCategoryNameById(o.categoryId)}
+                                    </td>
+                                    <td>${o.briefInfo}</td>
+                                    <!--<td>${o.description}</td>-->
+                                    <td>
+                                        ${o.feature==1?"ON":"OFF"}
+                                    </td>
+                                    <td>
+                                        ${o.statusId==1?"ACTIVE":"INACTIVE"}
+                                    </td>
+                                    <td>
+                                        <a href="${path}/auth/admin/admin_blog?operation=VIEWPOSTDETAIL&POSTID=${o.postId}" class="view" title="View" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
+                                        <a href="${path}/auth/admin/admin_blog?operation=DELETEPOST&POSTID=${o.postId}" onclick="return confirm('Are you sure you want to delete this item?');" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
 
+                        </tbody>
+                    </table>
+                    <div class="clearfix">
+                        <ul class="pagination">
+                            <li class="page-item ${page>1?"":"disabled"}"><a href="${path}/auth/admin/admin_blog?operation=VIEWALLPOST&page=${page-1}" class="page-link"><i class="fa fa-angle-double-left"></i></a></li>
+                                    <c:forEach var="i" begin="1" end="${endPage}">
+                                <li class="page-item ${page==i?"active":""}"><a href="${path}/auth/admin/admin_blog?operation=VIEWALLPOST&page=${i}" class="page-link">${i}</a></li>
+                                </c:forEach>
+                            <!--<li class="page-item active"><a href="#" class="page-link">3</a></li>-->
+                            <li class="page-item ${page<endPage?"":"disabled"}"><a href="${path}/auth/admin/admin_blog?operation=VIEWALLPOST&page=${page+1}" class="page-link"><i class="fa fa-angle-double-right"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>  
+        </div>   
     </body>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-            crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
-            integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
-            crossorigin="anonymous">
-    </script>
 </html>

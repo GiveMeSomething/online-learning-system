@@ -128,6 +128,10 @@
         <url-pattern>/blog</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>BlogController</servlet-name>
+        <url-pattern>/auth/admin/admin_blog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>QuestionController</servlet-name>
         <url-pattern>/auth/teacher/question</url-pattern>
     </servlet-mapping>

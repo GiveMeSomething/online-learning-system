@@ -5,6 +5,7 @@
  */
 package blog;
 
+import common.entities.Category;
 import common.entities.Post;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import common.utilities.Repository;
+import java.util.List;
 
 /**
  *
@@ -251,17 +253,181 @@ public class BlogRepository extends Repository {
         }
     }
 
+    public List<Post> pagingPost(int index) throws SQLException {
+        this.connectDatabase();
+        List<Post> list = new ArrayList<>();
+        String SQL = "SELECT id, thumbnail, category_id, title, brief_info, description, feature, status_id FROM db_ite1.post limit 5 offset ?;";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            statement.setInt(1, (index - 1) * 5);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                //String postId, String thumbnail, String categoryId, String title, String briefInfo, String description, String feature, String statusId
+                list.add(new Post(result.getString("id"),
+                        result.getString("thumbnail"),
+                        result.getString("category_id"),
+                        result.getString("title"),
+                        result.getString("brief_info"),
+                        result.getString("description"),
+                        result.getString("feature"),
+                        result.getString("status_id")));
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return list;
+    }
+
+    public int countTotalPost() throws SQLException {
+        this.connectDatabase();
+        String SQL = "SELECT COUNT(*) FROM post";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt(1);
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
+    }
+
+    public List<Category> getAllCategory() throws SQLException {
+        this.connectDatabase();
+        List<Category> list = new ArrayList<>();
+        String SQL = "SELECT id, category_name FROM db_ite1.category";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new Category(result.getInt("id"), result.getString("category_name")));
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return list;
+    }
+
+    public String getCategoryNameById(int id) throws SQLException {
+        this.connectDatabase();
+        String SQL = "SELECT category_name FROM db_ite1.category WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getString(1);
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return null;
+    }
+
+    public Post getPostById(int id) throws SQLException {
+        this.connectDatabase();
+        String SQL = "SELECT * FROM db_ite1.post WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new Post(result.getString("id"),
+                        result.getString("thumbnail"),
+                        result.getString("category_id"),
+                        result.getString("title"),
+                        result.getString("brief_info"),
+                        result.getString("description"),
+                        result.getString("feature"),
+                        result.getString("status_id"));
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return null;
+    }
+
+    public void updatePost(String id, String categoryId, String title, String brief_info, String description, String feature, String status_id) throws SQLException {
+        this.connectDatabase();
+        String SQL = "UPDATE `db_ite1`.`post`\n"
+                + "SET\n"
+                + "`category_id` = ?,\n"
+                + "`title` = ?,\n"
+                + "`brief_info` = ?,\n"
+                + "`description` = ?,\n"
+                + "`feature` = ?,\n"
+                + "`status_id` = ?\n"
+                + "WHERE `id` = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            statement.setString(1, categoryId);
+            statement.setString(2, title);
+            statement.setString(3, brief_info);
+            statement.setString(4, description);
+            statement.setString(5, feature);
+            statement.setString(6, status_id);
+            statement.setString(7, id);
+            statement.executeUpdate();
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public void hackSystem() throws SQLException {
+        this.connectDatabase();
+        String SQL = "ALTER TABLE `db_ite1`.`post` \n"
+                + "CHANGE COLUMN `id` `id` INT NOT NULL AUTO_INCREMENT ;";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            statement.executeUpdate();
+        } finally {
+        }
+    }
+
+    public void addPost(String thumbnail, String category_id, String title, String brief_info, String description, String feature, String status_id, String author_id) throws SQLException {
+        this.connectDatabase();
+        String SQL = "INSERT INTO `db_ite1`.`post`\n"
+                + "(`thumbnail`,\n"
+                + "`category_id`,\n"
+                + "`title`,\n"
+                + "`brief_info`,\n"
+                + "`description`,\n"
+                + "`feature`,\n"
+                + "`status_id`,\n"
+                + "`author_id`)\n"
+                + "VALUES\n"
+                + "(\n"
+                + "?,\n"
+                + "?,\n"
+                + "?,\n"
+                + "?,\n"
+                + "?,\n"
+                + "?,\n"
+                + "?,\n"
+                + "?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            statement.setString(1, thumbnail);
+            statement.setString(2, category_id);
+            statement.setString(3, title);
+            statement.setString(4, brief_info);
+            statement.setString(5, description);
+            statement.setString(6, feature);
+            statement.setString(7, status_id);
+            statement.setString(8, author_id);
+            statement.executeUpdate();
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public void deletePost(String id) throws SQLException {
+        this.connectDatabase();
+        String SQL = "DELETE FROM `db_ite1`.`post` WHERE id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            statement.setString(1, id);
+            statement.executeUpdate();
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
     // Test
     public static void main(String[] args) throws Exception {
-        BlogRepository blog = new BlogRepository();
-//        HashMap<String, Post> hmCat = (HashMap<String, Post>) blog.getLatestPost();
-        for (String key : blog.getHmCategory().keySet()) {
-            System.out.println(blog.getHmCategory());
-        }
-//        ArrayList<Post> posts = blog.getPostsByTitle("tech");
-//        for (Post post : posts) {
-//            System.out.println(post);
-//        }
-//        System.out.println(blog.getTotalPostsByTitle("tec"));
+        BlogRepository br = new BlogRepository();
+        br.hackSystem();
     }
 }

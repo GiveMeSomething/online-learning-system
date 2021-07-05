@@ -6,14 +6,18 @@
 package blog;
 
 import common.entities.Post;
+import common.entities.User;
 import common.utilities.Controller;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -32,27 +36,29 @@ public class BlogController extends HttpServlet implements Controller {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String operation = request.getParameter("operation");
-
         if (operation == null) {
             // Get posts
+           // processViewAllPost(request, response);
             getBlogPagination(request, response);
         } else {
             switch (operation) {
                 case "VIEWALLPOST":
-                    processViewAllPost(request, response);
+                    processViewAllPost(request, response);// /blog?operation=VIEWALLPOST
                     break;
                 case "PAGINATIONPOST":
                     processPaginationPost(request, response);
                     break;
                 case "VIEWPOSTDETAIL":
-                    processViewPostDetail(request, response);
+                    processViewPostDetail(request, response); //blog?operation=VIEWPOSTDETAIL
+                    break;
+                case "DELETEPOST":
+                    processDeletePost(request, response);
                     break;
                 default:
                     send404(request, response);
                     break;
             }
         }
-
     }
 
     @Override
@@ -78,19 +84,59 @@ public class BlogController extends HttpServlet implements Controller {
         }
     }
 
+    private void processDeletePost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String id = request.getParameter("POSTID");
+
+        blogService.deletePost(id);
+        response.sendRedirect(request.getContextPath() + "/auth/admin/admin_blog?operation=VIEWALLPOST");
+    }
+
     private void processUpdatePostInfo(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String id = request.getParameter("postid");
+        String categoryId = request.getParameter("category");
+        String title = request.getParameter("titlepost");
+        String brief_info = request.getParameter("brief");
+        String description = request.getParameter("description");
+        String feature = request.getParameter("feature") == null ? "0" : "1";
+        String status_id = request.getParameter("status");
 
+        blogService.updatePost(id, categoryId, title, brief_info, description, feature, status_id);
+        response.sendRedirect(request.getContextPath() + "/auth/admin/admin_blog?operation=VIEWALLPOST");
     }
 
     private void processViewAllPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int page = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
+        int endPage = (blogService.countTotalPost() / 5) + (blogService.countTotalPost() % 5 == 0 ? 0 : 1);
+        List<Post> listPost = blogService.pagingPosts(page);
 
+        request.setAttribute("endPage", endPage);
+        request.setAttribute("page", page);
+        request.setAttribute("listPost", listPost);
+        request.getRequestDispatcher("/auth/admin/post/list.jsp").forward(request, response);
     }
 
     private void processAddPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        PrintWriter pw = response.getWriter();
+        HttpSession session = request.getSession();
+        User u = (User) session.getAttribute("user");
+        if (u == null) {
+            pw.println("Bạn chưa đăng nhập. Vui Lòng đăng nhập");
+            return;
+        }
+        String category = request.getParameter("category");
+        String title = request.getParameter("titlepost");
+        String description = request.getParameter("description");
+        String feature = request.getParameter("feature") == null ? "0" : "1";
+        String status = request.getParameter("status");
+        String thumbnail = request.getParameter("thumbnail");
+        String brief = request.getParameter("brief");
+        blogService.hackSystem();
+        blogService.addPost(thumbnail, category, title, brief, description, feature, status, String.valueOf(u.getId()));
+        response.sendRedirect(request.getContextPath() + "/auth/admin/admin_blog?operation=VIEWALLPOST");
     }
 
     private void processPaginationPost(HttpServletRequest request, HttpServletResponse response)
@@ -100,7 +146,11 @@ public class BlogController extends HttpServlet implements Controller {
 
     private void processViewPostDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int postId = Integer.parseInt(request.getParameter("POSTID"));
+        Post p = blogService.getPostById(postId);
 
+        request.setAttribute("post", p);
+        request.getRequestDispatcher("/auth/admin/post/detail.jsp").forward(request, response);
     }
 
     private void getBlogPagination(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
