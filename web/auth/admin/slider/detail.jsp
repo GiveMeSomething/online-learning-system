@@ -57,10 +57,10 @@
                            data-value-missing="Can't be empty"
                            required>
                     <div>
-                       <img style="width: 100%;height:350px"
-                         src="${path}/assets/bannerImg/${image}"/> 
+                        <img style="width: 100%;height:350px"
+                             src="${path}/assets/bannerImg/${image}"/> 
                     </div>
-                    
+
                 </div>
                 <div class="form-group">
                     <label for="title">
@@ -95,7 +95,8 @@
                            data-value-missing="Can't be empty"
                            required>
                 </div>
-                <button style="background-color: #FF8C00;color:white" type="submit" class="btn btn-warning">Update Question</button> 
+                <button style="background-color: #FF8C00;color:white"
+                        type="submit" class="btn btn-warning">Update Slider</button> 
             </form>
             <!--UPLOAD SLIDER IMAGE-->
             <div style="width: 85%;margin: 0 auto">
@@ -109,12 +110,18 @@
                                    type="file" name="photo" value="" id="file-upload" /></label>
                         <div style="margin-left: 10px">
                             <button style="width: 146px;height: 34px;padding: 5px" class="btn btn-success" type="submit" value="Save">
-                                Update Slider Image
+                                Preview Slider Image
                             </button>            
                         </div>
                     </div>
                 </form>
             </div>
+            <div class="text-right mb-2">
+                <a href="${path}/auth/admin/slider">
+                    <button class="btn btn-success">Back</button>
+                </a>
+            </div>
+            
         </div>
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

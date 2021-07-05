@@ -36,7 +36,7 @@
                        style="line-height: 142px;color:black;text-decoration: none;font-size: 20px" target="_top"
                        href="${path}/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&lessonId=${o.id}&&courseId=${sessionScope.courseId}">
                         <div class="mb-2 mr-2 lessonList" style="cursor: pointer;display: inline-block;width:200px;height:150px;border:1px solid black">
-                            ${o.lessonName}
+                            ${o.name}
                         </div>
                     </a>
                 </c:forEach>         

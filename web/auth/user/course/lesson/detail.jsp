@@ -84,7 +84,7 @@
                                        target="_top"
                                        href="${path}/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&lessonId=${o.id}&&courseId=${sessionScope.courseId}">
                                         <div class="d-flex justify-content-between align-items-center">
-                                            ${o.id}. ${o.lessonName}
+                                            ${o.id}. ${o.name}
                                             <input ${o.status == 'ACTIVE' ? "checked":""} value="${o.status}${o.id}" name="doneLesson" class="mr-3" type="checkbox" style="width:18px;height:18px"/>
                                         </div>
                                         <c:if test="${(o.id < 9 || o.id == 9) && o.id % 4 == 1}">
@@ -144,7 +144,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <div class="tab-content mt-3" id="myTabContent">
+                        <div class="tab-content mt-3 mb-3" id="myTabContent">
                             <div class="tab-pane fade show active"
                                  id="home"
                                  role="tabpanel"
@@ -204,7 +204,9 @@
                                 </div>
                             </div>
                         </div>
-
+                        <a href="${path}/auth/user/course/lesson?operation=VIEWUSERLESSON&&courseId=${sessionScope.courseId}">
+                            <button class="btn btn-success">Back</button>
+                        </a>
                     </div>
                 </c:if>
 
@@ -213,6 +215,8 @@
                         <!--Chi sẽ code chức năng quiz lesson tại đây-->
                     </div>
                 </c:if>
+                ABCD
+                
                 <c:forEach items="${allLesson}" var="o">
                     <c:if test="${(o.id < 9 || o.id == 9) && o.id % 4 == 1}">
                         <div id="player1" style="display:none"></div>
