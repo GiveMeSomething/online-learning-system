@@ -9,6 +9,7 @@ import common.entities.Lesson;
 import common.entities.Status;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LessonService {
 
@@ -79,4 +80,69 @@ public class LessonService {
 
         return false;
     }
+
+    public List<Lesson> getLessonsByCourseId(int courseId) {
+        try {
+            return lessonRepository.getLessonsByCourseId(courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Lesson getLessonDetailByLessonId(int lessonId) {
+        try {
+            return lessonRepository.getLessonDetailByLessonId(lessonId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Lesson getMinLessonIdByCourseId(int courseId) {
+        try {
+            return lessonRepository.getMinLessonIdByCourseId(courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Lesson getMaxLessonIdByCourseId(int courseId) {
+        try {
+            return lessonRepository.getMaxLessonIdByCourseId(courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public boolean updateDoneLesson(String lessonId){
+        try {
+            return lessonRepository.updateDoneLesson(lessonId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean updateUndoneLesson(String lessonId){
+        try {
+            return this.lessonRepository.updateUndoneLesson(lessonId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public List<Lesson> getAllLesson(){
+        try {
+            return lessonRepository.getAllLesson();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+
 }

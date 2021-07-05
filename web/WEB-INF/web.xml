@@ -113,7 +113,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
-        <url-pattern>/user</url-pattern>
+        <url-pattern>/auth/user/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EmailController</servlet-name>
@@ -167,6 +167,10 @@
     <servlet-mapping>
         <servlet-name>LessonController</servlet-name>
         <url-pattern>/auth/teacher/lesson</url-pattern>
+    </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>LessonController</servlet-name>
+        <url-pattern>/auth/user/course/lesson</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SliderController</servlet-name>

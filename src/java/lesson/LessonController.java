@@ -5,15 +5,16 @@
  */
 package lesson;
 
+import common.entities.Course;
 import common.entities.Lesson;
 import common.entities.LessonType;
-import common.entities.Quiz;
 import common.entities.Status;
 import common.utilities.Controller;
 import course.CourseService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -59,6 +60,15 @@ public class LessonController extends HttpServlet implements Controller {
                     break;
                 case "VIEWUSERLESSONDETAIL":
                     processViewUserLessonDetail(request, response);
+                    break;
+                case "PREVIOUSLESSON":
+                    processPreviousLesson(request, response);
+                    break;
+                case "NEXTLESSON":
+                    processNextLesson(request, response);
+                    break;
+                case "DONELESSON":
+                    processDoneLesson(request, response);
                     break;
                 default:
                     response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
@@ -147,13 +157,132 @@ public class LessonController extends HttpServlet implements Controller {
     }
 
     private void processViewUserLesson(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+            throws ServletException, IOException {        
+        HttpSession session = request.getSession();
+        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        List<Lesson> lessonList = lessonService.getLessonsByCourseId(courseId);
+        Course courseName = courseService.getCourseNameLessonList(courseId);
+        session.setAttribute("courseId", courseId);
+        request.setAttribute("lessonList", lessonList);
+        request.setAttribute("courseName", courseName.getCourseName());
+        request.getRequestDispatcher("/auth/user/course/lesson/view.jsp").forward(request, response);
+        //Chỉnh lại url auth/user/course/lesson/view.jsp
     }
 
     private void processViewUserLessonDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int lessonId = Integer.parseInt(request.getParameter("lessonId"));
+        List<Lesson> allLesson = lessonService.getAllLesson();
+        Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
+        request.setAttribute("lessonDetail", lessonDetail);
+        int courseId = Integer.parseInt(session.getAttribute("courseId")+"");
+        List<Lesson> lessonList = lessonService.getLessonsByCourseId(courseId);
+        session.setAttribute("lessonId", lessonId);
+        request.setAttribute("lessonList", lessonList);
+        request.setAttribute("allLesson", allLesson);
+        session.setAttribute("courseId", courseId);
+        //THỬ NGHIỆM:
+        for (int i = 0; i < lessonList.size() - 1; i++) {
+            int a = lessonList.get(i).getVideoLink().indexOf("embed/");
+            request.setAttribute("videoId" + (i + 1), lessonList.get(i).getVideoLink().substring(a + 6));
+        }
+     
+        request.setAttribute("length", lessonList.size());
+        request.setAttribute("lessonId", lessonId);
+        Lesson minIdLesson = lessonService.getMinLessonIdByCourseId(courseId);
+        Lesson maxIdLesson = lessonService.getMaxLessonIdByCourseId(courseId);
+        if (lessonId == minIdLesson.getId()) {
+            request.setAttribute("disabled", "disabled");
+        } else if (lessonId == maxIdLesson.getId()) {
+            request.setAttribute("disabledNext", "disabled");
+        }
+        String videoId = "DxcpvaDglb4";
+        request.setAttribute("videoId", videoId);
+        session.setAttribute("lessonIdSession", lessonId);
+        request.getRequestDispatcher("/auth/user/course/lesson/detail.jsp").forward(request, response);
+        //Chỉnh lại url auth/user/course/lesson/detail.jsp
+    }
 
+    private void processPreviousLesson(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int lessonId = Integer.parseInt(request.getParameter("lessonId"));
+        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        session.setAttribute("courseId", courseId);
+        List<Lesson> lessonList = lessonService.getLessonsByCourseId(courseId);
+        request.setAttribute("lessonList", lessonList);
+        List<Lesson> allLesson = lessonService.getAllLesson();
+        request.setAttribute("allLesson", allLesson);
+        Lesson minIdLesson = lessonService.getMinLessonIdByCourseId(courseId);
+        //THỬ NGHIỆM:
+        for (int i = 0; i < lessonList.size() - 1; i++) {
+            int a = lessonList.get(i).getVideoLink().indexOf("embed/");
+            request.setAttribute("videoId" + (i + 1), lessonList.get(i).getVideoLink().substring(a + 6));
+        }
+        if (lessonId == minIdLesson.getId()) {
+            Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
+            request.setAttribute("lessonDetail", lessonDetail);
+            request.setAttribute("lessonId", minIdLesson.getId());
+            session.setAttribute("lessonIdSession", minIdLesson.getId());
+        } else {
+            Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
+            request.setAttribute("lessonDetail", lessonDetail);
+            request.setAttribute("lessonId", lessonId);
+            session.setAttribute("lessonIdSession", lessonId);
+        }
+        request.setAttribute("minIdLesson", minIdLesson.getId());
+        request.getRequestDispatcher("/auth/user/course/lesson/detail.jsp").forward(request, response);
+        //Chỉnh lại url auth/user/course/lesson/detail.jsp
+    }
+
+    private void processNextLesson(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int lessonId = Integer.parseInt(request.getParameter("lessonId"));
+        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        session.setAttribute("courseId", courseId);
+        List<Lesson> lessonList = lessonService.getLessonsByCourseId(courseId);
+        request.setAttribute("lessonList", lessonList);
+        List<Lesson> allLesson = lessonService.getAllLesson();
+        request.setAttribute("allLesson", allLesson);
+        Lesson maxIdLesson = lessonService.getMaxLessonIdByCourseId(courseId);
+        //THỬ NGHIỆM:
+        for (int i = 0; i < lessonList.size() - 1; i++) {
+            int a = lessonList.get(i).getVideoLink().indexOf("embed/");
+            request.setAttribute("videoId" + (i + 1), lessonList.get(i).getVideoLink().substring(a + 6));
+        }
+        if (lessonId == maxIdLesson.getId()) {
+            Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
+            request.setAttribute("lessonDetail", lessonDetail);
+            request.setAttribute("lessonId", maxIdLesson.getId());
+            session.setAttribute("lessonIdSession", maxIdLesson.getId());
+        } else {
+            Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
+            request.setAttribute("lessonDetail", lessonDetail);
+            request.setAttribute("lessonId", lessonId);
+            session.setAttribute("lessonIdSession", lessonId);
+        }
+        request.setAttribute("maxIdLesson", maxIdLesson.getId());
+        request.getRequestDispatcher("/auth/user/course/lesson/detail.jsp").forward(request, response);
+        //Chỉnh lại url auth/user/course/lesson/detail.jsp
+    }
+
+    private void processDoneLesson(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if (request.getParameter("lessonId").contains("INACTIVE")) {
+            int alpha = request.getParameter("lessonId").indexOf("E");
+            String doneLessonId = request.getParameter("lessonId").substring(alpha+1);
+            lessonService.updateDoneLesson(doneLessonId);
+            response.sendRedirect(request.getContextPath() + "/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&lessonId=" + doneLessonId);
+            //Chỉnh lại url auth/user/course/lesson?
+        } else if (request.getParameter("lessonId").contains("ACTIVE")) {
+            int alpha = request.getParameter("lessonId").indexOf("E");
+            String doneLessonId = request.getParameter("lessonId").substring(alpha+1);
+            lessonService.updateUndoneLesson(doneLessonId);
+            response.sendRedirect(request.getContextPath() + "/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&lessonId=" + doneLessonId);
+            //Chỉnh lại url auth/user/course/lesson?
+        }
     }
 
     private void processUpdateLessonStatus(HttpServletRequest request, HttpServletResponse response)

@@ -127,12 +127,15 @@ public class AuthController extends HttpServlet implements Controller {
 
             if (userAccount.getRole() == Role.ADMIN) {
                 session.setAttribute("isAdmin", true);
+                session.setAttribute("isTeacher", false);
                 response.sendRedirect("auth/admin");
-            } else {
+                return;
+            } else if (userAccount.getRole() == Role.TEACHER) {
                 // Student or Teacher
                 session.setAttribute("isAdmin", false);
-                response.sendRedirect(forwardTo);
+                session.setAttribute("isTeacher", true);
             }
+            response.sendRedirect(forwardTo);
         }
     }
 

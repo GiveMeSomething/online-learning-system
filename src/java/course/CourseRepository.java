@@ -1015,6 +1015,15 @@ public class CourseRepository extends Repository {
         return null;
     }
 
+    public static void main(String[] args) throws Exception {
+        CourseRepository repo = new CourseRepository();
+        try {
+            Course c = repo.getCourseNameLessonList(1);
+            System.out.println(c);
+        } catch (Exception e) {
+        }
+    }
+
     public Account getRoleByUserEmail(String email) throws SQLException {
         this.connectDatabase();
         String getRoleByUserEmail = "SELECT a.* FROM db_ite1.account a "
@@ -1113,17 +1122,28 @@ public class CourseRepository extends Repository {
 
     }
 
-    public static void main(String[] args) throws Exception {
-        CourseRepository repo = new CourseRepository();
-        try {
-//            Account a = repo.getRoleByUserEmail("toannkhe150086@fpt.edu.vn");
-            int count = repo.countingTotalCourse(0);
-            System.out.println(count);
-//            List<Course> list = repo.getMyCourse(21);
-//            for (Course course : list) {
-//                System.out.println(course);
-//            }
-        } catch (Exception e) {
+    
+    public Course getCourseNameLessonList(int courseId) throws SQLException {
+        this.connectDatabase();
+        String searchCourse = "SELECT * FROM db_ite1.course  where id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
+            statement.setInt(1, courseId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return new Course(
+                   result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        0,
+                        result.getString("tag")
+                );
+
+            }
+
+        } finally {
+            this.disconnectDatabase();
         }
+        return null;
     }
 }

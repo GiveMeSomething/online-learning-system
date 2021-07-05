@@ -6,7 +6,6 @@
 package common.entities;
 
 public class Slider {
-
     private int id;
     private String image;
     private String title;

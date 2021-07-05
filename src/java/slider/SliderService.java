@@ -11,12 +11,31 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.List;
 
+
 public class SliderService {
 
     private final SliderRepository sliderRepository;
 
     public SliderService() {
         this.sliderRepository = new SliderRepository();
+    }
+    
+    public Slider getSliderDetail(int sliderId) {
+        try {
+            return sliderRepository.getSliderDetail(sliderId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateSliderDetail(String image, String title, int status_id, String notes, int sliderId) {
+        try {
+           return sliderRepository.updateSliderDetail(image, title, status_id, notes, sliderId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public List<Slider> getSlidersList(String keyword, Status status) {

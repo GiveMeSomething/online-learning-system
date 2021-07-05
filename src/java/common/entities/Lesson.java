@@ -137,4 +137,9 @@ public class Lesson {
     public void setQuizId(int quizId) {
         this.quizId = quizId;
     }
+    
+    @Override
+    public String toString() {
+        return "Lesson{" + "id=" + id + ", lessonName=" + lessonName + ", order=" + order + ", status=" + status + ", lessonType=" + lessonType + ", courseId=" + courseId + ", videoLink=" + videoLink + ", htmlContent=" + htmlContent + ", quizId=" + quizId + '}';
+    }
 }

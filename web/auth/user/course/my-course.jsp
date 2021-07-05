@@ -37,17 +37,17 @@
                         <div class="card" 
                              style="width: 15rem; 
                              box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-                            <a href="course?courseId="><img style="cursor: pointer" src="${o.imageLink}" class="card-img-top" alt="..."></a>
+                            <a href="${path}/auth/user/course/lesson?operation=VIEWUSERLESSON&&courseId=${o.id}"><img style="cursor: pointer" src="${o.imageLink}" class="card-img-top" alt="..."></a>
                             <div class="card-body">
                                 <div style="height:145px">
-                                    <a href="course?courseId=${o.id}" style="text-decoration: none; color: black"><h5 class="card-title" style="cursor: pointer">${o.courseName}</h5></a>
+                                    <a href="${path}/auth/user/course/lesson?operation=VIEWUSERLESSON&&courseId=${o.id}" style="text-decoration: none; color: black"><h5 class="card-title" style="cursor: pointer">${o.courseName}</h5></a>
                                     <div style="font-family: cursive;margin-top: -10px; overflow-y: hidden; height: 3rem">
                                         ${o.description}
                                     </div>
                                 </div>
                                 <div class="row"  style="float: right">
 
-                                    <a href="#" class="text-decoration-none">
+                                    <a href="${path}/auth/user/course/lesson?operation=VIEWUSERLESSON&&courseId=${o.id}" class="text-decoration-none">
                                         <span style="margin-right: .3rem">To the course</span><i class="fas fa-arrow-right fa-sm"></i>
                                     </a>
 
