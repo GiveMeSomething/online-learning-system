@@ -80,7 +80,7 @@
                             </form>
                     </div>
                 </div>
-                <form action="${path}/user"
+                <form action="${path}/auth/user/"
                       method="POST"
                       class="col-md-7 needs-validation"
                       novalidate>

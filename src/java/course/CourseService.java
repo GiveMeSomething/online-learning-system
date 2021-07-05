@@ -436,4 +436,13 @@ public class CourseService {
         }
         return false;
     }
+    
+    public Course getCourseNameLessonList(int courseId){
+        try {
+            return courseRepository.getCourseNameLessonList(courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
