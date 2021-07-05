@@ -1016,6 +1016,10 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${file.reference.xmlbeans-2.6.0.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.mysql-connector-java-8.0.25.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.mysql-connector-java-8.0.25.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+<<<<<<< HEAD
+=======
+        <copyfiles files="${libs.Gson.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
+>>>>>>> 82148248cb3ba96a4f3da12d083e790dca8873de
     </target>
     <target depends="init" if="dist.ear.dir" name="-clean-webinf-lib">
         <delete dir="${build.web.dir}/WEB-INF/lib"/>

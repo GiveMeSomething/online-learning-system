@@ -7,7 +7,9 @@ package user_course;
 
 import common.entities.Category;
 import common.entities.CourseRegistation;
+import common.entities.Gender;
 import common.entities.Status;
+import common.entities.User;
 import common.utilities.Repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -119,6 +121,37 @@ public class UserCourseRepository extends Repository {
             this.disconnectDatabase();
         }
         return list;
+    }
+
+    public CourseRegistation getRegistrationDetail(int userId, int courseId) throws SQLException {
+        this.connectDatabase();
+        List<CourseRegistation> list = new ArrayList<>();
+        String SQL = "SELECT c.title, pp.name, pp.list_price, u.full_name, u.gender, u.email,\n"
+                + "	u.mobile, date(uc.registration_time) as 'valid_from',\n"
+                + "    DATE_ADD(date(uc.registration_time), INTERVAL (pp.duration * 31) DAY) AS valid_to,\n"
+                + "    uc.registration_status\n"
+                + "    FROM user_course uc\n"
+                + "    JOIN db_ite1.price_package pp ON uc.valid_to = pp.id\n"
+                + "    JOIN db_ite1.course c ON uc.course_id = c.id\n"
+                + "    JOIN db_ite1.user u ON u.id = uc.user_id\n"
+                + "    WHERE user_id = ? AND course_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, courseId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                User user = new User(result.getString("full_name"),
+                        result.getInt("gender") == 1 ? Gender.MALE : Gender.FEMALE,
+                        result.getString("email"), Status.ACTIVE, result.getString("mobile"));
+                return new CourseRegistation(courseId, result.getString("title"), user,
+                        result.getString("name"), result.getDouble("list_price"),
+                        result.getInt("registration_status"),
+                        result.getDate("valid_from"), result.getDate("valid_to"));
+            }
+            return null;
+        } finally {
+            this.disconnectDatabase();
+        }
     }
 
     public List<CourseRegistation> searchCourseByCategory(int userId, int categoryId) throws SQLException {

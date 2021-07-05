@@ -82,4 +82,13 @@ public class UserCourseService {
 
         return null;
     }
+
+    public CourseRegistation getRegistrationDetail(int userId, int courseId) {
+        try {
+            return userCourseRepository.getRegistrationDetail(userId, courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

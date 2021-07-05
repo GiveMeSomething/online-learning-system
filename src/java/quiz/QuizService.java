@@ -168,6 +168,15 @@ public class QuizService {
         return false;
     }
 
+    public ArrayList<Integer> getDataForQuestion(int quizId) {
+        try {
+            return quizRepository.getDataForQuestion(quizId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public boolean addNewQuizSetting(Quiz quiz, int dimensionId, int lessonId, int numberOfQuestion) {
         try {
             return quizRepository.addNewQuizSetting(quiz, dimensionId, lessonId, numberOfQuestion);
@@ -194,5 +203,16 @@ public class QuizService {
         }
 
         return null;
+    }
+
+    public boolean getAnswerFromUser(int userQuizId, String userChoice,
+            int quesitionId, boolean questionStatus) {
+        try {
+            return quizRepository.getAnswerFromUser(userQuizId, userChoice, quesitionId, questionStatus);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
