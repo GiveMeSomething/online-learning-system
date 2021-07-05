@@ -30,38 +30,40 @@
             </div>
         </c:if>
         <!--  Banner-->
+
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active banner-margin-top" >
-                    <div class="banner-information bg-dark mx-lg-5">
-                        <div class="banner-sub-information p-3">
-                            <b class="text-light banner-primary">This is your moment. Let’s study.</b><br>
+
+                    <div style="height: 100%; position: absolute; width: 100%; background: #000000">
+                        <div class="banner-sub-information text-center p-3" style="margin-top: 10rem; margin-left: 26rem">
+                            <b class="text-light banner-primary" style="font-size: 2.5rem">Welcome to OLS</b><br>
                             <span class="text-light banner-secondary">Let’s build a more connected, inclusive and flexible future together.</span><br>
-                            <button class="btn btn-secondary">Learn more</button>
                         </div>
                     </div>
-                    <img class="d-block w-100" style="height: 70vh" src="${path}/assets/bannerImg/banner1.jpg" alt="First slide">
+
+                    <img class="d-block w-100" style="background-color: #000000;
+                         height: 70vh;
+                         opacity: 0.5;
+                         background-blend-mode: overlay;" src="https://www.wellnessretreatsindia.com/wp-content/uploads/2017/09/nature-banner-1.jpg" alt="">
+
                 </div>
-                <div class="carousel-item banner-margin-top">
-                    <div class="banner-information bg-dark mx-lg-5">
-                        <div class="banner-sub-information p-3">
-                            <b class="text-light banner-primary">Study anywhere with your laptop.</b><br>
-                            <span class="text-light banner-secondary">Let’s create a knowledgeable world.</span><br>
-                            <button class="btn btn-secondary">Learn more</button>
+                <c:forEach items="${sliderList}" var="o">    
+                    <div class="carousel-item banner-margin-top" >
+
+                        <div class="banner-information bg-dark mx-lg-5">
+                            <div class="banner-sub-information p-3">
+                                <b class="text-light banner-primary">${o.note}</b><br>
+                                <span class="text-light banner-secondary">Let’s build a more connected, inclusive and flexible future together.</span><br>
+                                <button class="btn btn-secondary">Learn more</button>
+                            </div>
                         </div>
+
+                        <img class="d-block w-100" style="height: 70vh" src="${path}/assets/bannerImg/${o.image}" alt="">
+
                     </div>
-                    <img class="d-block w-100" style="height: 70vh" src="${path}/assets/bannerImg/banner2_1.jpg" alt="Second slide">
-                </div>
-                <div class="carousel-item banner-margin-top">
-                    <div class="banner-information bg-dark mx-lg-5">
-                        <div class="banner-sub-information p-3">
-                            <b class="text-light banner-primary">Learn from the expert from all over the world.</b><br>
-                            <span class="text-light banner-secondary">Widen your knowledge.</span><br>
-                            <button class="btn btn-secondary">Learn more</button>
-                        </div>
-                    </div>
-                    <img class="d-block w-100" style="height: 70vh" src="${path}/assets/bannerImg/banner3_1.jpg" alt="Third slide">
-                </div>
+
+                </c:forEach> 
             </div>
             <a class="carousel-control-prev banner-btn" href="#carouselExampleControls" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon " aria-hidden="true"></span>
@@ -72,6 +74,7 @@
                 <span class="sr-only">Next</span>
             </a>
         </div>
+
         <!--  Banner-->
         <section id="introduction" style="height: 3.5rem">
             <div class="row mx-3" style="height: 3.5rem; margin-left: 10.5rem!important">

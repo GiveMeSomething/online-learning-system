@@ -737,15 +737,9 @@ public class CourseRepository extends Repository {
 //    Subject part
     public Course getSubject(int id) throws SQLException {
         this.connectDatabase();
-        String getCourse = "SELECT c.id, c.thumbnail, c.title, c.description, ca.category_name,c.feature, c.status_id, c.owner "
-                + "from db_ite1.course c "
-                + "INNER JOIN db_ite1.status s "
-                + "on c.status_id = s.id "
-                + "INNER JOIN db_ite1.course_package p "
-                + "ON c.id = p.course_id "
-                + "INNER JOIN db_ite1.price_package pp  "
-                + "ON p.package_id = pp.id "
-                + "INNER JOIN db_ite1.category ca "
+        String getCourse = "SELECT c.id, c.thumbnail, c.title, c.description, ca.category_name, c.feature, c.status_id, c.owner "
+                + "FROM db_ite1.course c "
+                + "JOIN db_ite1.category ca "
                 + "ON ca.id = c.category_id "
                 + "WHERE c.id = ? "
                 + "GROUP BY c.id";
@@ -801,7 +795,7 @@ public class CourseRepository extends Repository {
         }
 
     }
-    
+
     public boolean updateSubjectInformation(String courseName, String description, int category_id, int feature, int id) throws SQLException {
         this.connectDatabase();
 
@@ -1021,15 +1015,6 @@ public class CourseRepository extends Repository {
         return null;
     }
 
-    public static void main(String[] args) throws Exception {
-        CourseRepository repo = new CourseRepository();
-        try {
-            Account a = repo.getRoleByUserEmail("toannkhe150086@fpt.edu.vn");
-            System.out.println(a);
-        } catch (Exception e) {
-        }
-    }
-
     public Account getRoleByUserEmail(String email) throws SQLException {
         this.connectDatabase();
         String getRoleByUserEmail = "SELECT a.* FROM db_ite1.account a "
@@ -1061,5 +1046,84 @@ public class CourseRepository extends Repository {
             this.disconnectDatabase();
         }
         return null;
+    }
+
+    //Dashboard
+    public int countingTotalCourse(int date) throws SQLException {
+        this.connectDatabase();
+        String countingCourseList = "SELECT COUNT(*) AS count FROM db_ite1.course c where DATE_FORMAT(c.created_time, \"%y-%m-%d\") "
+                + "NOT BETWEEN  DATE_SUB(CURDATE(), interval ? day) "
+                + "AND CURDATE();";
+        try (PreparedStatement statement = this.connection.prepareStatement(countingCourseList)) {
+            statement.setInt(1, date);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("count");
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
+    }
+
+    public int countingNewCourse() throws SQLException {
+        this.connectDatabase();
+        String countingCourseList = " SELECT COUNT(*) AS count FROM db_ite1.course c "
+                + "where DATE_FORMAT(c.created_time, \"%y-%m-%d\") >= DATE(NOW()) - INTERVAL 6 DAY "
+                + "AND DATE_FORMAT(c.created_time, \"%y-%m-%d\") <= DATE(NOW()) - INTERVAL 0 DAY";
+        try (PreparedStatement statement = this.connection.prepareStatement(countingCourseList)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("count");
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
+    }
+
+    //my-course
+    public List<Course> getMyCourse(int userId) throws SQLException {
+        this.connectDatabase();
+        String getMyCourse = "SELECT c.id, c.thumbnail, c.title, c.description FROM db_ite1.user_course uc "
+                + "inner join db_ite1.user u "
+                + "on uc.user_id = u.id "
+                + "inner join db_ite1.course c "
+                + "on c.id = uc.course_id "
+                + "where u.id = ? ";
+        List<Course> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(getMyCourse)) {
+            statement.setInt(1, userId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new Course(
+                        result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description")
+                ));
+
+            }
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+
+    }
+
+    public static void main(String[] args) throws Exception {
+        CourseRepository repo = new CourseRepository();
+        try {
+//            Account a = repo.getRoleByUserEmail("toannkhe150086@fpt.edu.vn");
+            int count = repo.countingTotalCourse(0);
+            System.out.println(count);
+//            List<Course> list = repo.getMyCourse(21);
+//            for (Course course : list) {
+//                System.out.println(course);
+//            }
+        } catch (Exception e) {
+        }
     }
 }

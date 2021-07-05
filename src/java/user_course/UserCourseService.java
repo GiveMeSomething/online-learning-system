@@ -71,12 +71,60 @@ public class UserCourseService {
         }
         return null;
     }
+    
+    //Dashboard
+     public int countRegistationStatus(int status, int date) {
+        try {
+            return userRepository.countRegistationStatus(status, date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+     
+     public int countingTotalRegistration(int date) {
+        try {
+            return userRepository.countingTotalRegistration(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+     
+     public int countTotalRegistationSuccess(int date) {
+        try {
+            return userRepository.countTotalRegistationSuccess(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+     
+     public int countingTotalProfit() {
+        try {
+            return userRepository.countingTotalProfit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+     
+     public int countingTotalProfitByCategoryId(int categoryId) {
+        try {
+            return userRepository.countingTotalProfitByCategoryId(categoryId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     public static void main(String[] args) {
         UserCourseService dao = new UserCourseService();
-        List<Category> list = dao.getAllCategory();
-        for (Category o : list) {
-            System.out.println(o);
-        }
+        int count = dao.countingTotalProfitByCategoryId(3);
+        System.out.println(count);
+//        List<Category> list = dao.getAllCategory();
+//        for (Category o : list) {
+//            System.out.println(o);
+//        }
     }
 }

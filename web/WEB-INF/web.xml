@@ -124,6 +124,10 @@
         <url-pattern>/course</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>CourseController</servlet-name>
+        <url-pattern>/auth/user/course</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>BlogController</servlet-name>
         <url-pattern>/blog</url-pattern>
     </servlet-mapping>

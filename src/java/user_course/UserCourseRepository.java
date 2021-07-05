@@ -8,6 +8,7 @@ package user_course;
 import common.entities.Category;
 import common.entities.CourseRegistation;
 import common.utilities.Repository;
+import course.CourseRepository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -202,6 +203,100 @@ public class UserCourseRepository extends Repository {
             this.disconnectDatabase();
         }
         return list;
+    }
+
+    //Dashboard
+    public int countRegistationStatus(int status, int date) throws SQLException {
+        this.connectDatabase();
+        String SQL = "SELECT COUNT(*) AS count from db_ite1.user_course uc where registration_status = ? "
+                + "AND DATE_FORMAT(uc.registration_time, \"%y-%m-%d\") "
+                + "BETWEEN  DATE_SUB(CURDATE(), interval ? day) "
+                + "AND CURDATE()";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            statement.setInt(1, status);
+            statement.setInt(2, date);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("count");
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
+    }
+
+    public int countTotalRegistationSuccess(int date) throws SQLException {
+        this.connectDatabase();
+        String SQL = " SELECT COUNT(*) as count from db_ite1.user_course uc where registration_status = 2 "
+                + "AND uc.registration_time "
+                + "NOT BETWEEN  DATE_SUB(CURDATE(), interval ? day) "
+                + "AND CURDATE()";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            statement.setInt(1, date);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("count");
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
+    }
+
+    public int countingTotalRegistration(int date) throws SQLException {
+        this.connectDatabase();
+        String countingTotalRegistration = "SELECT COUNT(*) AS count FROM db_ite1.user_course uc where uc.registration_time "
+                + "NOT BETWEEN  DATE_SUB(CURDATE(), interval ? day) "
+                + "AND CURDATE()";
+        try (PreparedStatement statement = this.connection.prepareStatement(countingTotalRegistration)) {
+            statement.setInt(1, date);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("count");
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
+    }
+
+    public int countingTotalProfit() throws SQLException {
+        this.connectDatabase();
+        String countingTotalProfit = "SELECT ROUND(SUM(pp.list_price - pp.list_price*pp.discount/100)) as 'Total Profit' from db_ite1.price_package pp "
+                + "INNER JOIN db_ite1.user_course uc "
+                + "on uc.valid_to = pp.id";
+        try (PreparedStatement statement = this.connection.prepareStatement(countingTotalProfit)) {
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("Total Profit");
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
+    }
+
+    public int countingTotalProfitByCategoryId(int categoryId) throws SQLException {
+        this.connectDatabase();
+        String countingTotalProfit = "SELECT ROUND(SUM(pp.list_price - pp.list_price*pp.discount/100)) as 'Total Profit' from db_ite1.price_package pp "
+                + "INNER JOIN db_ite1.user_course uc "
+                + "on uc.valid_to = pp.id "
+                + "INNER JOIN db_ite1.course c "
+                + "on uc.course_id = c.id "
+                + "where c.category_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(countingTotalProfit)) {
+            statement.setInt(1, categoryId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("Total Profit");
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
     }
 
 }

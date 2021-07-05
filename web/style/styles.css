@@ -261,6 +261,17 @@ section {
 #brief-content-upper{
     background-image: url("https://www.wellnessretreatsindia.com/wp-content/uploads/2017/09/nature-banner-1.jpg");
     background-color: #cccccc;
+    height: 70vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    background-blend-mode: overlay;
+}
+
+#banner-active{
+    background-image: url("https://www.wellnessretreatsindia.com/wp-content/uploads/2017/09/nature-banner-1.jpg");
+    background-color: #cccccc;
     height: 200px;
     background-position: center;
     background-repeat: no-repeat;

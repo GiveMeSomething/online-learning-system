@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import common.entities.Category;
 import common.entities.PricePackage;
+import common.entities.User;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
@@ -37,7 +38,7 @@ public class CourseController extends HttpServlet {
             throws ServletException, IOException {
         String courseId = request.getParameter("courseId");
         String categoryId = request.getParameter("cID");
-
+        String operation = request.getParameter("operation");
         if (courseId != null) {
             Course courseDetail = courseService.getCourse(Integer.parseInt(courseId));
             List<Course> siderCourse = courseService.getSiderCourseDetail();
@@ -90,6 +91,8 @@ public class CourseController extends HttpServlet {
             session.removeAttribute("searchName");
             request.setAttribute("id", idFeature);
             request.getRequestDispatcher("nauth/course/list.jsp").forward(request, response);
+        }else if(operation.equals("VIEWMYCOURSE")){
+            getMyCourse(request, response);
         }
     }
 
@@ -212,4 +215,22 @@ public class CourseController extends HttpServlet {
 
     }
 
+    private void getMyCourse(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
+
+        // Get current user (teacher/admin) id to get the according subject list
+        int userId;
+        if (currentSession.getAttribute("isAdmin") == null) {
+            userId = -1;
+        } else {
+            userId = ((User) currentSession.getAttribute("user")).getId();
+        }
+        List<Course> myCourse = courseService.getMyCourse(userId);
+        List<Category> categoryList = courseService.getAllCategory();
+        request.setAttribute("categoryList", categoryList);
+        request.setAttribute("myCourse", myCourse);
+        System.out.println(myCourse);
+        request.getRequestDispatcher("/auth/user/course/my-course.jsp").forward(request, response);
+    }
 }

@@ -64,6 +64,13 @@ public class Course {
         this.description = description;
         this.tag = tag;
     }
+    
+    public Course(int id, String imageLink, String courseName, String description) {
+        this.id = id;
+        this.imageLink = imageLink;
+        this.courseName = courseName;
+        this.description = description;
+    }
 
     public Course(int id, String imageLink, String courseName, String description, float price, String tag) {
         this.id = id;

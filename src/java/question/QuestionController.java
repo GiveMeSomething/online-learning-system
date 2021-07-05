@@ -160,6 +160,9 @@ public class QuestionController extends HttpServlet {
             request.setAttribute("image", image);
             request.getRequestDispatcher("/auth/teacher/question/detail.jsp").forward(request, response);
             //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/detail.jsp
+        } else if (operation.equals("DELETEQUESTION")) {
+            deleteQuestion(request, response, questionId);
+            //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/detail.jsp
         } else if (operation.equals("DELETEANSWER")) {
 
             String column = request.getParameter("column");
@@ -186,7 +189,7 @@ public class QuestionController extends HttpServlet {
                 request.setAttribute("answerDetail", answerDetail.getOption3());
             } else if (column.equals("option4")) {
                 request.setAttribute("answerDetail", answerDetail.getOption4());
-            } else if(column.equals("option5")) {
+            } else if (column.equals("option5")) {
                 request.setAttribute("answerDetail", answerDetail.getOption5());
             }
             request.setAttribute("id", id);
@@ -203,13 +206,13 @@ public class QuestionController extends HttpServlet {
         String columnUpdated = request.getParameter("columnUpdated");
         HttpSession session = request.getSession();
         int questionId = 1;
-        if(session.getAttribute("questionId") != null){
-            questionId = Integer.parseInt(session.getAttribute("questionId")+"");
+        if (session.getAttribute("questionId") != null) {
+            questionId = Integer.parseInt(session.getAttribute("questionId") + "");
         }
-        
-        int subjectId = Integer.parseInt(session.getAttribute("subjectId")+"");
+
+        int subjectId = Integer.parseInt(session.getAttribute("subjectId") + "");
         int categoryId = Integer.parseInt(courseService.getCategoryByCourseId(subjectId).getCategory());
-            
+
         if (operation.equals("SEARCHQUESTION")) {
             processInputForQuestion(request, response);
         } else if (operation.equals("UPDATEANSWER")) {
@@ -281,8 +284,7 @@ public class QuestionController extends HttpServlet {
             int totalAnswerOptions = questionService.countAnswerOptions();
             request.setAttribute("totalAnswerOptions", totalAnswerOptions);
             request.setAttribute("image", uploadFile(request));
-            
-            
+
             processUserInterface(request, response, questionId, categoryId, subjectId);
             request.getRequestDispatcher("/auth/teacher/question/detail.jsp").forward(request, response);
             //sau khi merge code chỉnh lại đường dẫn auth/teacher/question/detail.jsp
@@ -334,8 +336,8 @@ public class QuestionController extends HttpServlet {
         request.setAttribute("selectedLevel", levelString);
         request.setAttribute("selectedKeyword", keyword);
         HttpSession session = request.getSession();
-       
-        int subjectId = Integer.parseInt(session.getAttribute("subjectId")+"");
+
+        int subjectId = Integer.parseInt(session.getAttribute("subjectId") + "");
 
 //        int subjectId = 1;
 //        if (request.getParameter("subjectId") != null) {
@@ -469,5 +471,10 @@ public class QuestionController extends HttpServlet {
         }
         /*đoạn dưới này là đã import xong, muốn quay về trang nào thì code*/
         out.print("Import Successfully OK!");
+    }
+
+    private void deleteQuestion(HttpServletRequest request, HttpServletResponse response, int questionId) throws ServletException, IOException {
+        questionService.deleteQuestionById(questionId);
+        processInputForQuestion(request, response);
     }
 }
