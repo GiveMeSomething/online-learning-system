@@ -36,7 +36,7 @@
                                     <span>(${currentPage == null ? 1:currentPage} of ${maxPage})</span>
                                     <input hidden id="testTime" value="60"/>
                                     <span class="timer bg-info p-2 ml-4">
-                                        <i class="fal fa-hourglass-half"></i> 
+                                        <i class="fal fa-hourglass-half"></i>
                                         <span id="timer"></span>
                                     </span>
                                 </div>
@@ -60,39 +60,39 @@
                                         </div>
                                         <input hidden ${sessionScope.answer['0']}/>
                                         <div class="ans ml-2">
-                                            <label class="radio" for="a1"> 
-                                                <input type="radio" id="a1" 
+                                            <label class="radio" for="a1">
+                                                <input type="radio" id="a1"
                                                        ${sessionScope.answer[getCurrentPage] == q.option1?"checked":""}
                                                        name="q${getCurrentPage}" value="${q.option1}"> <span>${q.option1}</span>
                                             </label>
                                         </div>
                                         <div class="ans ml-2" for="a2">
-                                            <label class="radio"> 
-                                                <input type="radio" 
+                                            <label class="radio">
+                                                <input type="radio"
                                                        id="a2"
                                                        ${sessionScope.answer[getCurrentPage] == q.option2?"checked":""}
-                                                       name="q${getCurrentPage}" 
+                                                       name="q${getCurrentPage}"
                                                        value="${q.option2}"> <span>${q.option2}</span>
                                             </label>
                                         </div>
                                         <div class="ans ml-2" for="a3">
-                                            <label class="radio"> 
-                                                <input type="radio" 
+                                            <label class="radio">
+                                                <input type="radio"
                                                        ${sessionScope.answer[getCurrentPage] == q.option3?"checked":""}
                                                        id="a3" name="q${getCurrentPage}" value="${q.option3}"> <span>${q.option3}</span>
                                             </label>
                                         </div>
                                         <div class="ans ml-2" for="a4">
-                                            <label class="radio"> 
-                                                <input type="radio" id="a4" 
+                                            <label class="radio">
+                                                <input type="radio" id="a4"
                                                        ${sessionScope.answer[getCurrentPage] == q.option4?"checked":""}
                                                        name="q${getCurrentPage}" value="${q.option4}"> <span>${q.option4}</span>
                                             </label>
                                         </div>
                                         <c:if test="${not empty q.option5}">
                                             <div class="ans ml-2" for="a5">
-                                                <label class="radio"> 
-                                                    <input type="radio" id="a5" 
+                                                <label class="radio">
+                                                    <input type="radio" id="a5"
                                                            ${sessionScope.answer[getCurrentPage] == q.option5?"checked":""}
                                                            name="q${getCurrentPage}" value="${q.option5}"> <span>${q.option5}</span>
                                                 </label>
@@ -102,14 +102,14 @@
                                     <div class="other-function d-flex flex-row justify-content-end mt-3">
                                         <label class="check order-2">
                                             <input onclick="this.form.submit()" type="checkbox" ${sessionScope.marked[getCurrentPage] == true? "checked":""} name="mark" id="mark" value="false"/>
-                                            <span><i class="far fa-bookmark"></i> 
+                                            <span><i class="far fa-bookmark"></i>
                                                 Mark For Review
                                             </span>
                                         </label>
                                         <div>
                                             <button type="button" class="btn btn-outline-danger mr-2 order-1" data-toggle="modal" data-target="#peek-at-answer">
                                                 <i class="fas fa-eye"></i> Peek at answer
-                                            </button>    
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -119,7 +119,7 @@
                                     </div>
                                     <div class="d-flex flex-row justify-content-end align-items-center p-3 bg-white">
                                         <c:if test="${not empty currentPage && currentPage != 1}">
-                                            <button class="btn btn-primary d-flex align-items-center btn-danger mx-1" 
+                                            <button class="btn btn-primary d-flex align-items-center btn-danger mx-1"
                                                     type="submit"
                                                     formmethod="POST"
                                                     formaction="${path}/auth/teacher/quiz?operation=QUIZHANDLE&page=${prevPage > 0 ? prevPage: 1}">
@@ -129,13 +129,13 @@
                                         <c:choose>
                                             <c:when test="${currentPage == maxPage}">
                                                 <button type="button"
-                                                        class="btn btn-success mr-2 order-1" 
+                                                        class="btn btn-success mr-2 order-1"
                                                         data-toggle="modal" data-target="#score-exam">
                                                     Score Exam Now
                                                 </button>
                                             </c:when>
                                             <c:otherwise>
-                                                <button class="btn btn-primary border-success align-items-center btn-success" 
+                                                <button class="btn btn-primary border-success align-items-center btn-success"
                                                         type="submit"
                                                         formmethod="POST"
                                                         formaction="${path}/auth/teacher/quiz?operation=QUIZHANDLE&page=${nextPage > maxPage ? maxPage: nextPage}">
@@ -177,7 +177,7 @@
         </div>
         <!--score exam-->
         <div class="modal fade" id="score-exam" tabindex="-1">
-            <div class="modal-dialog modal">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header p-3">
                         <h4 class="modal-title">Score Exam</h4>
@@ -222,35 +222,35 @@
                                 <div class="col-8">
                                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link active" id="all-tab" 
-                                               data-toggle="tab" href="#all" 
-                                               role="tab" aria-controls="all" 
+                                            <a class="nav-link active" id="all-tab"
+                                               data-toggle="tab" href="#all"
+                                               role="tab" aria-controls="all"
                                                aria-selected="true">All Questions</a>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link" id="unanswered-tab" 
-                                               data-toggle="tab" href="#unanswered" 
-                                               role="tab" aria-controls="unanswered" 
+                                            <a class="nav-link" id="unanswered-tab"
+                                               data-toggle="tab" href="#unanswered"
+                                               role="tab" aria-controls="unanswered"
                                                aria-selected="false">
                                                 <i style="color: grey" class="far fa-square"></i><span style="color: grey"> Unanswered</span></a>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link" id="marked-tab" 
+                                            <a class="nav-link" id="marked-tab"
                                                data-toggle="tab" href="#marked" role="tab" aria-controls="marked" aria-selected="false">
                                                 <i style="color: red" class="far fa-bookmark"></i><span style="color: red"> Marked</span></a>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link" id="answered-tab" 
-                                               data-toggle="tab" href="#answered" 
-                                               role="tab" aria-controls="answered" 
+                                            <a class="nav-link" id="answered-tab"
+                                               data-toggle="tab" href="#answered"
+                                               role="tab" aria-controls="answered"
                                                aria-selected="false"><i style="color: grey" class="fas fa-square"></i> Answered</a>
                                         </li>
-                                    </ul>  
+                                    </ul>
                                 </div>
                                 <div class="col-4">
                                     <div class="other-nav">
                                         <button type="button" id="score-exam-btn"
-                                                class="btn btn-outline-success mr-2 order-1" 
+                                                class="btn btn-outline-success mr-2 order-1"
                                                 data-toggle="modal" data-target="#score-exam">
                                             Score Exam Now
                                         </button>
@@ -276,12 +276,12 @@
                                                     <c:forEach begin="1" end="${maxPage}" var="q">
                                                         <c:set var="page">${q}</c:set>
                                                         <c:if test="${empty sessionScope.answer[page]}">
-                                                            <a class="qnbutton notyetanswered free btn btn-outline-secondary" 
-                                                               id="quiznavbutton${q}" 
+                                                            <a class="qnbutton notyetanswered free btn btn-outline-secondary"
+                                                               id="quiznavbutton${q}"
                                                                title="answered"
                                                                href="${path}/auth/teacher/quiz?operation=QUIZHANDLE&thisPage=${q}&page=${q}">
                                                                 ${q}
-                                                                <span class="accesshide"> 
+                                                                <span class="accesshide">
                                                                     <span class="flagstate"></span>
                                                                 </span>
                                                             </a>
@@ -308,12 +308,12 @@
                                                 <div class="qn_buttons clearfix multipages">
                                                     <c:forEach items="${sessionScope.marked}" var="q">
                                                         <c:if test="${q.value == true}">
-                                                            <a class="qnbutton notyetanswered free btn btn-outline-secondary" 
-                                                               id="quiznavbutton2" 
+                                                            <a class="qnbutton notyetanswered free btn btn-outline-secondary"
+                                                               id="quiznavbutton2"
                                                                title="answered"
                                                                href="${path}/auth/teacher/quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}&mark=${q.key}">
                                                                 ${q.key}
-                                                                <span class="accesshide"> 
+                                                                <span class="accesshide">
                                                                     <span class="flagstate"></span>
                                                                 </span>
                                                             </a>
@@ -340,12 +340,12 @@
                                                 <div class="qn_buttons clearfix multipages">
                                                     <c:forEach items="${sessionScope.answer}" var="q">
                                                         <c:if test="${not empty q.value}">
-                                                            <a class="qnbutton answered free btn btn-outline-secondary" 
-                                                               id="quiznavbutton2" 
+                                                            <a class="qnbutton answered free btn btn-outline-secondary"
+                                                               id="quiznavbutton2"
                                                                title="answered"
                                                                href="${path}/auth/teacher/quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}${sessionScope.marked[q.key] == true?"&mark=value":""}">
                                                                 ${q.key}
-                                                                <span class="accesshide"> 
+                                                                <span class="accesshide">
                                                                     <span class="flagstate"></span>
                                                                 </span>
                                                             </a>
@@ -373,8 +373,8 @@
                                                     <c:choose>
                                                         <c:when test="${empty sessionScope.answer}">
                                                             <c:forEach begin="1" end="${maxPage}" var="q" varStatus="count">
-                                                                <a class="qnbutton notyetanswered free btn btn-outline-secondary" 
-                                                                   id="quiznavbutton1" 
+                                                                <a class="qnbutton notyetanswered free btn btn-outline-secondary"
+                                                                   id="quiznavbutton1"
                                                                    title="answered"
                                                                    href="${path}/auth/teacher/quiz?operation=QUIZHANDLE&thisPage=${q}&page=${q}">
                                                                     ${q}
@@ -383,13 +383,13 @@
                                                         </c:when>
                                                         <c:when test="${not empty sessionScope.answer}">
                                                             <c:forEach items="${sessionScope.answer}" var="q">
-                                                                <a class="qnbutton ${not empty q.value?'answered':'notyetanswered'} free btn btn-outline-secondary" 
-                                                                   id="quiznavbutton2" 
+                                                                <a class="qnbutton ${not empty q.value?'answered':'notyetanswered'} free btn btn-outline-secondary"
+                                                                   id="quiznavbutton2"
                                                                    title="answered"
                                                                    href="${path}/auth/teacher/quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}${sessionScope.marked[q.key] == true?"&mark=value":""}">
                                                                     ${q.key}
                                                                     <c:if test="${sessionScope.marked[q.key] == true}">
-                                                                        <span class="accesshide"> 
+                                                                        <span class="accesshide">
                                                                             <span class="flagstate"><i class="far fa-bookmark"></i></span>
                                                                         </span>
                                                                     </c:if>
@@ -423,7 +423,7 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 var testTime = parseInt($('#testTime').val());
-                
+
                 var d1 = new Date("2021-07-05 11:10:22"),
                         countDownDate = new Date(d1);
                 countDownDate.setMinutes(d1.getMinutes() + testTime);
@@ -454,7 +454,7 @@
                     document.getElementById("timer").innerHTML = hours + ":"
                             + minutes + ":" + seconds;
 
-                    // If the count down is over, write some text 
+                    // If the count down is over, write some text
                     if (distance < 0) {
                         clearInterval(x);
                         document.getElementById("timer").innerHTML = "EXPIRED";

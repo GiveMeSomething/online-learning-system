@@ -39,14 +39,14 @@
                     <div class="mt-5">
                         <div class="row my-2">
                             <div class="col-6">
-                                <div class="card w-100">
+                                <div class="card w-100" style="height: 25vh">
                                     <div class="card-body <c:if test='${pageItem.get(5).equals(pageItem.get(1).trim())}'>${color}</c:if>">
                                         ${pageItem.get(1)}
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6">
-                                <div class="card w-100">
+                                <div class="card w-100" style="height: 25vh">
                                     <div class="card-body <c:if test='${pageItem.get(5).equals(pageItem.get(2).trim())}'>${color}</c:if>">
                                         ${pageItem.get(2)}
                                     </div>
@@ -55,14 +55,14 @@
                         </div>
                         <div class="row my-2">
                             <div class="col-6">
-                                <div class="card w-100">
+                                <div class="card w-100" style="height: 25vh">
                                     <div class="card-body <c:if test='${pageItem.get(5).equals(pageItem.get(3).trim())}'>${color}</c:if>">
                                         ${pageItem.get(3)}
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6">
-                                <div class="card w-100">
+                                <div class="card w-100" style="height: 25vh">
                                     <div class="card-body <c:if test='${pageItem.get(5).equals(pageItem.get(4).trim())}'>${color}</c:if>">
                                         ${pageItem.get(4)}
                                     </div>

@@ -47,9 +47,8 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        String token = getToken(pageRequest, currentSession);
-
         // If no token is found, send confirm email
+        String token = getToken(pageRequest, currentSession);
         if (token == null || token.equals("")) {
             String confirmEmailPath = pageRequest.getContextPath() + "/email?operation=AUTH&receiver=" + currentUser.getEmail();
             request.getRequestDispatcher(confirmEmailPath).forward(request, response);
