@@ -40,10 +40,10 @@
                     <div class="col-6">
                         <div class="px-5 user-infor">
                             <div class="form-group">
-                                <label for="category">Full name</label><br>
+                                <label for="full-name">Full name</label><br>
                                 <input class="form-control"
                                        name="full-name"
-                                       disabled
+                                       ${detail.user.id == sessionScope.user.id?"":"disabled"} 
                                        type="text"
                                        value="${detail.user.name}"
                                        data-value-missing="Can't be empty"
@@ -51,21 +51,26 @@
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group">
-                                <label for="category">Gender</label><br>
-                                <input class="form-control"
-                                       name="gender"
-                                       disabled
-                                       type="text"
-                                       value="${detail.user.gender}"
+                                <label class="mr-3">Gender</label> 
+                                <input name="gender"
+                                       ${detail.user.id == sessionScope.user.id?"":"disabled"}
+                                       type="radio" id="male"
+                                       value="1" ${detail.user.gender == "MALE"?"checked":""}
                                        data-value-missing="Can't be empty"
-                                       required/>
+                                       required/> <label for="male">MALE</label> 
+                                <input name="gender" class="ml-3"
+                                       type="radio" id="female"
+                                       ${detail.user.id == sessionScope.user.id?"":"disabled"}
+                                       value="0" ${detail.user.gender == "FEMALE"?"checked":""}
+                                       data-value-missing="Can't be empty"
+                                       required/> <label for="female">FEMALE</label>
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label><br>
                                 <input hidden value="${detail.user.email}" name="email"/>
                                 <input class="form-control"
-                                       disabled
+                                       ${detail.user.id == sessionScope.user.id?"":"disabled"}
                                        type="text"
                                        value="${detail.user.email}"
                                        data-value-missing="Can't be empty"
@@ -76,7 +81,7 @@
                                 <label for="category">Mobile</label><br>
                                 <input class="form-control"
                                        name="mobile"
-                                       disabled
+                                       ${detail.user.id == sessionScope.user.id?"":"disabled"}
                                        type="text"
                                        value="${detail.user.mobile}"
                                        data-value-missing="Can't be empty"
@@ -98,7 +103,7 @@
                             <div class="form-group">
                                 <label for="subjectName">Subject Name</label>
                                 <input class="form-control"
-                                       disabled
+                                       ${detail.user.id == sessionScope.user.id?"":"disabled"}
                                        name="subjectName"
                                        type="text"
                                        value="${detail.title}"
@@ -109,7 +114,7 @@
                             <div class="form-group">
                                 <label for="package">Package</label><br>
                                 <input class="form-control"
-                                       disabled
+                                       ${detail.user.id == sessionScope.user.id?"":"disabled"}
                                        id="package"
                                        name="package"
                                        type="text"
@@ -123,7 +128,7 @@
                                 <label for="price">Price</label><br>
                                 <input class="form-control"
                                        name="price"
-                                       disabled
+                                       ${detail.user.id == sessionScope.user.id?"":"disabled"}
                                        type="text"
                                        value="${detail.totalCost}"
                                        data-value-missing="Can't be empty"
@@ -134,7 +139,7 @@
                                 <label for="category">Valid from</label><br>
                                 <input class="form-control"
                                        name="validFrom"
-                                       disabled
+                                       ${detail.user.id == sessionScope.user.id?"":"disabled"}
                                        type="text"
                                        value="${detail.validFrom}"
                                        data-value-missing="Can't be empty"
@@ -145,13 +150,21 @@
                                 <label for="category">Valid To</label><br>
                                 <input class="form-control"
                                        name="validTo"
-                                       disabled
+                                       ${detail.user.id == sessionScope.user.id?"":"disabled"}
                                        type="text"
                                        value="${detail.validTo}"
                                        data-value-missing="Can't be empty"
                                        required/>
                                 <div class="invalid-feedback"></div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 px-5">
+                        <div class="note">
+                            <label for="note">Note</label>
+                            <textarea id="note" class="form-control" name="note"></textarea>
                         </div>
                     </div>
                 </div>

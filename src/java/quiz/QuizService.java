@@ -168,7 +168,7 @@ public class QuizService {
         return false;
     }
 
-    public ArrayList<Integer> getDataForQuestion(int quizId) {
+    public HashMap<Integer, ArrayList<Integer>> getDataForQuestion(int quizId) {
         try {
             return quizRepository.getDataForQuestion(quizId);
         } catch (Exception e) {
@@ -213,6 +213,24 @@ public class QuizService {
             e.printStackTrace();
         }
 
+        return false;
+    }
+
+    public ArrayList<Integer> getUserQuiz(int userId, int quizId) {
+        try {
+            return quizRepository.getUserQuiz(userId, quizId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean addUserQuiz(int userId, int quizId) {
+        try {
+            return quizRepository.addUserQuiz(userId, quizId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 }

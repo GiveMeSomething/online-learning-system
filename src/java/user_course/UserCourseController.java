@@ -6,8 +6,10 @@
 package user_course;
 
 import auth.AuthService;
+import com.google.gson.Gson;
 import common.entities.Account;
 import common.entities.CourseRegistation;
+import common.entities.PricePackage;
 import common.entities.Role;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,11 +20,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import common.entities.User;
 import common.utilities.Controller;
+import course.CourseService;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import user.UserService;
 
@@ -32,11 +36,14 @@ public class UserCourseController extends HttpServlet implements Controller {
     private final int itemPerPage = 5;
     private AuthService authService;
     private UserService userService;
+    private CourseService courseService;
 
     @Override
     public void init() throws ServletException {
         userCourseService = new UserCourseService();
         authService = new AuthService();
+        userService = new UserService();
+        courseService = new CourseService();
     }
 
     @Override
@@ -65,6 +72,15 @@ public class UserCourseController extends HttpServlet implements Controller {
             case "VIEWDETAIL":
                 processViewRegistrationDetail(request, response);
                 break;
+            case "ADDINFO":
+                processAddRegistrationDetail(request, response);
+                break;
+            case "GETCOURSE":
+                getCourse(request, response);
+                break;
+            case "GETPRICEBYCOURSE":
+                getPrice(request, response);
+                break;
             default:
                 listCourseRegistation(request, response, u);
                 break;
@@ -85,6 +101,9 @@ public class UserCourseController extends HttpServlet implements Controller {
                 case "FILTER":
                     processFilterRegistration(request, response);
                     break;
+                case "ADDINFO":
+                    processAddRegistration(request, response);
+                    break;
                 default:
                     send404(request, response);
                     break;
@@ -101,6 +120,16 @@ public class UserCourseController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         processFilterInput(request, response);
     }
+    
+    private void processAddRegistration(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String name = request.getParameter("full-name");
+        int gender = Integer.parseInt(request.getParameter("gender"));
+        String email = request.getParameter("email");
+        String mobile = request.getParameter("mobile");
+        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        String note = request.getParameter("note");
+    }
 
     private void processRegistrationPagination(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -115,6 +144,11 @@ public class UserCourseController extends HttpServlet implements Controller {
 //        int courseId = Integer.parseInt(request.getParameter("courseId"));
         CourseRegistation regisDetail = userCourseService.getRegistrationDetail(userId, courseId);
         request.setAttribute("detail", regisDetail);
+        request.getRequestDispatcher("/auth/user/registration/detail.jsp").forward(request, response);
+    }
+    private void processAddRegistrationDetail(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
         request.getRequestDispatcher("/auth/user/registration/detail.jsp").forward(request, response);
     }
 
@@ -356,6 +390,25 @@ public class UserCourseController extends HttpServlet implements Controller {
         } else {
             response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
         }
+    }
+    
+    private void getCourse(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HashMap<Integer, String> courses = new HashMap<>();
+        Gson json = new Gson();
+        String course = json.toJson(courses);
+        response.setContentType("text/html");
+        response.getWriter().write(course);
+    }
+    
+    private void getPrice(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        ArrayList<PricePackage> coursePack = courseService.getCoursePackage(courseId);
+        Gson json = new Gson();
+        String price = json.toJson(coursePack);
+        response.setContentType("text/html");
+        response.getWriter().write(price);
     }
 
 }
