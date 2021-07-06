@@ -56,15 +56,15 @@
                             <c:if test="${sessionScope.isAdmin != true}">
                                 <c:choose>
                                     <c:when test="${sessionScope.isTeacher == true}">
-                                        <li class="nav-link nav-item">
-                                            <a href="${path}/auth/teacher/subject" style="padding-top: 5px; padding-bottom: 5px">
+                                        <li class="nav-hover nav-item">
+                                            <a href="${path}/auth/teacher/subject" class="nav-link" style="padding-top: 8px; padding-bottom: 8px">
                                                 Management
                                             </a>
                                         </li>
                                     </c:when>
                                     <c:otherwise>
-                                        <li class="nav-link nav-item">
-                                            <a href="${path}/auth/user/course" style="padding-top: 5px; padding-bottom: 5px">
+                                        <li class="nav-hover nav-item">
+                                            <a href="${path}/auth/user/course" class="nav-link" style="padding-top: 8px; padding-bottom: 8px">
                                                 Courses
                                             </a>
                                         </li>
@@ -94,20 +94,20 @@
                                                         </a>
                                                         <ul id="setting-dropdown-sub-ul">
 
-                                                            <c:if test="${sessionScope.isAdmin != true}">
-
-                                                                
-                                                                        <li id="li-top">
-                                                                            <a href="${path}/auth/user/UserCourse?operation=" style="padding-top: 5px; padding-bottom: 5px">
-                                                                                My Registrations
-                                                                            </a>
-                                                                        </li>
-                                                                        <li id="li-middle">
-                                                                            <a href="${path}/auth/user">Account setting</a>
-                                                                        </li>
-                                                                        <li id="li-bottom">
-                                                                            <a href="${path}/auth/admin" style="padding-bottom: 5px">Management</a>
-                                                                        </li>
+                                                            <c:if test="${sessionScope.isAdmin != true }">
+                                                                <li id="li-top">
+                                                                    <a href="${path}/auth/user/UserCourse?operation=" style="padding-top: 5px; padding-bottom: 5px">
+                                                                        My Registrations
+                                                                    </a>
+                                                                </li>
+                                                                <li id="li-middle">
+                                                                    <a href="${path}/auth/user">Account setting</a>
+                                                                </li>
+                                                                <c:if test="${sessionScope.isAdmin != true && sessionScope.isTeacher == true}">
+                                                                    <li id="li-bottom">
+                                                                        <a href="${path}/auth/admin" style="padding-bottom: 5px">Management</a>
+                                                                    </li>
+                                                                </c:if>
                                                             </c:if>
                                                             <li id="li-middle">
                                                                 <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">Log out</a>

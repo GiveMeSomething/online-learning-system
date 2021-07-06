@@ -77,6 +77,7 @@ public class QuizController extends HttpServlet implements Controller {
                     Quiz eQuiz = quizService.getQuiz(Integer.parseInt(quizId));
                     getDimensionByTypeForQuiz(request, response, eQuiz);
                     break;
+                ///auth/user/quiz?operation=VIEWQUIZHANDLE
                 case "VIEWQUIZHANDLE":
                     processViewQuizHandle(request, response);
                     break;
@@ -137,8 +138,8 @@ public class QuizController extends HttpServlet implements Controller {
         int userId = ((User) session.getAttribute("user")).getId();
 //        int quizId = 14;
         int quizId = Integer.parseInt(request.getParameter("quizId"));
-        int courseId = 1;
-//        int courseId = (Integer)session.getAttribute("courseId");
+        int courseId = Integer.parseInt(session.getAttribute("courseId").toString());
+
         String page = request.getParameter("page");
         int pages = 1;
         if (page == null) {
@@ -255,9 +256,12 @@ public class QuizController extends HttpServlet implements Controller {
             doQuizHandle(request, response);
         }
         // Set default fot user_quiz_id
-        int userQuizId = 2;
+
+        //int userQuizId = 2;
+
+
         // get user_quiz_id from Quiz lesson
-//        int userQuizId = (Integer)session.getAttribute("userQuizId");
+        int userQuizId = (Integer)session.getAttribute("userQuizId");
         HashMap<String, String> userAnswer = (HashMap<String, String>) session.getAttribute("answer");
         questions = (ArrayList<Question>) session.getAttribute("question");
         HashMap<String, Boolean> questionStatus = (HashMap<String, Boolean>) session.getAttribute("marked");
@@ -282,14 +286,27 @@ public class QuizController extends HttpServlet implements Controller {
             }
         }
         float score = (float) countTrueAnswer / questions.size();
+
+        session.setAttribute("ketquacuoicung", score);
+
         //Lay diem o day
         System.out.println(score);
+        request.getRequestDispatcher("/auth/user/quiz/quiz-lesson.jsp").forward(request, response);
+        
     }
 
     private void processQuizResult(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        HttpSession session = request.getSession();
+        int quizId = quizService.getQuizId(Integer.parseInt(session.getAttribute("courseId").toString()));
+        request.setAttribute("quizId", quizId );
+        request.setAttribute("ketquacuoicung", session.getAttribute("ketquacuoicung").toString());
+        request.getRequestDispatcher("/auth/user/quiz/quiz-lesson.jsp").forward(request, response);
+        
     }
+    
+    
+    
 
     private void processQuizReview(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

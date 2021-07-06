@@ -327,9 +327,8 @@ public class UserCourseRepository extends Repository {
     public int countTotalRegistationSuccess(int date) throws SQLException {
         this.connectDatabase();
         String SQL = " SELECT COUNT(*) as count from db_ite1.user_course uc where registration_status = 2 "
-                + "AND uc.registration_time "
-                + "NOT BETWEEN  DATE_SUB(CURDATE(), interval ? day) "
-                + "AND CURDATE()";
+                + "AND DATE_FORMAT(uc.registration_time, \"%y-%m-%d\") <= DATE(NOW()) - INTERVAL ? DAY ";
+
         try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
             statement.setInt(1, date);
             ResultSet result = statement.executeQuery();
@@ -345,8 +344,8 @@ public class UserCourseRepository extends Repository {
     public int countingTotalRegistration(int date) throws SQLException {
         this.connectDatabase();
         String countingTotalRegistration = "SELECT COUNT(*) AS count FROM db_ite1.user_course uc where uc.registration_time "
-                + "NOT BETWEEN  DATE_SUB(CURDATE(), interval ? day) "
-                + "AND CURDATE()";
+                + "AND DATE_FORMAT(uc.registration_time, \"%y-%m-%d\") <= DATE(NOW()) - INTERVAL ? DAY ";
+
         try (PreparedStatement statement = this.connection.prepareStatement(countingTotalRegistration)) {
             statement.setInt(1, date);
             ResultSet result = statement.executeQuery();

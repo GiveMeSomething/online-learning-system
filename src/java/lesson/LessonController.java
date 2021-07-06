@@ -165,6 +165,7 @@ public class LessonController extends HttpServlet implements Controller {
         session.setAttribute("courseId", courseId);
         request.setAttribute("lessonList", lessonList);
         request.setAttribute("courseName", courseName.getCourseName());
+        //session.setAttribute("ketquacuoicung", null);
         request.getRequestDispatcher("/auth/user/course/lesson/view.jsp").forward(request, response);
         //Chỉnh lại url auth/user/course/lesson/view.jsp
     }
