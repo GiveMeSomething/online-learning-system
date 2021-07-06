@@ -579,6 +579,7 @@ public class QuizRepository extends Repository {
         }
         return 0;
     }
+
     public int getQuizId(int courseId) throws SQLException {
         this.connectDatabase();
 
@@ -595,21 +596,7 @@ public class QuizRepository extends Repository {
         return 0;
     }
 
-    public static void main(String[] args) throws SQLException, SQLException, SQLException {
-        QuizRepository quizRepository = new QuizRepository();
-        Quiz quiz = new Quiz(2, "Exam 4", 1, Level.EASY, 1, TestType.QUIZ, 66, "new");
-//        ArrayList<Integer> dim = quizRepository.getDataForQuestion(14);
-//        ArrayList<Question> dims = quizRepository.getQuestion(1, 5, 0, 1, 2);
-//        ArrayList<Lesson> les = quizRepository.getTopic(quiz);
-        HashMap<Integer, ArrayList<Integer>> lesson = quizRepository.getDataForQuestion(1);
-        System.out.println(lesson.size());
-        for (Integer key : lesson.keySet()) {
-            System.out.println(lesson.get(key).get(0));
-            System.out.println(lesson.get(key).get(1));
-            System.out.println(lesson.get(key).get(2));
-        }
-//        System.out.println(dim.get(2));
-    }
+    
 
     public ArrayList<ArrayList<String>> getQuizReview(int quizId) throws SQLException {
         this.connectDatabase();
@@ -669,28 +656,41 @@ public class QuizRepository extends Repository {
                 userQuizId.add(result.getInt("attempt"));
             }
             return userQuizId;
-        } finally {
-            this.disconnectDatabase();
         }
     }
 
     public boolean addUserQuiz(int userId, int quizId) throws SQLException {
         this.connectDatabase();
-
-        String addUserQuiz = "INSERT INTO user_quiz(user_id, quiz_id, attempt) VALUES(?,?,?)";
+        
+        ArrayList<Integer> userQuiz = getUserQuiz(userId, quizId);
+        int attempt;
+        if (userQuiz.isEmpty()) {
+            attempt = 1;
+        } else {
+            attempt = userQuiz.get(userQuiz.size() - 1) + 1;
+        }
+        String addUserQuiz = "INSERT INTO user_quiz(user_id, quiz_id, attempt) "
+                + "VALUES(?,?,?)";
         try (PreparedStatement statement = this.connection.prepareStatement(addUserQuiz)) {
             statement.setInt(1, userId);
             statement.setInt(2, quizId);
-            ArrayList<Integer> userQuiz = getUserQuiz(userId, quizId);
-            if (userQuiz == null) {
-                statement.setInt(3, 1);
-            } else {
-                int attempt = userQuiz.get(userQuiz.size() - 1) + 1;
-                statement.setInt(3, attempt);
-            }
+            statement.setInt(3, attempt);
             return statement.executeUpdate() > 0;
         } finally {
             this.disconnectDatabase();
         }
+    }
+    
+    public static void main(String[] args) throws SQLException, SQLException, SQLException {
+        QuizRepository quizRepository = new QuizRepository();
+        Quiz quiz = new Quiz(2, "Exam 4", 1, Level.EASY, 1, TestType.QUIZ, 66, "new");
+//        ArrayList<Integer> dim = quizRepository.getDataForQuestion(14);
+//        ArrayList<Question> dims = quizRepository.getQuestion(1, 5, 0, 1, 2);
+        quizRepository.addUserQuiz(17, 1);
+
+        ArrayList<Integer> les = quizRepository.getUserQuiz(17, 1);
+        
+        System.out.println(les.get(0));
+//        System.out.println(dim.get(2));
     }
 }
