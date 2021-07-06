@@ -56,15 +56,15 @@
                             <c:if test="${sessionScope.isAdmin != true}">
                                 <c:choose>
                                     <c:when test="${sessionScope.isTeacher == true}">
-                                        <li class="nav-link nav-item">
-                                            <a href="${path}/auth/teacher/subject" style="padding-top: 5px; padding-bottom: 5px">
+                                        <li class="nav-hover nav-item">
+                                            <a href="${path}/auth/teacher/subject" class="nav-link" style="padding-top: 8px; padding-bottom: 8px">
                                                 Management
                                             </a>
                                         </li>
                                     </c:when>
                                     <c:otherwise>
-                                        <li class="nav-link nav-item">
-                                            <a href="${path}/auth/user/course" style="padding-top: 5px; padding-bottom: 5px">
+                                        <li class="nav-hover nav-item">
+                                            <a href="${path}/auth/user/course" class="nav-link" style="padding-top: 8px; padding-bottom: 8px">
                                                 Courses
                                             </a>
                                         </li>
