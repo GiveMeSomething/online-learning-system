@@ -20,14 +20,13 @@
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
               integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
               crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="${path}/style/subject.css">
     </head>
     <body>
-        <div class="container container-fluid">
+        <div class="container">
             <h3 class="mt-2 mb-3">Registration Details</h3>
             <form action="${path}/auth/user/UserCourse"
                   method="POST"
-                  class="col-md-7 needs-validation"
+                  class="needs-validation"
                   novalidate>
                 <div class="request-info">
                     <input name="previousPage" value="home" hidden="true" />
@@ -35,124 +34,130 @@
                     <input name="operation" value="EDITINFO" hidden="true" />
                     <div class="invalid-feedback"></div>
                 </div>
-                <div id="upper" class="d-flex">
-                    <div id="upper-left" class="col-11">
-                        <div class="form-group">
-                            <label for="subjectName">Subject Name</label>
-                            <input class="form-control"
-                                   disabled
-                                   name="subjectName"
-                                   type="text"
-                                   value="${detail.title}"
-                                   data-value-missing="Can't be empty"
-                                   required/>
-                            <div class="invalid-feedback"></div>
-                        </div>  
-                        <div class="form-group">
-                            <label for="category">Package</label><br>
-                            <input class="form-control"
-                                   disabled
-                                   name="package"
-                                   type="text"
-                                   id="package" 
-                                   value="${detail.packages}"
-                                   data-value-missing="Can't be empty"
-                                   required/>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Price</label><br>
-                            <input class="form-control"
-                                   name="package"
-                                   disabled
-                                   type="text"
-                                   value="${detail.totalCost}"
-                                   data-value-missing="Can't be empty"
-                                   required/>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Full name</label><br>
-                            <input class="form-control"
-                                   name="full-name"
-                                   disabled
-                                   type="text"
-                                   value="${detail.user.name}"
-                                   data-value-missing="Can't be empty"
-                                   required/>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Gender</label><br>
-                            <input class="form-control"
-                                   name="full-name"
-                                   disabled
-                                   type="text"
-                                   value="${detail.user.gender}"
-                                   data-value-missing="Can't be empty"
-                                   required/>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Email</label><br>
-                            <input class="form-control"
-                                   name="email"
-                                   disabled
-                                   type="text"
-                                   value="${detail.user.email}"
-                                   data-value-missing="Can't be empty"
-                                   required/>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Mobile</label><br>
-                            <input class="form-control"
-                                   name="email"
-                                   disabled
-                                   type="text"
-                                   value="${detail.user.mobile}"
-                                   data-value-missing="Can't be empty"
-                                   required/>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Valid from</label><br>
-                            <input class="form-control"
-                                   name="email"
-                                   disabled
-                                   type="text"
-                                   value="${detail.validFrom}"
-                                   data-value-missing="Can't be empty"
-                                   required/>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Valid To</label><br>
-                            <input class="form-control"
-                                   name="email"
-                                   disabled
-                                   type="text"
-                                   value="${detail.validTo}"
-                                   data-value-missing="Can't be empty"
-                                   required/>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="d-flex" style="margin-left: -.9rem">
-                            <div id="courseStatus" class="col-md-2" style="display: flex">
-                                <label style="margin-top: -.5rem; margin-right: .2rem">Status</label>
-                                <select name="status" style="height: max-content">
-                                    <option value="1" ${detail.status=="PUBLISHED"?"selected":""}>Published</option>
-                                    <option value="0" ${detail.status=="UNPUBLISHED"?"selected":""}>Unpublished</option>
+                <input hidden="true" name="userId" value="${detail.user.id}">
+                <input hidden="true" name="courseId" value="${detail.id}">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="px-5 user-infor">
+                            <div class="form-group">
+                                <label for="category">Full name</label><br>
+                                <input class="form-control"
+                                       name="full-name"
+                                       disabled
+                                       type="text"
+                                       value="${detail.user.name}"
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Gender</label><br>
+                                <input class="form-control"
+                                       name="gender"
+                                       disabled
+                                       type="text"
+                                       value="${detail.user.gender}"
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label><br>
+                                <input hidden value="${detail.user.email}" name="email"/>
+                                <input class="form-control"
+                                       disabled
+                                       type="text"
+                                       value="${detail.user.email}"
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Mobile</label><br>
+                                <input class="form-control"
+                                       name="mobile"
+                                       disabled
+                                       type="text"
+                                       value="${detail.user.mobile}"
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Registration Status</label><br>
+                                <select name="status" class="form-control">
+                                    <option value="1" ${detail.status==1?"selected":""}>Submitted</option>
+                                    <option value="0" ${detail.status==0?"selected":""}>Cancelled</option>
+                                    <option value="2" ${detail.status==2?"selected":""}>Paid</option>
                                 </select>        
                             </div>
                         </div>
                     </div>
-                </div>
-                <div id="lower" style="margin-left: 1rem">
-                    <div id="button-area">
-                        <button type="submit" class="btn btn-secondary">Save</button>
-                        <a href="${path}/auth/teacher/subject" class="btn btn-secondary">Back</a>
+                    <div class="col-6">
+                        <div class="px-5 course-infor">
+                            <div class="form-group">
+                                <label for="subjectName">Subject Name</label>
+                                <input class="form-control"
+                                       disabled
+                                       name="subjectName"
+                                       type="text"
+                                       value="${detail.title}"
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="package">Package</label><br>
+                                <input class="form-control"
+                                       disabled
+                                       id="package"
+                                       name="package"
+                                       type="text"
+                                       id="package" 
+                                       value="${detail.packages}"
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Price</label><br>
+                                <input class="form-control"
+                                       name="price"
+                                       disabled
+                                       type="text"
+                                       value="${detail.totalCost}"
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Valid from</label><br>
+                                <input class="form-control"
+                                       name="validFrom"
+                                       disabled
+                                       type="text"
+                                       value="${detail.validFrom}"
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Valid To</label><br>
+                                <input class="form-control"
+                                       name="validTo"
+                                       disabled
+                                       type="text"
+                                       value="${detail.validTo}"
+                                       data-value-missing="Can't be empty"
+                                       required/>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="d-flex mt-3 px-5 justify-content-end" id="button-area">
+                    <button type="submit" class="btn btn-primary mr-4">Save</button>
+                    <a href="${path}/auth/teacher/subject" class="btn btn-secondary">Back</a>
                 </div>
             </form>
         </div>

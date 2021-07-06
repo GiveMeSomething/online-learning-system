@@ -218,8 +218,6 @@ public class QuizController extends HttpServlet implements Controller {
             userAnswers.put("" + page, answer);
             session.setAttribute("answer", userAnswers);
         }
-
-        boolean checkAnswer = false;
     }
 
     private HashMap<String, Boolean> getMarkedQuestion(HttpServletRequest request, HttpServletResponse response, int page, int pageFromProcess)
@@ -244,24 +242,25 @@ public class QuizController extends HttpServlet implements Controller {
     private void getUserAnswer(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-
+        int page = Integer.parseInt(request.getParameter("thisPage"));
+        ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
+        if(page == questions.size()){
+            doQuizHandle(request, response);
+        }
         // Set default fot user_quiz_id
+
         //int userQuizId = 2;
+
 
         // get user_quiz_id from Quiz lesson
         int userQuizId = (Integer)session.getAttribute("userQuizId");
         HashMap<String, String> userAnswer = (HashMap<String, String>) session.getAttribute("answer");
-        ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
+        questions = (ArrayList<Question>) session.getAttribute("question");
         HashMap<String, Boolean> questionStatus = (HashMap<String, Boolean>) session.getAttribute("marked");
-
         for (int i = 0; i < questions.size(); i++) {
             String questionPage = (i + 1) + "";
             quizService.getAnswerFromUser(userQuizId, userAnswer.get(questionPage),
                     questions.get(i).getId(), questionStatus.get(questionPage));
-            System.out.println(userAnswer.get(questionPage));
-            System.out.println(questionStatus.get(questionPage));
-            System.out.println(questions.get(i).getId());
-            System.out.println(userQuizId);
         }
         checkUserAnswer(request, response);
     }
@@ -279,7 +278,9 @@ public class QuizController extends HttpServlet implements Controller {
             }
         }
         float score = (float) countTrueAnswer / questions.size();
+
         session.setAttribute("ketquacuoicung", score);
+
         //Lay diem o day
         System.out.println(score);
         request.getRequestDispatcher("/auth/user/quiz/quiz-lesson.jsp").forward(request, response);

@@ -5,7 +5,10 @@
  */
 package user_course;
 
+import auth.AuthService;
+import common.entities.Account;
 import common.entities.CourseRegistation;
+import common.entities.Role;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -21,15 +24,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import user.UserService;
 
 public class UserCourseController extends HttpServlet implements Controller {
 
     private UserCourseService userCourseService;
     private final int itemPerPage = 5;
+    private AuthService authService;
+    private UserService userService;
 
     @Override
     public void init() throws ServletException {
         userCourseService = new UserCourseService();
+        authService = new AuthService();
     }
 
     @Override
@@ -113,6 +120,24 @@ public class UserCourseController extends HttpServlet implements Controller {
 
     private void processEditRegistrationInfo(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int status = Integer.parseInt(request.getParameter("status"));
+        String email = request.getParameter("email");
+        System.out.println(email);
+        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        if (status == 2) {
+            if (userService.getUser(email) != null) {
+                User user = userService.getUser(email);
+                int userId = user.getId();
+                userCourseService.updateStatus(userId, courseId, status);
+            } else {
+                User user = userService.getUser(email);
+                int userId = user.getId();
+                Account account = new Account(email, "abc123", Role.STUDENT);
+                authService.register(account);
+                int newId = user.getId();
+                userCourseService.updateStatus(newId, courseId, status);
+            }
+        }
 
     }
 
