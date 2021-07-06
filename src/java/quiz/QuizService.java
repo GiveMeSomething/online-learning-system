@@ -23,6 +23,14 @@ public class QuizService {
         this.quizRepository = new QuizRepository();
     }
 
+    public int getQuizId(int courseId) {
+        try {
+            return quizRepository.getQuizId(courseId);
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
     public ArrayList<Quiz> getQuizList(int subjectId, String keyword, TestType quizType) {
         try {
             return quizRepository.getQuizList(subjectId, keyword, quizType);

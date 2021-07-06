@@ -1016,10 +1016,8 @@ public class CourseRepository extends Repository {
     }
 
     public static void main(String[] args) throws Exception {
-        CourseRepository repo = new CourseRepository();
-        try {
-            Course c = repo.getCourseNameLessonList(1);
-            System.out.println(c);
+         try {
+            System.out.println(new CourseRepository().getCourseName(1));
         } catch (Exception e) {
         }
     }
@@ -1122,7 +1120,6 @@ public class CourseRepository extends Repository {
 
     }
 
-    
     public Course getCourseNameLessonList(int courseId) throws SQLException {
         this.connectDatabase();
         String searchCourse = "SELECT * FROM db_ite1.course  where id = ?";
@@ -1131,7 +1128,7 @@ public class CourseRepository extends Repository {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 return new Course(
-                   result.getInt("id"),
+                        result.getInt("id"),
                         result.getString("thumbnail"),
                         result.getString("title"),
                         result.getString("description"),
@@ -1146,4 +1143,22 @@ public class CourseRepository extends Repository {
         }
         return null;
     }
+
+    public String getCourseName(int courseId) throws SQLException {
+        this.connectDatabase();
+        String searchCourse = "SELECT * FROM db_ite1.course where id = ?;";
+        try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
+            statement.setInt(1, courseId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getString(3);
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return "Khong get duoc ten khoa hoc vi bi mat session";
+    }
+
+  
 }

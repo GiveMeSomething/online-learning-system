@@ -212,10 +212,10 @@
 
                 <c:if test="${lessonDetail.lessonType == 'QUIZ'}">
                     <div class="col-9 text-left">
-                        <!--Chi sẽ code chức năng quiz lesson tại đây-->
+                        <jsp:include page="../../quiz/quiz-lesson.jsp"></jsp:include>
                     </div>
                 </c:if>
-                ABCD
+                
                 
                 <c:forEach items="${allLesson}" var="o">
                     <c:if test="${(o.id < 9 || o.id == 9) && o.id % 4 == 1}">

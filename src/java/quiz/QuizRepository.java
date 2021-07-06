@@ -578,6 +578,21 @@ public class QuizRepository extends Repository {
         }
         return 0;
     }
+    public int getQuizId(int courseId) throws SQLException {
+        this.connectDatabase();
+
+        String questionCount = "SELECT quiz_id FROM db_ite1.lesson where course_id = ? order by quiz_id desc;";
+        try (PreparedStatement statement = this.connection.prepareStatement(questionCount)) {
+            statement.setInt(1, courseId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt(1);
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
+    }
 
     public static void main(String[] args) throws SQLException {
         QuizRepository quizRepository = new QuizRepository();
