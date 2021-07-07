@@ -127,7 +127,7 @@
                                             </button>
                                         </c:if>
                                         <c:choose>
-                                            <c:when test="${currentPage == maxPage}">
+                                            <c:when test="${getCurrentPage == maxPage}">
                                                 <button type="button"
                                                         id="score-btn"
                                                         class="btn btn-success mr-2 order-1" 
