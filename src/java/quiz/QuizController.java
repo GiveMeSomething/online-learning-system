@@ -16,6 +16,7 @@ import common.entities.Dimension;
 import common.entities.Lesson;
 import common.entities.User;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -259,6 +260,7 @@ public class QuizController extends HttpServlet implements Controller {
     private HashMap<String, String> getAnswer(HttpServletRequest request, HttpServletResponse response, int page, int pageFromProcess)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+
         String answer = request.getParameter("q" + (page));
         HashMap<String, String> userAnswers = new HashMap<>();
 
@@ -266,11 +268,9 @@ public class QuizController extends HttpServlet implements Controller {
         if (session.getAttribute("answer") != null && page != pageFromProcess) {
             userAnswers = (HashMap<String, String>) session.getAttribute("answer");
             userAnswers.put("" + page, answer);
-            System.out.println("get ans khi ko null" + session.getAttribute("answer"));
         } else if (session.getAttribute("answer") == null && page != pageFromProcess) {
             userAnswers.put("" + page, answer);
             session.setAttribute("answer", userAnswers);
-            System.out.println("get ans khi null" + session.getAttribute("answer"));
         }
         return userAnswers;
     }
@@ -342,17 +342,24 @@ public class QuizController extends HttpServlet implements Controller {
         session.setAttribute("answer", null);
         session.setAttribute("marked", null);
         session.setAttribute("question", null);
-        request.getRequestDispatcher("/auth/user/quiz/quiz-lesson.jsp").forward(request, response);
+        String courseid = session.getAttribute("courseId").toString();
+        String lessonId = session.getAttribute("lessonId").toString();
+        response.sendRedirect(request.getContextPath() + "/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&lessonId=" + lessonId + "&courseId=" + courseid + "");
+
     }
 
     private void processQuizResult(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
-        int quizId = quizService.getQuizId(Integer.parseInt(session.getAttribute("courseId").toString()));
-        request.setAttribute("quizId", quizId);
+//        int quizId = quizService.getQuizId(Integer.parseInt(session.getAttribute("courseId").toString()));
+//        request.setAttribute("quizId", quizId);
+//        request.setAttribute("ketquacuoicung", session.getAttribute("ketquacuoicung").toString());
+//        request.getRequestDispatcher("/auth/user/quiz/quiz-lesson.jsp").forward(request, response);
+        User u = (User) session.getAttribute("user");
+        out.print(u.getId());
         request.setAttribute("ketquacuoicung", session.getAttribute("ketquacuoicung").toString());
         request.getRequestDispatcher("/auth/user/quiz/quiz-lesson.jsp").forward(request, response);
-
     }
 
     private void processQuizReview(HttpServletRequest request, HttpServletResponse response)

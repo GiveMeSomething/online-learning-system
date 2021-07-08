@@ -23,9 +23,17 @@ public class QuizService {
         this.quizRepository = new QuizRepository();
     }
 
-    public int getQuizId(int courseId) {
+    public boolean isFinishQuiz(String userId, String quizid) {
         try {
-            return quizRepository.getQuizId(courseId);
+            return quizRepository.isFinishQuiz(userId, quizid);
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
+    public int getQuizIdTheoYeuCauCuaDuyAnh(int lessonId) {
+        try {
+            return quizRepository.getQuizIdTheoYeuCauCuaDuyAnh(lessonId);
         } catch (Exception e) {
         }
         return 0;

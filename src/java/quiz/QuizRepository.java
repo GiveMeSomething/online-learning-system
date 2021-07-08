@@ -577,12 +577,11 @@ public class QuizRepository extends Repository {
         return 0;
     }
 
-    public int getQuizId(int courseId) throws SQLException {
+    public int getQuizIdTheoYeuCauCuaDuyAnh(int lessonId) throws SQLException {
         this.connectDatabase();
-
-        String questionCount = "SELECT quiz_id FROM db_ite1.lesson where course_id = ? order by quiz_id desc;";
+        String questionCount = "SELECT quiz_id FROM db_ite1.lesson where id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(questionCount)) {
-            statement.setInt(1, courseId);
+            statement.setInt(1, lessonId);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 return result.getInt(1);
@@ -591,6 +590,22 @@ public class QuizRepository extends Repository {
             this.disconnectDatabase();
         }
         return 0;
+    }
+
+    public boolean isFinishQuiz(String userId, String quizid) throws SQLException {
+        this.connectDatabase();
+        String questionCount = "SELECT * FROM db_ite1.user_quiz where user_id = ? and quiz_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(questionCount)) {
+            statement.setString(1, userId);
+            statement.setString(2, quizid);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return true;
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return false;
     }
 
     public ArrayList<ArrayList<String>> getQuizReview(int quizId) throws SQLException {
@@ -657,8 +672,10 @@ public class QuizRepository extends Repository {
 
     public boolean addUserQuiz(int userId, int quizId) throws SQLException {
         this.connectDatabase();
-
+        
+        // Lay cai nay
         ArrayList<Object> userQuiz = getUserQuiz(userId, quizId);
+
         int attempt;
         if (userQuiz.isEmpty()) {
             attempt = 1;
@@ -705,14 +722,5 @@ public class QuizRepository extends Repository {
         }finally{
             this.disconnectDatabase();
         }
-    }
-
-    public static void main(String[] args) throws SQLException, SQLException, SQLException {
-        QuizRepository quizRepository = new QuizRepository();
-        Quiz quiz = new Quiz(1, "Exam 4", 1, Level.EASY, 1, TestType.QUIZ, 66, "new");
-        ArrayList<Object> a = quizRepository.getUserQuiz(17, 1);
-        System.out.println(a);
-//        ArrayList<Integer> dim = quizRepository.getDataForQuestion(14);
-//        ArrayList<Question> dims = quizRepository.getQuestion(1, 5, 0, 1, 2);
     }
 }

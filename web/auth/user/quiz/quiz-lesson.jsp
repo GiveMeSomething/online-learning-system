@@ -27,11 +27,12 @@
         </style>
     </head>
     <jsp:useBean id="dao" scope="page" class="course.CourseRepository" />
+    <jsp:useBean id="dao1" scope="page" class="quiz.QuizService" />
     <body>
         <div style=" width: 70%;margin: auto;margin-top: 50px; margin-left: 100px;">
 
             <div class="row">
-                <h6>Quiz &nbsp;•&nbsp;30 min</h6>
+                <h6>Quiz: 30 min</h6>
             </div>
             <div class="row">
                 <h3 class="card-title" style="margin-top: 20px;">
@@ -43,14 +44,13 @@
                     <h6>Submit your assignment</h6>
                 </div>
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-primary" style="float: right;">
-                      
-                        <a style="color: white; text-decoration: none;" href="${path}/auth/user/user_quiz?operation=VIEWQUIZHANDLE&quizId=1">
-                         Start
-                        </a>
-                        
-
-                    </button>
+                    <c:if test="${!dao1.isFinishQuiz(sessionScope.user.id, quizIdCuaDuyAnh)}">
+                        <button type="button" class="btn btn-primary" style="float: right;">
+                            <a style="color: white; text-decoration: none;" href="${path}/auth/user/quiz?operation=VIEWQUIZHANDLE&quizId=${quizIdCuaDuyAnh}">
+                                Start
+                            </a>
+                        </button>
+                    </c:if>
                 </div>
             </div>
             <div class="row">
@@ -73,36 +73,40 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-primary"> 
-                        <a style="color: white; text-decoration: none;"href="${path}/auth/teacher/quiz?operation=VIEWQUIZREVIEW&quizId=${quizId}">
-                        View Feedback
-                    </a>
-                    </button>
+                    <c:if test="${dao1.isFinishQuiz(sessionScope.user.id, quizIdCuaDuyAnh)}"> 
+                        <button type="button" class="btn btn-primary"> 
+                            <a style="color: white; text-decoration: none;"href="${path}/auth/user/user_quiz?operation=VIEWQUIZREVIEW&quizId=${quizIdCuaDuyAnh}">
+                                View Feedback
+                            </a>
+                        </button>
+                    </c:if>
                 </div>
                 <div class="col-md-6">
-                    <span style="color: red; background-color: white; float: right;">
-                        <a href="">
-                            Try again
-                        </a>
-                    </span>
+                    <c:if test="${dao1.isFinishQuiz(sessionScope.user.id, quizIdCuaDuyAnh)}"> 
+                        <span style="color: red; background-color: white; float: right;">
+                            <a href="${path}/auth/user/quiz?operation=VIEWQUIZHANDLE&quizId=${quizIdCuaDuyAnh}"">
+                                Try again
+                            </a>
+                        </span>
+                    </c:if>
                 </div>
             </div>
-                    
+
             <div class="d-flex align-items-center" style="justify-content: flex-end; margin-top: 50px;">
-                                    <a href="${path}/auth/user/course/lesson?operation=PREVIOUSLESSON&&lessonId=${sessionScope.lessonIdSession - 1}&&courseId=${sessionScope.courseId}">
-                                        <button ${disabled} ${sessionScope.lessonIdSession == minIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn mr-3">
-                                            < Previous lesson
-                                        </button>
-                                    </a>
-                                    <a href="${path}/auth/user/course/lesson?operation=NEXTLESSON&&lessonId=${sessionScope.lessonIdSession + 1}&&courseId=${sessionScope.courseId}">
-                                        <button ${disabledNext} ${sessionScope.lessonIdSession == maxIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn">
-                                            Next lesson >
-                                        </button> 
-                                    </a>
-                                    
-                                </div>
+                <a href="${path}/auth/user/course/lesson?operation=PREVIOUSLESSON&&lessonId=${sessionScope.lessonIdSession - 1}&&courseId=${sessionScope.courseId}">
+                    <button ${disabled} ${sessionScope.lessonIdSession == minIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn mr-3">
+                        < Previous lesson
+                    </button>
+                </a>
+                <a href="${path}/auth/user/course/lesson?operation=NEXTLESSON&&lessonId=${sessionScope.lessonIdSession + 1}&&courseId=${sessionScope.courseId}">
+                    <button ${disabledNext} ${sessionScope.lessonIdSession == maxIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn">
+                        Next lesson >
+                    </button> 
+                </a>
+
+            </div>
         </div>
-                    
+
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
