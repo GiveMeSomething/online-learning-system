@@ -45,7 +45,7 @@
                 <div class="col-md-6">
                     <button type="button" class="btn btn-primary" style="float: right;">
                       
-                        <a style="color: white; text-decoration: none;" href="${path}/auth/user/quiz?operation=VIEWQUIZHANDLE&quizId=1">
+                        <a style="color: white; text-decoration: none;" href="${path}/auth/user/user_quiz?operation=VIEWQUIZHANDLE&quizId=1">
                          Start
                         </a>
                         

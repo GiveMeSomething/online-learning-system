@@ -357,7 +357,6 @@ public class QuizRepository extends Repository {
 
     public boolean addQuizSetting(Quiz quiz, int quesId) throws SQLException {
         this.connectDatabase();
-
         String addQuizSetting = "INSERT INTO question_quiz(question_id, quiz_id) values(?,?)";
         try (PreparedStatement statement = this.connection.prepareStatement(addQuizSetting)) {
             statement.setInt(1, quesId);
@@ -451,8 +450,6 @@ public class QuizRepository extends Repository {
                 quizSetting.add(result.getInt("number_of_question"));
             }
             return quizSetting;
-        } finally {
-            this.disconnectDatabase();
         }
     }
 
@@ -596,8 +593,6 @@ public class QuizRepository extends Repository {
         return 0;
     }
 
-    
-
     public ArrayList<ArrayList<String>> getQuizReview(int quizId) throws SQLException {
         this.connectDatabase();
 
@@ -642,11 +637,11 @@ public class QuizRepository extends Repository {
         }
     }
 
-    public ArrayList<Integer> getUserQuiz(int userId, int quizId) throws SQLException {
+    public ArrayList<Object> getUserQuiz(int userId, int quizId) throws SQLException {
         this.connectDatabase();
 
         String getUserQuiz = "SELECT * FROM user_quiz WHERE user_id = ? AND quiz_id = ?";
-        ArrayList<Integer> userQuizId = new ArrayList<>();
+        ArrayList<Object> userQuizId = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(getUserQuiz)) {
             statement.setInt(1, userId);
             statement.setInt(2, quizId);
@@ -654,6 +649,7 @@ public class QuizRepository extends Repository {
             while (result.next()) {
                 userQuizId.add(result.getInt("id"));
                 userQuizId.add(result.getInt("attempt"));
+                userQuizId.add(result.getTimestamp("time_get_quiz"));
             }
             return userQuizId;
         }
@@ -661,13 +657,13 @@ public class QuizRepository extends Repository {
 
     public boolean addUserQuiz(int userId, int quizId) throws SQLException {
         this.connectDatabase();
-        
-        ArrayList<Integer> userQuiz = getUserQuiz(userId, quizId);
+
+        ArrayList<Object> userQuiz = getUserQuiz(userId, quizId);
         int attempt;
         if (userQuiz.isEmpty()) {
             attempt = 1;
         } else {
-            attempt = userQuiz.get(userQuiz.size() - 1) + 1;
+            attempt = (Integer) (userQuiz.get(userQuiz.size() - 2)) + 1;
         }
         String addUserQuiz = "INSERT INTO user_quiz(user_id, quiz_id, attempt) "
                 + "VALUES(?,?,?)";
@@ -680,17 +676,43 @@ public class QuizRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-    
+
+    public boolean checkExistQuestion(int quizId, int quesId) throws SQLException {
+        this.connectDatabase();
+
+        String checkQuestionQuiz = "SELECT * FROM question_quiz WHERE quiz_id = ? AND question_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(checkQuestionQuiz)) {
+            statement.setInt(1, quizId);
+            statement.setInt(2, quesId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                if (result.getInt("quiz_id") != 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    public boolean addMark(float mark, int userQuizId) throws SQLException {
+        this.connectDatabase();
+
+        String checkQuestionQuiz = "UPDATE user_quiz SET mark = ? where id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(checkQuestionQuiz)) {
+            statement.setFloat(1, mark);
+            statement.setInt(2, userQuizId);
+            return statement.executeUpdate() > 0;
+        }finally{
+            this.disconnectDatabase();
+        }
+    }
+
     public static void main(String[] args) throws SQLException, SQLException, SQLException {
         QuizRepository quizRepository = new QuizRepository();
-        Quiz quiz = new Quiz(2, "Exam 4", 1, Level.EASY, 1, TestType.QUIZ, 66, "new");
+        Quiz quiz = new Quiz(1, "Exam 4", 1, Level.EASY, 1, TestType.QUIZ, 66, "new");
+        ArrayList<Object> a = quizRepository.getUserQuiz(17, 1);
+        System.out.println(a);
 //        ArrayList<Integer> dim = quizRepository.getDataForQuestion(14);
 //        ArrayList<Question> dims = quizRepository.getQuestion(1, 5, 0, 1, 2);
-        quizRepository.addUserQuiz(17, 1);
-
-        ArrayList<Integer> les = quizRepository.getUserQuiz(17, 1);
-        
-        System.out.println(les.get(0));
-//        System.out.println(dim.get(2));
     }
 }

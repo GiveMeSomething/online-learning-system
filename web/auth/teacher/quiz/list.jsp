@@ -100,7 +100,7 @@
                     </div>
                     <div class="add-lesson">
                         <a role="button" class="btn btn-success px-3 py-2"
-                           href="${path}/auth/teacher/quiz?operation=VIEW">
+                           href="${path}/auth/user/user_quiz?operation=VIEW">
                             Add New Quiz
                         </a>
                     </div>
@@ -123,7 +123,7 @@
                         </div>
                     </div>
                     <div class="col-3 d-flex align-items-center justify-content-center m-2">
-                        <a href="${path}/auth/teacher/quiz?operation=VIEW&quizId=${item.id}" class="m-2">
+                        <a href="${path}/auth/user/user_quiz?operation=VIEW&quizId=${item.id}" class="m-2">
                             <button class="btn btn-sm btn-primary px-3 py-2">
                                 View and Edit
                             </button>
