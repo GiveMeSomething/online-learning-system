@@ -579,7 +579,7 @@ public class QuizRepository extends Repository {
         }
         return 0;
     }
- 
+
     public int getQuizIdTheoYeuCauCuaDuyAnh(int lessonId) throws SQLException {
         this.connectDatabase();
         String questionCount = "SELECT quiz_id FROM db_ite1.lesson where id = ?";
@@ -595,6 +595,21 @@ public class QuizRepository extends Repository {
         return 0;
     }
 
+    public boolean isFinishQuiz(String userId, String quizid) throws SQLException {
+        this.connectDatabase();
+        String questionCount = "SELECT * FROM db_ite1.user_quiz where user_id = ? and quiz_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(questionCount)) {
+            statement.setString(1, userId);
+            statement.setString(2, quizid);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return true;
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return false;
+    }
 
     public ArrayList<ArrayList<String>> getQuizReview(int quizId) throws SQLException {
         this.connectDatabase();
@@ -659,7 +674,7 @@ public class QuizRepository extends Repository {
 
     public boolean addUserQuiz(int userId, int quizId) throws SQLException {
         this.connectDatabase();
-        
+
         ArrayList<Integer> userQuiz = getUserQuiz(userId, quizId);
         int attempt;
         if (userQuiz.isEmpty()) {
@@ -678,7 +693,7 @@ public class QuizRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-    
+
     public static void main(String[] args) throws SQLException, SQLException, SQLException {
         QuizRepository quizRepository = new QuizRepository();
         Quiz quiz = new Quiz(2, "Exam 4", 1, Level.EASY, 1, TestType.QUIZ, 66, "new");
@@ -687,7 +702,7 @@ public class QuizRepository extends Repository {
         quizRepository.addUserQuiz(17, 1);
 
         ArrayList<Integer> les = quizRepository.getUserQuiz(17, 1);
-        
+
         System.out.println(les.get(0));
 //        System.out.println(dim.get(2));
     }

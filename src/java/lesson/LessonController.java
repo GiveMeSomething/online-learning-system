@@ -182,6 +182,7 @@ public class LessonController extends HttpServlet implements Controller {
         int courseId = Integer.parseInt(session.getAttribute("courseId") + "");
         List<Lesson> lessonList = lessonService.getLessonsByCourseId(courseId);
         session.setAttribute("lessonId", lessonId);
+        session.setAttribute("courseId", courseId);
         request.setAttribute("lessonList", lessonList);
         request.setAttribute("allLesson", allLesson);
         session.setAttribute("courseId", courseId);

@@ -27,11 +27,12 @@
         </style>
     </head>
     <jsp:useBean id="dao" scope="page" class="course.CourseRepository" />
+    <jsp:useBean id="dao1" scope="page" class="quiz.QuizService" />
     <body>
         <div style=" width: 70%;margin: auto;margin-top: 50px; margin-left: 100px;">
 
             <div class="row">
-                <h6>Quiz &nbsp;•&nbsp;30 min</h6>
+                <h6>Quiz: 30 min</h6>
             </div>
             <div class="row">
                 <h3 class="card-title" style="margin-top: 20px;">
@@ -43,13 +44,13 @@
                     <h6>Submit your assignment</h6>
                 </div>
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-primary" style="float: right;">
-
-                        <a style="color: white; text-decoration: none;" href="${path}/auth/user/quiz?operation=VIEWQUIZHANDLE&quizId=${quizIdCuaDuyAnh}">
-                            Start
-
-                        </a>
-                    </button>
+                    <c:if test="${!dao1.isFinishQuiz(sessionScope.user.id, quizIdCuaDuyAnh)}">
+                        <button type="button" class="btn btn-primary" style="float: right;">
+                            <a style="color: white; text-decoration: none;" href="${path}/auth/user/quiz?operation=VIEWQUIZHANDLE&quizId=${quizIdCuaDuyAnh}">
+                                Start
+                            </a>
+                        </button>
+                    </c:if>
                 </div>
             </div>
             <div class="row">
@@ -72,18 +73,22 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-primary"> 
-                        <a style="color: white; text-decoration: none;"href="${path}/auth/user/user_quiz?operation=VIEWQUIZREVIEW&quizId=${quizIdCuaDuyAnh}">
-                            View Feedback
-                        </a>
-                    </button>
+                    <c:if test="${dao1.isFinishQuiz(sessionScope.user.id, quizIdCuaDuyAnh)}"> 
+                        <button type="button" class="btn btn-primary"> 
+                            <a style="color: white; text-decoration: none;"href="${path}/auth/user/user_quiz?operation=VIEWQUIZREVIEW&quizId=${quizIdCuaDuyAnh}">
+                                View Feedback
+                            </a>
+                        </button>
+                    </c:if>
                 </div>
                 <div class="col-md-6">
-                    <span style="color: red; background-color: white; float: right;">
-                        <a href="">
-                            Try again
-                        </a>
-                    </span>
+                    <c:if test="${dao1.isFinishQuiz(sessionScope.user.id, quizIdCuaDuyAnh)}"> 
+                        <span style="color: red; background-color: white; float: right;">
+                            <a href="${path}/auth/user/quiz?operation=VIEWQUIZHANDLE&quizId=${quizIdCuaDuyAnh}"">
+                                Try again
+                            </a>
+                        </span>
+                    </c:if>
                 </div>
             </div>
 

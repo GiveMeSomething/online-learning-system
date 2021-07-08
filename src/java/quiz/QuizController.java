@@ -159,7 +159,7 @@ public class QuizController extends HttpServlet implements Controller {
             userQuizId = userQuiz.get(0);
         }
 
-        session.setAttribute("userQuizId", userQuizId); 
+        session.setAttribute("userQuizId", userQuizId);
 
         HashMap<Integer, ArrayList<Integer>> getDataForQuestion = quizService.getDataForQuestion(1);
         Quiz quiz = quizService.getQuiz(1);
@@ -267,7 +267,6 @@ public class QuizController extends HttpServlet implements Controller {
         return userAnswers;
     }
 
-
     private HashMap<String, String> getLastAnswer(HttpServletRequest request, HttpServletResponse response, int page)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -325,11 +324,13 @@ public class QuizController extends HttpServlet implements Controller {
         float score = (float) countTrueAnswer / questions.size();
 
         session.setAttribute("ketquacuoicung", score);
-
+        String courseid = session.getAttribute("courseId").toString();
+        String lessonId = session.getAttribute("lessonId").toString();
         //Lay diem o day
         System.out.println(score);
-        request.getRequestDispatcher("/auth/user/quiz/quiz-lesson.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&lessonId=" + lessonId + "&courseId=" + courseid + "");
 
+//        request.getRequestDispatcher("/auth/user/quiz/quiz-lesson.jsp").forward(request, response);
     }
 
     private void processQuizResult(HttpServletRequest request, HttpServletResponse response)
@@ -341,7 +342,7 @@ public class QuizController extends HttpServlet implements Controller {
 //        request.setAttribute("ketquacuoicung", session.getAttribute("ketquacuoicung").toString());
 //        request.getRequestDispatcher("/auth/user/quiz/quiz-lesson.jsp").forward(request, response);
         User u = (User) session.getAttribute("user");
-        out.print(u.getId());   
+        out.print(u.getId());
         request.setAttribute("ketquacuoicung", session.getAttribute("ketquacuoicung").toString());
         request.getRequestDispatcher("/auth/user/quiz/quiz-lesson.jsp").forward(request, response);
     }
