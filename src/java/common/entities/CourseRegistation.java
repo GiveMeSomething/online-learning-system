@@ -22,12 +22,13 @@ public class CourseRegistation {
     private int status;
     private Date validFrom;
     private Date validTo;
+    private String note;
 
     public CourseRegistation() {
     }
 
     public CourseRegistation(int id, String title, User user,
-            String packages, double totalCost, int status, Date validFrom, Date validTo) {
+            String packages, double totalCost, int status, Date validFrom, Date validTo, String note) {
         this.id = id;
         this.title = title;
         this.user = user;
@@ -36,6 +37,7 @@ public class CourseRegistation {
         this.totalCost = totalCost;
         this.validFrom = validFrom;
         this.validTo = validTo;
+        this.note = note;
     }
 
     public CourseRegistation(int id, String title, Date registationTime, String packages, double totalCost, int status, Date validFrom, Date validTo) {
@@ -49,6 +51,14 @@ public class CourseRegistation {
         this.validTo = validTo;
     }
 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+    
     public User getUser() {
         return user;
     }

@@ -117,7 +117,11 @@
                                     <td>${item.get(6)}</td>
                                     <td>${item.get(7)}</td>
                                     <td>
-                                        <button class="btn btn-primary">View Details</button>
+                                        <a href="${path}/auth/user/UserCourse?operation=VIEWDETAIL&userId=17&courseId=6">
+                                            <button type="button" class="btn btn-primary">
+                                                View Details
+                                            </button>
+                                        </a>
                                     </td>
                                 </tr>
                             </c:forEach>

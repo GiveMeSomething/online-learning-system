@@ -49,19 +49,22 @@ public class UserRepository extends Repository {
 
         String addUser = "INSERT INTO user (full_name, gender, email, status_id, mobile) "
                 + "VALUES (?, ?, ?, ?, ?)";
+        String disableForgeinKey = "SET FOREIGN_KEY_CHECKS=0";
+        try (PreparedStatement disable = this.connection.prepareStatement(disableForgeinKey)) {
+            disable.execute();
+            try (PreparedStatement statement = this.connection.prepareStatement(addUser)) {
+                statement.setString(1, user.getName());
+                statement.setInt(2, Gender.valueOf(user.getGender()));
+                statement.setString(3, user.getEmail());
+                statement.setInt(4, Status.valueOf(user.getStatus()));
+                statement.setString(5, user.getMobile());
 
-        try (PreparedStatement statement = this.connection.prepareStatement(addUser)) {
-            statement.setString(1, user.getName());
-            statement.setInt(2, Gender.valueOf(user.getGender()));
-            statement.setString(3, user.getEmail());
-            statement.setInt(4, Status.valueOf(user.getStatus()));
-            statement.setString(5, user.getMobile());
+                if (statement.executeUpdate() > 0) {
+                    return true;
+                }
 
-            if (statement.executeUpdate() > 0) {
-                return true;
+                return false;
             }
-
-            return false;
         } finally {
             this.disconnectDatabase();
         }
@@ -570,7 +573,7 @@ public class UserRepository extends Repository {
         List<User> list = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(getUser)) {
             ResultSet result = statement.executeQuery();
-             while(result.next()) {
+            while (result.next()) {
                 list.add(new User(
                         result.getInt("id"),
                         result.getString("full_name"),
@@ -586,13 +589,8 @@ public class UserRepository extends Repository {
 
     public static void main(String[] args) throws Exception {
         UserRepository repo = new UserRepository();
-        try {
-            List<User> list = repo.getAuthor();
-            for (User o : list) {
-                System.out.println(o);
-            }
-        } catch (Exception e) {
-        }
+        User user = new User("haha", Gender.MALE, "duyanhvu8a4@gmail.com", Status.ACTIVE, "0123456789");
+        repo.addUser(user);
     }
 
 }

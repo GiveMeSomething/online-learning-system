@@ -127,7 +127,7 @@
                                             </button>
                                         </c:if>
                                         <c:choose>
-                                            <c:when test="${currentPage == maxPage}">
+                                            <c:when test="${getCurrentPage == maxPage}">
                                                 <button type="button"
                                                         id="score-btn"
                                                         class="btn btn-success mr-2 order-1" 
@@ -151,6 +151,38 @@
                                 <input hidden name="page" value="${getCurrentPage}"/>
                                 <input hidden name="nextPage" value="${nextPage > maxPage ? maxPage: nextPage}"/>
                             </c:forEach>
+                            <!--score exam-->
+                            <div class="modal fade" id="score-exam" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header p-3">
+                                            <h4 class="modal-title">Score Exam</h4>
+                                            <c:if test="${requestScope.errorMessage != null}">
+                                                <div class="d-flex w-100 align-items-center justify-content-end">
+                                                    <h5>${requestScope.errorMessage}</h5>
+                                                </div>
+                                            </c:if>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body p-5">
+                                            Do you want to submit now ?<br/>
+                                            <b>Please carefully check again before submitting.</b>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" data-dismiss="modal" class="btn btn-outline-dark">Back</button>
+                                            <button class="btn btn-primary border-success align-items-center btn-success"
+                                                    type="submit"
+                                                    formmethod="POST"
+                                                    formaction="${path}/auth/user/quiz?operation=SUBMITQUIZ&page=${maxPage}">
+                                                Score
+                                                <i class="fa fa-angle-right ml-2"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -172,34 +204,6 @@
                             <hr>
                             <p>Explaination: ${q.explaination}</p>
                         </c:forEach>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--score exam-->
-        <div class="modal fade" id="score-exam" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header p-3">
-                        <h4 class="modal-title">Score Exam</h4>
-                        <c:if test="${requestScope.errorMessage != null}">
-                            <div class="d-flex w-100 align-items-center justify-content-end">
-                                <h5>${requestScope.errorMessage}</h5>
-                            </div>
-                        </c:if>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body p-5">
-                        Do you want to submit now ?<br/>
-                        <b>Please carefully check again before submitting.</b>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal" class="btn btn-outline-dark">Back</button>
-                        <a href="${path}/auth/user/quiz?operation=SUBMITQUIZ&thisPage=${getCurrentPage}&page=${getCurrentPage}">
-                            <button type="button" class="btn btn-outline-success">Score</button>
-                        </a>
                     </div>
                 </div>
             </div>
