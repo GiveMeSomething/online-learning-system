@@ -44,12 +44,9 @@
                 </div>
                 <div class="col-md-6">
                     <button type="button" class="btn btn-primary" style="float: right;">
-                      
-                        <a style="color: white; text-decoration: none;" href="${path}/auth/teacher/quiz?operation=VIEWQUIZHANDLE&quizId=14&userQuizId=2">
-                         Start
+                        <a style="color: white; text-decoration: none;" href="${path}/auth/user/quiz?operation=VIEWQUIZHANDLE&quizId=${quizIdCuaDuyAnh}">
+                            Start
                         </a>
-                        
-
                     </button>
                 </div>
             </div>
@@ -74,9 +71,9 @@
             <div class="row">
                 <div class="col-md-6">
                     <button type="button" class="btn btn-primary"> 
-                        <a style="color: white; text-decoration: none;"href="${path}/auth/teacher/quiz?operation=VIEWQUIZREVIEW&quizId=${quizId}">
-                        View Feedback
-                    </a>
+                        <a style="color: white; text-decoration: none;"href="${path}/auth/user/user_quiz?operation=VIEWQUIZREVIEW&quizId=${quizIdCuaDuyAnh}">
+                            View Feedback
+                        </a>
                     </button>
                 </div>
                 <div class="col-md-6">
@@ -87,22 +84,22 @@
                     </span>
                 </div>
             </div>
-                    
+
             <div class="d-flex align-items-center" style="justify-content: flex-end; margin-top: 50px;">
-                                    <a href="${path}/auth/user/course/lesson?operation=PREVIOUSLESSON&&lessonId=${sessionScope.lessonIdSession - 1}&&courseId=${sessionScope.courseId}">
-                                        <button ${disabled} ${sessionScope.lessonIdSession == minIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn mr-3">
-                                            < Previous lesson
-                                        </button>
-                                    </a>
-                                    <a href="${path}/auth/user/course/lesson?operation=NEXTLESSON&&lessonId=${sessionScope.lessonIdSession + 1}&&courseId=${sessionScope.courseId}">
-                                        <button ${disabledNext} ${sessionScope.lessonIdSession == maxIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn">
-                                            Next lesson >
-                                        </button> 
-                                    </a>
-                                    
-                                </div>
+                <a href="${path}/auth/user/course/lesson?operation=PREVIOUSLESSON&&lessonId=${sessionScope.lessonIdSession - 1}&&courseId=${sessionScope.courseId}">
+                    <button ${disabled} ${sessionScope.lessonIdSession == minIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn mr-3">
+                        < Previous lesson
+                    </button>
+                </a>
+                <a href="${path}/auth/user/course/lesson?operation=NEXTLESSON&&lessonId=${sessionScope.lessonIdSession + 1}&&courseId=${sessionScope.courseId}">
+                    <button ${disabledNext} ${sessionScope.lessonIdSession == maxIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn">
+                        Next lesson >
+                    </button> 
+                </a>
+
+            </div>
         </div>
-                    
+
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">

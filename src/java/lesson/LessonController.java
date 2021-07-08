@@ -9,9 +9,11 @@ import common.entities.Course;
 import common.entities.Lesson;
 import common.entities.LessonType;
 import common.entities.Status;
+import common.entities.User;
 import common.utilities.Controller;
 import course.CourseService;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -157,7 +159,7 @@ public class LessonController extends HttpServlet implements Controller {
     }
 
     private void processViewUserLesson(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {        
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
         int courseId = Integer.parseInt(request.getParameter("courseId"));
         List<Lesson> lessonList = lessonService.getLessonsByCourseId(courseId);
@@ -177,7 +179,7 @@ public class LessonController extends HttpServlet implements Controller {
         List<Lesson> allLesson = lessonService.getAllLesson();
         Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
         request.setAttribute("lessonDetail", lessonDetail);
-        int courseId = Integer.parseInt(session.getAttribute("courseId")+"");
+        int courseId = Integer.parseInt(session.getAttribute("courseId") + "");
         List<Lesson> lessonList = lessonService.getLessonsByCourseId(courseId);
         session.setAttribute("lessonId", lessonId);
         request.setAttribute("lessonList", lessonList);
@@ -188,7 +190,7 @@ public class LessonController extends HttpServlet implements Controller {
             int a = lessonList.get(i).getVideoLink().indexOf("embed/");
             request.setAttribute("videoId" + (i + 1), lessonList.get(i).getVideoLink().substring(a + 6));
         }
-     
+
         request.setAttribute("length", lessonList.size());
         request.setAttribute("lessonId", lessonId);
         Lesson minIdLesson = lessonService.getMinLessonIdByCourseId(courseId);
@@ -198,6 +200,9 @@ public class LessonController extends HttpServlet implements Controller {
         } else if (lessonId == maxIdLesson.getId()) {
             request.setAttribute("disabledNext", "disabled");
         }
+        PrintWriter out = response.getWriter();
+        User u = (User) session.getAttribute("user");
+        request.setAttribute("quizIdCuaDuyAnh", quizService.getQuizIdTheoYeuCauCuaDuyAnh(lessonId));
         String videoId = "DxcpvaDglb4";
         request.setAttribute("videoId", videoId);
         session.setAttribute("lessonIdSession", lessonId);
@@ -273,13 +278,13 @@ public class LessonController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         if (request.getParameter("lessonId").contains("INACTIVE")) {
             int alpha = request.getParameter("lessonId").indexOf("E");
-            String doneLessonId = request.getParameter("lessonId").substring(alpha+1);
+            String doneLessonId = request.getParameter("lessonId").substring(alpha + 1);
             lessonService.updateDoneLesson(doneLessonId);
             response.sendRedirect(request.getContextPath() + "/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&lessonId=" + doneLessonId);
             //Chỉnh lại url auth/user/course/lesson?
         } else if (request.getParameter("lessonId").contains("ACTIVE")) {
             int alpha = request.getParameter("lessonId").indexOf("E");
-            String doneLessonId = request.getParameter("lessonId").substring(alpha+1);
+            String doneLessonId = request.getParameter("lessonId").substring(alpha + 1);
             lessonService.updateUndoneLesson(doneLessonId);
             response.sendRedirect(request.getContextPath() + "/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&lessonId=" + doneLessonId);
             //Chỉnh lại url auth/user/course/lesson?

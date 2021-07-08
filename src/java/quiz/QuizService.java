@@ -23,14 +23,15 @@ public class QuizService {
         this.quizRepository = new QuizRepository();
     }
 
-    public int getQuizId(int courseId) {
+    public int getQuizIdTheoYeuCauCuaDuyAnh(int lessonId) {
         try {
-            return quizRepository.getQuizId(courseId);
+            return quizRepository.getQuizIdTheoYeuCauCuaDuyAnh(lessonId);
         } catch (Exception e) {
         }
         return 0;
     }
 
+   
     public ArrayList<Quiz> getQuizList(int subjectId, String keyword, TestType quizType) {
         try {
             return quizRepository.getQuizList(subjectId, keyword, quizType);

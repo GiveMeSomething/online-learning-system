@@ -153,7 +153,7 @@ public class QuizRepository extends Repository {
         }
     }
 
-    public boolean getAnswerFromUser(int userQuizId, String userChoice, 
+    public boolean getAnswerFromUser(int userQuizId, String userChoice,
             int quesitionId, boolean questionStatus) throws SQLException {
         this.connectDatabase();
 
@@ -578,12 +578,14 @@ public class QuizRepository extends Repository {
         }
         return 0;
     }
-    public int getQuizId(int courseId) throws SQLException {
-        this.connectDatabase();
 
-        String questionCount = "SELECT quiz_id FROM db_ite1.lesson where course_id = ? order by quiz_id desc;";
+
+   
+    public int getQuizIdTheoYeuCauCuaDuyAnh(int lessonId) throws SQLException {
+        this.connectDatabase();
+        String questionCount = "SELECT quiz_id FROM db_ite1.lesson where id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(questionCount)) {
-            statement.setInt(1, courseId);
+            statement.setInt(1, lessonId);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 return result.getInt(1);
@@ -595,16 +597,7 @@ public class QuizRepository extends Repository {
     }
 
     public static void main(String[] args) throws SQLException {
-        QuizRepository quizRepository = new QuizRepository();
-        Quiz quiz = new Quiz(2, "Exam 4", 1, Level.EASY, 1, TestType.QUIZ, 66, "new");
-        ArrayList<Integer> dim = quizRepository.getDataForQuestion(14);
-        ArrayList<Question> dims = quizRepository.getQuestion(1, 5, 0, 1, 2);
-//        ArrayList<Lesson> les = quizRepository.getTopic(quiz);
-//        ArrayList<Integer> lesson = quizRepository.getQuizSetting(quiz, 7, 0);
-        for (Question dim1 : dims) {
-            System.out.println(dim1.getContent());
-        }
-//        System.out.println(dim.get(2));
+        QuizRepository test = new QuizRepository();
     }
 
     public ArrayList<ArrayList<String>> getQuizReview(int quizId) throws SQLException {
