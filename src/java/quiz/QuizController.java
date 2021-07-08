@@ -157,7 +157,7 @@ public class QuizController extends HttpServlet implements Controller {
             userQuizId = userQuiz.get(0);
         }
 
-        session.setAttribute("userQuizId", userQuizId);
+        session.setAttribute("userQuizId", userQuizId); 
 
         HashMap<Integer, ArrayList<Integer>> getDataForQuestion = quizService.getDataForQuestion(1);
         Quiz quiz = quizService.getQuiz(1);

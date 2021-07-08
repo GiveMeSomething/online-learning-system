@@ -8,9 +8,12 @@ package user_course;
 import auth.AuthService;
 import com.google.gson.Gson;
 import common.entities.Account;
+import common.entities.Course;
 import common.entities.CourseRegistation;
+import common.entities.Gender;
 import common.entities.PricePackage;
 import common.entities.Role;
+import common.entities.Status;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -72,14 +75,8 @@ public class UserCourseController extends HttpServlet implements Controller {
             case "VIEWDETAIL":
                 processViewRegistrationDetail(request, response);
                 break;
-            case "ADDINFO":
+            case "GIFT":
                 processAddRegistrationDetail(request, response);
-                break;
-            case "GETCOURSE":
-                getCourse(request, response);
-                break;
-            case "GETPRICEBYCOURSE":
-                getPrice(request, response);
                 break;
             default:
                 listCourseRegistation(request, response, u);
@@ -101,9 +98,6 @@ public class UserCourseController extends HttpServlet implements Controller {
                 case "FILTER":
                     processFilterRegistration(request, response);
                     break;
-                case "ADDINFO":
-                    processAddRegistration(request, response);
-                    break;
                 default:
                     send404(request, response);
                     break;
@@ -120,16 +114,6 @@ public class UserCourseController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         processFilterInput(request, response);
     }
-    
-    private void processAddRegistration(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String name = request.getParameter("full-name");
-        int gender = Integer.parseInt(request.getParameter("gender"));
-        String email = request.getParameter("email");
-        String mobile = request.getParameter("mobile");
-        int courseId = Integer.parseInt(request.getParameter("courseId"));
-        String note = request.getParameter("note");
-    }
 
     private void processRegistrationPagination(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -138,41 +122,92 @@ public class UserCourseController extends HttpServlet implements Controller {
 
     private void processViewRegistrationDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int userId = 1;
-        int courseId = 1;
-//        int userId = Integer.parseInt(request.getParameter("userId"));
-//        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        HttpSession session = request.getSession();
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        System.out.println("CourseId " + courseId);
+//        int courseId = 1;
         CourseRegistation regisDetail = userCourseService.getRegistrationDetail(userId, courseId);
         request.setAttribute("detail", regisDetail);
         request.getRequestDispatcher("/auth/user/registration/detail.jsp").forward(request, response);
     }
+
     private void processAddRegistrationDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        HttpSession session = request.getSession();
+        int userId = ((User) session.getAttribute("user")).getId();
+        int courseId = Integer.parseInt(request.getParameter("courseId"));
+
+        Course course = courseService.getCourse(courseId);
+        ArrayList<PricePackage> coursePack = courseService.getCoursePackage(courseId);
+        request.setAttribute("package", coursePack);
+        request.setAttribute("course", course);
+
         request.getRequestDispatcher("/auth/user/registration/detail.jsp").forward(request, response);
     }
 
     private void processEditRegistrationInfo(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int status = Integer.parseInt(request.getParameter("status"));
+        int status;
+        HttpSession session = request.getSession();
+        if (request.getParameter("status") != null) {
+            status = Integer.parseInt(request.getParameter("status"));
+        } else {
+            status = 1;
+        }
         String email = request.getParameter("email");
         System.out.println(email);
         int courseId = Integer.parseInt(request.getParameter("courseId"));
+        String name = request.getParameter("full-name");
+        String gender = request.getParameter("gender");
+        String mobile = request.getParameter("mobile");
         if (status == 2) {
+            changeToPaidCourse(request, response, courseId, name, gender, mobile, status);
+        } else {
+            notPaidYet(request, response, email, courseId, name, gender, mobile, status);
+        }
+
+    }
+
+    private void changeToPaidCourse(HttpServletRequest request, HttpServletResponse response, 
+            int courseId, String name, String gender, String mobile, int status)
+            throws ServletException, IOException {
+        //User does exist
+        String email = request.getParameter("existEmail");
+        if(authService.getAccount(email) == null){
+            // Create new account
+            Account account = new Account(email, "abc123", Role.STUDENT);
+            authService.register(account);
+
+            // Get id from new account
+            int newId = userService.getUser(email).getId();
+            userCourseService.updateStatus(newId, courseId, status);
+        }else{
+            User user = userService.getUser(email);
+            int userId = user.getId();
+            userCourseService.updateStatus(userId, courseId, status);
+        }
+    }
+    
+    private void notPaidYet(HttpServletRequest request, HttpServletResponse response, String email, 
+            int courseId, String name, String gender, String mobile, int status)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        System.out.println(email);
+        int price = Integer.parseInt(request.getParameter("package"));
+            String note = request.getParameter("note");
+            // User does exist
             if (userService.getUser(email) != null) {
                 User user = userService.getUser(email);
                 int userId = user.getId();
-                userCourseService.updateStatus(userId, courseId, status);
+                userCourseService.addRegistrationForFriend(userId, courseId, price, note);
             } else {
-                User user = userService.getUser(email);
-                int userId = user.getId();
-                Account account = new Account(email, "abc123", Role.STUDENT);
-                authService.register(account);
-                int newId = user.getId();
-                userCourseService.updateStatus(newId, courseId, status);
+                System.out.println("this is "+email);
+                User user = new User(name, Gender.valueOf(gender), email, Status.ACTIVE, mobile);
+                userService.addUser(user);
+                int userId = userService.getUser(email).getId();
+                userCourseService.addRegistrationForFriend(userId, courseId, price, note);
             }
-        }
-
     }
 
     private void updateStatus(HttpServletRequest request, HttpServletResponse response, User u)
@@ -391,24 +426,4 @@ public class UserCourseController extends HttpServlet implements Controller {
             response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
         }
     }
-    
-    private void getCourse(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HashMap<Integer, String> courses = new HashMap<>();
-        Gson json = new Gson();
-        String course = json.toJson(courses);
-        response.setContentType("text/html");
-        response.getWriter().write(course);
-    }
-    
-    private void getPrice(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int courseId = Integer.parseInt(request.getParameter("courseId"));
-        ArrayList<PricePackage> coursePack = courseService.getCoursePackage(courseId);
-        Gson json = new Gson();
-        String price = json.toJson(coursePack);
-        response.setContentType("text/html");
-        response.getWriter().write(price);
-    }
-
 }

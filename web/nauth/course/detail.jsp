@@ -63,6 +63,13 @@
                                         Register Now
                                     </button>
                                 </a>
+                                <a href="${path}/auth/user/UserCourse?operation=GIFT&courseId=${detail.id}"
+                                   class="btn px-sm-5 py-2">
+                                    <button type="button" class="btn"
+                                            style="background: #007791; color: white; font-weight: bold;">
+                                        Gift this course
+                                    </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -175,10 +182,10 @@
                 </div>
             </section>
         </div>
-<<<<<<< HEAD
+        <<<<<<< HEAD
         <jsp:include page="/components/global/footer.jsp"/>
-=======
->>>>>>> cb96a0e26ddf7c43e9d2cfb576e82f91edbc79b0
+        =======
+        >>>>>>> cb96a0e26ddf7c43e9d2cfb576e82f91edbc79b0
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -192,7 +199,7 @@
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
             crossorigin="anonymous">
     </script>
-<<<<<<< HEAD
+    <<<<<<< HEAD
 </html>
 =======
 </html>
