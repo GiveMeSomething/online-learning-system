@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class EmailController extends HttpServlet implements Controller{
+public class EmailController extends HttpServlet implements Controller {
 
     private String host;
     private String port;
@@ -44,7 +44,6 @@ public class EmailController extends HttpServlet implements Controller{
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String operation = request.getParameter("work");
-
         if (operation.equals("CONFIRM")) {
             // Reads request data
             String userEmail = request.getParameter("email");
@@ -68,14 +67,14 @@ public class EmailController extends HttpServlet implements Controller{
             // This is middle space which navigate to operation RESETPW
             String resetEmail = request.getParameter("email");
             request.setAttribute("email", email);
-            
+
             // Get reset path in AuthController through session
             HttpSession ses = request.getSession(false);
-            if(ses == null){
+            if (ses == null) {
                 this.forwardErrorMessage(request, response, "this session has been expired", "nauth/resetPassword1.jsp");
             }
             Object obj = ses.getAttribute("resetPath");
-            
+
             // Test if session ends, link will be expired or not
             if (obj == null) {
                 this.forwardErrorMessage(request, response, "this link has been expired", "nauth/resetPassword1.jsp");
@@ -101,7 +100,6 @@ public class EmailController extends HttpServlet implements Controller{
             throws ServletException, IOException {
         // Get operation from request
         String operation = request.getParameter("operation");
-
         if (operation.equals("CONFIRM")) {
             // Reads request data
             String inputEmail = request.getParameter("receiver");
@@ -125,9 +123,17 @@ public class EmailController extends HttpServlet implements Controller{
             boolean isSent = emailService.sendResetPasswordEmail(host, port, email, password, thisEmail, token);
         } else if (operation.equals("AUTH")) {
             processAuth(request, response);
+        } else if (operation.equals("CREATENEWACCOUNT")) {
+            String newEmail = request.getParameter("receiver");
+            boolean isSent = emailService.sendNewAccount(host, port, email, password, newEmail);
+            if (isSent) {
+                System.out.println("sent");
+            } else {
+                System.out.println("not sent");
+            }
+            response.sendRedirect("/home");
         } else {
             response.sendRedirect("/home");
-
         }
     }
 

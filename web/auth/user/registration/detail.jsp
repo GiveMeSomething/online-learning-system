@@ -35,7 +35,8 @@
                     <div class="invalid-feedback"></div>
                 </div>
                 <input hidden="true" name="userId" value="${detail.user.id}">
-                <input hidden="true" name="courseId" value="${sessionScope.courseId}">
+                <input hidden="true" name="courseId" value="${course.id}">
+                <input hidden="true" name="existCourseId" value="${detail.id}">
                 <div class="row">
                     <div class="col-6">
                         <div class="px-5 user-infor">
