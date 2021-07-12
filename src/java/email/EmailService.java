@@ -47,6 +47,19 @@ public class EmailService {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    // Test send email
+    public boolean sendNewAccount(String host, String port, String email, String password, String receiver) {
+        try {
+            String subject = "OLS Reset Password";
+            String content = "Your Email:" + receiver+"\nYour Password: abc123\nPlease change your password as soon as you received this mail";
+            Emailer.sendEmail(host, port, email, password, receiver, subject, content);
 
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

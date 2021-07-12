@@ -126,7 +126,6 @@ public class UserCourseController extends HttpServlet implements Controller {
         int userId = Integer.parseInt(request.getParameter("userId"));
         int courseId = Integer.parseInt(request.getParameter("courseId"));
         System.out.println("CourseId " + courseId);
-//        int courseId = 1;
         CourseRegistation regisDetail = userCourseService.getRegistrationDetail(userId, courseId);
         request.setAttribute("detail", regisDetail);
         request.getRequestDispatcher("/auth/user/registration/detail.jsp").forward(request, response);
@@ -149,6 +148,7 @@ public class UserCourseController extends HttpServlet implements Controller {
     private void processEditRegistrationInfo(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int status;
+        int courseId;
         HttpSession session = request.getSession();
         if (request.getParameter("status") != null) {
             status = Integer.parseInt(request.getParameter("status"));
@@ -156,8 +156,11 @@ public class UserCourseController extends HttpServlet implements Controller {
             status = 1;
         }
         String email = request.getParameter("email");
-        System.out.println(email);
-        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        if (request.getParameter("existCourseId") == null || request.getParameter("existCourseId").equals("")) {
+            courseId = Integer.parseInt(request.getParameter("courseId"));
+        } else {
+            courseId = Integer.parseInt(request.getParameter("existCourseId"));
+        }
         String name = request.getParameter("full-name");
         String gender = request.getParameter("gender");
         String mobile = request.getParameter("mobile");
@@ -169,12 +172,12 @@ public class UserCourseController extends HttpServlet implements Controller {
 
     }
 
-    private void changeToPaidCourse(HttpServletRequest request, HttpServletResponse response, 
+    private void changeToPaidCourse(HttpServletRequest request, HttpServletResponse response,
             int courseId, String name, String gender, String mobile, int status)
             throws ServletException, IOException {
         //User does exist
         String email = request.getParameter("existEmail");
-        if(authService.getAccount(email) == null){
+        if (authService.getAccount(email) == null) {
             // Create new account
             Account account = new Account(email, "abc123", Role.STUDENT);
             authService.register(account);
@@ -182,32 +185,35 @@ public class UserCourseController extends HttpServlet implements Controller {
             // Get id from new account
             int newId = userService.getUser(email).getId();
             userCourseService.updateStatus(newId, courseId, status);
-        }else{
+            System.out.println("email from changeToPaid: " + email);
+            String createNewAccount = "/email?operation=CREATENEWACCOUNT&receiver=" + email;
+            request.getRequestDispatcher(createNewAccount).forward(request, response);
+        } else {
             User user = userService.getUser(email);
             int userId = user.getId();
             userCourseService.updateStatus(userId, courseId, status);
         }
     }
-    
-    private void notPaidYet(HttpServletRequest request, HttpServletResponse response, String email, 
+
+    private void notPaidYet(HttpServletRequest request, HttpServletResponse response, String email,
             int courseId, String name, String gender, String mobile, int status)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         System.out.println(email);
         int price = Integer.parseInt(request.getParameter("package"));
-            String note = request.getParameter("note");
+        String note = request.getParameter("note");
+        if (userService.getUser(email) != null) {
             // User does exist
-            if (userService.getUser(email) != null) {
-                User user = userService.getUser(email);
-                int userId = user.getId();
-                userCourseService.addRegistrationForFriend(userId, courseId, price, note);
-            } else {
-                System.out.println("this is "+email);
-                User user = new User(name, Gender.valueOf(gender), email, Status.ACTIVE, mobile);
-                userService.addUser(user);
-                int userId = userService.getUser(email).getId();
-                userCourseService.addRegistrationForFriend(userId, courseId, price, note);
-            }
+            User user = userService.getUser(email);
+            int userId = user.getId();
+            userCourseService.addRegistrationForFriend(userId, courseId, price, note);
+        } else {
+            System.out.println("this is " + email);
+            User user = new User(name, Gender.valueOf(gender), email, Status.ACTIVE, mobile);
+            userService.addUser(user);
+            int userId = userService.getUser(email).getId();
+            userCourseService.addRegistrationForFriend(userId, courseId, price, note);
+        }
     }
 
     private void updateStatus(HttpServletRequest request, HttpServletResponse response, User u)

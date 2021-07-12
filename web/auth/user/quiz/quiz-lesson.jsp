@@ -46,7 +46,7 @@
                 <div class="col-md-6">
                     <c:if test="${!dao1.isFinishQuiz(sessionScope.user.id, quizIdCuaDuyAnh)}">
                         <button type="button" class="btn btn-primary" style="float: right;">
-                            <a style="color: white; text-decoration: none;" href="${path}/auth/user/quiz?operation=VIEWQUIZHANDLE&quizId=${quizIdCuaDuyAnh}">
+                            <a style="color: white; text-decoration: none;" href="${path}/auth/user/user_quiz?operation=VIEWQUIZHANDLE&quizId=${quizIdCuaDuyAnh}">
                                 Start
                             </a>
                         </button>
@@ -84,7 +84,7 @@
                 <div class="col-md-6">
                     <c:if test="${dao1.isFinishQuiz(sessionScope.user.id, quizIdCuaDuyAnh)}"> 
                         <span style="color: red; background-color: white; float: right;">
-                            <a href="${path}/auth/user/quiz?operation=VIEWQUIZHANDLE&quizId=${quizIdCuaDuyAnh}"">
+                            <a href="${path}/auth/user/user_quiz?operation=VIEWQUIZHANDLE&quizId=${quizIdCuaDuyAnh}">
                                 Try again
                             </a>
                         </span>
