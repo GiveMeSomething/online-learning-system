@@ -117,7 +117,7 @@
                                     <td>${item.get(6)}</td>
                                     <td>${item.get(7)}</td>
                                     <td>
-                                        <a href="${path}/auth/user/UserCourse?operation=VIEWDETAIL&userId=17&courseId=6">
+                                        <a href="${path}/auth/user/UserCourse?operation=VIEWDETAIL&userId=${item.get(8)}&courseId=${item.get(9)}">
                                             <button type="button" class="btn btn-primary">
                                                 View Details
                                             </button>

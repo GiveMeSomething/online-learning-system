@@ -267,7 +267,7 @@ public class UserCourseRepository extends Repository {
             options += "ORDER BY " + orderBy + " ";
         }
 
-        String sql = "SELECT uc.course_id, u.email, uc.registration_time, c.title, pp.name, "
+        String sql = "SELECT uc.user_id, uc.course_id, u.email, uc.registration_time, c.title, pp.name, "
                 + "TRUNCATE((pp.list_price * pp.discount) / 100, 2) as cost, uc.registration_status, "
                 + "uc.registration_time as valid_from, DATE_ADD(uc.registration_time, INTERVAL pp.duration MONTH) as valid_to "
                 + "FROM user_course uc LEFT OUTER JOIN user u on uc.user_id = u.id "
@@ -294,6 +294,8 @@ public class UserCourseRepository extends Repository {
                 );
                 dataRow.add(result.getString("valid_from"));
                 dataRow.add(result.getString("valid_to"));
+                dataRow.add(result.getString("user_id"));
+                dataRow.add(result.getString("course_id"));
 
                 resultList.add(dataRow);
             }
