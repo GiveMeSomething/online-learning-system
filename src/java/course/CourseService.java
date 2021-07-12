@@ -476,4 +476,14 @@ public class CourseService {
         }
         return null;
     }
+
+    public boolean registerCourse(int userId, int courseId, int pricePackageId) {
+        try {
+            return courseRepository.registerCourse(userId, courseId, pricePackageId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }

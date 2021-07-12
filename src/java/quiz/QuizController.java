@@ -145,7 +145,7 @@ public class QuizController extends HttpServlet implements Controller {
         int quizId = Integer.parseInt(request.getParameter("quizId"));
         int courseId = Integer.parseInt(session.getAttribute("courseId").toString());
         Quiz quiz = quizService.getQuiz(quizId);
-        
+
         String page = request.getParameter("page");
         int pages = 1;
         if (page == null) {
@@ -387,6 +387,7 @@ public class QuizController extends HttpServlet implements Controller {
         }
 
         currentSession.setAttribute("questionList", questionList);
+        request.setAttribute("quizId", quizId);
         request.setAttribute("questionNum", selectedQuestion);
 
         request.setAttribute("pageItem", questionList.get(selectedQuestion));

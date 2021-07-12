@@ -58,7 +58,7 @@
                             <div style="margin-top: 2rem; margin-left: 3rem">
                                 <a href="#"
                                    class="btn px-sm-5 py-2">
-                                    <button data-toggle="modal" data-target="#exampleModal" type="button" class="btn"
+                                    <button data-toggle="modal" data-target="#course-register-modal" type="button" class="btn"
                                             style="background: #007791; color: white; font-weight: bold;">
                                         Register Now
                                     </button>
@@ -181,11 +181,115 @@
                     </div>
                 </div>
             </section>
+            <section id="model-container">
+                <div class="container">
+                    <div class="modal fade" id="course-register-modal" tabindex="-1" role="dialog">
+                        <form action="${path}/course?operation=REGISTER&courseId=${pageContext.request.getParameter('courseId')}"
+                              method="POST"
+                              class="needs-validation"
+                              novalidate>
+                            <div class="request-info">
+                                <input name="previousPage" value="/course?courseId=${pageContext.request.getParameter('courseId')}" hidden="true" />
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Login</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div>
+                                            <label for="fullname">Full Name</label>
+                                            <input class="form-control"
+                                                   name="fullname"
+                                                   type="text"
+                                                   id="fullname"
+                                                   placeholder="Enter your full name"
+                                                   data-value-missing="Can't be empty"
+                                                   required
+                                                   value="${sessionScope.user.name}"/>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                        <div>
+                                            <label for="register-email">Email address</label>
+                                            <input class="form-control"
+                                                   name="email"
+                                                   type="email"
+                                                   id="register-email"
+                                                   placeholder="Enter email"
+                                                   data-value-missing="Can't be empty"
+                                                   required
+                                                   value="${sessionScope.user.email}"
+                                                   ${sessionScope.user.email != null ? 'readonly': ''}/>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                        <div>
+                                            <label for="register-mobile">Mobile</label>
+                                            <input class="form-control"
+                                                   name="password"
+                                                   type="text"
+                                                   id="register-mobile"
+                                                   name="mobile"
+                                                   placeholder="Enter mobile phone number"
+                                                   data-value-missing="Can't be empty"
+                                                   required
+                                                   value="${sessionScope.user.mobile}"/>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="my-2">
+                                                    <label>Gender</label>
+                                                    <div class="custom-control custom-radio custom-control">
+                                                        <input type="radio" id="male" name="gender" class="custom-control-input" value="MALE" checked>
+                                                        <label class="custom-control-label" for="male">Male</label>
+                                                        <div class="invalid-feedback"></div>
+                                                    </div>
+                                                    <div class="custom-control custom-radio custom-control">
+                                                        <input type="radio" id="female" name="gender" class="custom-control-input" value="FEMALE">
+                                                        <label class="custom-control-label" for="female">Female</label>
+                                                        <div class="invalid-feedback"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="my-2">
+                                                    <label>Price Package</label>
+                                                    <div class="custom-control custom-radio custom-control">
+                                                        <input type="radio" id="3-month" name="pricepkg" class="custom-control-input" value="1" checked>
+                                                        <label class="custom-control-label" for="3-month">3-month access package: $74.99</label>
+                                                        <div class="invalid-feedback"></div>
+                                                    </div>
+                                                    <div class="custom-control custom-radio custom-control">
+                                                        <input type="radio" id="6-month" name="pricepkg" class="custom-control-input" value="2">
+                                                        <label class="custom-control-label" for="6-month">6-month access package: $94.99</label>
+                                                        <div class="invalid-feedback"></div>
+                                                    </div>
+                                                    <div class="custom-control custom-radio custom-control">
+                                                        <input type="radio" id="no-month" name="pricepkg" class="custom-control-input" value="3">
+                                                        <label class="custom-control-label" for="no-month">Permanent package: $119.99</label>
+                                                        <div class="invalid-feedback"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">Register</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
         </div>
-        <<<<<<< HEAD
         <jsp:include page="/components/global/footer.jsp"/>
-        =======
-        >>>>>>> cb96a0e26ddf7c43e9d2cfb576e82f91edbc79b0
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -199,10 +303,4 @@
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
             crossorigin="anonymous">
     </script>
-    <<<<<<< HEAD
 </html>
-=======
-</html>
-
-
->>>>>>> cb96a0e26ddf7c43e9d2cfb576e82f91edbc79b0
