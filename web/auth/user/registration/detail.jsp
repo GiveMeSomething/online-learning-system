@@ -35,15 +35,15 @@
                     <div class="invalid-feedback"></div>
                 </div>
                 <input hidden="true" name="userId" value="${detail.user.id}">
-                <input hidden="true" name="courseId" value="${detail.id}">
+                <input hidden="true" name="courseId" value="${sessionScope.courseId}">
                 <div class="row">
                     <div class="col-6">
                         <div class="px-5 user-infor">
                             <div class="form-group">
-                                <label for="category">Full name</label><br>
+                                <label for="full-name">Full name</label><br>
                                 <input class="form-control"
                                        name="full-name"
-                                       disabled
+                                       ${detail.user.id == sessionScope.user.id || detail.user.id == null?"":"disabled"} 
                                        type="text"
                                        value="${detail.user.name}"
                                        data-value-missing="Can't be empty"
@@ -51,22 +51,28 @@
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group">
-                                <label for="category">Gender</label><br>
-                                <input class="form-control"
-                                       name="gender"
-                                       disabled
-                                       type="text"
-                                       value="${detail.user.gender}"
+                                <label class="mr-3">Gender</label> 
+                                <input name="gender"
+                                       ${detail.user.id == sessionScope.user.id || detail.user.id == null?"":"disabled"}
+                                       type="radio" id="male"
+                                       value="MALE" ${detail.user.gender == "MALE"?"checked":""}
                                        data-value-missing="Can't be empty"
-                                       required/>
+                                       required/> <label for="male">MALE</label> 
+                                <input name="gender" class="ml-3"
+                                       type="radio" id="female"
+                                       ${detail.user.id == sessionScope.user.id || detail.user.id == null?"":"disabled"}
+                                       value="FEMALE" ${detail.user.gender == "FEMALE"?"checked":""}
+                                       data-value-missing="Can't be empty"
+                                       required/> <label for="female">FEMALE</label>
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label><br>
-                                <input hidden value="${detail.user.email}" name="email"/>
+                                <input hidden value="${detail.user.email}" name="existEmail"/>
                                 <input class="form-control"
-                                       disabled
+                                       ${detail.user.id == sessionScope.user.id || detail.user.id == null?"":"disabled"}
                                        type="text"
+                                       name="email"
                                        value="${detail.user.email}"
                                        data-value-missing="Can't be empty"
                                        required/>
@@ -76,21 +82,23 @@
                                 <label for="category">Mobile</label><br>
                                 <input class="form-control"
                                        name="mobile"
-                                       disabled
+                                       ${detail.user.id == sessionScope.user.id || detail.user.id == null?"":"disabled"}
                                        type="text"
                                        value="${detail.user.mobile}"
                                        data-value-missing="Can't be empty"
                                        required/>
                                 <div class="invalid-feedback"></div>
                             </div>
-                            <div class="form-group">
-                                <label>Registration Status</label><br>
-                                <select name="status" class="form-control">
-                                    <option value="1" ${detail.status==1?"selected":""}>Submitted</option>
-                                    <option value="0" ${detail.status==0?"selected":""}>Cancelled</option>
-                                    <option value="2" ${detail.status==2?"selected":""}>Paid</option>
-                                </select>        
-                            </div>
+                            <c:if test="${sessionScope.isAdmin != null}">
+                                <div class="form-group">
+                                    <label>Registration Status</label><br>
+                                    <select name="status" class="form-control">
+                                        <option value="1" ${detail.status==1?"selected":""}>Submitted</option>
+                                        <option value="0" ${detail.status==0?"selected":""}>Cancelled</option>
+                                        <option value="2" ${detail.status==2?"selected":""}>Paid</option>
+                                    </select>        
+                                </div>
+                            </c:if>
                         </div>
                     </div>
                     <div class="col-6">
@@ -98,60 +106,86 @@
                             <div class="form-group">
                                 <label for="subjectName">Subject Name</label>
                                 <input class="form-control"
-                                       disabled
+                                       ${detail.user.id == sessionScope.user.id ?"":"disabled"}
                                        name="subjectName"
                                        type="text"
-                                       value="${detail.title}"
+                                       <c:if test="${detail.title==null}">
+                                           value="${course.courseName}"
+                                       </c:if>
+                                       <c:if test="${detail.title!=null}">
+                                           value="${detail.title}"
+                                       </c:if>
                                        data-value-missing="Can't be empty"
                                        required/>
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group">
                                 <label for="package">Package</label><br>
-                                <input class="form-control"
-                                       disabled
-                                       id="package"
-                                       name="package"
-                                       type="text"
-                                       id="package" 
-                                       value="${detail.packages}"
-                                       data-value-missing="Can't be empty"
-                                       required/>
+                                <c:choose>
+                                    <c:when test="${detail.user.id == null}">
+                                        <select name="package" class="form-control">
+                                            <c:forEach items="${package}" var="p">
+                                                <option value="${p.id}">${p.name} - ${p.price}$</option>
+                                            </c:forEach>
+                                        </select>
+                                    </c:when>
+                                    <c:when test="${detail.user.id != null}">
+                                        <input class="form-control"
+                                               ${detail.user.id == sessionScope.user.id || detail.user.id == null?"":"disabled"}
+                                               id="package"
+                                               name="package"
+                                               type="text"
+                                               id="package" 
+                                               value="${detail.packages}"
+                                               data-value-missing="Can't be empty"
+                                               required/>
+                                    </c:when>
+                                </c:choose>
                                 <div class="invalid-feedback"></div>
                             </div>
-                            <div class="form-group">
-                                <label for="price">Price</label><br>
-                                <input class="form-control"
-                                       name="price"
-                                       disabled
-                                       type="text"
-                                       value="${detail.totalCost}"
-                                       data-value-missing="Can't be empty"
-                                       required/>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="category">Valid from</label><br>
-                                <input class="form-control"
-                                       name="validFrom"
-                                       disabled
-                                       type="text"
-                                       value="${detail.validFrom}"
-                                       data-value-missing="Can't be empty"
-                                       required/>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="category">Valid To</label><br>
-                                <input class="form-control"
-                                       name="validTo"
-                                       disabled
-                                       type="text"
-                                       value="${detail.validTo}"
-                                       data-value-missing="Can't be empty"
-                                       required/>
-                                <div class="invalid-feedback"></div>
-                            </div>
+                            <c:if test="${detail.user.id != null}">
+                                <div class="form-group">
+                                    <label for="price">Price</label><br>
+                                    <input class="form-control"
+                                           name="price"
+                                           ${detail.user.id == sessionScope.user.id || detail.user.id == null?"":"disabled"}
+                                           type="text"
+                                           value="${detail.totalCost}"
+                                           data-value-missing="Can't be empty"
+                                           required/>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="category">Valid from</label><br>
+                                    <input class="form-control"
+                                           name="validFrom"
+                                           ${detail.user.id == sessionScope.user.id || detail.user.id == null?"":"disabled"}
+                                           type="text"
+                                           value="${detail.validFrom}"
+                                           data-value-missing="Can't be empty"
+                                           required/>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="category">Valid To</label><br>
+                                    <input class="form-control"
+                                           name="validTo"
+                                           ${detail.user.id == sessionScope.user.id || detail.user.id == null?"":"disabled"}
+                                           type="text"
+                                           value="${detail.validTo}"
+                                           data-value-missing="Can't be empty"
+                                           required/>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </c:if>   
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 px-5">
+                        <div class="note">
+                            <label for="note">Note</label>
+                            <textarea id="note" class="form-control" name="note">${detail.note}</textarea>
                         </div>
                     </div>
                 </div>

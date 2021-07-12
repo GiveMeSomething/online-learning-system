@@ -16,6 +16,7 @@ import common.entities.Dimension;
 import common.entities.Lesson;
 import common.entities.User;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -77,6 +78,7 @@ public class QuizController extends HttpServlet implements Controller {
                     Quiz eQuiz = quizService.getQuiz(Integer.parseInt(quizId));
                     getDimensionByTypeForQuiz(request, response, eQuiz);
                     break;
+                ///auth/user/quiz?operation=VIEWQUIZHANDLE
                 case "VIEWQUIZHANDLE":
                     processViewQuizHandle(request, response);
                     break;
@@ -89,9 +91,6 @@ public class QuizController extends HttpServlet implements Controller {
                 case "VIEWQUIZREVIEW":
                     processQuizReview(request, response);
                     break;
-                case "SUBMITQUIZ":
-                    getUserAnswer(request, response);
-                    break;
                 default:
                     send404(request, response);
                     break;
@@ -103,18 +102,23 @@ public class QuizController extends HttpServlet implements Controller {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String operation = request.getParameter("operation");
-
+        String quizId;
         if (operation.equals("FILTER")) {
             processInputForQuiz(request, response);
         } else {
             switch (operation) {
                 case "ADDQUIZSETTING":
-                    HttpSession session = request.getSession();
-                    Quiz quiz = (Quiz) session.getAttribute("quiz");
-                    addQuizSetting(request, response, quiz);
+                    quizId = request.getParameter("quizId");
+                    if (quizId == null || quizId.equalsIgnoreCase("")) {
+                        HttpSession session = request.getSession();
+                        Quiz quiz = (Quiz) session.getAttribute("quiz");
+                        addQuizSetting(request, response, quiz);
+                    } else {
+                        updateQuizSetting(request, response);
+                    }
                     break;
                 case "ADDQUIZOVERVIEW":
-                    String quizId = request.getParameter("quizId");
+                    quizId = request.getParameter("quizId");
                     if (quizId == null || quizId.equalsIgnoreCase("")) {
                         addQuizOverview(request, response);
                     } else {
@@ -123,6 +127,9 @@ public class QuizController extends HttpServlet implements Controller {
                     break;
                 case "QUIZHANDLE":
                     processQuizHandle(request, response);
+                    break;
+                case "SUBMITQUIZ":
+                    getUserAnswer(request, response);
                     break;
                 default:
                     send404(request, response);
@@ -134,32 +141,52 @@ public class QuizController extends HttpServlet implements Controller {
     private void processViewQuizHandle(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-
         int userId = ((User) session.getAttribute("user")).getId();
-//        int userQuizId = Integer.parseInt(request.getParameter("user-quiz-id"));
-//        session.setAttribute("userQuizId", userQuizId);
-        int quizId = 14;
-//        int quizId = Integer.parseInt(request.getParameter("quiz-dimension-lesson-id"));
-        int courseId = 1;
-//        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        int quizId = Integer.parseInt(request.getParameter("quizId"));
+        int courseId = Integer.parseInt(session.getAttribute("courseId").toString());
+        Quiz quiz = quizService.getQuiz(quizId);
+
         String page = request.getParameter("page");
         int pages = 1;
         if (page == null) {
             pages = 1;
         }
+        int userQuizId = 0;
+        ArrayList<Object> userQuiz = quizService.getUserQuiz(userId, quizId);
+        if (userQuiz == null || userQuiz.isEmpty()) {
+            quizService.addUserQuiz(userId, quizId);
+            userQuiz = quizService.getUserQuiz(userId, quizId);
+            session.setAttribute("time", userQuiz.get(userQuiz.size() - 1));
+        } else {
+            quizService.addUserQuiz(userId, quizId);
+            userQuiz = quizService.getUserQuiz(userId, quizId);
+            if (userQuiz.size() > 1) {
+                userQuizId = (Integer) userQuiz.get(userQuiz.size() - 3);
+                session.setAttribute("time", userQuiz.get(userQuiz.size() - 1));
+            } else {
+                userQuizId = (Integer) userQuiz.get(0);
+            }
+        }
+        session.setAttribute("userQuizId", userQuizId);
+        session.setAttribute("testTime", quiz.getDuration());
+        HashMap<Integer, ArrayList<Integer>> getDataForQuestion = quizService.getDataForQuestion(quizId);
 
-        ArrayList<Integer> getDataForQuestion = quizService.getDataForQuestion(quizId);
-        Quiz quiz = quizService.getQuiz(getDataForQuestion.get(0));
-        ArrayList<Question> questions = quizService.getQuestionByDimension(courseId, getDataForQuestion.get(1),
-                getDataForQuestion.get(2), Level.valueOf(quiz.getLevel()), getDataForQuestion.get(3));
+        ArrayList<Question> questions;
+        ArrayList<Question> combination = new ArrayList<>();
+
+        for (Integer key : getDataForQuestion.keySet()) {
+            questions = quizService.getQuestionByDimension(courseId, getDataForQuestion.get(key).get(0),
+                    getDataForQuestion.get(key).get(1), Level.valueOf(quiz.getLevel()), getDataForQuestion.get(key).get(2));
+            combination.addAll(questions);
+        }
         if (session.getAttribute("question") == null) {
-            session.setAttribute("question", questions);
+            session.setAttribute("question", combination);
         }
 
         ArrayList<Question> questionInSession = (ArrayList<Question>) session.getAttribute("question");
         for (Question question : questionInSession) {
-            if (quizService.addQuizSetting(quiz, question.getId())) {
-                // Do something
+            if (!quizService.checkExistQuestion(quizId, question.getId())) {
+                quizService.addQuizSetting(quiz, question.getId());
             }
         }
 
@@ -183,7 +210,9 @@ public class QuizController extends HttpServlet implements Controller {
         int pages = Integer.parseInt(page);
         System.out.println("day la pages in processQUizHandle " + pages);
         ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
-
+        if (session.getAttribute("answer") != null) {
+            System.out.println(session.getAttribute("answer"));
+        }
         int startItem = (pages - 1) * 1;
         int endItem = (startItem + 1) > questions.size() ? questions.size() : startItem + 1;
         doQuizHandle(request, response);
@@ -202,23 +231,15 @@ public class QuizController extends HttpServlet implements Controller {
         int page = Integer.parseInt(request.getParameter("thisPage"));
         int pageFromProcess = Integer.parseInt(request.getParameter("page"));
         System.out.println("Day la page from doQuizHandle " + page);
-
-        HashMap<String, Boolean> markedQuestion = getMarkedQuestion(request, response, page, pageFromProcess);
-
-        String answer = request.getParameter("q" + (page));
-        HashMap<String, String> userAnswers = new HashMap<>();
-
-        // all question save in answer session
-        if (session.getAttribute("answer") != null && page != pageFromProcess) {
-            userAnswers = (HashMap<String, String>) session.getAttribute("answer");
-            userAnswers.put("" + page, answer);
-        } else if (session.getAttribute("answer") == null && page != pageFromProcess) {
-            userAnswers.put("" + page, answer);
-            session.setAttribute("answer", userAnswers);
+        HashMap<String, Boolean> markedQuestion = getMarkedQuestion(request, response, page);
+        System.out.println("Answer from doQUizHandle" + session.getAttribute("answer"));
+        if (page != pageFromProcess) {
+            System.out.println("vao page != page");
+            HashMap<String, String> userAnswer = getAnswer(request, response, page, pageFromProcess);
         }
     }
 
-    private HashMap<String, Boolean> getMarkedQuestion(HttpServletRequest request, HttpServletResponse response, int page, int pageFromProcess)
+    private HashMap<String, Boolean> getMarkedQuestion(HttpServletRequest request, HttpServletResponse response, int page)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         boolean mark = request.getParameter("mark") != null;
@@ -236,21 +257,61 @@ public class QuizController extends HttpServlet implements Controller {
         return marked;
     }
 
+    private HashMap<String, String> getAnswer(HttpServletRequest request, HttpServletResponse response, int page, int pageFromProcess)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+
+        String answer = request.getParameter("q" + (page));
+        HashMap<String, String> userAnswers = new HashMap<>();
+
+        // all question save in answer session
+        if (session.getAttribute("answer") != null && page != pageFromProcess) {
+            userAnswers = (HashMap<String, String>) session.getAttribute("answer");
+            userAnswers.put("" + page, answer);
+        } else if (session.getAttribute("answer") == null && page != pageFromProcess) {
+            userAnswers.put("" + page, answer);
+            session.setAttribute("answer", userAnswers);
+        }
+        return userAnswers;
+    }
+
+    private HashMap<String, String> getLastAnswer(HttpServletRequest request, HttpServletResponse response, int page)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String answer = request.getParameter("q" + (page));
+        HashMap<String, String> userAnswers = new HashMap<>();
+
+        // all question save in answer session
+        if (session.getAttribute("answer") != null) {
+            userAnswers = (HashMap<String, String>) session.getAttribute("answer");
+            // Day la loi cua view all question
+            userAnswers.put("" + page, answer);
+            System.out.println("get last ans khi ko null" + session.getAttribute("answer"));
+        } else if (session.getAttribute("answer") == null) {
+            userAnswers.put("" + page, answer);
+            session.setAttribute("answer", userAnswers);
+            System.out.println("get last ans khi null" + session.getAttribute("answer"));
+
+        }
+        return userAnswers;
+    }
+
     //After Press Score button
     private void getUserAnswer(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        int page = Integer.parseInt(request.getParameter("thisPage"));
+        int page = Integer.parseInt(request.getParameter("page"));
         ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
         if (page == questions.size()) {
-            doQuizHandle(request, response);
+            session.setAttribute("marked", getMarkedQuestion(request, response, page));
+            session.setAttribute("answer", getLastAnswer(request, response, page));
         }
-        // Set default fot user_quiz_id
-        int userQuizId = 2;
         // get user_quiz_id from Quiz lesson
-//        int userQuizId = (Integer)session.getAttribute("userQuizId");
-        HashMap<String, String> userAnswer = (HashMap<String, String>) session.getAttribute("answer");
+        int userQuizId = (Integer) session.getAttribute("userQuizId");
         questions = (ArrayList<Question>) session.getAttribute("question");
+        HashMap<String, String> userAnswer = (HashMap<String, String>) session.getAttribute("answer");
+        System.out.println("answer " + userAnswer);
+        System.out.println("question " + questions);
         HashMap<String, Boolean> questionStatus = (HashMap<String, Boolean>) session.getAttribute("marked");
         for (int i = 0; i < questions.size(); i++) {
             String questionPage = (i + 1) + "";
@@ -265,6 +326,7 @@ public class QuizController extends HttpServlet implements Controller {
         HttpSession session = request.getSession();
         HashMap<String, String> userAnswer = (HashMap<String, String>) session.getAttribute("answer");
         ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
+        int userQuizId = (Integer) session.getAttribute("userQuizId");
         int countTrueAnswer = 0;
         for (int i = 0; i < questions.size(); i++) {
             int questionNumber = i + 1;
@@ -273,13 +335,31 @@ public class QuizController extends HttpServlet implements Controller {
             }
         }
         float score = (float) countTrueAnswer / questions.size();
-        //Lay diem o day
         System.out.println(score);
+        System.out.println(userQuizId);
+        quizService.addMark(score, userQuizId);
+        session.setAttribute("ketquacuoicung", score);
+        session.setAttribute("answer", null);
+        session.setAttribute("marked", null);
+        session.setAttribute("question", null);
+        String courseid = session.getAttribute("courseId").toString();
+        String lessonId = session.getAttribute("lessonId").toString();
+        response.sendRedirect(request.getContextPath() + "/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&lessonId=" + lessonId + "&courseId=" + courseid + "");
+
     }
 
     private void processQuizResult(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession();
+//        int quizId = quizService.getQuizId(Integer.parseInt(session.getAttribute("courseId").toString()));
+//        request.setAttribute("quizId", quizId);
+//        request.setAttribute("ketquacuoicung", session.getAttribute("ketquacuoicung").toString());
+//        request.getRequestDispatcher("/auth/user/quiz/quiz-lesson.jsp").forward(request, response);
+        User u = (User) session.getAttribute("user");
+        out.print(u.getId());
+        request.setAttribute("ketquacuoicung", session.getAttribute("ketquacuoicung").toString());
+        request.getRequestDispatcher("/auth/user/quiz/quiz-lesson.jsp").forward(request, response);
     }
 
     private void processQuizReview(HttpServletRequest request, HttpServletResponse response)
@@ -443,7 +523,6 @@ public class QuizController extends HttpServlet implements Controller {
 
     public void addQuizSetting(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
             throws ServletException, IOException {
-        ArrayList<Question> combination = new ArrayList<>();
         // Get value from Quiz Setting
         HttpSession session = request.getSession();
         String forwardTo = "/auth/teacher/quiz";
@@ -468,28 +547,15 @@ public class QuizController extends HttpServlet implements Controller {
             String[] lessonId = request.getParameterValues("dimension-name");
             int level = Level.valueOf(quiz.getLevel());
             for (int i = 0; i < numberOfQues.length; i++) {
-                ArrayList<Question> questions = quizService.getQuestionByDimension(courseId, 0, Integer.parseInt(lessonId[i]),
-                        level, Integer.parseInt(numberOfQues[i]));
-                if (questions != null) {
-                    combination.addAll(questions);
-                }
+                quizService.addNewQuizSetting(quiz, 0, Integer.parseInt(lessonId[i]), Integer.parseInt(numberOfQues[i]));
             }
         } else {
             String[] dimensionId = request.getParameterValues("dimension-name");
             int level = Level.valueOf(quiz.getLevel());
             for (int i = 0; i < numberOfQues.length; i++) {
                 if (numberOfQues[i] != null) {
-                    ArrayList<Question> questions = quizService.getQuestionByDimension(courseId, Integer.parseInt(dimensionId[i]), 0,
-                            level, Integer.parseInt(numberOfQues[i]));
-                    if (questions != null) {
-                        combination.addAll(questions);
-                    }
+                    quizService.addNewQuizSetting(quiz, Integer.parseInt(dimensionId[i]), 0, Integer.parseInt(numberOfQues[i]));
                 }
-            }
-        }
-        for (Question question : combination) {
-            if (quizService.addQuizSetting(quiz, question.getId())) {
-                // Do something
             }
         }
         session.setAttribute("quiz", null);
@@ -519,16 +585,44 @@ public class QuizController extends HttpServlet implements Controller {
     // Not done yet
     public void updateQuizSetting(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String quizName = request.getParameter("quiz-name");
-        int subject = Integer.parseInt(request.getParameter("subject-name"));
-        Level level = Level.valueOf(request.getParameter("exam-level"));
-        int duration = Integer.parseInt(request.getParameter("duration"));
-        float passRate = Float.parseFloat(request.getParameter("pass-rate"));
-        TestType type = TestType.valueOf(request.getParameter("quiz-type"));
-        String description = request.getParameter("description");
-        Quiz quiz = new Quiz(id, quizName, subject, level, duration, type, passRate, description);
-        quizService.updateQuizOverView(quiz);
+        // Get value from Quiz Setting
+        HttpSession session = request.getSession();
+        String forwardTo = "/auth/teacher/quiz";
+        int quizId = Integer.parseInt(request.getParameter("quizId"));
+        Quiz quiz = quizService.getQuiz(quizId);
+//        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        int courseId = 1;
+        String typeInString = request.getParameter("type");
+        int type;
+        if (typeInString.equalsIgnoreCase("Group")) {
+            type = 2;
+        } else if (typeInString.equalsIgnoreCase("Lesson")) {
+            type = 0;
+        } else {
+            type = 1;
+        }
+        String[] numberOfQues = request.getParameterValues("number-of-question");
+        if (numberOfQues == null || numberOfQues.equals("")) {
+            session.setAttribute("quiz", null);
+            this.forwardErrorMessage(request, response, "There is no question in this group", forwardTo);
+        }
+        if (type == 0) {
+            String[] lessonId = request.getParameterValues("dimension-name");
+            int level = Level.valueOf(quiz.getLevel());
+            for (int i = 0; i < numberOfQues.length; i++) {
+                quizService.addNewQuizSetting(quiz, 0, Integer.parseInt(lessonId[i]), Integer.parseInt(numberOfQues[i]));
+            }
+        } else {
+            String[] dimensionId = request.getParameterValues("dimension-name");
+            int level = Level.valueOf(quiz.getLevel());
+            for (int i = 0; i < numberOfQues.length; i++) {
+                if (numberOfQues[i] != null) {
+                    quizService.addNewQuizSetting(quiz, Integer.parseInt(dimensionId[i]), 0, Integer.parseInt(numberOfQues[i]));
+                }
+            }
+        }
+        session.setAttribute("quiz", null);
+        response.sendRedirect(request.getContextPath() + "/auth/teacher/quiz");
     }
 
     public void viewQuiz(HttpServletRequest request, HttpServletResponse response, Quiz quiz)

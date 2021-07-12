@@ -137,4 +137,21 @@ public class UserCourseService {
         }
         return null;
     }
+
+    public boolean addRegistrationForFriend(int userId, int courseId, int price, String note) {
+        try {
+            return userCourseRepository.addRegistrationForFriend(userId, courseId, price, note);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean updateUserIdAndStatus(int currenrUserId, int newUserId, int courseId, int status){
+        try {
+            return userCourseRepository.updateUserIdAndStatus(currenrUserId, newUserId, courseId, status);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

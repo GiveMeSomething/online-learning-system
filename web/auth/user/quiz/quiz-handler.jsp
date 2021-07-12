@@ -34,7 +34,8 @@
                                 <h4>MCQ Quiz</h4>
                                 <div>
                                     <span>(${currentPage == null ? 1:currentPage} of ${maxPage})</span>
-                                    <input hidden id="testTime" value="60"/>
+                                    <input hidden id="testTime" value="${sessionScope.testTime}"/>
+                                    <input hidden id="startTime" value="${sessionScope.time}"/>
                                     <span class="timer bg-info p-2 ml-4">
                                         <i class="fal fa-hourglass-half"></i>
                                         <span id="timer"></span>
@@ -42,11 +43,11 @@
                                 </div>
                             </div>
                         </div>
-                        <form method="POST" action="quiz">
+                        <form method="POST" action="${path}/auth/user/user_quiz">
                             <c:set var="prevPage" value="${currentPage == null ? 1 : currentPage - 1}" />
                             <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>
                             <div class="request-info">
-                                <input name="previousPage" value="${path}/auth/user/quiz" hidden="true" />
+                                <input name="previousPage" value="${path}/auth/user/user_quiz" hidden="true" />
                                 <div class="invalid-feedback"></div>
                                 <input name="operation" value="QUIZHANDLE" hidden="true" />
                                 <div class="invalid-feedback"></div>
@@ -122,12 +123,12 @@
                                             <button class="btn btn-primary d-flex align-items-center btn-danger mx-1"
                                                     type="submit"
                                                     formmethod="POST"
-                                                    formaction="${path}/auth/user/quiz?operation=QUIZHANDLE&page=${prevPage > 0 ? prevPage: 1}">
+                                                    formaction="${path}/auth/user/user_quiz?operation=QUIZHANDLE&page=${prevPage > 0 ? prevPage: 1}">
                                                 <i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;previous
                                             </button>
                                         </c:if>
                                         <c:choose>
-                                            <c:when test="${currentPage == maxPage}">
+                                            <c:when test="${getCurrentPage == maxPage}">
                                                 <button type="button"
                                                         id="score-btn"
                                                         class="btn btn-success mr-2 order-1" 
@@ -139,7 +140,7 @@
                                                 <button class="btn btn-primary border-success align-items-center btn-success"
                                                         type="submit"
                                                         formmethod="POST"
-                                                        formaction="${path}/auth/user/quiz?operation=QUIZHANDLE&page=${nextPage > maxPage ? maxPage: nextPage}">
+                                                        formaction="${path}/auth/user/user_quiz?operation=QUIZHANDLE&page=${nextPage > maxPage ? maxPage: nextPage}">
                                                     Next
                                                     <i class="fa fa-angle-right ml-2"></i>
                                                 </button>
@@ -151,6 +152,38 @@
                                 <input hidden name="page" value="${getCurrentPage}"/>
                                 <input hidden name="nextPage" value="${nextPage > maxPage ? maxPage: nextPage}"/>
                             </c:forEach>
+                            <!--score exam-->
+                            <div class="modal fade" id="score-exam" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header p-3">
+                                            <h4 class="modal-title">Score Exam</h4>
+                                            <c:if test="${requestScope.errorMessage != null}">
+                                                <div class="d-flex w-100 align-items-center justify-content-end">
+                                                    <h5>${requestScope.errorMessage}</h5>
+                                                </div>
+                                            </c:if>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body p-5">
+                                            Do you want to submit now ?<br/>
+                                            <b>Please carefully check again before submitting.</b>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" data-dismiss="modal" class="btn btn-outline-dark">Back</button>
+                                            <button class="btn btn-primary border-success align-items-center btn-success"
+                                                    type="submit"
+                                                    formmethod="POST"
+                                                    formaction="${path}/auth/user/user_quiz?operation=SUBMITQUIZ&page=${maxPage}">
+                                                Score
+                                                <i class="fa fa-angle-right ml-2"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -172,34 +205,6 @@
                             <hr>
                             <p>Explaination: ${q.explaination}</p>
                         </c:forEach>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--score exam-->
-        <div class="modal fade" id="score-exam" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header p-3">
-                        <h4 class="modal-title">Score Exam</h4>
-                        <c:if test="${requestScope.errorMessage != null}">
-                            <div class="d-flex w-100 align-items-center justify-content-end">
-                                <h5>${requestScope.errorMessage}</h5>
-                            </div>
-                        </c:if>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body p-5">
-                        Do you want to submit now ?<br/>
-                        <b>Please carefully check again before submitting.</b>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal" class="btn btn-outline-dark">Back</button>
-                        <a href="${path}/auth/user/quiz?operation=SUBMITQUIZ&thisPage=${getCurrentPage}&page=${getCurrentPage}">
-                            <button type="button" class="btn btn-outline-success">Score</button>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -280,7 +285,7 @@
                                                             <a class="qnbutton notyetanswered free btn btn-outline-secondary"
                                                                id="quiznavbutton${q}"
                                                                title="answered"
-                                                               href="${path}/auth/user/quiz?operation=QUIZHANDLE&thisPage=${q}&page=${q}">
+                                                               href="${path}/auth/user/user_quiz?operation=QUIZHANDLE&thisPage=${q}&page=${q}">
                                                                 ${q}
                                                                 <span class="accesshide">
                                                                     <span class="flagstate"></span>
@@ -312,7 +317,7 @@
                                                             <a class="qnbutton notyetanswered free btn btn-outline-secondary"
                                                                id="quiznavbutton2"
                                                                title="answered"
-                                                               href="${path}/auth/user/quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}&mark=${q.key}">
+                                                               href="${path}/auth/user/user_quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}&mark=${q.key}">
                                                                 ${q.key}
                                                                 <span class="accesshide">
                                                                     <span class="flagstate"></span>
@@ -344,7 +349,7 @@
                                                             <a class="qnbutton answered free btn btn-outline-secondary"
                                                                id="quiznavbutton2"
                                                                title="answered"
-                                                               href="${path}/auth/user/quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}${sessionScope.marked[q.key] == true?"&mark=value":""}">
+                                                               href="${path}/auth/user/user_quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}${sessionScope.marked[q.key] == true?"&mark=value":""}">
                                                                 ${q.key}
                                                                 <span class="accesshide">
                                                                     <span class="flagstate"></span>
@@ -377,7 +382,7 @@
                                                                 <a class="qnbutton notyetanswered free btn btn-outline-secondary"
                                                                    id="quiznavbutton1"
                                                                    title="answered"
-                                                                   href="${path}/auth/user/quiz?operation=QUIZHANDLE&thisPage=${q}&page=${q}">
+                                                                   href="${path}/auth/user/user_quiz?operation=QUIZHANDLE&thisPage=${q}&page=${q}">
                                                                     ${q}
                                                                 </a>
                                                             </c:forEach>
@@ -387,7 +392,7 @@
                                                                 <a class="qnbutton ${not empty q.value?'answered':'notyetanswered'} free btn btn-outline-secondary"
                                                                    id="quiznavbutton2"
                                                                    title="answered"
-                                                                   href="${path}/auth/user/quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}${sessionScope.marked[q.key] == true?"&mark=value":""}">
+                                                                   href="${path}/auth/user/user_quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}${sessionScope.marked[q.key] == true?"&mark=value":""}">
                                                                     ${q.key}
                                                                     <c:if test="${sessionScope.marked[q.key] == true}">
                                                                         <span class="accesshide">
@@ -424,8 +429,9 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 var testTime = parseInt($('#testTime').val());
+                var startTime = $('#startTime').val();
 
-                var d1 = new Date("2021-07-05 11:10:22"),
+                var d1 = new Date(startTime),
                         countDownDate = new Date(d1);
                 countDownDate.setMinutes(d1.getMinutes() + testTime);
                 // Update the count down every 1 second

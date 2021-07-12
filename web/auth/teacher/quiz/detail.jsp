@@ -108,7 +108,7 @@
                         <div class="form-row">
                             <button class="btn btn-primary col-md-1" type="submit">Submit</button>
                             <div class="col-md-10"></div>
-                            <a role="button" class="btn btn-secondary col-md-1 ">Cancel</a>
+                            <a role="button" href="${path}/auth/teacher/quiz" class="btn btn-secondary col-md-1 ">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -195,7 +195,7 @@
                         <div class="form-row">
                             <button class="btn btn-primary col-md-1" type="submit">Save</button>
                             <div class="col-md-10"></div>
-                            <a role="button" class="btn btn-secondary col-md-1 ">Cancel</a>
+                            <a role="button" href="${path}/auth/teacher/quiz" class="btn btn-secondary col-md-1 ">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -256,7 +256,7 @@
                                 } else {
                                     $('#topic').prop("checked", true);
                                 }
-                                $('#myTable').append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option value="">' + value.name + '</option></select></td><td><input type="text" class="form-control" name="number-of-question" placeholder="Number of questions"></td></tr>');
+                                $('#myTable').append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option value="">' + value.name + '</option></select></td><td><input type="text" class="form-control" name="number-of-question" placeholder="Number of questions"></td><td><button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button></td></tr>');
                             });
                         },
                         cache: false

@@ -23,6 +23,22 @@ public class QuizService {
         this.quizRepository = new QuizRepository();
     }
 
+    public boolean isFinishQuiz(String userId, String quizid) {
+        try {
+            return quizRepository.isFinishQuiz(userId, quizid);
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
+    public int getQuizIdTheoYeuCauCuaDuyAnh(int lessonId) {
+        try {
+            return quizRepository.getQuizIdTheoYeuCauCuaDuyAnh(lessonId);
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
     public ArrayList<Quiz> getQuizList(int subjectId, String keyword, TestType quizType) {
         try {
             return quizRepository.getQuizList(subjectId, keyword, quizType);
@@ -168,7 +184,7 @@ public class QuizService {
         return false;
     }
 
-    public ArrayList<Integer> getDataForQuestion(int quizId) {
+    public HashMap<Integer, ArrayList<Integer>> getDataForQuestion(int quizId) {
         try {
             return quizRepository.getDataForQuestion(quizId);
         } catch (Exception e) {
@@ -213,6 +229,40 @@ public class QuizService {
             e.printStackTrace();
         }
 
+        return false;
+    }
+
+    public ArrayList<Object> getUserQuiz(int userId, int quizId) {
+        try {
+            return quizRepository.getUserQuiz(userId, quizId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean addUserQuiz(int userId, int quizId) {
+        try {
+            return quizRepository.addUserQuiz(userId, quizId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean checkExistQuestion(int quizId, int quesId){
+        try {
+            return quizRepository.checkExistQuestion(quizId, quesId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean addMark(float mark, int userQuizId){
+        try {
+            return quizRepository.addMark(mark, userQuizId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 }

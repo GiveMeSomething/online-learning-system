@@ -63,6 +63,13 @@
                                         Register Now
                                     </button>
                                 </a>
+                                <a href="${path}/auth/user/UserCourse?operation=GIFT&courseId=${detail.id}"
+                                   class="btn px-sm-5 py-2">
+                                    <button type="button" class="btn"
+                                            style="background: #007791; color: white; font-weight: bold;">
+                                        Gift this course
+                                    </button>
+                                </a>
                             </div>
                         </div>
                     </div>

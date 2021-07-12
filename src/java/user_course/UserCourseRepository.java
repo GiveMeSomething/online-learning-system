@@ -129,7 +129,7 @@ public class UserCourseRepository extends Repository {
         String SQL = "SELECT c.title, pp.name, pp.list_price, u.full_name, u.gender, u.email,\n"
                 + "	u.mobile, date(uc.registration_time) as 'valid_from',\n"
                 + "    DATE_ADD(date(uc.registration_time), INTERVAL (pp.duration * 31) DAY) AS valid_to,\n"
-                + "    uc.registration_status\n"
+                + "    uc.registration_status, note\n"
                 + "    FROM user_course uc\n"
                 + "    JOIN db_ite1.price_package pp ON uc.valid_to = pp.id\n"
                 + "    JOIN db_ite1.course c ON uc.course_id = c.id\n"
@@ -146,7 +146,7 @@ public class UserCourseRepository extends Repository {
                 return new CourseRegistation(courseId, result.getString("title"), user,
                         result.getString("name"), result.getDouble("list_price"),
                         result.getInt("registration_status"),
-                        result.getDate("valid_from"), result.getDate("valid_to"));
+                        result.getDate("valid_from"), result.getDate("valid_to"), result.getString("note"));
             }
             return null;
         } finally {
@@ -327,9 +327,8 @@ public class UserCourseRepository extends Repository {
     public int countTotalRegistationSuccess(int date) throws SQLException {
         this.connectDatabase();
         String SQL = " SELECT COUNT(*) as count from db_ite1.user_course uc where registration_status = 2 "
-                + "AND uc.registration_time "
-                + "NOT BETWEEN  DATE_SUB(CURDATE(), interval ? day) "
-                + "AND CURDATE()";
+                + "AND DATE_FORMAT(uc.registration_time, \"%y-%m-%d\") <= DATE(NOW()) - INTERVAL ? DAY ";
+
         try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
             statement.setInt(1, date);
             ResultSet result = statement.executeQuery();
@@ -345,8 +344,8 @@ public class UserCourseRepository extends Repository {
     public int countingTotalRegistration(int date) throws SQLException {
         this.connectDatabase();
         String countingTotalRegistration = "SELECT COUNT(*) AS count FROM db_ite1.user_course uc where uc.registration_time "
-                + "NOT BETWEEN  DATE_SUB(CURDATE(), interval ? day) "
-                + "AND CURDATE()";
+                + "AND DATE_FORMAT(uc.registration_time, \"%y-%m-%d\") <= DATE(NOW()) - INTERVAL ? DAY ";
+
         try (PreparedStatement statement = this.connection.prepareStatement(countingTotalRegistration)) {
             statement.setInt(1, date);
             ResultSet result = statement.executeQuery();
@@ -398,4 +397,45 @@ public class UserCourseRepository extends Repository {
         return 0;
     }
 
+    // Registration detail
+    public boolean addRegistrationForFriend(int userId, int courseId, int price, String note) throws SQLException {
+        this.connectDatabase();
+
+        String addRegistration = "INSERT INTO user_course(user_id, course_id, valid_to, registration_status, note) "
+                + "VALUES(?,?,?,?,?)";
+        try (PreparedStatement statement = this.connection.prepareStatement(addRegistration)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, courseId);
+            statement.setInt(3, price);
+            statement.setInt(4, 1);
+            statement.setString(5, note);
+            return statement.executeUpdate() > 0;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public boolean updateUserIdAndStatus(int currenrUserId, int newUserId, int courseId, int status) throws SQLException {
+        this.connectDatabase();
+        String SQL = "UPDATE user_course "
+                + "SET user_id = ?, user_course.registration_status = ? "
+                + "WHERE user_id = ? and course_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            statement.setInt(1, newUserId);
+            statement.setInt(2, status);
+            statement.setInt(3, currenrUserId);
+            statement.setInt(4, courseId);
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return false;
+    }
+    public static void main(String[] args) throws SQLException {
+        UserCourseRepository userCourseRepository = new UserCourseRepository();
+        CourseRegistation courseRegistation = userCourseRepository.getRegistrationDetail(17, 6);
+        System.out.println(courseRegistation);
+    }
 }

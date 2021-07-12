@@ -1016,15 +1016,6 @@ public class CourseRepository extends Repository {
         return null;
     }
 
-    public static void main(String[] args) throws Exception {
-        CourseRepository repo = new CourseRepository();
-        try {
-            Course c = repo.getCourseNameLessonList(1);
-            System.out.println(c);
-        } catch (Exception e) {
-        }
-    }
-
     public Account getRoleByUserEmail(String email) throws SQLException {
         this.connectDatabase();
         String getRoleByUserEmail = "SELECT a.* FROM db_ite1.account a "
@@ -1163,5 +1154,21 @@ public class CourseRepository extends Repository {
         } finally {
             this.disconnectDatabase();
         }
+    }
+
+    public String getCourseName(int courseId) throws SQLException {
+        this.connectDatabase();
+        String searchCourse = "SELECT * FROM db_ite1.course where id = ?;";
+        try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
+            statement.setInt(1, courseId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getString(3);
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return "Khong get duoc ten khoa hoc vi bi mat session";
     }
 }
