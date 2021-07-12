@@ -127,7 +127,7 @@
                                     <c:when test="${detail.user.id == null || detail.user.id == sessionScope.user.id}">
                                         <select name="package" class="form-control">
                                             <c:forEach items="${package}" var="p">
-                                                <option value="${p.id}">${p.name} - ${p.price}$</option>
+                                                <option value="${p.id}" ${p.price == detail.totalCost?"selected":""}>${p.name} - ${p.price}$</option>
                                             </c:forEach>
                                         </select>
                                     </c:when>
