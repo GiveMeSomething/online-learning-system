@@ -311,7 +311,7 @@
                                 <tr>
                                     <td>${o.id}</td>
                                     <td>
-                                        <a href="#">
+                                        <a href="${path}/auth/user/UserCourse?operation=VIEWDETAIL&courseId=${o.id}&userId=${sessionScope.user.id}">
                                             ${o.title}
                                         </a>
                                     </td>

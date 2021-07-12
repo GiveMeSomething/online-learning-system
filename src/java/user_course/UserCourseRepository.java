@@ -140,9 +140,9 @@ public class UserCourseRepository extends Repository {
             statement.setInt(2, courseId);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                User user = new User(result.getString("full_name"),
+                User user = new User(userId, null, result.getString("full_name"),
                         result.getInt("gender") == 1 ? Gender.MALE : Gender.FEMALE,
-                        result.getString("email"), Status.ACTIVE, result.getString("mobile"));
+                        result.getString("email"), null, Status.ACTIVE, result.getString("mobile"));
                 return new CourseRegistation(courseId, result.getString("title"), user,
                         result.getString("name"), result.getDouble("list_price"),
                         result.getInt("registration_status"),
@@ -433,6 +433,7 @@ public class UserCourseRepository extends Repository {
         }
         return false;
     }
+
     public static void main(String[] args) throws SQLException {
         UserCourseRepository userCourseRepository = new UserCourseRepository();
         CourseRegistation courseRegistation = userCourseRepository.getRegistrationDetail(17, 6);

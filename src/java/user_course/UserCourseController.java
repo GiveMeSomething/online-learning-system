@@ -127,6 +127,10 @@ public class UserCourseController extends HttpServlet implements Controller {
         int courseId = Integer.parseInt(request.getParameter("courseId"));
         System.out.println("CourseId " + courseId);
         CourseRegistation regisDetail = userCourseService.getRegistrationDetail(userId, courseId);
+        Course course = courseService.getCourse(courseId);
+        ArrayList<PricePackage> coursePack = courseService.getCoursePackage(courseId);
+        request.setAttribute("package", coursePack);
+        request.setAttribute("course", course);
         request.setAttribute("detail", regisDetail);
         request.getRequestDispatcher("/auth/user/registration/detail.jsp").forward(request, response);
     }
