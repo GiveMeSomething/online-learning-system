@@ -168,6 +168,7 @@ public class QuizController extends HttpServlet implements Controller {
             }
         }
         session.setAttribute("userQuizId", userQuizId);
+        session.setAttribute("quizId", quizId);
         session.setAttribute("testTime", quiz.getDuration());
         HashMap<Integer, ArrayList<Integer>> getDataForQuestion = quizService.getDataForQuestion(quizId);
 
@@ -326,7 +327,7 @@ public class QuizController extends HttpServlet implements Controller {
         HttpSession session = request.getSession();
         HashMap<String, String> userAnswer = (HashMap<String, String>) session.getAttribute("answer");
         ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
-        int userQuizId = (Integer) session.getAttribute("userQuizId");
+        int userQuizId = (Integer) session.getAttribute("userQuizId"); // đây là user_id trong bảng user_quiz
         int countTrueAnswer = 0;
         for (int i = 0; i < questions.size(); i++) {
             int questionNumber = i + 1;
@@ -399,7 +400,6 @@ public class QuizController extends HttpServlet implements Controller {
         String keyword = request.getParameter("keyword");
         String typeString = request.getParameter("quizType");
         TestType quizType;
-
         int subjectId = 1;
 
         if (typeString != null && !typeString.equals("")) {

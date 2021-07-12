@@ -82,6 +82,7 @@ public class UserCourseRepository extends Repository {
         return 0;
     }
 
+    /*
     public List<CourseRegistation> getCourseUserRegister(int userId, int index) throws SQLException {
         this.connectDatabase();
         List<CourseRegistation> list = new ArrayList<>();
@@ -107,6 +108,66 @@ public class UserCourseRepository extends Repository {
                 + "WHERE "
                 + "    user_course.user_id = ? "
                 + "LIMIT 5 OFFSET ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, (index - 1) * 5);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+//                id, title, registration_time, package, total_cost, registration_status, valid_from, valid_to
+                list.add(new CourseRegistation(result.getInt("id"), result.getString("title"),
+                        result.getDate("registration_time"), result.getString("package"), result.getDouble("total_cost"), result.getInt("registration_status"),
+                        result.getDate("valid_from"), result.getDate("valid_to")));
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return list;
+    }
+     */
+    public List<CourseRegistation> getCourseUserRegister(int userId, int index) throws SQLException {
+        this.connectDatabase();
+        List<CourseRegistation> list = new ArrayList<>();
+        String SQL = "SELECT \n"
+                + "    course_id as id,\n"
+                + "    title,\n"
+                + "    registration_time,\n"
+                + "    user_course.registration_status,\n"
+                + "    user_course.registration_time AS valid_from,\n"
+                + "    ROUND((price_package.list_price - (price_package.list_price * price_package.discount / 100)),\n"
+                + "            2) AS total_cost,\n"
+                + "    DATE_ADD(user_course.registration_time,\n"
+                + "        INTERVAL (price_package.duration * 31) DAY) AS valid_to,\n"
+                + "    price_package.name as package\n"
+                + "FROM\n"
+                + "    db_ite1.user_course\n"
+                + "        JOIN\n"
+                + "    course ON user_course.course_id = course.id\n"
+                + "        JOIN\n"
+                + "    price_package ON user_course.valid_to = price_package.id\n"
+                + "WHERE\n"
+                + "    user_id = ? LIMIT 5 OFFSET ?;";
+//        String SQL = "SELECT  "
+//                + "    course.id, "
+//                + "    title, "
+//                + "    registration_time, "
+//                + "    price_package.name AS package, "
+//                + "    ROUND((price_package.list_price - (price_package.list_price * price_package.discount / 100)), "
+//                + "            2) AS total_cost, "
+//                + "    user_course.registration_status, "
+//                + "    user_course.registration_time AS valid_from, "
+//                + "    DATE_ADD(user_course.registration_time, "
+//                + "        INTERVAL (price_package.duration * 31) DAY) AS valid_to "
+//                + "FROM "
+//                + "    db_ite1.course "
+//                + "        JOIN "
+//                + "    user_course ON course.id = user_course.course_id "
+//                + "        JOIN "
+//                + "    course_package ON course.id = course_package.course_id "
+//                + "        JOIN "
+//                + "    price_package ON price_package.id = course_package.package_id "
+//                + "WHERE "
+//                + "    user_course.user_id = ? "
+//                + "LIMIT 5 OFFSET ?";
         try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
             statement.setInt(1, userId);
             statement.setInt(2, (index - 1) * 5);
@@ -433,6 +494,7 @@ public class UserCourseRepository extends Repository {
         }
         return false;
     }
+
     public static void main(String[] args) throws SQLException {
         UserCourseRepository userCourseRepository = new UserCourseRepository();
         CourseRegistation courseRegistation = userCourseRepository.getRegistrationDetail(17, 6);

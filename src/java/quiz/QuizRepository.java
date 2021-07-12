@@ -672,7 +672,7 @@ public class QuizRepository extends Repository {
 
     public boolean addUserQuiz(int userId, int quizId) throws SQLException {
         this.connectDatabase();
-        
+
         // Lay cai nay
         ArrayList<Object> userQuiz = getUserQuiz(userId, quizId);
 
@@ -719,8 +719,37 @@ public class QuizRepository extends Repository {
             statement.setFloat(1, mark);
             statement.setInt(2, userQuizId);
             return statement.executeUpdate() > 0;
-        }finally{
+        } finally {
             this.disconnectDatabase();
         }
+    }
+
+    public String getMark(String userId, String quizId) throws SQLException {
+        this.connectDatabase();
+
+        String checkQuestionQuiz = "SELECT "
+                + "    mark * 100 "
+                + "FROM "
+                + "    db_ite1.user_quiz "
+                + "WHERE "
+                + "    user_id = ? AND quiz_id = ? "
+                + "ORDER BY time_get_quiz DESC "
+                + "LIMIT 1;";
+        try (PreparedStatement statement = this.connection.prepareStatement(checkQuestionQuiz)) {
+            statement.setString(1, userId);
+            statement.setString(2, quizId);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                return result.getString(1) == null ? "--":result.getString(1)+ "%";
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return "--";
+    }
+
+    public static void main(String[] args) throws SQLException {
+        QuizRepository qr = new QuizRepository();
+        System.out.println(qr.getMark("35", "1"));
     }
 }
