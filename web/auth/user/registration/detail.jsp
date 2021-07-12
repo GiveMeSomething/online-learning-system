@@ -37,6 +37,7 @@
                 <input hidden="true" name="userId" value="${detail.user.id}">
                 <input hidden="true" name="courseId" value="${course.id}">
                 <input hidden="true" name="existCourseId" value="${detail.id}">
+                <input hidden="true" name="type" value="${type}">
                 <div class="row">
                     <div class="col-6">
                         <div class="px-5 user-infor">
@@ -71,7 +72,7 @@
                                 <label for="email">Email</label><br>
                                 <input hidden value="${detail.user.email}" name="existEmail"/>
                                 <input class="form-control"
-                                       disabled
+                                       ${detail.user.id == sessionScope.user.id || detail.user.id == null?"":"disabled"}
                                        type="text"
                                        name="email"
                                        value="${detail.user.email}"
@@ -90,7 +91,7 @@
                                        required/>
                                 <div class="invalid-feedback"></div>
                             </div>
-                            <c:if test="${sessionScope.isAdmin == true}">
+                            <c:if test="${sessionScope.isAdmin == true || sessionScope.isTeacher == true}">
                                 <div class="form-group">
                                     <label>Registration Status</label><br>
                                     <select name="status" class="form-control">

@@ -416,6 +416,23 @@ public class UserCourseRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+    
+    public boolean updateRegistration(int userId, int currentCourseId, int price, String note) throws SQLException {
+        this.connectDatabase();
+
+        String addRegistration = "UPDATE user_course "
+                + "set valid_to = ?, note = ? "
+                + "WHERE user_id = ? AND course_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(addRegistration)) {
+            statement.setInt(1, price);
+            statement.setString(2, note);
+            statement.setInt(3, userId);
+            statement.setInt(4, currentCourseId);
+            return statement.executeUpdate() > 0;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
 
     public boolean updateUserIdAndStatus(int currenrUserId, int newUserId, int courseId, int status) throws SQLException {
         this.connectDatabase();
