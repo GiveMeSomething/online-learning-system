@@ -26,6 +26,7 @@ import java.util.List;
 import common.utilities.Repository;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.sql.Date;
 import java.util.HashMap;
 
 public class CourseRepository extends Repository {
@@ -1122,7 +1123,6 @@ public class CourseRepository extends Repository {
 
     }
 
-    
     public Course getCourseNameLessonList(int courseId) throws SQLException {
         this.connectDatabase();
         String searchCourse = "SELECT * FROM db_ite1.course  where id = ?";
@@ -1131,7 +1131,7 @@ public class CourseRepository extends Repository {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 return new Course(
-                   result.getInt("id"),
+                        result.getInt("id"),
                         result.getString("thumbnail"),
                         result.getString("title"),
                         result.getString("description"),
@@ -1145,5 +1145,23 @@ public class CourseRepository extends Repository {
             this.disconnectDatabase();
         }
         return null;
+    }
+
+    public boolean registerCourse(int userId, int courseId, int pricePackageId) throws SQLException {
+        this.connectDatabase();
+
+        String addRegistration = "INSERT INTO user_course (user_id, course_id, registration_time, valid_to, registration_status) "
+                + "VALUES (?, ?, ?, ?, 1)";
+
+        try (PreparedStatement statement = this.connection.prepareStatement(addRegistration)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, courseId);
+            statement.setDate(3, new Date(System.currentTimeMillis()));
+            statement.setInt(4, pricePackageId);
+
+            return statement.executeUpdate() > 0;
+        } finally {
+            this.disconnectDatabase();
+        }
     }
 }

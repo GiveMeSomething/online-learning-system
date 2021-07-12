@@ -242,7 +242,7 @@ public class QuizController extends HttpServlet implements Controller {
         HttpSession session = request.getSession();
         int page = Integer.parseInt(request.getParameter("thisPage"));
         ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
-        if(page == questions.size()){
+        if (page == questions.size()) {
             doQuizHandle(request, response);
         }
         // Set default fot user_quiz_id
@@ -307,6 +307,7 @@ public class QuizController extends HttpServlet implements Controller {
         }
 
         currentSession.setAttribute("questionList", questionList);
+        request.setAttribute("quizId", quizId);
         request.setAttribute("questionNum", selectedQuestion);
 
         request.setAttribute("pageItem", questionList.get(selectedQuestion));

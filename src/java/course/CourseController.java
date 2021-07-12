@@ -104,7 +104,7 @@ public class CourseController extends HttpServlet {
 
         String operation = request.getParameter("operation");
         if (operation.equals("REGISTER")) {
-
+            processRegisterCourse(request, response);
         } else if (operation.equals("SEARCHCOURSE")) {
             int categoryId = Integer.parseInt(request.getParameter("cID"));
             String searchName = request.getParameter("searchCourse");
@@ -221,14 +221,47 @@ public class CourseController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession currentSession = request.getSession();
 
-        // Get current user (teacher/admin) id to get the according subject list 
-         int userId = ((User) currentSession.getAttribute("user")).getId();
-        
+        // Get current user (teacher/admin) id to get the according subject list
+        int userId = ((User) currentSession.getAttribute("user")).getId();
+
         List<Course> myCourse = courseService.getMyCourse(userId);
         List<Category> categoryList = courseService.getAllCategory();
         request.setAttribute("categoryList", categoryList);
         request.setAttribute("myCourse", myCourse);
         System.out.println(myCourse);
         request.getRequestDispatcher("/auth/user/course/my-course.jsp").forward(request, response);
+    }
+
+    private void processRegisterCourse(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
+
+        if (currentSession.getAttribute("user") == null) {
+            response.sendRedirect(request.getContextPath() + "/nauth/down.jsp");
+        } else {
+            User currentUser = (User) currentSession.getAttribute("user");
+            int courseId = 1;
+            int pricePackageId = 1;
+
+            try {
+                courseId = Integer.parseInt(request.getParameter("courseId"));
+            } catch (Exception e) {
+                response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+            }
+
+            try {
+                pricePackageId = Integer.parseInt(request.getParameter("pricepkg"));
+            } catch (Exception e) {
+                System.out.println("Default package");
+            }
+
+            boolean isRegister = courseService.registerCourse(currentUser.getId(), courseId, pricePackageId);
+            if (!isRegister) {
+                response.sendRedirect(request.getContextPath() + "/nauth/down.jsp");
+            } else {
+                response.sendRedirect(request.getContextPath() + request.getParameter("previousPage"));
+            }
+        }
+
     }
 }
