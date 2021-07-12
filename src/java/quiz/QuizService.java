@@ -249,7 +249,8 @@ public class QuizService {
         }
         return false;
     }
-    public boolean checkExistQuestion(int quizId, int quesId){
+
+    public boolean checkExistQuestion(int quizId, int quesId) {
         try {
             return quizRepository.checkExistQuestion(quizId, quesId);
         } catch (Exception e) {
@@ -257,12 +258,22 @@ public class QuizService {
         }
         return false;
     }
-    public boolean addMark(float mark, int userQuizId){
+
+    public boolean addMark(float mark, int userQuizId) {
         try {
             return quizRepository.addMark(mark, userQuizId);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public String getMark(String userId, String quizId) {
+        try {
+            return quizRepository.getMark(userId, quizId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "--";
     }
 }
