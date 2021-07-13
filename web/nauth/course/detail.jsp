@@ -77,69 +77,8 @@
             </section>
             <section id="main-content" >
                 <div id="main-content-lower" class="d-flex">
-                    <div id="main-content-lower-left" style="flex: 30; margin-left: 12rem; margin-top: 2rem; ">
-                        <div id="summary-board" class="bg-light p-3" style="border: 1px solid lightgray; border-radius: 5px; margin-bottom: 14px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-                            <h4 style="font-weight: bolder">What you'll learn</h4>
-                            <div class="d-flex ">
-                                <div >
-                                    <p>${detail.description}</p>
-                                    <p>${detail.description}</p>
-                                </div>
-                                <div>
-                                    <p>${detail.description}</p>
-                                    <p>${detail.description}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <h4 style="font-weight: bolder">Course content</h4>
-                        <p>${detail.description}</p>
-                        <h4 style="font-weight: bolder">Requirement</h4>
-                        <ul>
-                            <li><p>${detail.description}</p></li>
-                            <li><p>${detail.description}</p></li>
-                        </ul>
-                        <h4 style="font-weight: bolder">Description</h4>
-                        <p>${detail.description}</p>
-                        <p>${detail.description}</p>
-                        <p>${detail.description}</p>
-                        <p>${detail.description}</p>
-                        <p>${detail.description}</p>
-                        <p>${detail.description}</p>
-                    </div>
+                    ${detail.description}
                     <div id="main-content-lower-right"  style="flex: 30;margin-left: 3.5rem">
-                        <section id="flip-price-package">
-                            <div class="flip-card">
-                                <div class="flip-card-inner">
-                                    <div class="flip-card-front">
-                                        <div style="margin-top: 2.5rem">
-                                            <span style="font-weight: bold; text-transform: uppercase">Curious about the price package?</span><br>
-                                            <span >Hover over me to find out</span>
-                                        </div>
-                                    </div>
-                                    <div class="flip-card-back d-flex">
-                                        <div style="border: 1px solid lightgray; margin-right: .5rem; height: 130px; border-radius: 5px;width: 116px;height: 180px; text-align: center">
-                                            <span style="font-weight: bold; background: #FFA76C;padding: 5px 19px; border-radius: 5px 5px 0px 0px">Package 1</span>
-                                            <div style="color: #FFA76C;margin-top: .5rem">from <span style="font-weight: bold">$12.99</span></div>
-                                            <div style="width: 62px;margin-left: 1.5rem">3-month access Package</div>
-                                            <div style=" margin-top: 1.5rem"><span style="font-weight: bold;">#notthatcheap</span></div>
-                                        </div>
-                                        <div style="border: 1px solid lightgray; margin-right: .5rem; height: 130px; border-radius: 5px; width: 116px;height: 180px; text-align: center">
-                                            <span style="font-weight: bold; background: #48B1FF; width: 50px; padding: 5px 19px; border-radius: 5px 5px 0px 0px">Package 2</span>
-                                            <div style="color: #48B1FF; margin-top: .5rem">from <span style="font-weight: bold">$24.99</span></div>
-                                            <div style="width: 62px;margin-left: 1.5rem;">6-month access  Package</div>
-                                            <div style=" margin-top: 1.5rem"><span style="font-weight: bold;">#cool</span></div>
-                                        </div>
-                                        <div style="border: 1px solid lightgray; height: 130px; border-radius: 5px;width: 116px;height: 180px; text-align: center">
-                                            <span style="font-weight: bold;background: #835DED; width: 50px; padding: 5px 19px; border-radius: 5px 5px 0px 0px" >Package 3</span>
-                                            <div style="color: #835DED; margin-top: .5rem">from <span style="font-weight: bold">$29.99</span></div>
-                                            <div style="width: 62px;margin-left: 1.5rem">Permanent Package</div>
-                                            <div style=" margin-top: 3rem"><span style="font-weight: bold;">#nice</span></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-
                         <section id="sider-course">
                             <div class="mt-4" style="margin-left: -1rem">
                                 <h4 style="font-weight: bolder; margin-left: .8rem; margin-bottom: 1rem">You might like</h4>
