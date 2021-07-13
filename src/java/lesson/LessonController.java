@@ -274,7 +274,7 @@ public class LessonController extends HttpServlet implements Controller {
         request.getRequestDispatcher("/auth/user/course/lesson/detail.jsp").forward(request, response);
         //Chỉnh lại url auth/user/course/lesson/detail.jsp
     }
-
+   
     private void processDoneLesson(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getParameter("lessonId").contains("INACTIVE")) {
