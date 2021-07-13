@@ -99,11 +99,20 @@
                         < Previous lesson
                     </button>
                 </a>
-                <a href="${path}/auth/user/course/lesson?operation=NEXTLESSON&&lessonId=${sessionScope.lessonIdSession + 1}&&courseId=${sessionScope.courseId}">
+
+                <c:if test="${disabledNext == 'disabled'}">
                     <button ${disabledNext} ${sessionScope.lessonIdSession == maxIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn">
                         Next lesson >
                     </button>
-                </a>
+                </c:if>
+                <c:if test="${disabledNext != 'disabled'}">
+                    <a href="${path}/auth/user/course/lesson?operation=NEXTLESSON&&lessonId=${sessionScope.lessonIdSession + 1}&&courseId=${sessionScope.courseId}">
+                        <button ${disabledNext} ${sessionScope.lessonIdSession == maxIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn">
+                            Next lesson >
+                        </button>
+                    </a>
+                </c:if>
+
             </div>
         </div>
 

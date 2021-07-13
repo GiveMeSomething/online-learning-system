@@ -265,6 +265,7 @@ public class LessonController extends HttpServlet implements Controller {
             request.setAttribute("lessonDetail", lessonDetail);
             request.setAttribute("lessonId", maxIdLesson.getId());
             session.setAttribute("lessonIdSession", maxIdLesson.getId());
+            request.setAttribute("disabledNext", "disabled");
         } else {
             Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
             request.setAttribute("lessonDetail", lessonDetail);
