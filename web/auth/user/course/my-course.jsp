@@ -42,7 +42,7 @@
                         <div class="card" 
                              style="width: 15rem; 
                              box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-                            <a href="${path}/auth/user/course/lesson?operation=VIEWUSERLESSON&&courseId=${o.id}"><img src="${o.imageLink}" class="card-img-top" alt="..."></a>
+                            <a href="${path}/auth/user/course/lesson?operation=VIEWUSERLESSON&&courseId=${o.id}"><img style="cursor: pointer" src="${o.imageLink}" class="card-img-top" alt="..."></a>
                             <div class="card-body">
                                 <div style="height:145px">
                                     <a href="${path}/auth/user/course/lesson?operation=VIEWUSERLESSON&&courseId=${o.id}" style="text-decoration: none; color: black"><h5 class="card-title" style="cursor: pointer">${o.courseName}</h5></a>
@@ -73,7 +73,7 @@
                         <div class="card" 
                              style="width: 15rem; 
                              box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-                            <img style="cursor: pointer" src="${o.imageLink}" class="card-img-top" alt="...">
+                            <img src="${o.imageLink}" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <div style="height:145px">
                                     <h5 class="card-title">${o.courseName}</h5>
