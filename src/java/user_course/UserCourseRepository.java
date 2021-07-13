@@ -82,6 +82,7 @@ public class UserCourseRepository extends Repository {
         return 0;
     }
 
+    /*
     public List<CourseRegistation> getCourseUserRegister(int userId, int index) throws SQLException {
         this.connectDatabase();
         List<CourseRegistation> list = new ArrayList<>();
@@ -122,6 +123,66 @@ public class UserCourseRepository extends Repository {
         }
         return list;
     }
+     */
+    public List<CourseRegistation> getCourseUserRegister(int userId, int index) throws SQLException {
+        this.connectDatabase();
+        List<CourseRegistation> list = new ArrayList<>();
+        String SQL = "SELECT \n"
+                + "    course_id as id,\n"
+                + "    title,\n"
+                + "    registration_time,\n"
+                + "    user_course.registration_status,\n"
+                + "    user_course.registration_time AS valid_from,\n"
+                + "    ROUND((price_package.list_price - (price_package.list_price * price_package.discount / 100)),\n"
+                + "            2) AS total_cost,\n"
+                + "    DATE_ADD(user_course.registration_time,\n"
+                + "        INTERVAL (price_package.duration * 31) DAY) AS valid_to,\n"
+                + "    price_package.name as package\n"
+                + "FROM\n"
+                + "    db_ite1.user_course\n"
+                + "        JOIN\n"
+                + "    course ON user_course.course_id = course.id\n"
+                + "        JOIN\n"
+                + "    price_package ON user_course.valid_to = price_package.id\n"
+                + "WHERE\n"
+                + "    user_id = ? LIMIT 5 OFFSET ?;";
+//        String SQL = "SELECT  "
+//                + "    course.id, "
+//                + "    title, "
+//                + "    registration_time, "
+//                + "    price_package.name AS package, "
+//                + "    ROUND((price_package.list_price - (price_package.list_price * price_package.discount / 100)), "
+//                + "            2) AS total_cost, "
+//                + "    user_course.registration_status, "
+//                + "    user_course.registration_time AS valid_from, "
+//                + "    DATE_ADD(user_course.registration_time, "
+//                + "        INTERVAL (price_package.duration * 31) DAY) AS valid_to "
+//                + "FROM "
+//                + "    db_ite1.course "
+//                + "        JOIN "
+//                + "    user_course ON course.id = user_course.course_id "
+//                + "        JOIN "
+//                + "    course_package ON course.id = course_package.course_id "
+//                + "        JOIN "
+//                + "    price_package ON price_package.id = course_package.package_id "
+//                + "WHERE "
+//                + "    user_course.user_id = ? "
+//                + "LIMIT 5 OFFSET ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, (index - 1) * 5);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+//                id, title, registration_time, package, total_cost, registration_status, valid_from, valid_to
+                list.add(new CourseRegistation(result.getInt("id"), result.getString("title"),
+                        result.getDate("registration_time"), result.getString("package"), result.getDouble("total_cost"), result.getInt("registration_status"),
+                        result.getDate("valid_from"), result.getDate("valid_to")));
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return list;
+    }
 
     public CourseRegistation getRegistrationDetail(int userId, int courseId) throws SQLException {
         this.connectDatabase();
@@ -140,9 +201,9 @@ public class UserCourseRepository extends Repository {
             statement.setInt(2, courseId);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                User user = new User(result.getString("full_name"),
+                User user = new User(userId, null, result.getString("full_name"),
                         result.getInt("gender") == 1 ? Gender.MALE : Gender.FEMALE,
-                        result.getString("email"), Status.ACTIVE, result.getString("mobile"));
+                        result.getString("email"), null, Status.ACTIVE, result.getString("mobile"));
                 return new CourseRegistation(courseId, result.getString("title"), user,
                         result.getString("name"), result.getDouble("list_price"),
                         result.getInt("registration_status"),
@@ -267,7 +328,7 @@ public class UserCourseRepository extends Repository {
             options += "ORDER BY " + orderBy + " ";
         }
 
-        String sql = "SELECT uc.course_id, u.email, uc.registration_time, c.title, pp.name, "
+        String sql = "SELECT uc.user_id, uc.course_id, u.email, uc.registration_time, c.title, pp.name, "
                 + "TRUNCATE((pp.list_price * pp.discount) / 100, 2) as cost, uc.registration_status, "
                 + "uc.registration_time as valid_from, DATE_ADD(uc.registration_time, INTERVAL pp.duration MONTH) as valid_to "
                 + "FROM user_course uc LEFT OUTER JOIN user u on uc.user_id = u.id "
@@ -294,6 +355,8 @@ public class UserCourseRepository extends Repository {
                 );
                 dataRow.add(result.getString("valid_from"));
                 dataRow.add(result.getString("valid_to"));
+                dataRow.add(result.getString("user_id"));
+                dataRow.add(result.getString("course_id"));
 
                 resultList.add(dataRow);
             }
@@ -414,6 +477,23 @@ public class UserCourseRepository extends Repository {
             this.disconnectDatabase();
         }
     }
+    
+    public boolean updateRegistration(int userId, int currentCourseId, int price, String note) throws SQLException {
+        this.connectDatabase();
+
+        String addRegistration = "UPDATE user_course "
+                + "set valid_to = ?, note = ? "
+                + "WHERE user_id = ? AND course_id = ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(addRegistration)) {
+            statement.setInt(1, price);
+            statement.setString(2, note);
+            statement.setInt(3, userId);
+            statement.setInt(4, currentCourseId);
+            return statement.executeUpdate() > 0;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
 
     public boolean updateUserIdAndStatus(int currenrUserId, int newUserId, int courseId, int status) throws SQLException {
         this.connectDatabase();
@@ -433,6 +513,7 @@ public class UserCourseRepository extends Repository {
         }
         return false;
     }
+
     public static void main(String[] args) throws SQLException {
         UserCourseRepository userCourseRepository = new UserCourseRepository();
         CourseRegistation courseRegistation = userCourseRepository.getRegistrationDetail(17, 6);

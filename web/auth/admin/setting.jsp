@@ -27,7 +27,7 @@
             <hr>
             <a href="${path}/auth/teacher/subject" onclick="subjectCategoryOn()">Subject Categories</a>
             <hr>
-            <a href="#" onclick="testTypeOn()">Test Types</a>
+            <a href="${path}/auth/admin/slider" onclick="testTypeOn()">Slider</a>
             <hr>
             <a href="#" onclick="questionLevelOn()">Question Levels</a>
             <hr>

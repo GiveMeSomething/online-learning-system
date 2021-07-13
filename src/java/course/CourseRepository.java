@@ -1093,7 +1093,7 @@ public class CourseRepository extends Repository {
                 + "on uc.user_id = u.id "
                 + "inner join db_ite1.course c "
                 + "on c.id = uc.course_id "
-                + "where u.id = ? ";
+                + "where u.id = ? and uc.registration_status = 2";
         List<Course> list = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(getMyCourse)) {
             statement.setInt(1, userId);

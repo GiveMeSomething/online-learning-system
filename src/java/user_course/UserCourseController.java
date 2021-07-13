@@ -29,7 +29,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import user.UserService;
 
@@ -124,10 +123,21 @@ public class UserCourseController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         int userId = Integer.parseInt(request.getParameter("userId"));
+        int type;
+        if (request.getParameter("type") == null || request.getParameter("type").equals("")) {
+            type = 0;
+        } else {
+            type = Integer.parseInt(request.getParameter("type"));
+        }
         int courseId = Integer.parseInt(request.getParameter("courseId"));
         System.out.println("CourseId " + courseId);
         CourseRegistation regisDetail = userCourseService.getRegistrationDetail(userId, courseId);
+        Course course = courseService.getCourse(courseId);
+        ArrayList<PricePackage> coursePack = courseService.getCoursePackage(courseId);
+        request.setAttribute("package", coursePack);
+        request.setAttribute("course", course);
         request.setAttribute("detail", regisDetail);
+        request.setAttribute("type", type);
         request.getRequestDispatcher("/auth/user/registration/detail.jsp").forward(request, response);
     }
 
@@ -136,12 +146,17 @@ public class UserCourseController extends HttpServlet implements Controller {
         HttpSession session = request.getSession();
         int userId = ((User) session.getAttribute("user")).getId();
         int courseId = Integer.parseInt(request.getParameter("courseId"));
-
+        int type;
+        if (request.getParameter("type") == null || request.getParameter("type").equals("")) {
+            type = 0;
+        } else {
+            type = Integer.parseInt(request.getParameter("type"));
+        }
         Course course = courseService.getCourse(courseId);
         ArrayList<PricePackage> coursePack = courseService.getCoursePackage(courseId);
         request.setAttribute("package", coursePack);
         request.setAttribute("course", course);
-
+        request.setAttribute("type", type);
         request.getRequestDispatcher("/auth/user/registration/detail.jsp").forward(request, response);
     }
 
@@ -193,27 +208,38 @@ public class UserCourseController extends HttpServlet implements Controller {
             int userId = user.getId();
             userCourseService.updateStatus(userId, courseId, status);
         }
+        response.sendRedirect(request.getContextPath() + "/auth/user/UserCourse?operation=");
     }
 
     private void notPaidYet(HttpServletRequest request, HttpServletResponse response, String email,
             int courseId, String name, String gender, String mobile, int status)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        System.out.println(email);
         int price = Integer.parseInt(request.getParameter("package"));
+        int type = Integer.parseInt(request.getParameter("type"));
         String note = request.getParameter("note");
-        if (userService.getUser(email) != null) {
-            // User does exist
-            User user = userService.getUser(email);
-            int userId = user.getId();
-            userCourseService.addRegistrationForFriend(userId, courseId, price, note);
+        if (type == 0) {
+            if (userService.getUser(email) != null) {
+                // User does exist
+                User user = userService.getUser(email);
+                int userId = user.getId();
+                if (type == 0) {
+                    userCourseService.addRegistrationForFriend(userId, courseId, price, note);
+                } else {
+                    userCourseService.updateRegistration(userId, courseId, price, note);
+                }
+            } else {
+                System.out.println("this is " + email);
+                User user = new User(name, Gender.valueOf(gender), email, Status.ACTIVE, mobile);
+                userService.addUser(user);
+                int userId = userService.getUser(email).getId();
+                userCourseService.addRegistrationForFriend(userId, courseId, price, note);
+            }
+            response.sendRedirect(request.getContextPath() + "/home");
         } else {
-            System.out.println("this is " + email);
-            User user = new User(name, Gender.valueOf(gender), email, Status.ACTIVE, mobile);
-            userService.addUser(user);
-            int userId = userService.getUser(email).getId();
-            userCourseService.addRegistrationForFriend(userId, courseId, price, note);
+            String existEmail = request.getParameter("existEmail");
+            userCourseService.updateRegistration(userService.getUser(existEmail).getId(), courseId, price, note);
         }
+        response.sendRedirect(request.getContextPath() + "/auth/user/UserCourse?operation=");
     }
 
     private void updateStatus(HttpServletRequest request, HttpServletResponse response, User u)

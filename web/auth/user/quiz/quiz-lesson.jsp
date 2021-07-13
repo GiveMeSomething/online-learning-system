@@ -44,7 +44,7 @@
                     <h6>Submit your assignment</h6>
                 </div>
                 <div class="col-md-6">
-                    <c:if test="${!dao1.isFinishQuiz(sessionScope.user.id, quizIdCuaDuyAnh)}">
+                    <c:if test="${dao1.getMark(sessionScope.user.id, sessionScope.quizIdCuaDuyAnh)=='--'}">
                         <button type="button" class="btn btn-primary" style="float: right;">
                             <a style="color: white; text-decoration: none;" href="${path}/auth/user/user_quiz?operation=VIEWQUIZHANDLE&quizId=${quizIdCuaDuyAnh}">
                                 Start
@@ -65,7 +65,8 @@
                 </div>
                 <div class="col-md-6" style="margin-top: 10px;">
                     <p style="font-weight: bold; color: red;float: right; padding-left: 10px;" >
-                        ${ketquacuoicung==null?"--":ketquacuoicung*100}%
+<!--                        ${ketquacuoicung==null?"--":ketquacuoicung*100}%-->
+                        ${dao1.getMark(sessionScope.user.id, sessionScope.quizIdCuaDuyAnh)}
                     </p>
                     <p class="fw-bold" style="float: right;">Grade:
                     </p>
@@ -73,7 +74,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <c:if test="${dao1.isFinishQuiz(sessionScope.user.id, quizIdCuaDuyAnh)}"> 
+                    <c:if test="${dao1.getMark(sessionScope.user.id, sessionScope.quizIdCuaDuyAnh)!= '--'}">
                         <button type="button" class="btn btn-primary"> 
                             <a style="color: white; text-decoration: none;"href="${path}/auth/user/user_quiz?operation=VIEWQUIZREVIEW&quizId=${quizIdCuaDuyAnh}">
                                 View Feedback
@@ -82,7 +83,7 @@
                     </c:if>
                 </div>
                 <div class="col-md-6">
-                    <c:if test="${dao1.isFinishQuiz(sessionScope.user.id, quizIdCuaDuyAnh)}"> 
+                    <c:if test="${dao1.getMark(sessionScope.user.id, sessionScope.quizIdCuaDuyAnh)!='--'}"> 
                         <span style="color: red; background-color: white; float: right;">
                             <a href="${path}/auth/user/user_quiz?operation=VIEWQUIZHANDLE&quizId=${quizIdCuaDuyAnh}">
                                 Try again

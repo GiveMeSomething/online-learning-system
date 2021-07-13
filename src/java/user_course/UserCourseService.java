@@ -154,4 +154,12 @@ public class UserCourseService {
         }
         return false;
     }
+    public boolean updateRegistration(int userId, int currentCourseId, int price, String note){
+        try {
+            return userCourseRepository.updateRegistration(userId, currentCourseId, price, note);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

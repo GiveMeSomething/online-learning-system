@@ -37,6 +37,7 @@
                 <input hidden="true" name="userId" value="${detail.user.id}">
                 <input hidden="true" name="courseId" value="${course.id}">
                 <input hidden="true" name="existCourseId" value="${detail.id}">
+                <input hidden="true" name="type" value="${type}">
                 <div class="row">
                     <div class="col-6">
                         <div class="px-5 user-infor">
@@ -90,7 +91,7 @@
                                        required/>
                                 <div class="invalid-feedback"></div>
                             </div>
-                            <c:if test="${sessionScope.isAdmin != null}">
+                            <c:if test="${sessionScope.isAdmin == true || sessionScope.isTeacher == true}">
                                 <div class="form-group">
                                     <label>Registration Status</label><br>
                                     <select name="status" class="form-control">
@@ -123,10 +124,10 @@
                             <div class="form-group">
                                 <label for="package">Package</label><br>
                                 <c:choose>
-                                    <c:when test="${detail.user.id == null}">
+                                    <c:when test="${detail.user.id == null || detail.user.id == sessionScope.user.id}">
                                         <select name="package" class="form-control">
                                             <c:forEach items="${package}" var="p">
-                                                <option value="${p.id}">${p.name} - ${p.price}$</option>
+                                                <option value="${p.id}" ${p.price == detail.totalCost?"selected":""}>${p.name} - ${p.price}$</option>
                                             </c:forEach>
                                         </select>
                                     </c:when>
@@ -160,7 +161,7 @@
                                     <label for="category">Valid from</label><br>
                                     <input class="form-control"
                                            name="validFrom"
-                                           ${detail.user.id == sessionScope.user.id || detail.user.id == null?"":"disabled"}
+                                           disabled
                                            type="text"
                                            value="${detail.validFrom}"
                                            data-value-missing="Can't be empty"
@@ -171,7 +172,7 @@
                                     <label for="category">Valid To</label><br>
                                     <input class="form-control"
                                            name="validTo"
-                                           ${detail.user.id == sessionScope.user.id || detail.user.id == null?"":"disabled"}
+                                           disabled
                                            type="text"
                                            value="${detail.validTo}"
                                            data-value-missing="Can't be empty"
