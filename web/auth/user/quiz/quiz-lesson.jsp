@@ -93,7 +93,27 @@
                 </div>
             </div>
 
-            
+            <div class="d-flex align-items-center" style="justify-content: flex-end; margin-top: 50px;">
+                <a href="${path}/auth/user/course/lesson?operation=PREVIOUSLESSON&&lessonId=${sessionScope.lessonIdSession - 1}&&courseId=${sessionScope.courseId}">
+                    <button ${disabled} ${sessionScope.lessonIdSession == minIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn mr-3">
+                        < Previous lesson
+                    </button>
+                </a>
+
+                <c:if test="${disabledNext == 'disabled'}">
+                    <button ${disabledNext} ${sessionScope.lessonIdSession == maxIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn">
+                        Next lesson >
+                    </button>
+                </c:if>
+                <c:if test="${disabledNext != 'disabled'}">
+                    <a href="${path}/auth/user/course/lesson?operation=NEXTLESSON&&lessonId=${sessionScope.lessonIdSession + 1}&&courseId=${sessionScope.courseId}">
+                        <button ${disabledNext} ${sessionScope.lessonIdSession == maxIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn">
+                            Next lesson >
+                        </button>
+                    </a>
+                </c:if>
+
+            </div>
         </div>
 
     </body>

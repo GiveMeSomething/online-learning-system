@@ -380,9 +380,7 @@ public class LessonRepository extends Repository {
 
     public static void main(String[] args) throws Exception {
         LessonRepository repo = new LessonRepository();
-        List<Lesson> lessonList = repo.getAllLesson();
-        for (Lesson o : lessonList) {
-            System.out.println(o);
-        }
+        Lesson max = repo.getMaxLessonIdByCourseId(20);
+        System.out.println(max.getId());
     }
 }
