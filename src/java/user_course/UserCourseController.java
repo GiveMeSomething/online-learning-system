@@ -207,8 +207,8 @@ public class UserCourseController extends HttpServlet implements Controller {
             User user = userService.getUser(email);
             int userId = user.getId();
             userCourseService.updateStatus(userId, courseId, status);
+            response.sendRedirect(request.getContextPath() + "/auth/user/UserCourse?operation=");
         }
-        response.sendRedirect(request.getContextPath() + "/auth/user/UserCourse?operation=");
     }
 
     private void notPaidYet(HttpServletRequest request, HttpServletResponse response, String email,
@@ -238,8 +238,8 @@ public class UserCourseController extends HttpServlet implements Controller {
         } else {
             String existEmail = request.getParameter("existEmail");
             userCourseService.updateRegistration(userService.getUser(existEmail).getId(), courseId, price, note);
+            response.sendRedirect(request.getContextPath() + "/auth/user/UserCourse?operation=");
         }
-        response.sendRedirect(request.getContextPath() + "/auth/user/UserCourse?operation=");
     }
 
     private void updateStatus(HttpServletRequest request, HttpServletResponse response, User u)
