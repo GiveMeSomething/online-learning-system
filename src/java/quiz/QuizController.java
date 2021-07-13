@@ -366,6 +366,7 @@ public class QuizController extends HttpServlet implements Controller {
     private void processQuizReview(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession currentSession = request.getSession();
+        User currentUser = (User) currentSession.getAttribute("user");
 
         int quizId = 1;
         int selectedQuestion = 0;
@@ -384,7 +385,7 @@ public class QuizController extends HttpServlet implements Controller {
 
         ArrayList<ArrayList<String>> questionList = (ArrayList<ArrayList<String>>) currentSession.getAttribute("questionList");
         if (questionList == null) {
-            questionList = quizService.getQuizReview(quizId);
+            questionList = quizService.getQuizReview(quizId, currentUser.getId());
         }
 
         currentSession.setAttribute("questionList", questionList);
