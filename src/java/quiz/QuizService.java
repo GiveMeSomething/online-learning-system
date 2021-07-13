@@ -211,9 +211,9 @@ public class QuizService {
         return null;
     }
 
-    public ArrayList<ArrayList<String>> getQuizReview(int quizId) {
+    public ArrayList<ArrayList<String>> getQuizReview(int quizId, int userId) {
         try {
-            return quizRepository.getQuizReview(quizId);
+            return quizRepository.getQuizReview(quizId, userId);
         } catch (Exception e) {
             e.printStackTrace();
         }

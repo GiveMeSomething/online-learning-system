@@ -608,7 +608,7 @@ public class QuizRepository extends Repository {
         return false;
     }
 
-    public ArrayList<ArrayList<String>> getQuizReview(int quizId) throws SQLException {
+    public ArrayList<ArrayList<String>> getQuizReview(int quizId, int userId) throws SQLException {
         this.connectDatabase();
 
         String sql = "select qb.content, "
@@ -623,10 +623,11 @@ public class QuizRepository extends Repository {
                 + "from user_quiz uq "
                 + "         inner join user_question u on uq.id = u.user_quiz_id "
                 + "         inner join questions_bank qb on u.question_id = qb.id "
-                + "where uq.id = ?";
+                + "where uq.quiz_id = ? AND uq.user_id = ?";
 
         try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
             statement.setInt(1, quizId);
+            statement.setInt(2, userId);
 
             ArrayList<ArrayList<String>> questionList = new ArrayList<>();
             ResultSet result = statement.executeQuery();
@@ -740,7 +741,7 @@ public class QuizRepository extends Repository {
             statement.setString(2, quizId);
             ResultSet result = statement.executeQuery();
             if (result.next()) {
-                return result.getString(1) == null ? "--":result.getString(1)+ "%";
+                return result.getString(1) == null ? "--" : result.getString(1) + "%";
             }
         } finally {
             this.disconnectDatabase();
