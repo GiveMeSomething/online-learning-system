@@ -28,19 +28,11 @@
                     <div id="brief-info" style="flex: 50; margin-left: 12rem; margin-top: 1.5rem">
                         <h3 class="text-light" style="margin-bottom: .4rem; font-weight: bolder">${detail.courseName}</h3>
                         <p class="text-light" style="font-size: 1.2rem; margin-bottom: 0">${detail.tag}</p>
-                        <div class="d-flex mt-1">
+                        <div class="d-flex mt-1" style="margin-bottom: -.8rem">
                             <p class="font-weight-bold" style="font-size: larger; margin-right: 6px; color:white">
                                 $<fmt:formatNumber type="number" maxFractionDigits="2" value="${detail.price * 0.8}" />
                             </p>
                             <p style="text-decoration: line-through; font-size: small;color: white" class="card-text mr-2">$${detail.price}</p>
-                        </div>
-                        <div style="margin-bottom: .2rem; margin-top: -1rem">
-                            <span style="color: #ffa805">4.0</span>
-                            <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                            <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                            <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                            <i class="fas fa-star fa-xs" style="color: #ffa805"></i>
-                            <i class="far fa-star fa-xs" style="color: #ffa805"></i>
                         </div>
                         <p style="font-size: 0.8rem; margin-bottom: .2rem" class="text-light">Created by #author</p>
                         <p style="font-size: 0.8rem" class="text-light"><span style="color:#2996A9 ">#</span>
