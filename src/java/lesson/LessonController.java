@@ -175,11 +175,20 @@ public class LessonController extends HttpServlet implements Controller {
     private void processViewUserLessonDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        int lessonId = Integer.parseInt(request.getParameter("lessonId"));
+        int lessonId = 1;
+//        int courseId = Integer.parseInt(session.getAttribute("courseId") + "");
+        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        session.setAttribute("courseId", courseId);
+        if(request.getParameter("lessonId") != null){
+            lessonId = Integer.parseInt(request.getParameter("lessonId"));
+        }else if(request.getParameter("lessonId") == null){
+            Lesson minIdLesson = lessonService.getMinLessonIdByCourseId(courseId);
+            lessonId = minIdLesson.getId();
+        }
         List<Lesson> allLesson = lessonService.getAllLesson();
         Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
         request.setAttribute("lessonDetail", lessonDetail);
-        int courseId = Integer.parseInt(session.getAttribute("courseId") + "");
+        
         List<Lesson> lessonList = lessonService.getLessonsByCourseId(courseId);
         session.setAttribute("lessonId", lessonId);
         session.setAttribute("courseId", courseId);
@@ -279,17 +288,19 @@ public class LessonController extends HttpServlet implements Controller {
    
     private void processDoneLesson(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int courseId = Integer.parseInt(session.getAttribute("courseId") + "");
         if (request.getParameter("lessonId").contains("INACTIVE")) {
             int alpha = request.getParameter("lessonId").indexOf("E");
             String doneLessonId = request.getParameter("lessonId").substring(alpha + 1);
             lessonService.updateDoneLesson(doneLessonId);
-            response.sendRedirect(request.getContextPath() + "/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&lessonId=" + doneLessonId);
+            response.sendRedirect(request.getContextPath() + "/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&courseId=" + courseId);
             //Chỉnh lại url auth/user/course/lesson?
         } else if (request.getParameter("lessonId").contains("ACTIVE")) {
             int alpha = request.getParameter("lessonId").indexOf("E");
             String doneLessonId = request.getParameter("lessonId").substring(alpha + 1);
             lessonService.updateUndoneLesson(doneLessonId);
-            response.sendRedirect(request.getContextPath() + "/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&lessonId=" + doneLessonId);
+            response.sendRedirect(request.getContextPath() + "/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&courseId=" + courseId);
             //Chỉnh lại url auth/user/course/lesson?
         }
     }

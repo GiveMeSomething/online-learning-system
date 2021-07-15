@@ -28,11 +28,30 @@
             <div class="row">
                 <div class="col-md-5">
                     <div class="w-75">
-                        <img class="mb-3" style="width: 90%"
-                             src="${sessionScope.user.image}" class="img-rounded img-responsive"><br>
+                        <img class="mb-3" style="width: 346px;height:336px;border-radius:50%;margin-top:-12%"
+                             src="${path}/assets/${image}" class="img-rounded img-responsive"><br>
                         <p class="text-center" style="color:#959fb2">
                             Email: ${sessionScope.user.email}
                         </p>
+                        <!--UPLOAD MEDIA-->
+                        <div style="width: 85%;margin: 0 auto;margin-bottom: 10px">
+                            <form class="mt-3" action="${path}/auth/user/?operation=UPLOADAVATAR" method="POST" enctype="multipart/form-data">
+                                <div class="d-flex align-items-center">
+                                    <label style="background: red;margin-bottom: 0;
+                                           text-align:center;padding:5px;width: 146px;height:34px;
+                                           border-radius:5px;color:white;font-size:17px" for="file-upload" class="custom-file-upload">
+                                        Upload Avatar
+                                        <input style="color:transparent;opacity: 0"
+                                               type="file" name="photo" value="" id="file-upload" /></label>
+                                    <div style="margin-left: 10px">
+                                        <button style="width: 146px;height: 34px;padding: 5px" class="btn btn-success" type="submit" value="Save">
+                                            Update Avatar
+                                        </button>            
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
                         <h4>Change your password</h3>
                             <form action="${path}/authenticate"
                                   method="POST"
@@ -109,7 +128,7 @@
                                type="text"
                                id="image"
                                placeholder="Image url"
-                               value="${sessionScope.user.image}"
+                               value="${image}"
                                data-value-missing="Can't be empty"
                                required/>
                         <div class="invalid-feedback"></div>
@@ -265,6 +284,11 @@
                     <button type="submit" class="btn btn-success">Update Information</button><br>
                 </form>
                 <br>
+            </div>
+            <div class="text-right mb-2 mt-4">
+                <a href="${path}/home">
+                    <button class="btn btn-success">Back</button>
+                </a>
             </div>
         </div>
         <jsp:include page="/components/global/footer.jsp"/>

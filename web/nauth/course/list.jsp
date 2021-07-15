@@ -184,6 +184,11 @@
                     </li>
                 </ul>
             </div>
+            <div class="text-right mb-2 mt-4">
+                <a href="${path}/home">
+                    <button class="btn btn-success">Back</button>
+                </a>
+            </div>
         </div>
         <jsp:include page="/components/global/footer.jsp" />
     </body>

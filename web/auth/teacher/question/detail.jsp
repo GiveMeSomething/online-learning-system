@@ -276,6 +276,11 @@
                     </div>
                 </div>
             </div>
+            <div class="text-right mb-2 mt-4">
+                <a href="${path}/auth/teacher/question?subjectId=${sessionScope.subjectId}&operation=MANAGEQUESTION">
+                    <button class="btn btn-success">Back</button>
+                </a>
+            </div>
         </div>
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

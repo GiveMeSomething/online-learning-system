@@ -65,7 +65,9 @@
     </head>
     <body>
         <div class="container-fluid">
-            <button class="mt-3" style="width:40px;height:40px;background-color: black;border:1px solid black;color:white" class="w3-button w3-teal w3-xlarge right mr-3" onclick="w3_open()">☰</button>
+            <button class="mt-3" style="width:40px;height:40px;background-color: black;border:1px solid black;color:white" class="w3-button w3-teal w3-xlarge right mr-3" onclick="w3_open()">
+                <i class="fa fa-server"></i>
+            </button>
             <div class="row">
                 <div class="col-3" style="padding:0">
                     <div class="w3-sidebar w3-collapse" id="sidenav" style="top: 118px;">
@@ -207,9 +209,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="${path}/auth/user/course/lesson?operation=VIEWUSERLESSON&&courseId=${sessionScope.courseId}">
-                            <button class="btn btn-success">Back</button>
-                        </a>
+                        
                     </div>
                 </c:if>
 
@@ -242,6 +242,11 @@
 
 
                 </c:forEach>
+            </div>
+            <div class="text-right mb-2 mt-4 mr-5">
+                <a href="${path}/auth/user/course?operation=VIEWMYCOURSE&userId=${sessionScope.user.id}">
+                    <button class="btn btn-success">Back</button>
+                </a>
             </div>
         </div>
     </body>
