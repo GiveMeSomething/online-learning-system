@@ -176,7 +176,7 @@
                                             <button class="btn btn-primary border-success align-items-center btn-success"
                                                     type="submit"
                                                     formmethod="POST"
-                                                    formaction="${path}/auth/user/user_quiz?operation=SUBMITQUIZ&page=${maxPage}">
+                                                    formaction="${path}/auth/user/user_quiz?operation=SUBMITQUIZ&page=${getCurrentPage}">
                                                 Score
                                                 <i class="fa fa-angle-right ml-2"></i>
                                             </button>
@@ -285,7 +285,7 @@
                                                             <a class="qnbutton notyetanswered free btn btn-outline-secondary"
                                                                id="quiznavbutton${q}"
                                                                title="answered"
-                                                               href="${path}/auth/user/user_quiz?operation=QUIZHANDLE&thisPage=${q}&page=${q}">
+                                                               href="${path}/auth/user/user_quiz?operation=QUIZHANDLE&thisPage=${q}&page=${q}${sessionScope.marked[page] == true?"&mark=value":""}">
                                                                 ${q}
                                                                 <span class="accesshide">
                                                                     <span class="flagstate"></span>
@@ -376,33 +376,20 @@
                                                 <span id="mod_quiz_navblock_title">Quiz navigation</span></h5>
                                             <div class="card-text content mt-3">
                                                 <div class="qn_buttons clearfix multipages">
-                                                    <c:choose>
-                                                        <c:when test="${empty sessionScope.answer}">
-                                                            <c:forEach begin="1" end="${maxPage}" var="q" varStatus="count">
-                                                                <a class="qnbutton notyetanswered free btn btn-outline-secondary"
-                                                                   id="quiznavbutton1"
-                                                                   title="answered"
-                                                                   href="${path}/auth/user/user_quiz?operation=QUIZHANDLE&thisPage=${q}&page=${q}">
-                                                                    ${q}
-                                                                </a>
-                                                            </c:forEach>
-                                                        </c:when>
-                                                        <c:when test="${not empty sessionScope.answer}">
-                                                            <c:forEach items="${sessionScope.answer}" var="q">
-                                                                <a class="qnbutton ${not empty q.value?'answered':'notyetanswered'} free btn btn-outline-secondary"
-                                                                   id="quiznavbutton2"
-                                                                   title="answered"
-                                                                   href="${path}/auth/user/user_quiz?operation=QUIZHANDLE&thisPage=${q.key}&page=${q.key}${sessionScope.marked[q.key] == true?"&mark=value":""}">
-                                                                    ${q.key}
-                                                                    <c:if test="${sessionScope.marked[q.key] == true}">
-                                                                        <span class="accesshide">
-                                                                            <span class="flagstate"><i class="far fa-bookmark"></i></span>
-                                                                        </span>
-                                                                    </c:if>
-                                                                </a>
-                                                            </c:forEach>
-                                                        </c:when>
-                                                    </c:choose>
+                                                    <c:forEach begin="1" end="${maxPage}" var="q" varStatus="count">
+                                                        <c:set var="a">${q}</c:set>
+                                                        <a class="qnbutton ${not empty sessionScope.answer[a]?'answered':'notyetanswered'} free btn btn-outline-secondary"
+                                                           id="quiznavbutton2"
+                                                           title="answered"
+                                                           href="${path}/auth/user/user_quiz?operation=QUIZHANDLE&thisPage=${q}&page=${q}${sessionScope.marked[a] == true?"&mark=value":""}">
+                                                            ${q}
+                                                            <c:if test="${sessionScope.marked[a] == true}">
+                                                                <span class="accesshide">
+                                                                    <span class="flagstate"><i class="far fa-bookmark"></i></span>
+                                                                </span>
+                                                            </c:if>
+                                                        </a>
+                                                    </c:forEach>
                                                 </div>
                                             </div>
                                         </div>

@@ -1113,6 +1113,34 @@ public class CourseRepository extends Repository {
         }
 
     }
+    
+     public List<Course> getMyCourseSuccess(int userId) throws SQLException {
+        this.connectDatabase();
+        String getMyCourseSuccess = "SELECT c.id, c.thumbnail, c.title, c.description FROM db_ite1.user_course uc "
+                + "inner join db_ite1.user u "
+                + "on uc.user_id = u.id "
+                + "inner join db_ite1.course c "
+                + "on c.id = uc.course_id "
+                + "where u.id = ? and uc.registration_status = 1";
+        List<Course> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(getMyCourseSuccess)) {
+            statement.setInt(1, userId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new Course(
+                        result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description")
+                ));
+
+            }
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+
+    }
 
     public Course getCourseNameLessonList(int courseId) throws SQLException {
         this.connectDatabase();

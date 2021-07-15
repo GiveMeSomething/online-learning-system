@@ -131,7 +131,7 @@ public class EmailController extends HttpServlet implements Controller {
             } else {
                 System.out.println("not sent");
             }
-            response.sendRedirect("/home");
+            response.sendRedirect(request.getContextPath() + "/auth/user/UserCourse?operation=");
         } else {
             response.sendRedirect("/home");
         }

@@ -21,12 +21,17 @@
               integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
               crossorigin="anonymous">
         <link rel="stylesheet" href="${path}/style/styles.css">
+        <style>
+            #pending-course:hover{
+                opacity: 1!important
+            }
+        </style>
     </head>
     <body>
         <jsp:include page="/components/global/navbar.jsp"/>
         <div class="container" style="margin-top: 2rem">
             <div>
-                <span style="margin-left: 1rem"><b>My course</b></span>
+                <span style="margin-left: 1rem; font-size: 1.2rem"><b>My Course</b></span>
             </div>
             <div  class="row" style="margin-left: .2rem; margin-top: 1rem; ">
                 <!--                        1-->
@@ -41,9 +46,6 @@
                             <div class="card-body">
                                 <div style="height:145px">
                                     <a href="${path}/auth/user/course/lesson?operation=VIEWUSERLESSON&&courseId=${o.id}" style="text-decoration: none; color: black"><h5 class="card-title" style="cursor: pointer">${o.courseName}</h5></a>
-                                    <div style="font-family: cursive;margin-top: -10px; overflow-y: hidden; height: 3rem">
-                                        ${o.description}
-                                    </div>
                                 </div>
                                 <div class="row"  style="float: right">
 
@@ -53,6 +55,32 @@
 
                                 </div>
 
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+            <div>
+                <span style="margin-left: 1rem; font-size: 1.2rem"><b>Pending Course</b></span>
+            </div>
+            <div  class="row" style="margin-left: .2rem; margin-top: 1rem; ">
+                <!--                        1-->
+                <c:forEach items="${myCourseSucess}" var="o">
+                    <div id="pending-course" class="col-3" 
+                         style="height: max-content;
+                         margin-bottom: 2rem;
+                         opacity: .6">
+                        <div class="card" 
+                             style="width: 15rem; 
+                             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                            <img src="${o.imageLink}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <div style="height:145px">
+                                    <h5 class="card-title">${o.courseName}</h5>
+                                </div>
+                                <div class="row"  style="float: right">
+                                    <span style="margin-right: .2rem"><b>Pending...</b></span>
+                                </div>
                             </div>
                         </div>
                     </div>

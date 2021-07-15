@@ -467,6 +467,15 @@ public class CourseService {
         }
         return null;
     }
+    
+     public List<Course> getMyCourseSuccess(int userId) {
+        try {
+            return courseRepository.getMyCourseSuccess(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public Course getCourseNameLessonList(int courseId) {
         try {

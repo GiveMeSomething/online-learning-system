@@ -38,7 +38,7 @@
                                         ${o.courseName}
                                     </b><br>
                                     <span class="text-light banner-secondary">
-                                        ${o.description}
+                                        ${o.tag}
                                         <div style="margin-top:10px;background-color: #fce59b;width:80px;height:35px;color:#2b1b13;border-radius: 10px;text-align: center;line-height:30px;align-items: center">Best seller</div>
                                     </span><br/>
                                     <div class="row">
