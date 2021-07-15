@@ -53,7 +53,9 @@ public class SubjectController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         //Display subject dimesion detail of specified course
         List<Dimension> listDimension = courseService.getSubjectDimensionByCourseId(subjectId);
+        List<DimensionType> dimensionTypeList = courseService.getAllDimenstionType();
         request.setAttribute("listDimension", listDimension);
+        request.setAttribute("dimensionTypeList", dimensionTypeList);
         request.getRequestDispatcher("/auth/teacher/subject/detail.jsp").forward(request, response);
     }
 
@@ -209,19 +211,7 @@ public class SubjectController extends HttpServlet implements Controller {
         int subjectId = Integer.parseInt((String) currentSession.getAttribute("currentSubject"));
         String type = request.getParameter("type");
         List<DimensionType> dimensionList = courseService.getAllDimenstionType();
-        int typeInt = 0;
-        int count = 0;
-        for (int i = 0; i < dimensionList.size(); i++) {
-            if (dimensionList.get(i).getDimension_type_name().equals(type)) {
-                count++;
-            }
-        }
-        if(count == 1){
-            typeInt = courseService.getDimensionTypeDetail(type).getId();
-        }else {
-            courseService.addDimensionType(type);
-            typeInt = courseService.getDimensionTypeDetail(type).getId();
-        }
+        int typeInt = courseService.getDimensionTypeDetail(type).getId();
         String dimension = request.getParameter("dimension");
         String description = request.getParameter("description");
         courseService.addDimension(typeInt, dimension, description);

@@ -26,14 +26,14 @@
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a  
-                           class="nav-link ${activeId == 1 ? "active":""}"
-                           id="overview-tab" 
-                           data-toggle="tab" 
-                           href="#overview" 
-                           role="tab" 
-                           aria-controls="overview" 
-                           aria-selected="true">
-                           OverView
+                            class="nav-link ${activeId == 1 ? "active":""}"
+                            id="overview-tab" 
+                            data-toggle="tab" 
+                            href="#overview" 
+                            role="tab" 
+                            aria-controls="overview" 
+                            aria-selected="true">
+                            OverView
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -48,18 +48,18 @@
                         </a>
                     </li>
                     <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
-                    <li class="nav-item" role="presentation">
-                        <a style="text-align: center; align-items: center; padding-bottom: 1px;"
-                         
-                           id="pricepackage-tab"
-                           data-toggle="tab"
-                           href="#pricepackage"
-                           role="tab"
-                           aria-controls="auth/teacher/subject?operation=LISTPACKAGE&page=1"
-                           aria-selected="false">
-                            <a class="nav-link ${activeId == 3 ? "active":""}" style="text-decoration: none" href="${path}/auth/teacher/subject?operation=list">Price package</a>
-                        </a>
-                    </li>
+                        <li class="nav-item" role="presentation">
+                            <a style="text-align: center; align-items: center; padding-bottom: 1px;"
+
+                               id="pricepackage-tab"
+                               data-toggle="tab"
+                               href="#pricepackage"
+                               role="tab"
+                               aria-controls="auth/teacher/subject?operation=LISTPACKAGE&page=1"
+                               aria-selected="false">
+                                <a class="nav-link ${activeId == 3 ? "active":""}" style="text-decoration: none" href="${path}/auth/teacher/subject?operation=list">Price package</a>
+                            </a>
+                        </li>
                     </c:if>
                 </ul> 
             </div>
@@ -110,49 +110,49 @@
                                         </div>
                                         <div id="teacher" class="col-md-2 d-flex" style="margin-right: 8.5rem">
                                             <label for="subjectName" style="margin-top: -.5rem; margin-right: .2rem">Owner</label>
-                                            <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
+                                        <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
                                             <select name="courseOwner" style="width: max-content; height: max-content">
-                                            <c:forEach items="${authorList}" var="o">
-                                                <option value="${o.id}" <c:if test="${detail.ownerId == o.id}">selected</c:if>>                                                    
-                                                    ${o.name}
-                                                </option>
-                                            </c:forEach>
+                                                <c:forEach items="${authorList}" var="o">
+                                                    <option value="${o.id}" <c:if test="${detail.ownerId == o.id}">selected</c:if>>                                                    
+                                                        ${o.name}
+                                                    </option>
+                                                </c:forEach>
                                             </select>
-                                            </c:if>
-                                                
-                                            <c:if test="${sessionScope.isAdmin != true}">
-                                                <select name="courseOwner" style="width: max-content; height: max-content" disabled>
-                                            <c:forEach items="${authorList}" var="o">
-                                                <option value="${o.id}" <c:if test="${detail.ownerId == o.id}">selected</c:if>>                                                    
-                                                    ${o.name}
-                                                </option>
-                                            </c:forEach>
-                                            
-                                        </select>
-                                           </c:if>
-                                            
-                                   
+                                        </c:if>
+
+                                        <c:if test="${sessionScope.isAdmin != true}">
+                                            <select name="courseOwner" style="width: max-content; height: max-content" disabled>
+                                                <c:forEach items="${authorList}" var="o">
+                                                    <option value="${o.id}" <c:if test="${detail.ownerId == o.id}">selected</c:if>>                                                    
+                                                        ${o.name}
+                                                    </option>
+                                                </c:forEach>
+
+                                            </select>
+                                        </c:if>
+
+
                                         <div class="invalid-feedback"></div>
                                     </div>
                                     <div id="courseStatus" class="col-md-2" style="display: flex">
                                         <label style="margin-top: -.5rem; margin-right: .2rem">Status</label>
                                         <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
-                                        <select name="status" style="height: max-content">
-                  
-                                            <option value="1" ${detail.status=="PUBLISHED"?"selected":""}>Published</option>
-                                            <option value="0" ${detail.status=="UNPUBLISHED"?"selected":""}>Unpublished</option>
-                                        </select>     
+                                            <select name="status" style="height: max-content">
+
+                                                <option value="1" ${detail.status=="PUBLISHED"?"selected":""}>Published</option>
+                                                <option value="0" ${detail.status=="UNPUBLISHED"?"selected":""}>Unpublished</option>
+                                            </select>     
                                         </c:if>
-                                        
-                                        
+
+
                                         <c:if test="${sessionScope.isAdmin != true}">
                                             <select name="status" style="height: max-content" disabled>
-                  
-                                            <option value="1" ${detail.status=="PUBLISHED"?"selected":""}>Published</option>
-                                            <option value="0" ${detail.status=="UNPUBLISHED"?"selected":""}>Unpublished</option>
-                                        </select>     
+
+                                                <option value="1" ${detail.status=="PUBLISHED"?"selected":""}>Published</option>
+                                                <option value="0" ${detail.status=="UNPUBLISHED"?"selected":""}>Unpublished</option>
+                                            </select>     
                                         </c:if>
-                        
+
                                     </div>
                                 </div>
                             </div>
@@ -198,12 +198,13 @@
                                                 <label class="d-block text-left" for="type">
                                                     Type
                                                 </label>
-                                                <input name="type"
-                                                       type="text"
-                                                       class="form-control"
-                                                       id="type"
-                                                       data-value-missing="Can't be empty"
-                                                       required>
+                                                <select name="type" class="form-control">
+                                                    <c:forEach items="${dimensionTypeList}" var="o">
+                                                        <option value="${o.dimension_type_name}">
+                                                            ${o.dimension_type_name}
+                                                        </option>
+                                                    </c:forEach>
+                                                </select>
                                             </div>
                                             <div class="form-group">
                                                 <label class="d-block text-left" for="dimension">
@@ -283,7 +284,7 @@
                     </table>
 
                 </div>
-               <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
+                <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
                     <div class="tab-pane fade ${activeId == 3 ? "show active":""}" id="pricepackage" role="tabpanel" aria-labelledby="pricepackage-tab">
 
                         <jsp:include page="/auth/teacher/subject/price-package.jsp"/>
