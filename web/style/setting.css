@@ -44,11 +44,11 @@ and open the template in the editor.
 
 /* Position and style the close button (top right corner) */
 .sidebar .closebtn {
-    position: absolute;
+    /*position: absolute;*/
     top: 0;
-    right: 25px;
+    /*right: 25px;*/
     font-size: 36px;
-    margin-left: 50px;
+    margin-left: 20rem!important;
 }
 
 /* The button used to open the sidebar */
@@ -61,14 +61,11 @@ and open the template in the editor.
     border: none;
 }
 
-.openbtn:hover {
-    background-color: #444;
-}
-
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #main {
-    transition: margin-left .5s; /* If you want a transition effect */
-    padding: 20px;
+    /*transition: margin-left .5s;  If you want a transition effect */
+    /*padding: 20px;*/
+    opacity: 0.6
 }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */

@@ -155,13 +155,13 @@
                                 <td>${o.level}</td>
                                 <td>${o.status}</td>
                                 <td>
-                                    <a href="${path}/auth/teacher/question?operation=VIEW&&questionId=${o.id}" class="btn btn-secondary" style="width: 5rem; font-size: 10px; font-weight: bold">
-                                        <button class="btn btn-secondary">
+                                    <a href="${path}/auth/teacher/question?operation=VIEW&&questionId=${o.id}" style="width: 5rem; font-size: 10px; font-weight: bold">
+                                        <button class="btn btn-secondary mb-2">
                                             View&Edit
                                         </button>
                                     </a>
                                     <a href="${path}/auth/teacher/question?operation=DELETEQUESTION&questionId=${o.id}">
-                                        <button class="btn btn-danger mb-2">
+                                        <button class="btn btn-danger mb-2" style="padding: 5px 25px">
                                             Delete
                                         </button>
                                     </a>
