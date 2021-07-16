@@ -53,13 +53,15 @@
 
                         <div class="banner-information bg-dark mx-lg-5">
                             <div class="banner-sub-information p-3">
-                                <b class="text-light banner-primary">${o.note}</b><br>
+                                <b class="text-light banner-primary">${o.title}</b><br>
                                 <span class="text-light banner-secondary">Let’s build a more connected, inclusive and flexible future together.</span><br>
                                 <button class="btn btn-secondary">Learn more</button>
                             </div>
                         </div>
-
-                        <img class="d-block w-100" style="height: 70vh" src="${path}/assets/bannerImg/${o.image}" alt="">
+                        <a href="${o.backlink}">
+                            <img class="d-block w-100" style="height: 70vh" src="${path}/assets/bannerImg/${o.image}" alt="">
+                        </a>
+                        
 
                     </div>
 

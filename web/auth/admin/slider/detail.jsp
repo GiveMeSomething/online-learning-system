@@ -75,6 +75,18 @@
                            required>
                 </div>
                 <div class="form-group">
+                    <label for="title">
+                        Backlink
+                    </label>
+                    <input name="backlink"
+                           type="text"
+                           class="form-control"
+                           id="backlink"
+                           value="${sliderDetail.backlink}"
+                           data-value-missing="Can't be empty"
+                           required>
+                </div>
+                <div class="form-group">
                     <label for="status">
                         Status
                     </label>
@@ -87,13 +99,14 @@
                     <label for="notes">
                         Notes
                     </label>
-                    <input name="notes"
+                    <textarea name="notes"
                            type="text"
                            class="form-control"
                            id="notes"
                            value="${sliderDetail.note}"
+                           placeholder="${sliderDetail.note}"
                            data-value-missing="Can't be empty"
-                           required>
+                           required>${sliderDetail.note}</textarea>
                 </div>
                 <button style="background-color: #FF8C00;color:white"
                         type="submit" class="btn btn-warning">Update Slider</button> 
@@ -105,12 +118,12 @@
                         <label style="background: #6A5ACD;margin-bottom: 0;
                                text-align:center;padding:5px;width: 146px;height:34px;
                                border-radius:5px;color:white;font-size:17px" for="file-upload" class="custom-file-upload">
-                            Upload Slider Image
+                            Upload Image
                             <input style="color:transparent;opacity: 0;display: none"
                                    type="file" name="photo" value="" id="file-upload" /></label>
                         <div style="margin-left: 10px">
                             <button style="width: 146px;height: 34px;padding: 5px" class="btn btn-success" type="submit" value="Save">
-                                Preview Slider Image
+                                Preview Image
                             </button>            
                         </div>
                     </div>
