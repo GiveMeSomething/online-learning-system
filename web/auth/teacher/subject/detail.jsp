@@ -167,7 +167,7 @@
                             </div>
                             <div id="button-area">
                                 <button type="submit" class="btn btn-secondary">Submit</button>
-                                <a href="${path}/auth/teacher/subject" class="btn btn-secondary">Back</a>
+                                
                             </div>
                         </div>
                     </form>
@@ -287,6 +287,12 @@
                         <jsp:include page="/auth/teacher/subject/price-package.jsp"/>
                     </div>
                 </c:if>
+            </div>
+             
+             <div class="text-right mb-2 mt-4">
+                <a href="${path}/auth/teacher/subject">
+                    <button class="btn btn-success">Back</button>
+                </a>
             </div>
         </div>
     </body>
