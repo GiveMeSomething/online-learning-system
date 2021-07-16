@@ -38,7 +38,7 @@
             <!-- content -->
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                    <form action="${path}/quiz" method="POST" class="shadow-sm p-2 needs-validatation" novalidate>
+                    <form action="${path}/auth/teacher/quiz" method="POST" class="shadow-sm p-2 needs-validatation" novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="/auth/teacher/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
@@ -112,16 +112,19 @@
                             <textarea class="form-control" id="description" name="description" required>${quiz.description}</textarea>
                             <div class="invalid-feedback"></div>
                         </div>
+                        <c:if test="${quiz.id == null}">
+                            <div class="text-danger mb-3">Press SUBMIT button before switching to Setting</div>
+                        </c:if>
                         <div class="form-row">
                             <button class="btn btn-primary col-md-1" type="submit">Submit</button>
                             <div class="col-md-10"></div>
-                            <a role="button" href="${path}/quiz" class="btn btn-secondary col-md-1 ">Cancel</a>
+                            <a role="button" href="${path}/auth/teacher/quiz" class="btn btn-secondary col-md-1 ">Cancel</a>
                         </div>
                     </form>
                 </div>
                 <!-- setting -->
                 <div class="tab-pane fade" id="setting" role="tabpanel" aria-labelledby="setting-tab">
-                    <form action="${path}/quiz" method="POST" class="shadow-sm p-2 needs-validatation" novalidate>
+                    <form action="${path}/auth/teacher/quiz" method="POST" class="shadow-sm p-2 needs-validatation" novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="/auth/teacher/subject/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
@@ -202,7 +205,7 @@
                         <div class="form-row">
                             <button class="btn btn-primary col-md-1" type="submit" id="btn-submit-of-setting">Save</button>
                             <div class="col-md-10"></div>
-                            <a role="button" href="${path}/quiz" class="btn btn-secondary col-md-1 ">Cancel</a>
+                            <a role="button" href="${path}/auth/teacher/quiz" class="btn btn-secondary col-md-1 ">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -226,7 +229,6 @@
             $(document).ready(function () {
                 var addNew = $('#myTable');
                 var i = $('#myTable tr').size() + 1;
-
                 $('#addBtn').click(function () {
                     addNew.append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option>Select Group</option></select></td><td><input type="text" class="form-control" name="number-of-question" placeholder="Number of questions"></td><td><button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button></td></tr>');
                     i++;
@@ -240,21 +242,18 @@
                     }
                     return false;
                 });
-
                 $('#setting-tab').click(function () {
                     $('#myTable').find('tr').remove();
                     let quizId = $('#quizId').val();
                     $.ajax({
-                        url: "/online-learning-system/quiz",
+                        url: "/online-learning-system/auth/teacher/quiz",
                         method: "GET",
                         data: {operation: 'dimension',
                             quizId: quizId},
                         success: function (data) {
-                            console.log(data);
+                            console.log(data)
                             let dim = $.parseJSON(data);
                             $.each(dim, function (key, value) {
-                                console.log(key[1])
-                                console.log(value[0])
                                 if ($('#group').val() === value[1]) {
                                     $('#group').prop("checked", true);
                                 } else if ($('#domain').val() === value[1]) {
@@ -272,13 +271,11 @@
                         cache: false
                     });
                 });
-
                 $('#btn-submit-of-setting').submit(function () {
                     $('#myTable').find('tr').remove();
                     let quizId = $('#quizId').val();
-                    let subjectId = $('#subjectId').val();
                     $.ajax({
-                        url: "/online-learning-system/quiz",
+                        url: "/online-learning-system/auth/teacher/quiz",
                         method: "GET",
                         data: {operation: 'dimension',
                             quizId: quizId},
@@ -305,11 +302,10 @@
                         cache: false
                     });
                 });
-
                 $('.type').click(function () {
                     $('.group-question').find('option').remove();
+                    $('.number-of-question').find('input').remove();
                     $('.group-question').append('<option>Select Group</option>');
-
                     let type = $('.type:checked').val();
                     let courseId = $('#courseId').val();
                     let data = {
@@ -317,9 +313,8 @@
                         type: type,
                         courseId: courseId
                     };
-
                     $.ajax({
-                        url: "/online-learning-system/quiz",
+                        url: "/online-learning-system/auth/teacher/quiz",
                         method: "GET",
                         data: data,
                         success: function (data, textStatus, jqXHR) {
@@ -328,7 +323,6 @@
                             $.each(obj, function (key, value) {
                                 $('.group-question').append('<option value="' + value.id + '">' + value.name + '</option>')
                             });
-
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                             $('.group-question').append('<option>State Unavailable</option>');
@@ -336,11 +330,7 @@
                         cache: false
                     });
                 });
-
                 $('#addBtn').click(function () {
-                    $('.group-question').find('option').remove();
-                    $('.group-question').append('<option>Select Group</option>');
-
                     let type = $('.type:checked').val();
                     let courseId = $('#courseId').val();
                     let data = {
@@ -348,9 +338,8 @@
                         type: type,
                         courseId: courseId
                     };
-
                     $.ajax({
-                        url: "/online-learning-system/quiz",
+                        url: "/online-learning-system/auth/teacher/quiz",
                         method: "GET",
                         data: data,
                         success: function (data, textStatus, jqXHR) {
@@ -359,7 +348,6 @@
                             $.each(obj, function (key, value) {
                                 $('.group-question').append('<option value="' + value.id + '">' + value.name + '</option>')
                             });
-
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                             $('.group-question').append('<option>State Unavailable</option>');
@@ -367,7 +355,6 @@
                         cache: false
                     });
                 });
-
             });
         </script>
     </body>

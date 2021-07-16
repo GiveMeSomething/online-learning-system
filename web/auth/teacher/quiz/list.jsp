@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="row">
-                <form action="${path}/quiz" method="POST">
+                <form action="${path}/auth/teacher/quiz" method="POST">
                     <div class="request-info">
                         <input name="previousPage" value="${path}/auth/teacher/quiz" hidden="true" />
                         <div class="invalid-feedback"></div>
@@ -99,8 +99,8 @@
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
                     <div class="add-lesson">
-                        <a role="button" class="btn btn-success px-3 py-2" href="${path}/quiz?operation=VIEW&subjectId=${requestScope.subjectId}">
-                           <!--href="${path}/auth/user/user_quiz?operation=VIEW">-->
+                        <a role="button" class="btn btn-success px-3 py-2"
+                           href="${path}/auth/user/user_quiz?operation=VIEW&subjectId=${requestScope.subjectId}">
                             Add New Quiz
                         </a>
                     </div>
@@ -123,8 +123,7 @@
                         </div>
                     </div>
                     <div class="col-3 d-flex align-items-center justify-content-center m-2">
-                        <!--<a href="${path}/auth/user/user_quiz?operation=VIEW&quizId=${item.id}" class="m-2">-->
-                        <a href="${path}/quiz?operation=VIEW&quizId=${item.id}&subjectId=${subjectId}" class="m-2">
+                        <a href="${path}/auth/user/user_quiz?operation=VIEW&quizId=${item.id}&subjectId=${subjectId}" class="m-2">
                             <button class="btn btn-sm btn-primary px-3 py-2">
                                 View and Edit
                             </button>
@@ -140,19 +139,19 @@
                 <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" href="${path}/quiz?subjectId=${requestScope.subjectId}&operation=PAGINATION&page=${prevPage > 0 ? prevPage: 1}">Previous</a>
+                        <a class="page-link" href="${path}/auth/teacher/quiz?subjectId=${requestScope.subjectId}&operation=PAGINATION&page=${prevPage > 0 ? prevPage: 1}">Previous</a>
                     </li>
                     <c:forEach begin="1" end="${maxPage}" varStatus="counter">
                         <li class="page-item">
                             <a class="page-link"
-                               href="${path}/quiz?subjectId=${requestScope.subjectId}&operation=PAGINATION&page=${counter.index}">
+                               href="${path}/auth/teacher/quiz?subjectId=${requestScope.subjectId}&operation=PAGINATION&page=${counter.index}">
                                 ${counter.index}
                             </a>
                         </li>
                     </c:forEach>
                     <li class="page-item">
                         <a class="page-link"
-                           href="${path}/quiz?subjectId=${requestScope.subjectId}&operation=PAGINATION&page=${nextPage > maxPage ? maxPage: nextPage}">
+                           href="${path}/auth/teacher/quiz?subjectId=${requestScope.subjectId}&operation=PAGINATION&page=${nextPage > maxPage ? maxPage: nextPage}">
                             Next
                         </a>
                     </li>

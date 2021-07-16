@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -545,7 +546,6 @@ public class QuizController extends HttpServlet implements Controller {
         if (quizService.getExistQuiz(quiz) == null) {
             quizService.addQuizOverView(quiz);
             Quiz thisQuiz = quizService.getExistQuiz(quiz);
-            session.setAttribute("quiz", thisQuiz);
             viewQuiz(request, response, thisQuiz);
         } else {
             this.forwardErrorMessage(request, response, "Already had this quiz", forwardTo);
@@ -557,7 +557,6 @@ public class QuizController extends HttpServlet implements Controller {
         // Get value from Quiz Setting
         HttpSession session = request.getSession();
         String forwardTo = "/auth/teacher/quiz";
-//        int courseId = 1;
         String typeInString = request.getParameter("type");
         int type;
         if (typeInString.equalsIgnoreCase("Group")) {
@@ -585,6 +584,7 @@ public class QuizController extends HttpServlet implements Controller {
                 }
             }
         }
+        session.removeAttribute("quiz");
     }
 
     public void updateQuizOverview(HttpServletRequest request, HttpServletResponse response)
@@ -711,7 +711,8 @@ public class QuizController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         HashMap<Integer, ArrayList<Integer>> dimension = quizService.getDataForQuestion(quiz.getId());
         HashMap<ArrayList<Integer>, ArrayList<String>> info = new HashMap<>();
-        ArrayList<String> newInfo = new ArrayList<>();
+        ArrayList<String> newInfo;
+        Gson json = new Gson();
         for (Integer key : dimension.keySet()) {
             if (dimension.get(key).get(0) == 0) {
                 newInfo = quizService.getDimensionTypeForEdit(dimension.get(key).get(1));
@@ -723,7 +724,6 @@ public class QuizController extends HttpServlet implements Controller {
                 info.put(dimension.get(key), newInfo);
             }
         }
-        Gson json = new Gson();
         String group = json.toJson(info);
         response.setContentType("text/html");
         response.getWriter().write(group);

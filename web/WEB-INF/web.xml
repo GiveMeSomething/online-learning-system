@@ -142,8 +142,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>QuizController</servlet-name>
-        <!--<url-pattern>/auth/teacher/quiz</url-pattern>-->
-        <url-pattern>/quiz</url-pattern>
+        <url-pattern>/auth/teacher/quiz</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>QuizController</servlet-name>
