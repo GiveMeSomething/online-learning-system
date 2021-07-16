@@ -23,24 +23,31 @@
             <ul class="nav nav-tabs" id="quiz-detail" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab"
-                       aria-controls="overview" aria-selected="true">Overview</a>
+                       aria-controls="overview" aria-selected="false">Overview</a>
                 </li>
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" id="setting-tab" data-toggle="tab" href="#setting" role="tab"
-                       aria-controls="setting" aria-selected="false">Setting</a>
+                       aria-controls="setting" aria-selected="true">Setting</a>
                 </li>
+                <c:if test="${requestScope.errorMessage != null}">
+                    <li class="nav-item">
+                        <h5>${requestScope.errorMessage}</h5>
+                    </li>
+                </c:if>
             </ul>
             <!-- content -->
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                    <form action="${path}/auth/teacher/quiz" method="POST" class="shadow-sm p-2 needs-validatation" novalidate>
+                    <form action="${path}/quiz" method="POST" class="shadow-sm p-2 needs-validatation" novalidate>
                         <div class="request-info">
-                            <input name="previousPage" value="/auth/teacher/subject/quiz/detail.jsp" hidden="true" />
+                            <input name="previousPage" value="/auth/teacher/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
                             <input name="operation" value="ADDQUIZOVERVIEW" hidden="true" />
                             <div class="invalid-feedback"></div>
                         </div>
                         <input name="quizId" value="${quiz.id}" hidden/>
+                        <input name="courseId" id="courseId" value="${courseId}" hidden/>
+                        <input name="subjectId" id="courseId" value="${courseId}" hidden/>
                         <div class="form-row">
                             <div class="mb-3 col-md-12">
                                 <label for="quiz-name">Quiz name</label>
@@ -108,20 +115,20 @@
                         <div class="form-row">
                             <button class="btn btn-primary col-md-1" type="submit">Submit</button>
                             <div class="col-md-10"></div>
-                            <a role="button" href="${path}/auth/teacher/quiz" class="btn btn-secondary col-md-1 ">Cancel</a>
+                            <a role="button" href="${path}/quiz" class="btn btn-secondary col-md-1 ">Cancel</a>
                         </div>
                     </form>
                 </div>
                 <!-- setting -->
                 <div class="tab-pane fade" id="setting" role="tabpanel" aria-labelledby="setting-tab">
-                    <form action="${path}/auth/teacher/quiz" method="POST" class="shadow-sm p-2 needs-validatation" novalidate>
+                    <form action="${path}/quiz" method="POST" class="shadow-sm p-2 needs-validatation" novalidate>
                         <div class="request-info">
                             <input name="previousPage" value="/auth/teacher/subject/quiz/detail.jsp" hidden="true" />
                             <div class="invalid-feedback"></div>
                             <input name="operation" value="ADDQUIZSETTING" hidden="true" />
                             <div class="invalid-feedback"></div>
                         </div>
-                        <input value="${quiz.subjectId}" hidden name="subject"/>
+                        <input value="${quiz.subjectId}" hidden name="subjectId"/>
                         <input value="${quiz.id}" hidden id="quizId" name="quizId"/>
                         <div class="form-row">
                             <div class="mb-3">
@@ -193,9 +200,9 @@
                             <button id="addBtn" class="btn btn-outline-primary btn-sm mb-5" type="button">Add new Group</button>
                         </div>
                         <div class="form-row">
-                            <button class="btn btn-primary col-md-1" type="submit">Save</button>
+                            <button class="btn btn-primary col-md-1" type="submit" id="btn-submit-of-setting">Save</button>
                             <div class="col-md-10"></div>
-                            <a role="button" href="${path}/auth/teacher/quiz" class="btn btn-secondary col-md-1 ">Cancel</a>
+                            <a role="button" href="${path}/quiz" class="btn btn-secondary col-md-1 ">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -236,10 +243,9 @@
 
                 $('#setting-tab').click(function () {
                     $('#myTable').find('tr').remove();
-                    let existType = $('.type').val();
                     let quizId = $('#quizId').val();
                     $.ajax({
-                        url: "/online-learning-system/auth/teacher/quiz",
+                        url: "/online-learning-system/quiz",
                         method: "GET",
                         data: {operation: 'dimension',
                             quizId: quizId},
@@ -247,16 +253,53 @@
                             console.log(data);
                             let dim = $.parseJSON(data);
                             $.each(dim, function (key, value) {
-                                console.log(value.type)
-                                console.log($('#group').val())
-                                if ($('#group').val() === value.type) {
+                                console.log(key[1])
+                                console.log(value[0])
+                                if ($('#group').val() === value[1]) {
                                     $('#group').prop("checked", true);
-                                } else if ($('#domain').val() === value.type) {
+                                } else if ($('#domain').val() === value[1]) {
                                     $('#domain').prop("checked", true);
                                 } else {
                                     $('#topic').prop("checked", true);
                                 }
-                                $('#myTable').append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option value="">' + value.name + '</option></select></td><td><input type="text" class="form-control" name="number-of-question" placeholder="Number of questions"></td><td><button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button></td></tr>');
+                                if (value[0] === 0) {
+                                    $('#myTable').append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option value="' + key[1] + '">' + value[1] + '</option></select></td><td><input type="text" class="form-control" name="number-of-question" value="' + value[2] + '" placeholder="Number of questions"></td><td><button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button></td></tr>');
+                                } else {
+                                    $('#myTable').append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option value="' + key[1] + '">' + value[0] + '</option></select></td><td><input type="text" class="form-control" name="number-of-question" value="' + value[2] + '" placeholder="Number of questions"></td><td><button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button></td></tr>');
+                                }
+                            });
+                        },
+                        cache: false
+                    });
+                });
+
+                $('#btn-submit-of-setting').submit(function () {
+                    $('#myTable').find('tr').remove();
+                    let quizId = $('#quizId').val();
+                    let subjectId = $('#subjectId').val();
+                    $.ajax({
+                        url: "/online-learning-system/quiz",
+                        method: "GET",
+                        data: {operation: 'dimension',
+                            quizId: quizId},
+                        success: function (data) {
+                            console.log(data);
+                            let dim = $.parseJSON(data);
+                            $.each(dim, function (key, value) {
+                                console.log(key[1])
+                                console.log(value[0])
+                                if ($('#group').val() === value[1]) {
+                                    $('#group').prop("checked", true);
+                                } else if ($('#domain').val() === value[1]) {
+                                    $('#domain').prop("checked", true);
+                                } else {
+                                    $('#topic').prop("checked", true);
+                                }
+                                if (value[0] === 0) {
+                                    $('#myTable').append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option value="' + key[1] + '">' + value[1] + '</option></select></td><td><input type="text" class="form-control" name="number-of-question" value="' + value[2] + '" placeholder="Number of questions"></td><td><button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button></td></tr>');
+                                } else {
+                                    $('#myTable').append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option value="' + key[1] + '">' + value[0] + '</option></select></td><td><input type="text" class="form-control" name="number-of-question" value="' + value[2] + '" placeholder="Number of questions"></td><td><button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button></td></tr>');
+                                }
                             });
                         },
                         cache: false
@@ -268,13 +311,46 @@
                     $('.group-question').append('<option>Select Group</option>');
 
                     let type = $('.type:checked').val();
+                    let courseId = $('#courseId').val();
                     let data = {
                         operation: "dimensionType",
-                        type: type
+                        type: type,
+                        courseId: courseId
                     };
 
                     $.ajax({
-                        url: "/online-learning-system/auth/teacher/quiz",
+                        url: "/online-learning-system/quiz",
+                        method: "GET",
+                        data: data,
+                        success: function (data, textStatus, jqXHR) {
+                            console.log(data);
+                            let obj = $.parseJSON(data);
+                            $.each(obj, function (key, value) {
+                                $('.group-question').append('<option value="' + value.id + '">' + value.name + '</option>')
+                            });
+
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            $('.group-question').append('<option>State Unavailable</option>');
+                        },
+                        cache: false
+                    });
+                });
+
+                $('#addBtn').click(function () {
+                    $('.group-question').find('option').remove();
+                    $('.group-question').append('<option>Select Group</option>');
+
+                    let type = $('.type:checked').val();
+                    let courseId = $('#courseId').val();
+                    let data = {
+                        operation: "dimensionType",
+                        type: type,
+                        courseId: courseId
+                    };
+
+                    $.ajax({
+                        url: "/online-learning-system/quiz",
                         method: "GET",
                         data: data,
                         success: function (data, textStatus, jqXHR) {
