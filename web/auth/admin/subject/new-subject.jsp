@@ -15,13 +15,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
               integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+        <link rel="stylesheet" href="${path}/style/subject.css">
         <title>Add Subject</title>
     </head>
-
-    <body>
+    <body id="new-subject-body" style="background-color: hsl(120,0%,90%); margin-top: 50px">
         <div class="container">
-            <h1>New Subject</h1>
-            <form action="${path}/auth/teacher/subject" method="POST" class="needs-validatation" enctype="multipart/form-data" novalidate>
+            <h1 class="text-info">New Subject</h1>
+            <figure class="figure" style="position: absolute; top: 124px; right: 231px;">
+                <img id="my-img" class="rounded" alt="preview image" src="${path}/assets/preview_image.jpg" 
+                     height="250px" width="400px"/>
+                <figcaption class="figure-caption text-center mt-2">Preview Subject thumbnail</figcaption>
+            </figure>
+            <form action="${path}/auth/teacher/subject" method="POST" 
+                  class="needs-validatation p-3" style="background-color: hsl(42, 80%, 75%)" 
+                  enctype="multipart/form-data" novalidate>
                 <div class="request-info">
                     <input name="previousPage" value="${path}/auth/teacher/subject" hidden="true" />
                     <div class="invalid-feedback"></div>
@@ -37,7 +44,7 @@
                     </div>
                 </div>
                 <label for="myfile">Select a file:</label>
-                <input type="file" id="myfile" name="thumbnail" size="50"><br><br>
+                <input type="file" onchange="previewFile()" accept="image/*" id="myfile" name="thumbnail" size="50"><br><br>
                 <div class="form-row">
                     <div class="mb-3 col-md-6">
                         <label for="category">Category</label>
@@ -50,31 +57,31 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="mb-3 col-md-6">
-                        <label for="owner">Owner</label>
-                        <select class="custom-select" id="owner"  name="owner" required>
+                    <div class="input-group mb-3 col-md-2">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="owner">Owner</label>
+                        </div>
+                        <select class="custom-select" id="owner" name="owner" required>
                             <c:forEach items="${owner}" var="o">
                                 <option value="${o.key}">${o.value}</option>
                             </c:forEach>
                         </select>
                         <div class="invalid-feedback"></div>
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="custom-control custom-checkbox mb-3">
-                        <input type="checkbox" class="custom-control-input" name="featured" 
-                               id="featured" value="true" checked required>
-                        <label class="custom-control-label" for="featured">Featured subject</label>
-                        <div class="invalid-feedback"></div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="mb-3">
-                        <label for="status">Status</label>
+                    <div class="input-group mb-3 col-md-2">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="status">Status</label>
+                        </div>
                         <select class="custom-select" id="status" name="status" required>
                             <option value="PUBLISHED">Published</option>
                             <option value="UNPUBLISHED">Unpublished</option>
                         </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="custom-control col-md-2 custom-checkbox mb-3 ml-4 mt-2">
+                        <input type="checkbox" class="custom-control-input" name="featured" 
+                               id="featured" value="true" checked required>
+                        <label class="custom-control-label" for="featured">Featured subject</label>
                         <div class="invalid-feedback"></div>
                     </div>
                 </div>
@@ -84,7 +91,7 @@
                     <div class="invalid-feedback"></div>
                 </div>
                 <button class="btn btn-primary" type="submit">Submit</button>
-                <a role="button" class="btn btn-primary">Cancel</a>
+                <a role="button" class="btn btn-primary" href="${path}/auth/teacher/subject">Cancel</a>
             </form>
         </div>
         <!-- boostrap -->
@@ -97,7 +104,22 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
                 integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
         crossorigin="anonymous"></script>
-        <script src="${path}/utilities/form-validator.js"></script>
-    </body>
+        <script type="text/javascript" src="${path}/utilities/form-validator.js"></script>
+        <script type="text/javascript">
+                    function previewFile() {
+                        const preview = document.querySelector('img');
+                        const file = document.querySelector('input[type=file]').files[0];
+                        const reader = new FileReader();
 
+                        reader.addEventListener("load", function () {
+                            // convert image file to base64 string
+                            preview.src = reader.result;
+                        }, false);
+
+                        if (file) {
+                            reader.readAsDataURL(file);
+                        }
+                    }
+        </script>
+    </body>
 </html>

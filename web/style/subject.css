@@ -41,6 +41,9 @@ and open the template in the editor.
 .nav-tabs{
     border-bottom: none
 }
+#new-subject-body{
+    background-color: hsl(255,0%,50%);
+}
 
 
 
