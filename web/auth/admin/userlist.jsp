@@ -15,6 +15,9 @@
         <link href="css/newcss.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="${path}/style/setting.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <jsp:useBean id="dal" scope="page" class="user.UserRepository" />
         <jsp:useBean id="dall" scope="page" class="auth.AuthRepository" />
@@ -71,19 +74,26 @@
         </style>
     </head>
     <body>
+
         <div id="container" class="d-flex">
-            <div id="sider" class="col-md-2  mx-4" style="background:#FFFFF0">
-                <li style="color: black ; font-size: 20px; list-style: none ; padding-left: 0.5rem; padding-top: 8rem" > <strong> Data Administration </strong><br>
-                    <ul >
-                        <li>  Manage User ></li>
-                        <li>
-                            <a href="${path}/auth/admin/setting.jsp ">
-                                Mangage Setting
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+            <div id="sider" class="col-md-2  mx-4" style="background:none">
+                <div id="mySidebar" class="sidebar">
+                    <button id="closeNav" class="openbtn" onclick="closeNav()" style="display: none; margin-top: -4rem; margin-bottom: 2rem; margin-left: 13rem"><span style="text-transform: uppercase">X</span></button>
+                    <!--<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
+                    <a href="${path}/auth/admin" style="background: white; color: black">User List</a>
+                    <hr>
+                    <a href="${path}/auth/admin/dashboard">Dashboard</a>
+                    <hr>
+                    <a href="${path}/auth/admin/admin_blog?operation=VIEWALLPOST">Post List</a>
+                    <hr>
+                    <a href="${path}/auth/teacher/subject">Subject List</a>
+                    <hr>
+                    <a href="${path}/auth/admin/slider">Slider List</a>
+                    <hr>
+                    <a href="${path}/auth/teacher/lesson">Lesson List</a>
+                </div>
             </div>
+
             <div id="content-p" class="col-md-9">
                 <div style="background:#FFFFF0; align-item: center; display:flex; justify-content:center;  " class="py-2" id="screen-header">
                     <a class="navbar-brand" style="font-size: 2.5rem;" href="${path}/home">
@@ -92,11 +102,15 @@
                         <span style="color:green">S</span>
                     </a>
                 </div>
-                <h1 id="user-list-title">
-                    <a href="home" style="padding-bottom: 15px;">
-                        MANAGE USERS
-                    </a>
-                </h1>
+                        <div class="d-flex" style="margin-left: -1rem">
+                    <button id="openNav" class="openbtn" onclick="openNav()" style="background: white; color: black">&#9776;</button>  
+                    <h1 id="user-list-title">
+                        <a href="${path}/home" style="padding-bottom: 15px;text-decoration: none; color: black">
+                            MANAGE USERS
+                        </a>
+                    </h1>  
+                </div>
+
                 <form action="${path}/auth/admin/search" method="GET">
                     <div style="display: flex;padding-top: 20px;">
                         <div>
@@ -278,6 +292,44 @@
                         switching = true;
                     }
                 }
+            }
+        }
+    </script>
+    <script>
+        function openNav() {
+            document.getElementById("openNav").style.color = "white";
+            document.getElementById("closeNav").style.display = "block";
+            document.getElementById("mySidebar").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("openNav").style.color = "black";
+            document.getElementById("closeNav").style.display = "none";
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+        function myAccFunc() {
+            var x = document.getElementById("demoAcc");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-black";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                        x.previousElementSibling.className.replace(" w3-black", "");
+            }
+        }
+
+        function myDropFunc() {
+            var x = document.getElementById("demoDrop");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-black";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                        x.previousElementSibling.className.replace(" w3-black", "");
             }
         }
     </script>

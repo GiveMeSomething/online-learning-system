@@ -20,9 +20,27 @@
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
               integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
               crossorigin="anonymous">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="${path}/style/styles.css">
+        <link rel="stylesheet" type="text/css" href="${path}/style/setting.css">
     </head>
     <body>
+        <div id="mySidebar" class="sidebar">
+            <button id="closeNav" class="openbtn" onclick="closeNav()" style="display: none; margin-top: -4rem; margin-bottom: 2rem; margin-left: 13rem"><span style="text-transform: uppercase">X</span></button>
+            <!--<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
+            <a href="${path}/auth/admin" onclick="userRoleOn()">User List</a>
+            <hr>
+            <a href="${path}/auth/admin/dashboard" >Dashboard</a>
+            <hr>
+            <a href="${path}/auth/admin/admin_blog?operation=VIEWALLPOST">Post List</a>
+            <hr>
+            <a href="${path}/auth/teacher/subject" style="background: white; color: black">Subject List</a>
+            <hr>
+            <a href="${path}/auth/admin/slider" >Slider List</a>
+            <hr>
+            <a href="${path}/auth/teacher/lesson">Lesson List</a>
+        </div>
         <c:if test="${requestScope.errorMessage != null}">
             <div class="d-flex w-100 align-items-center justify-content-end">
                 <h5>${requestScope.errorMessage}</h5>
@@ -31,6 +49,7 @@
         <div class="container my-5">
             <div class="row">
                 <div class="d-flex justify-content-center align-items-center">
+                    <button id="openNav" class="openbtn" onclick="openNav()" style="background: white; color: black">&#9776;</button>  
                     <h2>Subjects List</h2>
                 </div>
             </div>
@@ -128,6 +147,11 @@
                                 View and Edit
                             </button>
                         </a>
+                        <a href="${path}/auth/teacher/question?subjectId=${item.get(0)}&operation=MANAGEQUESTION">
+                            <button type="button" class="btn btn-success">
+                                Manage Question
+                            </button>
+                        </a>
                     </div>
                 </c:forEach>
             </div>
@@ -171,4 +195,5 @@
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
             crossorigin="anonymous">
     </script>
+    <script type="text/javascript" src="${path}/utilities/tree-module.js"></script>
 </html>

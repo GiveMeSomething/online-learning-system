@@ -22,7 +22,7 @@
         <section id="navbar">
             <div class="container-fluid d-flex justify-content-center my-3">
                 <nav class="navbar navbar-expand-xl navbar-light bg-light" style="margin: auto;">
-                    <a class="navbar-brand" style="font-size: 2rem;" href="home">
+                    <a class="navbar-brand" style="font-size: 2rem;" href="${path}/home">
                         <span style="color:blue">O</span>
                         <span style="color:orange">L</span>
                         <span style="color:green">S</span>
@@ -44,7 +44,7 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownButton">
                                     <c:forEach items="${requestScope.categoryList}" var="o">
                                         <a class="dropdown-item"
-                                           href="course?cID=${o.id}">
+                                           href="${path}/course?cID=${o.id}">
                                             ${o.categoryName}
                                         </a>
                                     </c:forEach>

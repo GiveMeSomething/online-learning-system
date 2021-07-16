@@ -25,14 +25,14 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "CourseController", urlPatterns = {"/course"})
 public class CourseController extends HttpServlet {
-
+    
     private CourseService courseService;
-
+    
     @Override
     public void init() throws ServletException {
         courseService = new CourseService();
     }
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,12 +45,12 @@ public class CourseController extends HttpServlet {
                 List<Course> siderCourse = courseService.getSiderCourseDetail();
                 List<Category> categoryList = courseService.getAllCategory();
                 ArrayList<PricePackage> coursePackages = courseService.getCoursePackage(courseDetail.getId());
-
+                
                 request.setAttribute("detail", courseDetail);
                 request.setAttribute("siderCourse", siderCourse);
                 request.setAttribute("categoryList", categoryList);
                 request.setAttribute("coursePackages", coursePackages);
-
+                
                 request.getRequestDispatcher("nauth/course/detail.jsp").forward(request, response);
             } else if (categoryId != null) {
                 int categoryIndicator = Integer.parseInt(categoryId);
@@ -95,13 +95,16 @@ public class CourseController extends HttpServlet {
             }
         } else if (operation.equals("VIEWMYCOURSE")) {
             getMyCourse(request, response);
+            getMyCourseSuccess(request, response);
+            request.getRequestDispatcher("/auth/user/course/my-course.jsp").forward(request, response);
+            
         }
     }
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         String operation = request.getParameter("operation");
         if (operation.equals("REGISTER")) {
             processRegisterCourse(request, response);
@@ -115,7 +118,7 @@ public class CourseController extends HttpServlet {
                 index = "1";
             }
             int indexPage = Integer.parseInt(index);
-
+            
             String price = request.getParameter("price");
             String alpha = request.getParameter("alpha");
             List<Course> list = courseService.searchCourse(categoryId, searchName);
@@ -134,7 +137,7 @@ public class CourseController extends HttpServlet {
             request.getRequestDispatcher("nauth/course/list.jsp").forward(request, response);
         }
     }
-
+    
     private void handleFilterPriceAlpha(HttpServletRequest request,
             HttpServletResponse response, int categoryIndicator, String searchName,
             int indexPage, String price, String alpha)
@@ -157,10 +160,10 @@ public class CourseController extends HttpServlet {
                 List<Course> listCoursePagingDetail = courseService.pagingCourseList(categoryIndicator, searchName, indexPage, price, alpha);
                 request.setAttribute("course", listCoursePagingDetail);
             }
-
+            
         }
     }
-
+    
     private void getTitle(HttpServletRequest request, HttpServletResponse response, int categoryId)
             throws ServletException, IOException {
         switch (categoryId) {
@@ -188,10 +191,10 @@ public class CourseController extends HttpServlet {
                 request.setAttribute("title", "Language");
                 break;
             }
-
+            
         }
     }
-
+    
     private int getTotalPage(HttpServletRequest request, HttpServletResponse response, int categoryId)
             throws ServletException, IOException {
         int total = courseService.countingCourseList(categoryId);
@@ -203,7 +206,7 @@ public class CourseController extends HttpServlet {
         }
         return endPage;
     }
-
+    
     private int getTotalPageSearch(HttpServletRequest request, HttpServletResponse response, int categoryId, String searchName)
             throws ServletException, IOException {
         int total = courseService.countingCourseListSearch(categoryId, searchName);
@@ -214,47 +217,60 @@ public class CourseController extends HttpServlet {
             endPage = (courseService.countingCourseListSearch(categoryId, searchName) / 8) + 1;
         }
         return endPage;
-
+        
     }
-
+    
     private void getMyCourse(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession currentSession = request.getSession();
 
         // Get current user (teacher/admin) id to get the according subject list
         int userId = ((User) currentSession.getAttribute("user")).getId();
-
+        
         List<Course> myCourse = courseService.getMyCourse(userId);
         List<Category> categoryList = courseService.getAllCategory();
         request.setAttribute("categoryList", categoryList);
         request.setAttribute("myCourse", myCourse);
-        System.out.println(myCourse);
-        request.getRequestDispatcher("/auth/user/course/my-course.jsp").forward(request, response);
+//        System.out.println(myCourse);
     }
 
-    private void processRegisterCourse(HttpServletRequest request, HttpServletResponse response)
+    private void getMyCourseSuccess(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession currentSession = request.getSession();
 
+        // Get current user (teacher/admin) id to get the according subject list
+        int userId = ((User) currentSession.getAttribute("user")).getId();
+        
+        List<Course> myCourseSucess = courseService.getMyCourseSuccess(userId);
+        List<Category> categoryList = courseService.getAllCategory();
+        request.setAttribute("categoryList", categoryList);
+        request.setAttribute("myCourseSucess", myCourseSucess);
+        System.out.println(myCourseSucess);
+    }
+    
+    private void processRegisterCourse(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
+        
         if (currentSession.getAttribute("user") == null) {
             response.sendRedirect(request.getContextPath() + "/nauth/down.jsp");
         } else {
             User currentUser = (User) currentSession.getAttribute("user");
             int courseId = 1;
             int pricePackageId = 1;
-
+            
             try {
                 courseId = Integer.parseInt(request.getParameter("courseId"));
             } catch (Exception e) {
                 response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
             }
-
+            
             try {
                 pricePackageId = Integer.parseInt(request.getParameter("pricepkg"));
             } catch (Exception e) {
                 System.out.println("Default package");
             }
-
+            
             boolean isRegister = courseService.registerCourse(currentUser.getId(), courseId, pricePackageId);
             if (!isRegister) {
                 response.sendRedirect(request.getContextPath() + "/nauth/down.jsp");
@@ -262,6 +278,6 @@ public class CourseController extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + request.getParameter("previousPage"));
             }
         }
-
+        
     }
 }
