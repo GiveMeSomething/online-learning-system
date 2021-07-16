@@ -168,9 +168,6 @@
                             <div id="button-area">
                                 <button type="submit" class="btn btn-secondary">Submit</button>
                                 <a href="${path}/auth/teacher/subject" class="btn btn-secondary">Back</a>
-                                <a href="${path}/auth/teacher/question?subjectId=${detail.id}&operation=MANAGEQUESTION">
-                                    <button type="button" class="btn btn-primary">Manage Question</button>
-                                </a>
                             </div>
                         </div>
                     </form>
@@ -291,11 +288,6 @@
                     </div>
                 </c:if>
             </div>
-        <div class="text-right mb-2 mt-2">
-                <a href="${path}/auth/teacher/subject">
-                    <button class="btn btn-success">Back</button>
-                </a>
-        </div>
         </div>
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
