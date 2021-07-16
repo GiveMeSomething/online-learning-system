@@ -133,20 +133,22 @@ public class SliderRepository extends Repository {
         return null;
     }
 
-    public boolean updateSliderDetail(String image, String title, int status_id, String notes, int sliderId) throws SQLException {
+    public boolean updateSliderDetail(String image, String title, String backlink, int status_id, String notes, int sliderId) throws SQLException {
         this.connectDatabase();
         String updateSliderDetail = "UPDATE db_ite1.slider SET "
                 + "image = ?, "
                 + "title = ?, "
+                + "backlink = ?, "
                 + "status_id = ?, "
                 + "notes = ? "
                 + "WHERE id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(updateSliderDetail)) {
             statement.setString(1, image);
             statement.setString(2, title);
-            statement.setInt(3, status_id);
-            statement.setString(4, notes);
-            statement.setInt(5, sliderId);
+            statement.setString(3, backlink);
+            statement.setInt(4, status_id);
+            statement.setString(5, notes);
+            statement.setInt(6, sliderId);
             if (statement.executeUpdate() > 0) {
                 return true;
             }

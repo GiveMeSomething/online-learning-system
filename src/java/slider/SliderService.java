@@ -29,9 +29,9 @@ public class SliderService {
         return null;
     }
 
-    public boolean updateSliderDetail(String image, String title, int status_id, String notes, int sliderId) {
+    public boolean updateSliderDetail(String image, String title, String backlink, int status_id, String notes, int sliderId) {
         try {
-           return sliderRepository.updateSliderDetail(image, title, status_id, notes, sliderId);
+           return sliderRepository.updateSliderDetail(image, title, backlink, status_id, notes, sliderId);
         } catch (Exception e) {
             e.printStackTrace();
         }

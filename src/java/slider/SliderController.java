@@ -174,9 +174,10 @@ public class SliderController extends HttpServlet {
         int sliderId = Integer.parseInt(currentSession.getAttribute("sliderId") + "");
         String image = request.getParameter("image");
         String title = request.getParameter("title");
+        String backlink = request.getParameter("backlink");
         int statusId = Integer.parseInt(request.getParameter("status"));
         String notes = request.getParameter("notes");
-        sliderService.updateSliderDetail(image, title, statusId, notes, sliderId);
+        sliderService.updateSliderDetail(image, title, backlink, statusId, notes, sliderId);
         response.sendRedirect(request.getContextPath()+"/auth/admin/slider?operation=VIEWDETAIL&&sliderId="+sliderId); //Sau này chỉnh lại link
     }
     
