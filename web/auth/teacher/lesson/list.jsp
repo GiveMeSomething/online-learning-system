@@ -127,7 +127,7 @@
             </div>
             <nav aria-label="Page navigation example">
                 <c:set var="contentSize" value="${sessionScope.lessonList.size()}" />
-                <c:set var="maxPage" value="${contentSize % 5 == 0 ? contentSize / 5: ((contentSize - contentSize % 5) / 5) + 1}" />
+                <c:set var="maxPage" value="${contentSize % 10 == 0 ? contentSize / 10: ((contentSize - contentSize % 10) / 10) + 1}" />
                 <c:set var="currentPage" value="${pageContext.request.getParameter('page')}" />
                 <c:set var="prevPage" value="${currentPage == null ? 1 : currentPage - 1}" />
                 <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>

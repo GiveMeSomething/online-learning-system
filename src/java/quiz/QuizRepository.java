@@ -43,12 +43,12 @@ public class QuizRepository extends Repository {
                 + "       q.quiz_type_id, "
                 + "       q.description, "
                 + "       c.title, "
-                + "       COUNT(qq.quiz_id) as questNum "
+                + "       sum(qdl.number_of_question) as questNum "
                 + "from quiz q "
-                + "         inner join question_quiz qq on q.id = qq.quiz_id "
+                + "         inner join quiz_dimension_lesson qdl on q.id = qdl.quiz_id "
                 + "         inner join course c on q.subject_id = c.id "
                 + "where subject_id = ? " + option
-                + "group by q.id, q.name, q.subject_id, q.level_id, q.duration, q.pass_rate, q.quiz_type_id, q.description, c.title;";
+                + "group by q.id, q.name, q.subject_id, q.level_id, q.duration, q.pass_rate, q.quiz_type_id, q.description, c.title, qdl.quiz_id;";
         ArrayList<Quiz> quizList = new ArrayList<>();
 
         try (PreparedStatement statement = this.connection.prepareStatement(sql)) {

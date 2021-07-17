@@ -111,6 +111,7 @@
                     <thead>
                         <tr>
                             <th scope="col">Id</th>
+                            <th>Name</th>
                             <th>Subject</th>
                             <th>Level</th>
                             <th>Questions</th>
@@ -124,6 +125,7 @@
                         <c:forEach items="${requestScope.pageItems}" var="item">
                             <tr>
                                 <th scope="row">${item.id}</th>
+                                <td>${item.quizName}</td>
                                 <td>${item.subjectName}</td>
                                 <td>${item.level}</td>
                                 <td>${item.questionNum}</td>
@@ -145,7 +147,7 @@
             </div>
             <nav aria-label="Page navigation example">
                 <c:set var="contentSize" value="${sessionScope.quizList.size()}" />
-                <c:set var="maxPage" value="${((contentSize - contentSize % 5) / 5) + 1}" />
+                <c:set var="maxPage" value="${contentSize % 10 == 0 ? contentSize / 10: ((contentSize - contentSize % 10) / 10) + 1}" />
                 <c:set var="currentPage" value="${pageContext.request.getParameter('page')}" />
                 <c:set var="prevPage" value="${currentPage == null ? 1 : currentPage - 1}" />
                 <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>

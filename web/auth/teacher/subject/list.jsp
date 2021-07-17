@@ -136,7 +136,7 @@
                             <th>Lessons</th>
                             <th>Owner</th>
                             <th>Status</th>
-                            <th colspan="3" class="text-center">
+                            <th class="text-center">
                                 Actions
                             </th>
                         </tr>
@@ -150,24 +150,25 @@
                                 <td>${item.get(3)}</td>
                                 <td>${item.get(4)}</td>
                                 <td>${item.get(5)}</td>
-                                <td>
-                                    <a href="${path}/auth/teacher/subject?operation=VIEW&subjectId=${item.get(0)}">
+                                <td class="d-flex align-items-center justify-content-center">
+                                    <a href="${path}/auth/teacher/subject?operation=VIEW&subjectId=${item.get(0)}" class="mx-1">
                                         <button type="button" class="btn btn-primary">
                                             View and Edit
                                         </button>
                                     </a>
-                                </td>
-                                <td>
-                                    <a href="${path}/auth/teacher/question?subjectId=${item.get(0)}&operation=MANAGEQUESTION">
+                                    <a href="${path}/auth/teacher/question?subjectId=${item.get(0)}&operation=MANAGEQUESTION" class="mx-1">
                                         <button type="button" class="btn btn-success">
-                                            Manage Question
+                                            Question Bank
                                         </button>
                                     </a>
-                                </td>
-                                <td>
-                                    <a href="${path}/auth/teacher/lesson?subjectId=${item.get(0)}">
+                                    <a href="${path}/auth/teacher/lesson?subjectId=${item.get(0)}" class="mx-1">
                                         <button type="button" class="btn btn-success">
                                             Manage Lesson
+                                        </button>
+                                    </a>
+                                    <a href="${path}/auth/teacher/quiz?subjectId=${item.get(0)}" class="mx-1">
+                                        <button type="button" class="btn btn-success">
+                                            Manage Quiz
                                         </button>
                                     </a>
                                 </td>
@@ -178,7 +179,7 @@
             </div>
             <nav aria-label="Page navigation example">
                 <c:set var="contentSize" value="${sessionScope.subjectList.size()}" />
-                <c:set var="maxPage" value="${((contentSize - contentSize % 5) / 5) + 1}" />
+                <c:set var="maxPage" value="${contentSize % 10 == 0 ? contentSize / 10: ((contentSize - contentSize % 10) / 10) + 1}" />
                 <c:set var="currentPage" value="${pageContext.request.getParameter('page')}" />
                 <c:set var="prevPage" value="${currentPage == null ? 1 : currentPage - 1}" />
                 <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>
