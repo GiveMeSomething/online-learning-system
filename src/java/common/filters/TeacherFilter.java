@@ -7,6 +7,7 @@ package common.filters;
 
 import auth.AuthService;
 import common.entities.Account;
+import common.entities.Role;
 import common.entities.User;
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -47,7 +48,7 @@ public class TeacherFilter implements Filter {
         Account account = authService.getAccount(user.getEmail());
 
         // Admin can also access teacher's feature
-        if (account.getRole().toString().equals("TEACHER") || account.getRole().toString().equals("ADMIN")) {
+        if (account.getRole() == Role.TEACHER || account.getRole() == Role.ADMIN) {
             doFilter(request, response, chain);
         } else {
             pageResponse.sendRedirect("home");

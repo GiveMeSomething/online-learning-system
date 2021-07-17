@@ -49,7 +49,7 @@
         <div class="container my-5">
             <div class="row">
                 <div class="d-flex justify-content-center align-items-center">
-                    <button id="openNav" class="openbtn" onclick="openNav()" style="background: white; color: black">&#9776;</button>  
+                    <button id="openNav" class="openbtn" onclick="openNav()" style="background: white; color: black">&#9776;</button>
                     <h2>Subjects List</h2>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
                     <div class="add-lesson">
-                        <a role="button" class="btn btn-success px-3 py-2" 
+                        <a role="button" class="btn btn-success px-3 py-2"
                            href="${path}/auth/teacher/subject?operation=TONEWSUBJECT">
                             Add new Subject
                         </a>
@@ -127,33 +127,54 @@
                 </form>
             </div>
             <div class="row my-5">
-                <c:forEach items="${requestScope.pageItems}" var="item">
-                    <div class="col-2 d-flex align-items-center justify-content-center">
-                        <h3>
-                            ${item.get(0)}
-                        </h3>
-                    </div>
-                    <div class="col-6">
-                        <h3>${item.get(1)} (${item.get(2)})</h3>
-                        <div>
-                            <h4>Number of lessons: ${item.get(3)}</h4>
-                            <p>Owner: ${item.get(4)}</p>
-                            <p>Status: ${item.get(5)}</p>
-                        </div>
-                    </div>
-                    <div class="col-3 d-flex align-items-center justify-content-center m-2">
-                        <a href="${path}/auth/teacher/subject?operation=VIEW&subjectId=${item.get(0)}" class="m-2">
-                            <button class="btn btn-sm btn-primary px-3 py-2">
-                                View and Edit
-                            </button>
-                        </a>
-                        <a href="${path}/auth/teacher/question?subjectId=${item.get(0)}&operation=MANAGEQUESTION">
-                            <button type="button" class="btn btn-success">
-                                Manage Question
-                            </button>
-                        </a>
-                    </div>
-                </c:forEach>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Lessons</th>
+                            <th>Owner</th>
+                            <th>Status</th>
+                            <th colspan="3" class="text-center">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach items="${requestScope.pageItems}" var="item">
+                            <tr>
+                                <th scope="row">${item.get(0)}</th>
+                                <td>${item.get(1)}</td>
+                                <td>${item.get(2)}</td>
+                                <td>${item.get(3)}</td>
+                                <td>${item.get(4)}</td>
+                                <td>${item.get(5)}</td>
+                                <td>
+                                    <a href="${path}/auth/teacher/subject?operation=VIEW&subjectId=${item.get(0)}">
+                                        <button type="button" class="btn btn-primary">
+                                            View and Edit
+                                        </button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="${path}/auth/teacher/question?subjectId=${item.get(0)}&operation=MANAGEQUESTION">
+                                        <button type="button" class="btn btn-success">
+                                            Manage Question
+                                        </button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="${path}/auth/teacher/lesson?subjectId=${item.get(0)}">
+                                        <button type="button" class="btn btn-success">
+                                            Manage Lesson
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
             </div>
             <nav aria-label="Page navigation example">
                 <c:set var="contentSize" value="${sessionScope.subjectList.size()}" />

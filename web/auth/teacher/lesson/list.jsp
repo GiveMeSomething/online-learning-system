@@ -42,9 +42,9 @@
             <a href="${path}/auth/teacher/lesson" style="background: white; color: black">Lesson List</a>
         </div>
         <div class="container my-5">
-           <div class="row">
+            <div class="row">
                 <div class="d-flex justify-content-center align-items-center">
-                    <button id="openNav" class="openbtn" onclick="openNav()" style="background: white; color: black">&#9776;</button>  
+                    <button id="openNav" class="openbtn" onclick="openNav()" style="background: white; color: black">&#9776;</button>
                     <h2>Lesson List</h2>
                 </div>
             </div>
@@ -73,49 +73,57 @@
                     <button class="btn btn-primary mx-5 m-2">
                         ADD NEW LESSON
                     </button>
-                </a>             
+                </a>
             </div>
             <div class="row my-5">
-                <c:forEach items="${requestScope.pageItems}" var="item">
-                    <div class="col-2 d-flex align-items-center justify-content-center">
-                        <h3>
-                            ${item.id}
-                        </h3>
-                    </div>
-                    <div class="col-6">
-                        <h3>${item.name} (${item.lessonType})</h3>
-                        <div>
-                            <p>Status: ${item.status}</p>
-                        </div>
-                    </div>
-                    <div class="col-3 d-flex align-items-center justify-content-center m-2">
-                        <a href="/auth/teacher/lesson?operation=VIEW&lessonId=${item.id}" class="m-2">
-                            <c:choose>
-                                <c:when test="${item.status == 'ACTIVE'}">
-                                    <a href="${path}/auth/teacher/lesson?operation=UPDATESTATUS&status=INACTIVE&lessonId=${item.id}">
-                                        <button class="btn btn-sm btn-danger px-3 py-2"
-                                                ${sessionScope.isAdmin != null && sessionScope.isAdmin == true ? '': 'disabled'}>
-                                            DEACTIVE
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th>Lesson Name</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach items="${requestScope.pageItems}" var="item">
+                            <tr>
+                                <th scope="row">${item.id}</th>
+                                <td>${item.name}</td>
+                                <td>${item.lessonType}</td>
+                                <td>${item.status}</td>
+                                <td class="d-flex align-items-center justify-content-center">
+                                    <div class="mx-2">
+                                        <c:choose>
+                                            <c:when test="${item.status == 'ACTIVE'}">
+                                                <a href="${path}/auth/teacher/lesson?operation=UPDATESTATUS&status=INACTIVE&lessonId=${item.id}">
+                                                    <button class="btn btn-sm btn-danger px-3 py-2"
+                                                            ${sessionScope.isAdmin != null && sessionScope.isAdmin == true ? '': 'disabled'}>
+                                                        DEACTIVE
+                                                    </button>
+                                                </a>
+                                            </c:when>
+                                            <c:otherwise >
+                                                <a href="${path}/auth/teacher/lesson?operation=UPDATESTATUS&status=ACTIVE&lessonId=${item.id}">
+                                                    <button class="btn btn-sm btn-primary px-3 py-2"
+                                                            ${sessionScope.isAdmin != null && sessionScope.isAdmin == true ? '': 'disabled'}>
+                                                        ACTIVE
+                                                    </button>
+                                                </a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                    <a href="${path}/auth/teacher/lesson?operation=VIEW&lessonId=${item.id}" class="mx-2">
+                                        <button class="btn btn-sm btn-primary px-3 py-2">
+                                            View and Edit
                                         </button>
                                     </a>
-                                </c:when>
-                                <c:otherwise >
-                                    <a href="${path}/auth/teacher/lesson?operation=UPDATESTATUS&status=ACTIVE&lessonId=${item.id}">
-                                        <button class="btn btn-sm btn-primary px-3 py-2"
-                                                ${sessionScope.isAdmin != null && sessionScope.isAdmin == true ? '': 'disabled'}>
-                                            ACTIVE
-                                        </button>
-                                    </a>
-                                </c:otherwise>
-                            </c:choose>
-                            <a href="${path}/auth/teacher/lesson?operation=VIEW&lessonId=${item.id}">
-                                <button class="btn btn-sm btn-primary px-3 py-2">
-                                    View and Edit
-                                </button>
-                            </a>
-                        </a>
-                    </div>
-                </c:forEach>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
             </div>
             <nav aria-label="Page navigation example">
                 <c:set var="contentSize" value="${sessionScope.lessonList.size()}" />
@@ -157,5 +165,5 @@
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
             crossorigin="anonymous">
     </script>
-     <script type="text/javascript" src="${path}/utilities/tree-module.js"></script>
+    <script type="text/javascript" src="${path}/utilities/tree-module.js"></script>
 </html>

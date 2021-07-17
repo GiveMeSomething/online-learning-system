@@ -40,7 +40,7 @@ public class SubjectController extends HttpServlet implements Controller {
 
     private UserService userService;
     private CourseService courseService;
-    private final int itemPerPage = 5;
+    private final int itemPerPage = 10;
 
     @Override
 
@@ -140,15 +140,15 @@ public class SubjectController extends HttpServlet implements Controller {
                         courseService.updateSubjectInformation(subjectName, description, courseOwner, status, categoryBox, 1, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
                     } else {
                         courseService.updateSubjectInformation(subjectName, description, courseOwner, status, categoryBox, 0, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
-                    } 
-                } else if(account.getRole().equals(Role.TEACHER)){
-                     if (isFeatured != null && isFeatured[0] != null) {
+                    }
+                } else if (account.getRole().equals(Role.TEACHER)) {
+                    if (isFeatured != null && isFeatured[0] != null) {
                         courseService.updateSubjectInformation(subjectName, description, categoryBox, 1, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
                     } else {
                         courseService.updateSubjectInformation(subjectName, description, categoryBox, 0, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
-                    } 
+                    }
                 }
-                
+
                 request.setAttribute("activeId", 1);
 //                response.sendRedirect("subject");
                 processInputForOverview(request, response, Integer.parseInt(currentSession.getAttribute("currentSubject") + ""));
@@ -207,7 +207,7 @@ public class SubjectController extends HttpServlet implements Controller {
     }
 
     private void addSubjectDimension(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       HttpSession currentSession = request.getSession();
+        HttpSession currentSession = request.getSession();
         int subjectId = Integer.parseInt((String) currentSession.getAttribute("currentSubject"));
         String type = request.getParameter("type");
         List<DimensionType> dimensionList = courseService.getAllDimenstionType();

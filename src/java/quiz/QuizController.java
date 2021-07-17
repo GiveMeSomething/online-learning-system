@@ -31,7 +31,7 @@ public class QuizController extends HttpServlet implements Controller {
 
     private QuizService quizService;
     private CourseService courseService;
-    private int itemPerPage = 5;
+    private int itemPerPage = 10;
 
     @Override
     public void init() throws ServletException {
@@ -42,11 +42,9 @@ public class QuizController extends HttpServlet implements Controller {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
         String operation = request.getParameter("operation");
 
         String quizId;
-        System.out.println(operation);
         if (operation == null) {
             processInputForQuiz(request, response);
         } else {
@@ -73,7 +71,6 @@ public class QuizController extends HttpServlet implements Controller {
                     Quiz eQuiz = quizService.getQuiz(Integer.parseInt(quizId));
                     getDimensionByTypeForQuiz(request, response, eQuiz);
                     break;
-                ///auth/user/quiz?operation=VIEWQUIZHANDLE
                 case "VIEWQUIZHANDLE":
                     processViewQuizHandle(request, response);
                     break;

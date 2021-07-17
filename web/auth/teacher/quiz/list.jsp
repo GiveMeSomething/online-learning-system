@@ -107,29 +107,41 @@
                 </form>
             </div>
             <div class="row my-5">
-                <c:forEach items="${requestScope.pageItems}" var="item">
-                    <div class="col-2 d-flex align-items-center justify-content-center">
-                        <h3>
-                            ${item.id}
-                        </h3>
-                    </div>
-                    <div class="col-6">
-                        <h3>${item.subjectName} (${item.level})</h3>
-                        <div>
-                            <h4>Number of questions: ${item.questionNum}</h4>
-                            <p>Duration: ${item.duration}</p>
-                            <p>Pass rate: ${item.passRate}%</p>
-                            <p>Type: ${item.quizType}</p>
-                        </div>
-                    </div>
-                    <div class="col-3 d-flex align-items-center justify-content-center m-2">
-                        <a href="${path}/auth/user/user_quiz?operation=VIEW&quizId=${item.id}&subjectId=${subjectId}" class="m-2">
-                            <button class="btn btn-sm btn-primary px-3 py-2">
-                                View and Edit
-                            </button>
-                        </a>
-                    </div>
-                </c:forEach>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th>Subject</th>
+                            <th>Level</th>
+                            <th>Questions</th>
+                            <th>Duration (min)</th>
+                            <th>Pass Rate (%)</th>
+                            <th>Type</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach items="${requestScope.pageItems}" var="item">
+                            <tr>
+                                <th scope="row">${item.id}</th>
+                                <td>${item.subjectName}</td>
+                                <td>${item.level}</td>
+                                <td>${item.questionNum}</td>
+                                <td>${item.duration}</td>
+                                <td>${item.passRate}</td>
+                                <td>${item.quizType}</td>
+                                <td>
+                                    <a href="${path}/auth/user/user_quiz?operation=VIEW&quizId=${item.id}&subjectId=${subjectId}"
+                                       class="d-flex align-items-center justify-content-center">
+                                        <button class="btn btn-primary">
+                                            View and Edit
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
             </div>
             <nav aria-label="Page navigation example">
                 <c:set var="contentSize" value="${sessionScope.quizList.size()}" />

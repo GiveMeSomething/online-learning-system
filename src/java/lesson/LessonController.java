@@ -30,7 +30,7 @@ public class LessonController extends HttpServlet implements Controller {
     private CourseService courseService;
     private QuizService quizService;
 
-    private final int itemPerPage = 5;
+    private final int itemPerPage = 10;
 
     @Override
     public void init() throws ServletException {
@@ -140,7 +140,8 @@ public class LessonController extends HttpServlet implements Controller {
         try {
             subjectId = Integer.parseInt(request.getParameter("subjectId"));
         } catch (NumberFormatException e) {
-            System.out.println(e.getMessage() + " at ~130 in LessonController");
+            response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+            return;
         }
 
         // Save the base array into current session
@@ -179,16 +180,16 @@ public class LessonController extends HttpServlet implements Controller {
 //        int courseId = Integer.parseInt(session.getAttribute("courseId") + "");
         int courseId = Integer.parseInt(request.getParameter("courseId"));
         session.setAttribute("courseId", courseId);
-        if(request.getParameter("lessonId") != null){
+        if (request.getParameter("lessonId") != null) {
             lessonId = Integer.parseInt(request.getParameter("lessonId"));
-        }else if(request.getParameter("lessonId") == null){
+        } else if (request.getParameter("lessonId") == null) {
             Lesson minIdLesson = lessonService.getMinLessonIdByCourseId(courseId);
             lessonId = minIdLesson.getId();
         }
         List<Lesson> allLesson = lessonService.getAllLesson();
         Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
         request.setAttribute("lessonDetail", lessonDetail);
-        
+
         List<Lesson> lessonList = lessonService.getLessonsByCourseId(courseId);
         session.setAttribute("lessonId", lessonId);
         session.setAttribute("courseId", courseId);
@@ -285,7 +286,7 @@ public class LessonController extends HttpServlet implements Controller {
         request.getRequestDispatcher("/auth/user/course/lesson/detail.jsp").forward(request, response);
         //Chỉnh lại url auth/user/course/lesson/detail.jsp
     }
-   
+
     private void processDoneLesson(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
