@@ -418,6 +418,9 @@ public class QuestionController extends HttpServlet {
         Iterator<Row> rowIterator = firstSheet.iterator();
         rowIterator.next(); // skip the header row
         int status = 0;
+        int level_id = 0;
+        int course_id = 0;
+        int lesson_id = 0;
         String content = null,
                 media = null,
                 explaination = null,
@@ -425,7 +428,8 @@ public class QuestionController extends HttpServlet {
                 option1 = null,
                 option2 = null,
                 option3 = null,
-                option4 = null;
+                option4 = null,
+                option5 = null;
         while (rowIterator.hasNext()) {
             Row nextRow = rowIterator.next();
             Iterator<Cell> cellIterator = nextRow.cellIterator();
@@ -463,10 +467,23 @@ public class QuestionController extends HttpServlet {
                     case 8:
                         option4 = nextCell.getStringCellValue();
                         break;
+                    case 9:
+                        option5 = nextCell.getStringCellValue();
+                        break;
+                    case 10:
+                        level_id = (int) nextCell.getNumericCellValue();
+                        break;
+                    case 11:
+                        course_id = (int) nextCell.getNumericCellValue();
+                        break;
+                    case 12:
+                        lesson_id = (int) nextCell.getNumericCellValue();
+                        break;
+                    //12 case
                 }
 
             }
-            questionService.addQuestion(status, content, media, explaination, answer, option1, option2, option3, option4);
+            questionService.addQuestion(status, content, media, explaination, answer, option1, option2, option3, option4, option5, level_id, course_id, lesson_id);
         }
         /*đoạn dưới này là đã import xong, muốn quay về trang nào thì code*/
         out.print("Import Successfully OK!");

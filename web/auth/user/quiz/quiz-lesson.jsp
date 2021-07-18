@@ -32,7 +32,7 @@
         <div style=" width: 70%;margin: auto;margin-top: 50px; margin-left: 100px;">
 
             <div class="row">
-                <h6>Quiz: 30 min</h6>
+                <h6>Quiz: ${dao1.getDuration(sessionScope.quizIdCuaDuyAnh)} min</h6>
             </div>
             <div class="row">
                 <h3 class="card-title" style="margin-top: 20px;">

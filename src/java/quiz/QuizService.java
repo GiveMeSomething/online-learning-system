@@ -66,6 +66,14 @@ public class QuizService {
         }
         return false;
     }
+    public String getDuration(String quizId) {
+        try {
+            return quizRepository.getDuration(quizId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "loi game!!";
+    }
 
     public Quiz getExistQuiz(Quiz quiz) {
         try {
