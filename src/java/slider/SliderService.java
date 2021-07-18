@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.List;
 
-
 public class SliderService {
 
     private final SliderRepository sliderRepository;
@@ -19,7 +18,7 @@ public class SliderService {
     public SliderService() {
         this.sliderRepository = new SliderRepository();
     }
-    
+
     public Slider getSliderDetail(int sliderId) {
         try {
             return sliderRepository.getSliderDetail(sliderId);
@@ -31,7 +30,7 @@ public class SliderService {
 
     public boolean updateSliderDetail(String image, String title, String backlink, int status_id, String notes, int sliderId) {
         try {
-           return sliderRepository.updateSliderDetail(image, title, backlink, status_id, notes, sliderId);
+            return sliderRepository.updateSliderDetail(image, title, backlink, status_id, notes, sliderId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,10 +81,10 @@ public class SliderService {
         }
         return false;
     }
-    
-    public boolean addNewSlider(Slider slider, InputStream inputStream) {
+
+    public boolean addNewSlider(String image, String title, int status_id, String notes, String backlink) {
         try {
-            return sliderRepository.addNewSlider(slider, inputStream);
+            return sliderRepository.addNewSlider(image, title, status_id, notes, backlink);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -22,9 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-
-
-
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 10,
         maxFileSize = 1024 * 1024 * 50,
@@ -41,7 +38,7 @@ public class SliderController extends HttpServlet {
     public void init() throws ServletException {
         sliderService = new SliderService();
     }
-    
+
     private String uploadFile(HttpServletRequest request) throws IOException, ServletException {
         String fileName = "";
         try {
@@ -142,6 +139,9 @@ public class SliderController extends HttpServlet {
                 case "UPLOADIMAGE":
                     processUploadImage(request, response);
                     break;
+                case "ADDIMAGE":
+                    processAddImage(request, response);
+                    break;
                 case "FILTERSLIDER":
                     processFilterSlider(request, response);
                     break;
@@ -178,9 +178,9 @@ public class SliderController extends HttpServlet {
         int statusId = Integer.parseInt(request.getParameter("status"));
         String notes = request.getParameter("notes");
         sliderService.updateSliderDetail(image, title, backlink, statusId, notes, sliderId);
-        response.sendRedirect(request.getContextPath()+"/auth/admin/slider?operation=VIEWDETAIL&&sliderId="+sliderId); //Sau này chỉnh lại link
+        response.sendRedirect(request.getContextPath() + "/auth/admin/slider?operation=VIEWDETAIL&&sliderId=" + sliderId); //Sau này chỉnh lại link
     }
-    
+
     private void processUploadImage(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession currentSession = request.getSession();
@@ -189,6 +189,14 @@ public class SliderController extends HttpServlet {
         request.setAttribute("sliderDetail", sliderDetail);
         request.setAttribute("image", uploadFile(request));
         request.getRequestDispatcher("/auth/admin/slider/detail.jsp").forward(request, response);
+        //Sau này chỉnh lại link
+    }
+
+    private void processAddImage(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
+        request.setAttribute("image", uploadFile(request));
+        request.getRequestDispatcher("/auth/admin/slider/addNewSlider.jsp").forward(request, response);
         //Sau này chỉnh lại link
     }
 
@@ -219,26 +227,13 @@ public class SliderController extends HttpServlet {
 //        String forwardTo = request.getParameter("previousPage");
 //        String image = request.getParameter("image");
         String title = request.getParameter("title");
-        Status status = Status.valueOf(request.getParameter("status"));
+        int status = Integer.parseInt(request.getParameter("status"));
         String note = request.getParameter("note");
-
-        InputStream inputStream = null;
-        Part thumbnail = request.getPart("image");
-        if (thumbnail != null) {
-            // prints out some information for debugging
-            System.out.println(thumbnail.getName());
-            System.out.println(thumbnail.getSize());
-            System.out.println(thumbnail.getContentType());
-
-            // obtains input stream of the upload file
-            inputStream = thumbnail.getInputStream();
-        }
-
-        Slider slider = new Slider(title, status, note);
-        
-            sliderService.addNewSlider(slider, inputStream);
-            // Navigating to subject list
-            response.sendRedirect(request.getContextPath() + "/auth/admin/slider");
+        String image = request.getParameter("image");
+        String backlink = request.getParameter("backlink");
+        sliderService.addNewSlider(image, title, status, note, backlink);
+        // Navigating to subject list
+        response.sendRedirect(request.getContextPath() + "/auth/admin/slider");
 
     }
 

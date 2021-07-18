@@ -73,7 +73,7 @@
                     <div id="main-content-lower-right"  style="flex: 30;margin-left: 3.5rem">
                         <section id="sider-course">
                             <div class="mt-4" style="margin-left: -1rem">
-                                <h4 style="font-weight: bolder; margin-left: .8rem; margin-bottom: 1rem">You might like</h4>
+                                <h4 style="font-weight: bolder; margin-left: .8rem; margin-bottom: 1rem">Featured Course</h4>
                                 <c:forEach items="${siderCourse}" var="o">
                                     <div style="width: 500px; display: flex; margin-left: .8rem">
                                         <div style=" margin-right: 10px;height: 45px; margin-bottom: 5px">

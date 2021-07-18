@@ -38,7 +38,7 @@
                                 </form>
                             </li>
                             <li class="nav-item dropdown nav-hover">
-                                <a class="nav-link dropdown-toggle" role="button" id="navbarDropdownButton" data-toggle="dropdown">
+                                <a class="nav-link dropdown-toggle active" role="button" id="navbarDropdownButton" data-toggle="dropdown">
                                     Categories
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownButton">
@@ -64,7 +64,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <li class="nav-hover nav-item">
-                                            <a href="${path}/auth/user/course" class="nav-link" style="padding-top: 8px; padding-bottom: 8px">
+                                            <a href="${path}/auth/user/course" class="nav-link active" style="padding-top: 8px; padding-bottom: 8px">
                                                 Courses
                                             </a>
                                         </li>

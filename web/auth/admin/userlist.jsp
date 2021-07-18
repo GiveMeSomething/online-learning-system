@@ -89,21 +89,29 @@
                     <a href="${path}/auth/teacher/subject">Subject List</a>
                     <hr>
                     <a href="${path}/auth/admin/slider">Slider List</a>
-                    <hr>
-                    <a href="${path}/auth/teacher/lesson">Lesson List</a>
                 </div>
             </div>
 
             <div id="content-p" class="col-md-9">
-                <div style="background:#FFFFF0; align-item: center; display:flex; justify-content:center;  " class="py-2" id="screen-header">
-                    <a class="navbar-brand" style="font-size: 2.5rem;" href="${path}/home">
-                        <span style="color:blue">O</span>
-                        <span style="color:orange">L</span>
-                        <span style="color:green">S</span>
-                    </a>
+                <div style="background:#FFFFF0; align-item: center; display:flex;  " class="py-2" id="screen-header">
+                    <div>
+                        <button id="openNav" class="openbtn" onclick="openNav()" style="background: #FFFFF0; color: black">&#9776;</button>  
+                    </div>
+                    <div style="justify-content: center; margin-left: 26.5rem">
+                        <a class="navbar-brand" style="font-size: 2.5rem;" href="${path}/home">
+                            <span style="color:blue">O</span>
+                            <span style="color:orange">L</span>
+                            <span style="color:green">S</span>
+                        </a> 
+                    </div>
+
+                    <div style="margin-left: 19.5rem; margin-top: .5rem">
+                        <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">
+                            <button class="btn btn-secondary">Log out</button>
+                        </a>
+                    </div>
                 </div>
-                        <div class="d-flex" style="margin-left: -1rem">
-                    <button id="openNav" class="openbtn" onclick="openNav()" style="background: white; color: black">&#9776;</button>  
+                <div class="d-flex">
                     <h1 id="user-list-title">
                         <a href="${path}/home" style="padding-bottom: 15px;text-decoration: none; color: black">
                             MANAGE USERS
@@ -297,7 +305,7 @@
     </script>
     <script>
         function openNav() {
-            document.getElementById("openNav").style.color = "white";
+            document.getElementById("openNav").style.color = "#FFFFF0";
             document.getElementById("closeNav").style.display = "block";
             document.getElementById("mySidebar").style.width = "250px";
             document.getElementById("main").style.marginLeft = "250px";

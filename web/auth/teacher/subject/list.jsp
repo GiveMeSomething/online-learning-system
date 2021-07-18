@@ -38,18 +38,32 @@
             <a href="${path}/auth/teacher/subject" style="background: white; color: black">Subject List</a>
             <hr>
             <a href="${path}/auth/admin/slider" >Slider List</a>
-            <hr>
-            <a href="${path}/auth/teacher/lesson">Lesson List</a>
         </div>
         <c:if test="${requestScope.errorMessage != null}">
             <div class="d-flex w-100 align-items-center justify-content-end">
                 <h5>${requestScope.errorMessage}</h5>
             </div>
         </c:if>
-        <div class="container my-5">
+         <div style="background:#FFFFF0; display:flex;" class="py-2">
+            <div>
+                <button id="openNav" class="openbtn" onclick="openNav()" style="background: #FFFFF0; color: black">&#9776;</button>  
+            </div>
+            <div style="justify-content: center; margin-left: 37rem">
+                <a class="navbar-brand" style="font-size: 2.5rem;" href="${path}/home">
+                    <span style="color:blue">O</span>
+                    <span style="color:orange">L</span>
+                    <span style="color:green">S</span>
+                </a> 
+            </div>
+            <div style="margin-left: 30rem; margin-top: 1rem">
+                <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">
+                    <button class="btn btn-secondary">Log out</button>
+                </a>
+            </div>
+        </div>
+        <div class="container my-2">
             <div class="row">
                 <div class="d-flex justify-content-center align-items-center">
-                    <button id="openNav" class="openbtn" onclick="openNav()" style="background: white; color: black">&#9776;</button>
                     <h2>Subjects List</h2>
                 </div>
             </div>
