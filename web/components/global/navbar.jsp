@@ -111,7 +111,7 @@
                                                             </c:if>
                                                             <c:if test="${sessionScope.isAdmin != true && sessionScope.isTeacher != true}">
                                                                 <li id="li-bottom">
-                                                                    <a href="${path}/auth/user/course?operation=VIEWMYCOURSE&userId=${user.getId()}" style="padding-bottom: 5px; margin-top: .2rem">My Course</a>
+                                                                    <a href="${path}/auth/user/course?operation=VIEWMYCOURSE&userId=${user.getId()}" style="padding-bottom: 5px; padding-top: .2rem">My Course</a>
                                                                 </li>
                                                             </c:if>
                                                             <c:if test="${sessionScope.isAdmin == true}">
