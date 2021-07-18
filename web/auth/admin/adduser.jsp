@@ -20,95 +20,9 @@
               integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
               crossorigin="anonymous"/>
         <link rel="stylesheet" type="text/css" href="${path}/style/styles.css">
-        <style>
-            /*            body {
-                            font-family: Arial;
-                        }
-                        input[type=text], select {
-                            width: 100%;
-                            padding: 12px 20px;
-                            margin: 8px 0;
-                            display: block;
-                            border: 1px solid #ccc;
-                            border-radius: 4px;
-                            box-sizing: border-box;
-                        }
-            
-                        input[type=submit] {
-                            width: 100%;
-                            background-color: #04AA6D;
-                            color: white;
-                            padding: 14px 20px;
-                            margin: 8px 0;
-                            border: none;
-                            border-radius: 4px;
-                            cursor: pointer;
-                        }
-            
-                        input[type=submit]:hover {
-                            background-color: #45a049;
-                        }
-            
-                        .container {
-                            border-radius: 5px;
-                            background-color: #f2f2f2;
-                            padding: 20px;
-                        }
-                        .maincontent{
-                            display: flex;
-                        }
-                        .left{
-                            width: 50%;
-                            height: auto;
-                            padding-right: 5px;
-                        }
-                        .right{
-                            width: 50%;
-                            height: auto;
-                        }*/
-        </style>
     </head>
     <body>
         <div class="container">
-            <!--   <form action="adduser" method="GET">
-                   <div class="maincontent">
-                       <div class="left">
-                           <label for="fname">Image</label>
-                           <input type="text" id="fname" value="" name="image" placeholder="Input link image">
-                           <label for="fname">Full Name</label>
-                           <input type="text" id="fname" value="" name="fullname" placeholder="Your name..">
-                           <label for="fname">Email</label>
-                           <input type="text"  id="fname" value="" name="email" placeholder="Your email..">
-                           <label for="fname">Password</label>
-                           <input type="text"  id="fname" value="" name="password" placeholder="">
-                           <label for="fname">Address</label>
-                           <input type="text" id="fname" value="" name="address" placeholder="Your address..">
-                       </div>
-                       <div class="right">
-                           <label for="fname">Mobile</label>
-                           <input type="text" id="fname" value="" name="mobile" placeholder="Your mobilephone..">
-                           <label for="gender">Gender</label>
-                           <select id="country" name="gender">
-                               <option value="male" selected="" >Male</option>
-                               <option value="female">Female</option>
-                           </select>
-                           <label for="gender">Status</label>
-                           <select id="country" name="status">
-                               <option value="1" selected="" >Active</option>
-                               <option value="0">Inactive</option>
-                           </select>
-                           <label for="gender">Role</label>
-                           <select id="country" name="role">
-                                   <option value="0" >ADMIN</option>
-                                   <option value="1" >TEACHER</option>
-                                   <option value="2" >STUDENT</option>
-                           </select>
-                       </div>
-                   </div>
-                   <input type="submit" value="Add">
-               </form>
-            -->
-           
             <form name="myForm" action="adduser"
                   method="GET"
                   class="needs-validation"
@@ -230,6 +144,11 @@
                                         <div class="custom-control custom-radio custom-control">
                                             <input type="radio" id="teacher" name="role" class="custom-control-input" value="TEACHER">
                                             <label class="custom-control-label" for="teacher">Teacher</label>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                         <div class="custom-control custom-radio custom-control">
+                                            <input type="radio" id="admin" name="role" class="custom-control-input" value="ADMIN" checked>
+                                            <label class="custom-control-label" for="admin">Admin</label>
                                             <div class="invalid-feedback"></div>
                                         </div>
                                     </div>

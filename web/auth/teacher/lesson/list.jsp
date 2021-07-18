@@ -35,11 +35,9 @@
             <hr>
             <a href="${path}/auth/admin/admin_blog?operation=VIEWALLPOST">Post List</a>
             <hr>
-            <a href="${path}/auth/teacher/subject">Subject List</a>
+            <a href="${path}/auth/teacher/subject" style="background: white; color: black">Subject List</a>
             <hr>
             <a href="${path}/auth/admin/slider">Slider List</a>
-            <hr>
-            <a href="${path}/auth/teacher/lesson" style="background: white; color: black">Lesson List</a>
         </div>
         <div class="container my-5">
             <div class="row">

@@ -103,6 +103,8 @@ public class AdminController extends HttpServlet {
         int roleId;
         if (roleName.equals("STUDENT")) {
             roleId = 2;
+        } else if (roleName.equals("ADMIN")) {
+            roleId = 0;
         } else {
             roleId = 1;
         }
