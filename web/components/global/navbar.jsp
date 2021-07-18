@@ -62,13 +62,6 @@
                                             </a>
                                         </li>
                                     </c:when>
-                                    <c:otherwise>
-                                        <li class="nav-hover nav-item">
-                                            <a href="${path}/auth/user/course" class="nav-link active" style="padding-top: 8px; padding-bottom: 8px">
-                                                Courses
-                                            </a>
-                                        </li>
-                                    </c:otherwise>
                                 </c:choose>
                             </c:if>
                             <li class="gap-3">
@@ -85,14 +78,14 @@
                                         <c:otherwise>
                                             <div class="">
                                                 <a href="#" id="shopping-cart" style="border-radius: 25px; padding: 12px 12px;;color: lightslategray">
-                                                    <i class="fas fa-shopping-cart fa-lg"></i>
+                                                   
                                                 </a>
-                                                <ul id="setting-dropdown-ul" >
+                                                <ul id="setting-dropdown-ul" style="margin-left: -1rem">
                                                     <li id="setting-dropdown-li">
                                                         <a href="#" style="border-radius: 25px; padding: 12px 12px; color: lightslategray" id="setting">
                                                             <i class="fas fa-cog fa-lg"></i>
                                                         </a>
-                                                        <ul id="setting-dropdown-sub-ul">
+                                                        <ul id="setting-dropdown-sub-ul" >
 
                                                             <c:if test="${sessionScope.isAdmin != true }">
                                                                 <li id="li-top">

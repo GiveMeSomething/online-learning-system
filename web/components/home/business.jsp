@@ -35,7 +35,7 @@
 
                             <div class="row mt-5"  style="margin-left: -25.7px">
                                 <div class="col-6 mr-1">
-                                    <a href="#" class="text-decoration-none">
+                                    <a href="course?courseId=${o.id}" class="text-decoration-none">
                                         <button class="btn btn-success">Checkout</button>
                                     </a>
                                 </div>
