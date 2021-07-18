@@ -109,12 +109,9 @@
                                                                     </li>
                                                                 </c:if>
                                                             </c:if>
-                                                            <li id="li-middle">
-                                                                <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">Log out</a>
-                                                            </li>
                                                             <c:if test="${sessionScope.isAdmin != true && sessionScope.isTeacher != true}">
                                                                 <li id="li-bottom">
-                                                                    <a href="${path}/auth/user/course?operation=VIEWMYCOURSE&userId=${user.getId()}" style="padding-bottom: 5px">My Course</a>
+                                                                    <a href="${path}/auth/user/course?operation=VIEWMYCOURSE&userId=${user.getId()}" style="padding-bottom: 5px; margin-top: .2rem">My Course</a>
                                                                 </li>
                                                             </c:if>
                                                             <c:if test="${sessionScope.isAdmin == true}">
@@ -122,6 +119,9 @@
                                                                     <a href="${path}/auth/admin" style="padding-bottom: 5px">Management</a>
                                                                 </li>
                                                             </c:if>
+                                                            <li id="li-middle">
+                                                                <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">Log out</a>
+                                                            </li>
                                                         </ul>
                                                     </li>
                                                 </ul>
