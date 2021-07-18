@@ -120,84 +120,14 @@
                 </form>
             </div>
             <div style='text-align: left' id="add-new-slider">
-                <button class="btn mb-2" style='background-color: #4caf50'
-                        data-toggle="modal" data-target="#AddSubject">
-                    Add new
-                </button>
-                <div class="modal fade" id="AddSubject">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="font-weight-bold">Add new slider</h5>
-                                <button data-dismiss="modal" class="close">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="${path}/auth/admin/slider?operation=ADDSLIDER"
-                                      method="post" class="needs-validatation" 
-                                      enctype="multipart/form-data" 
-                                      novalidate>
-                                    <div class="form-group">
-                                        <label class="d-block text-left" for="image">
-                                            Image
-                                        </label>
-                                        <input name="image"
-                                               type="text"
-                                               class="form-control"
-                                               id="image"
-                                               data-value-missing="Can't be empty"
-                                               required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="d-block text-left" for="title">
-                                            Title
-                                        </label>
-                                        <input name="title"
-                                               type="text"
-                                               class="form-control"
-                                               id="title"
-                                               data-value-missing="Can't be empty"
-                                               required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="d-block text-left"
-                                               for="note">
-                                            Note
-                                        </label>
-                                        <textarea rows="5"
-                                                  name="note"
-                                                  type="text"
-                                                  class="form-control"
-                                                  id="note"
-                                                  data-value-missing="Can't be empty"
-                                                  required></textarea>
-                                    </div>
-                                    <div class="form-row">
-                                        <label for="status" style="margin-right: .5rem; margin-left: .2rem">Status</label>
-                                        <select class="custom-select" id="status" name="status" style="width: max-content; margin-bottom: 1rem" required>
-                                            <option value="ACTIVE">ACTIVE</option>
-                                            <option value="INACTIVE">INACTIVE</option>
-                                        </select>
-                                        <div class="invalid-feedback"></div>
-                                    </div>
-                                    <div class="modal-footer myModalFooter">
-                                        <button class="btn btn-success" type="submit">
-                                            Add
-                                        </button> 
-                                        <button data-dismiss="modal" class="btn btn-danger">
-                                            Close
-                                        </button>
-                                    </div>
-                                </form>
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+                <a href="${path}/auth/admin/slider/addNewSlider.jsp">
+                    <button class="btn mb-2" style='background-color: #4caf50'
+                            >
+                        Add new
+                    </button>
+                </a>
             </div>
             <div id="slider-table">
-
                 <table id="myTable" class="table table-light table-striped">
                     <thead>
                         <tr>
@@ -205,13 +135,16 @@
                                 ID
                             </th>
                             <th>
-                                image
+                                Image
                             </th>
                             <th>
-                                title
+                                Title
                             </th>
                             <th > 
-                                note
+                                Note
+                            </th>
+                            <th > 
+                                Backlink
                             </th>
                             <th >
                                 Status
@@ -228,6 +161,7 @@
                                 <td><img src="${path}/assets/bannerImg/${o.image}" style="width: 50%"/></td>
                                 <td>${o.title}</td>
                                 <td>${o.note}</td>
+                                <td>${o.backlink}</td>
                                 <td>${o.status}</td>
                                 <td>
                                     <a href="${path}/auth/admin/slider?operation=VIEWDETAIL&sliderId=${o.id}" style="width: 5rem; font-size: 10px; font-weight: bold">

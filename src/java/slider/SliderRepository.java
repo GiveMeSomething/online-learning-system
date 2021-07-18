@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class SliderRepository extends Repository {
 
     public List<Slider> getSlidersList(String keyword, Status status) throws SQLException {
@@ -90,26 +89,23 @@ public class SliderRepository extends Repository {
         }
     }
 
-    public boolean addNewSlider(Slider slider, InputStream inputStream) throws SQLException {
+    public boolean addNewSlider(String image, String title, int status_id, String notes, String backlink) throws SQLException {
         this.connectDatabase();
 
-        String addNewSubject = "INSERT INTO db_ite1.slider(image, title, status_id, notes) "
-                + "VALUES(?,?,?,?)";
+        String addNewSubject = "INSERT INTO db_ite1.slider(image, title, backlink, status_id, notes) "
+                + "VALUES(?,?,?,?,?)";
+
         try (PreparedStatement statement = this.connection.prepareStatement(addNewSubject)) {
-
-            if (inputStream != null) {
-                // fetches input stream of the upload file for the blob column
-                statement.setBlob(1, inputStream);
-            }
-            statement.setString(2, slider.getTitle());
-            statement.setInt(3, Status.valueOf(slider.getStatus()));
-            statement.setString(4, slider.getNote());
-
+            statement.setString(1, image);
+            statement.setString(2, title);
+            statement.setString(3, backlink);
+            statement.setInt(4, status_id);
+            statement.setString(5, notes);
             return statement.executeUpdate() > 0;
         } finally {
             this.disconnectDatabase();
         }
-    }  
+    }
 
     public Slider getSliderDetail(int sliderId) throws SQLException {
         this.connectDatabase();
@@ -166,6 +162,5 @@ public class SliderRepository extends Repository {
         } catch (Exception e) {
         }
     }
-    
-}
 
+}
