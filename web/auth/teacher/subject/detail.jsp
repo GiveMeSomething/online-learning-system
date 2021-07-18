@@ -160,10 +160,10 @@
                                 <img style="width: 25rem; margin-left: 3.5rem" src="${detail.imageLink}">
                             </div>
                         </div>
-                        <div id="lower" style="margin-left: 1rem">
-                            <div id="description-area">
+                        <div id="lower" style="margin-left: 1rem;">
+                            <div id="description-area" style="width: 50rem">
                                 <label>Description</label><br>
-                                <textarea name="description" style="width: 62.1rem; height: 6rem" >${detail.description}</textarea>
+                                <textarea id="editor" name="description" rows="30" cols="10">${detail.description}</textarea>
                             </div>
                             <div id="button-area">
                                 <button type="submit" class="btn btn-secondary">Submit</button>
@@ -309,4 +309,8 @@
             crossorigin="anonymous">
     </script>
     <script type="text/javascript" src="${path}/utilities/form-validator.js"></script>
+    <script type="text/javascript" src="${path}/ckeditor/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('editor');
+    </script>
 </html>
