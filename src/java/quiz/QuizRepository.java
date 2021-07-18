@@ -289,9 +289,9 @@ public class QuizRepository extends Repository {
     public ArrayList<String> getDimensionTypeForEdit(int dimensionId) throws SQLException {
         this.connectDatabase();
 
-        String questionByLesson = "select distinct d.name, dt.dimension_type_name from quiz_dimension_lesson \n"
-                + "	join dimension d on quiz_dimension_lesson.dimension_id = d.id\n"
-                + "    join dimension_type dt on dt.id = d.type_id\n"
+        String questionByLesson = "select distinct d.name, dt.dimension_type_name from quiz_dimension_lesson  "
+                + "	join dimension d on quiz_dimension_lesson.dimension_id = d.id "
+                + "    join dimension_type dt on dt.id = d.type_id "
                 + "    where dimension_id = ?";
         ArrayList<String> dimensionInfo = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(questionByLesson)) {
@@ -598,7 +598,13 @@ public class QuizRepository extends Repository {
                 + "from user_quiz uq "
                 + "         inner join user_question u on uq.id = u.user_quiz_id "
                 + "         inner join questions_bank qb on u.question_id = qb.id "
-                + "where uq.quiz_id = ? AND uq.user_id = ?";
+                + "where uq.quiz_id = ? "
+                + "  and uq.user_id = ? "
+                + "  and uq.attempt = ( "
+                + "    SELECT MAX(attempt) "
+                + "    from user_quiz uq2 "
+                + "    where uq2.quiz_id = uq.quiz_id "
+                + "    group by uq2.quiz_id)";
 
         try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
             statement.setInt(1, quizId);
