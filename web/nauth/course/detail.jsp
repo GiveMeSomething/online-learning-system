@@ -69,7 +69,7 @@
             </section>
             <section id="main-content" >
                 <div id="main-content-lower" class="d-flex">
-                    ${detail.description}
+                    <div>${detail.description}</div>
                     <div id="main-content-lower-right"  style="flex: 30;margin-left: 3.5rem">
                         <section id="sider-course">
                             <div class="mt-4" style="margin-left: -1rem">
