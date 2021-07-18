@@ -22,20 +22,135 @@
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
               integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
               crossorigin="anonymous">
-        <link rel="stylesheet" href="${path}/style/blog.css" />
+        <link rel="stylesheet" href="${path}/style/blog.css"/>
+        <style>
+            .page-link{
+                padding: 0 !important;
+                border-bottom-right-radius: 50% !important;
+                border-top-right-radius: 50% !important;
+                border-bottom-left-radius: 50% !important;
+                border-top-left-radius: 50% !important;
+            }
+        </style>
     </head>
     <body>
         <div id="colorlib-page">
             <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
             <aside id="colorlib-aside" role="complementary" class="js-fullheight">
-                <nav id="colorlib-main-menu" role="navigation">
-                    <ul>
-                        <li class="colorlib-active"><a href="index.html">Home</a></li>
-                        <li><a href="fashion.html">Fashion</a></li>
-                        <li><a href="travel.html">Travel</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
+                <nav id="colorlib-main-menu" 
+                     role="navigation"
+                     class="navbar navbar-expand-xl " 
+                     style="margin: auto;">
+                    <a class="navbar-brand" style="font-size: 2rem;" href="${path}/home">
+                        <span style="color:blue">O</span>
+                        <span style="color:orange">L</span>
+                        <span style="color:green">S</span>
+                    </a>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav flex-column d-flex align-items-center">
+                            <li class="nav-item">
+                                <form action="course?operation=SEARCHCOURSE&&index=${tag}&&cID=${sessionScope.categoryId}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
+                                      class="d-flex" method="post">
+                                    <input name="searchCourse" class="form-control py-2"
+                                           type="search" placeholder="Search courses"/>
+                                    <div class="invalid-feedback"></div>
+                                </form>
+                            </li>
+                            <li class="nav-item dropdown nav-hover">
+                                <a class="nav-link dropdown-toggle active" role="button" id="navbarDropdownButton" data-toggle="dropdown">
+                                    Categories
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownButton">
+                                    <c:forEach items="${requestScope.categoryList}" var="o">
+                                        <a class="dropdown-item"
+                                           href="${path}/course?cID=${o.id}">
+                                            ${o.categoryName}
+                                        </a>
+                                    </c:forEach>
+                                </div>
+                            </li>
+                            <li class="nav-item nav-hover">
+                                <a class="nav-link active" aria-current="page" href="${path}/blog">Blogs</a>
+                            </li>
+                            <c:if test="${sessionScope.isAdmin != true}">
+                                <c:choose>
+                                    <c:when test="${sessionScope.isTeacher == true}">
+                                        <li class="nav-hover nav-item">
+                                            <a href="${path}/auth/teacher/subject" class="nav-link" style="padding-top: 8px; padding-bottom: 8px">
+                                                Management
+                                            </a>
+                                        </li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li class="nav-hover nav-item">
+                                            <a href="${path}/auth/user/course" class="nav-link active" style="padding-top: 8px; padding-bottom: 8px">
+                                                Courses
+                                            </a>
+                                        </li>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:if>
+                            <li class="gap-3">
+                                <div style="margin-top: 4.5px; white-space: nowrap">
+                                    <c:choose>
+                                        <c:when test="${sessionScope.user == null}">
+                                            <button type="button" class="btn btn-outline-primary py-2 px-3 mx-2" data-toggle="modal" data-target="#login-modal">
+                                                Log in
+                                            </button>
+                                            <button type="button" class="btn btn-secondary py-2 px-3 mx-2" data-toggle="modal" data-target="#register-modal">
+                                                Register
+                                            </button>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="">
+                                                <a href="#" id="shopping-cart" style="border-radius: 25px; padding: 12px 12px;;color: lightslategray">
+                                                    <i class="fas fa-shopping-cart fa-lg"></i>
+                                                </a>
+                                                <ul id="setting-dropdown-ul" >
+                                                    <li id="setting-dropdown-li">
+                                                        <a href="#" style="border-radius: 25px; padding: 12px 12px; color: lightslategray" id="setting">
+                                                            <i class="fas fa-cog fa-lg"></i>
+                                                        </a>
+                                                        <ul id="setting-dropdown-sub-ul">
+
+                                                            <c:if test="${sessionScope.isAdmin != true }">
+                                                                <li id="li-top">
+                                                                    <a href="${path}/auth/user/UserCourse?operation=" style="padding-top: 5px; padding-bottom: 5px">
+                                                                        My Registrations
+                                                                    </a>
+                                                                </li>
+                                                                <li id="li-middle">
+                                                                    <a href="${path}/auth/user">Account setting</a>
+                                                                </li>
+                                                                <c:if test="${sessionScope.isAdmin != true && sessionScope.isTeacher == true}">
+                                                                    <li id="li-bottom">
+                                                                        <a href="${path}/auth/admin" style="padding-bottom: 5px">Management</a>
+                                                                    </li>
+                                                                </c:if>
+                                                            </c:if>
+                                                            <li id="li-middle">
+                                                                <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">Log out</a>
+                                                            </li>
+                                                            <c:if test="${sessionScope.isAdmin != true && sessionScope.isTeacher != true}">
+                                                                <li id="li-bottom">
+                                                                    <a href="${path}/auth/user/course?operation=VIEWMYCOURSE&userId=${user.getId()}" style="padding-bottom: 5px">My Course</a>
+                                                                </li>
+                                                            </c:if>
+                                                            <c:if test="${sessionScope.isAdmin == true}">
+                                                                <li id="li-bottom">
+                                                                    <a href="${path}/auth/admin" style="padding-bottom: 5px">Management</a>
+                                                                </li>
+                                                            </c:if>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </nav>
             </aside>
             <div id="colorlib-main">
@@ -47,18 +162,19 @@
                                     <c:forEach items="${hmPost}" var="p">
                                         <div class="col-md-12">
                                             <div class="blog-entry ftco-animate d-md-flex">
-                                                <a href="#" class="img img-2" style="background-image:url(${p.thumbnail})"></a>
+                                                <a href="${path}/blog?operation=VIEWBLOGDETAIL&id=${p.postId}" 
+                                                   class="img img-2" style="background-image:url(${p.thumbnail})"></a>
                                                 <div class="text text-2 pl-md-4">
-                                                    <h3 class="mb-2"><a href="#">${p.title}</a></h3>
+                                                    <h3 class="mb-2"><a href="${path}/blog?operation=VIEWBLOGDETAIL&id=${p.postId}">${p.title}</a></h3>
                                                     <div class="meta-wrap">
                                                         <p class="meta">
                                                             <span><i class="far fa-calendar-alt mr-2"></i>${p.updatedDate}</span>
                                                             <span><a href="#"><i class="far fa-folder mr-2"></i>${p.categoryId}</a></span>
-                                                            <span><a href="#"><i class="fas fa-user-edit mr-2"></i>${p.authorId}</a></span>
+                                                            <span><i class="fas fa-user-edit mr-2"></i>${p.authorId}</span>
                                                         </p>
                                                     </div>
                                                     <p class="mb-4">${p.briefInfo}</p>
-                                                    <p><a href="#" class="btn-custom">Read More <i class="far fa-arrow-alt-circle-right ml-2"></i></a></p>
+                                                    <p><a href="${path}/blog?operation=VIEWBLOGDETAIL&id=${p.postId}" class="btn-custom">Read More <i class="far fa-arrow-alt-circle-right ml-2"></i></a></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -68,13 +184,60 @@
                                     <div class="col">
                                         <div class="block-27">
                                             <ul>
-                                                <li><a href="#">&lt;</a></li>
-                                                <li class="active"><span>1</span></li>
-                                                <li><a href="#">2</a></li>
-                                                <li><a href="#">3</a></li>
-                                                <li><a href="#">4</a></li>
-                                                <li><a href="#">5</a></li>
-                                                <li><a href="#">&gt;</a></li>
+                                                <c:if test="${requestScope.categoryId == null && title == null}">
+                                                    <li class="page-item ${curPage == 1?"disabled":""}">
+                                                        <a class="page-link" href="blog?curPage=${curPage - 1}" 
+                                                           tabindex="-1">&lt;</a>
+                                                    </li>
+                                                </c:if>
+                                                <c:if test="${requestScope.categoryId != null}">
+                                                    <li class="page-item ${curPage == 1?"disabled":""}">
+                                                        <a  class="page-link"
+                                                            href="blog?curPage=${curPage - 1}&operation=postByCategory&cateId=${requestScope.categoryId}" 
+                                                            tabindex="-1">&lt;</a>
+                                                    </li>
+                                                </c:if>
+                                                <c:if test="${requestScope.title != null && categoryId == null}">
+                                                    <li class="page-item ${curPage == 1?"disabled":""}">
+                                                        <a  class="page-link"
+                                                            href="blog?curPage=${curPage - 1}&operation=SearchByTitle&title=${title}" 
+                                                            tabindex="-1">&lt;</a>
+                                                    </li>
+                                                </c:if>
+                                                <c:forEach begin="1" end="${requestScope.nOfPage}" var="i">
+                                                    <c:if test="${requestScope.categoryId == null && title == null}">
+                                                        <li class="page-item ${curPage == i?"active":""}">
+                                                            <a  href="blog?curPage=${i}">${i}</a>
+                                                        </li>
+                                                    </c:if>
+                                                    <c:if test="${requestScope.categoryId != null}">
+                                                        <li class="page-item ${curPage == i?"active":""}">
+                                                            <a 
+                                                                href="blog?curPage=${i}&operation=postByCategory&cateId=${requestScope.categoryId}">${i}</a>
+                                                        </li>
+                                                    </c:if>
+                                                    <c:if test="${requestScope.categoryId == null && title != null}">
+                                                        <li class="page-item ${curPage == i?"active":""}">
+                                                            <a 
+                                                                href="blog?curPage=${i}&operation=SearchByTitle&title=${title}">${i}</a>
+                                                        </li>
+                                                    </c:if>
+                                                </c:forEach>
+                                                <c:if test="${requestScope.categoryId == null && title == null}">  
+                                                    <li class="page-item ${curPage == nOfPage?"disabled":""}">
+                                                        <a class="page-link" href="blog?curPage=${curPage + 1}">&gt;</a>
+                                                    </li>
+                                                </c:if>
+                                                <c:if test="${requestScope.categoryId != null}">        
+                                                    <li class="page-item ${curPage == nOfPage?"disabled":""}">
+                                                        <a class="page-link" href="blog?curPage=${curPage + 1}&operation=postByCategory&cateId=${requestScope.categoryId}">&gt;</a>
+                                                    </li>
+                                                </c:if>
+                                                <c:if test="${requestScope.categoryId == null && title != null}">        
+                                                    <li class="page-item ${curPage == nOfPage?"disabled":""}">
+                                                        <a class="page-link" href="blog?curPage=${curPage + 1}&operation=SearchByTitle&title=${title}">&gt;</a>
+                                                    </li>
+                                                </c:if>
                                             </ul>
                                         </div>
                                     </div>
@@ -174,168 +337,4 @@
         <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"rayId":"66cf512d9f1fd94e","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2021.6.0","si":10}'></script>
     </body>
 </html>
-<!--<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-              integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
-              crossorigin="anonymous">
-        <title>Blog</title>
-    </head>
-    <body>
-<main>
-    <div class="container">
-         breadcrumb 
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="home">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Blog</li>
-            </ol>
-        </nav>
-        <div class="row">
-             left 
-            <div class="col-md-4">
-                <div class="row">
-                    <div class="col-12">
-                        <form class="form-inline" method="POST" action="blog">
-                            <div class="request-info">
-                                <input name="previousPage" value="blogList.jsp" hidden="true" />
-                                <div class="invalid-feedback"></div>
-                                <input name="operation" value="SearchByTitle" hidden="true" />
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <input class="form-control mr-sm-2" type="search" name="title" 
-                                   value="${title}" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <h3>Category</h3>
-                        <hr>
-                        <ul class="list-group list-group-flush shadow-sm">
-<c:forEach var="i" items="${requestScope.hmCategory}">
-    <a href="blog?operation=postByCategory&categoryId=${i.key}&curPage=1" 
-       class="list-group-item list-group-item-action ${categoryId==i.key?"active":""}">${i.value}</a>
-</c:forEach>
-</ul>
-</div>
-</div>
-<div class="row">
-<h3 class="mt-4">Top 3 Latest Posts</h3>
-<div class="col-12">
-<ul class="list-group list-group-flush shadow-sm">
-<c:forEach items="${latest}" var="o">
-    <a href="blog?operation=blogDetail&id=${o.value.postId}" 
-       class="list-group-item list-group-item-action">${o.value.title}</a>
-</c:forEach>
-</ul>
-</div>
-</div>
-</div>
-right 
-<div class="col-md-8">
-<div class="row">
-<div class="col-12">
-<c:forEach items="${hmPost}" var="o">
-    <div class="d-flex position-relative my-3 py-3 bg-light shadow-lg">
-        <img src="${o.thumbnail}" class="mx-5" style="width: 8rem; height: 8rem" alt="thumbnail">
-        <div>
-            <h5 class="mt-0">${o.title}</h5>
-            <p>${o.briefInfo}</p>
-            <a href="blog?operation=blogDetail&id=${o.postId}" class="stretched-link">Read more</a>
-        </div>
-    </div>
-</c:forEach>
-</div>
-</div>
-<div class="row">
-<div class="col-12">
-<nav aria-label="Blog-pagination">
-    <ul class="pagination justify-content-center">
-<c:if test="${requestScope.categoryId == null && title == null}">
-    <li class="page-item ${curPage == 1?"disabled":""}">
-        <a class="page-link" href="blog?curPage=${curPage - 1}" 
-           tabindex="-1">Previous</a>
-    </li>
-</c:if>
-<c:if test="${requestScope.categoryId != null}">
-    <li class="page-item ${curPage == 1?"disabled":""}">
-        <a class="page-link" 
-           href="blog?curPage=${curPage - 1}&operation=postByCategory&cateId=${requestScope.categoryId}" 
-           tabindex="-1">Previous</a>
-    </li>
-</c:if>
-<c:if test="${requestScope.title != null && categoryId == null}">
-    <li class="page-item ${curPage == 1?"disabled":""}">
-        <a class="page-link" 
-           href="blog?curPage=${curPage - 1}&operation=SearchByTitle&title=${title}" 
-           tabindex="-1">Previous</a>
-    </li>
-</c:if>
-<c:forEach begin="1" end="${requestScope.nOfPage}" var="i">
-    <c:if test="${requestScope.categoryId == null && title == null}">
-        <li class="page-item ${curPage == i?"active":""}">
-            <a class="page-link" href="blog?curPage=${i}">${i}</a>
-        </li>
-    </c:if>
-    <c:if test="${requestScope.categoryId != null}">
-        <li class="page-item ${curPage == i?"active":""}">
-            <a class="page-link" 
-               href="blog?curPage=${i}&operation=postByCategory&cateId=${requestScope.categoryId}">${i}</a>
-        </li>
-    </c:if>
-    <c:if test="${requestScope.categoryId == null && title != null}">
-        <li class="page-item ${curPage == i?"active":""}">
-            <a class="page-link" 
-               href="blog?curPage=${i}&operation=SearchByTitle&title=${title}">${i}</a>
-        </li>
-    </c:if>
-</c:forEach>
-<c:if test="${requestScope.categoryId == null && title == null}">        
-    <li class="page-item ${curPage == nOfPage?"disabled":""}">
-        <a class="page-link" href="blog?curPage=${curPage + 1}">Next</a>
-    </li>
-</c:if>
-<c:if test="${requestScope.categoryId != null}">        
-    <li class="page-item ${curPage == nOfPage?"disabled":""}">
-        <a class="page-link" 
-           href="blog?curPage=${curPage + 1}&operation=postByCategory&cateId=${requestScope.categoryId}">Next</a>
-    </li>
-</c:if>
-<c:if test="${requestScope.categoryId == null && title != null}">        
-    <li class="page-item ${curPage == nOfPage?"disabled":""}">
-        <a class="page-link" 
-           href="blog?curPage=${curPage + 1}&operation=SearchByTitle&title=${title}">Next</a>
-    </li>
-</c:if>
-</ul>
-</nav>
-</div>
-</div>
-</div>
-</div>
-</div>
-</main>
-footer
-</body>
-javascript
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous">
-</script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-    crossorigin="anonymous">
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
-    integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
-    crossorigin="anonymous">
-</script>
-Import if have form input 
-<script type="text/javascript" src="${path}/utilities/form-validator.js"></script>
 
-</html>-->
