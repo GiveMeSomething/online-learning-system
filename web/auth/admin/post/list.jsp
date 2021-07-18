@@ -184,7 +184,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <button style="float: right;" class="btn btn-success">
-                                    <a style="color: black; text-decoration: none" href="${path}/auth/admin/post/add.jsp">
+                                    <a style="color: white; text-decoration: none" href="${path}/auth/admin/post/add.jsp">
                                         Add Post
                                     </a>
                                 </button>
