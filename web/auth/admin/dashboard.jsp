@@ -38,8 +38,6 @@
             <a href="${path}/auth/teacher/subject">Subject List</a>
             <hr>
             <a href="${path}/auth/admin/slider">Slider List</a>
-            <hr>
-            <a href="${path}/auth/teacher/lesson">Lesson List</a>
         </div>
         <div class="container container-fluid" style="margin-bottom: 2rem">
             <div class="row">

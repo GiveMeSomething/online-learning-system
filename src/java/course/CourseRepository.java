@@ -142,7 +142,7 @@ public class CourseRepository extends Repository {
                 + "on p.package_id = pp.id "
                 + "INNER JOIN db_ite1.category ca "
                 + "on ca.id = c.category_id "
-                + "where c.feature = '1' and c.id > '50' "
+                + "where c.feature = '1' "
                 + "GROUP BY c.id "
                 + "ORDER BY RAND() "
                 + "LIMIT 3";

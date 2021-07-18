@@ -38,8 +38,6 @@
             <a href="${path}/auth/teacher/subject">Subject List</a>
             <hr>
             <a href="${path}/auth/admin/slider" style="background: white; color: black">Slider List</a>
-            <hr>
-            <a href="${path}/auth/teacher/lesson">Lesson List</a>
         </div>
         <div class="container my-5">
             <div class="row">
