@@ -38,12 +38,28 @@
             <a href="${path}/auth/teacher/subject">Subject List</a>
             <hr>
             <a href="${path}/auth/admin/slider" style="background: white; color: black">Slider List</a>
+        </div> 
+        <div style="background:#FFFFF0; display:flex;" class="py-2">
+            <div>
+                <button id="openNav" class="openbtn" onclick="openNav()" style="background: #FFFFF0; color: black">&#9776;</button>  
+            </div>
+            <div style="justify-content: center; margin-left: 37rem">
+                <a class="navbar-brand" style="font-size: 2.5rem;" href="${path}/home">
+                    <span style="color:blue">O</span>
+                    <span style="color:orange">L</span>
+                    <span style="color:green">S</span>
+                </a> 
+            </div>
+            <div style="margin-left: 30rem; margin-top: 1rem">
+                <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">
+                    <button class="btn btn-secondary">Log out</button>
+                </a>
+            </div>
         </div>
-        <div class="container my-5">
+        <div class="container my-2">
             <div class="row">
                 <div class="d-flex justify-content-center align-items-center">
-                    <button id="openNav" class="openbtn" onclick="openNav()" style="background: white; color: black">&#9776;</button>  
-                    <h2>Slider List</h2>
+                    <h2 style="margin-left: 1rem">Slider List</h2>
                 </div>
             </div>
             <div class="row">
