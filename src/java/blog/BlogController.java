@@ -45,6 +45,12 @@ public class BlogController extends HttpServlet implements Controller {
                 case "VIEWALLPOST":
                     processViewAllPost(request, response);// /blog?operation=VIEWALLPOST
                     break;
+                case "VIEWBLOGDETAIL":
+                    getBlogDetail(request, response);
+                    break;
+                case "VIEWBLOGCATEGORY":
+                    getBlogPaginationByCategory(request, response);
+                    break;
                 case "PAGINATIONPOST":
                     processPaginationPost(request, response);
                     break;
@@ -76,6 +82,9 @@ public class BlogController extends HttpServlet implements Controller {
                     break;
                 case "ADDPOST":
                     processAddPost(request, response);
+                    break;
+                case "SearchByTitle":
+                    getBlogByTitle(request, response);
                     break;
                 default:
                     send404(request, response);

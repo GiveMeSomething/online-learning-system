@@ -30,10 +30,14 @@ public class BlogRepository extends Repository {
     public HashMap<String, Post> getHmPost() throws SQLException {
         this.connectDatabase();
 
-        String getPosts = "SELECT * FROM post WHERE status_id = 1";
+        String getPosts = "SELECT id, thumbnail, category_id, "
+                + "title, brief_info, description, "
+                + "feature, status_id, author_id, DATE(updated_date) "
+                + "FROM post WHERE status_id = 1";
         try (PreparedStatement statement = this.connection.prepareStatement(getPosts)) {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
+
                 hmPost.put(result.getString(1), new Post(result.getString("id"), result.getString("thumbnail"),
                         result.getString("category_id"), result.getString("title"),
                         result.getString("brief_info"), result.getString("description"),
@@ -147,19 +151,24 @@ public class BlogRepository extends Repository {
         this.connectDatabase();
 
         ArrayList<Post> posts = new ArrayList<>();
-        String getPostsList = "SELECT * FROM post WHERE status_id = 1 LIMIT ?,?";
+        String getPostsList = "SELECT post.id, thumbnail, category_name as category, "
+                + "title, brief_info, description, feature, post.status_id, full_name as author_id, "
+                + "DATE(updated_date) as updated_date "
+                + "FROM post "
+                + "JOIN category ON category.id = post.category_id "
+                + "JOIN user ON post.author_id = user.id "
+                + "WHERE post.status_id = 1 LIMIT ?,?";
         try (PreparedStatement statement = this.connection.prepareStatement(getPostsList)) {
             statement.setInt(1, (currentPage * postsPerPage) - postsPerPage);
             statement.setInt(2, postsPerPage);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 posts.add(new Post(result.getString("id"), result.getString("thumbnail"),
-                        result.getString("category_id"), result.getString("title"),
+                        result.getString("category"), result.getString("title"),
                         result.getString("brief_info"), result.getString("description"),
                         result.getString("feature"), result.getString("status_id"),
                         result.getString("author_id"), result.getString("updated_date")));
             }
-
             return posts;
         } finally {
             this.disconnectDatabase();

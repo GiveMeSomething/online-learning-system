@@ -193,7 +193,7 @@
                 </div>
                 <div class="d-flex mt-3 px-5 justify-content-end" id="button-area">
                     <button type="submit" class="btn btn-primary mr-4">Save</button>
-                    <a href="${path}/auth/teacher/subject" class="btn btn-secondary">Back</a>
+                    <a href="${path}/auth/teacher/registration?operation=VIEWALL" class="btn btn-secondary">Back</a>
                 </div>
             </form>
         </div>
