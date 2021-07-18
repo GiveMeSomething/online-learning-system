@@ -14,7 +14,7 @@
     <body>
         <section id="page-footer" class="container-fluid mt-5 d-flex justify-content-between align-items-center">
         <div class="page-dummy-footer px-5">
-            <a class="navbar-brand" style="font-size: 2rem;" href="#">
+             <a class="navbar-brand" style="font-size: 2rem;" href="${path}/home">
                 <span style="color:blue">O</span>
                 <span style="color:orange">L</span>
                 <span style="color:green">S</span>
