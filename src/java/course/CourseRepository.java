@@ -1203,16 +1203,8 @@ public class CourseRepository extends Repository {
     //search-from-home
     public List<Course> searchHome(String searchName) throws SQLException {
         this.connectDatabase();
-        String searchCourse = "select c.id,c.thumbnail,c.title,c.description,c.tag,ca.category_name,MIN(pp.list_price) "
-                + "AS price from db_ite1.course c "
-                + "INNER JOIN db_ite1.course_package p "
-                + "on c.id = p.course_id "
-                + "INNER JOIN db_ite1.price_package pp "
-                + "on p.package_id = pp.id "
-                + "INNER JOIN db_ite1.category ca "
-                + "on ca.id = c.category_id "
-                + "where c.title Like ? "
-                + "GROUP BY c.id ";
+        String searchCourse = "SELECT * FROM db_ite1.course WHERE title LIKE ?";
+
         List<Course> list = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
             statement.setString(1, "%" + searchName + "%");
@@ -1223,7 +1215,7 @@ public class CourseRepository extends Repository {
                         result.getString("thumbnail"),
                         result.getString("title"),
                         result.getString("description"),
-                        result.getFloat("price"),
+                        0,
                         result.getString("tag")
                 ));
             }
