@@ -46,7 +46,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav d-flex align-items-center">
                         <li class="nav-item">
-                            <form action="home?operation=SEARCHCOURSE&&searchName=${sessionScope.searchName}"
+                            <form action="home?operation=SEARCHCOURSE&&searchName=${selectedKeyword}&&count=${count}"
                                   class="d-flex" method="post">
                                 <input name="searchCourse" class="form-control py-2"
                                        type="search" placeholder="Search courses"/>
@@ -320,6 +320,9 @@
         </div>
     </section>
     <div style="margin-left: 3rem">
+        <div class="ml-5">
+            <b>${sessionScope.course.size()}</b> subject(s) found for <b>"${selectedKeyword}"</b>
+        </div> 
         <section>
             <div class="mt-4 row" style="margin-left: -1rem">
                 <c:forEach items="${requestScope.pageItems}" var="o">
@@ -351,24 +354,24 @@
             </div>
         </section>
         <nav aria-label="Page navigation example" class="ml-5">
-        <c:set var="contentSize" value="${sessionScope.course.size()}" />
-        <c:set var="maxPage" value="${contentSize % 8 == 0 ? contentSize / 8: ((contentSize - contentSize % 8) / 8) + 1}" />
-        <c:set var="currentPage" value="${pageContext.request.getParameter('page')}" />
-        <c:set var="prevPage" value="${currentPage == null ? 1 : currentPage - 1}" />
-        <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>
-        <ul class="pagination">
-            <c:forEach begin="1" end="${maxPage}" varStatus="counter">
-                <li class="page-item">
-                    <a class="page-link"
-                       href="${path}/home?operation=PAGINATION&page=${counter.index}">
-                        ${counter.index}
-                    </a>
-                </li>
-            </c:forEach>
-        </ul>
-    </nav>
+            <c:set var="contentSize" value="${sessionScope.course.size()}" />
+            <c:set var="maxPage" value="${contentSize % 8 == 0 ? contentSize / 8: ((contentSize - contentSize % 8) / 8) + 1}" />
+            <c:set var="currentPage" value="${pageContext.request.getParameter('page')}" />
+            <c:set var="prevPage" value="${currentPage == null ? 1 : currentPage - 1}" />
+            <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>
+            <ul class="pagination">
+                <c:forEach begin="1" end="${maxPage}" varStatus="counter">
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="${path}/home?operation=PAGINATION&page=${counter.index}&searchName=${selectedKeyword}&count=${count}">
+                            ${counter.index}
+                        </a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </nav>
     </div>
-    
+
     <jsp:include page="/components/global/footer.jsp"/>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

@@ -73,7 +73,9 @@ public class HomeController extends HttpServlet {
             List<Category> categoryList = courseService.getAllCategory();
             List<Course> pageItems = getSearchPerPage((List<Course>) session.getAttribute("course"), page);
             if (pageItems != null) {
-                session.setAttribute("searchName", searchName);
+                int count = courseService.countingHomeSearch(searchName);
+                request.setAttribute("searchName", searchName);
+                request.setAttribute("count", count);
                 request.setAttribute("categoryList", categoryList);
                 request.setAttribute("pageItems", pageItems);
                 request.getRequestDispatcher("homeSearch.jsp").forward(request, response);
@@ -111,12 +113,13 @@ public class HomeController extends HttpServlet {
 
         List<Course> course = courseService.searchHome(keyword);
         List<Category> categoryList = courseService.getAllCategory();
-
+        int count = courseService.countingHomeSearch(keyword);
         session.setAttribute("course", course);
-
+        session.setAttribute("count", count);
         if (course == null || course.size() == 0) {
             request.setAttribute("categoryList", categoryList);
             request.setAttribute("course", course);
+            request.setAttribute("count", count);
             request.getRequestDispatcher("homeSearch.jsp").forward(request, response);
         }
         int page = processPageParameter(request, response, course.size());
@@ -125,6 +128,7 @@ public class HomeController extends HttpServlet {
         if (pageItems != null) {
             request.setAttribute("categoryList", categoryList);
             request.setAttribute("pageItems", pageItems);
+            request.setAttribute("count", count);
             request.getRequestDispatcher("homeSearch.jsp").forward(request, response);
         } else {
             response.sendRedirect("/nauth/404.jsp");
