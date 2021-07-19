@@ -42,11 +42,18 @@ public class QuizController extends HttpServlet implements Controller {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession currentSession = request.getSession();
         String operation = request.getParameter("operation");
 
         String quizId;
         if (operation == null) {
-            processInputForQuiz(request, response);
+            boolean accessible = (Boolean) currentSession.getAttribute("isTeacher")
+                    || (Boolean) currentSession.getAttribute("isAdmin");
+            if (accessible) {
+                processInputForQuiz(request, response);
+            } else {
+                response.sendRedirect(request.getContextPath() + "/nauth/403.jsp");
+            }
         } else {
             switch (operation) {
                 case "VIEW":
@@ -364,6 +371,7 @@ public class QuizController extends HttpServlet implements Controller {
 
     private void processQuizReview(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println();
         HttpSession currentSession = request.getSession();
         User currentUser = (User) currentSession.getAttribute("user");
 
@@ -371,25 +379,27 @@ public class QuizController extends HttpServlet implements Controller {
         int selectedQuestion = 0;
 
         try {
-            quizId = Integer.parseInt(request.getParameter("userQuizId"));
+            quizId = Integer.parseInt(request.getParameter("quizId"));
         } catch (Exception e) {
-            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+            return;
         }
 
         try {
             selectedQuestion = Integer.parseInt(request.getParameter("questionNum"));
         } catch (Exception e) {
-            e.printStackTrace();
+            selectedQuestion = 0;
         }
 
-        ArrayList<ArrayList<String>> questionList = (ArrayList<ArrayList<String>>) currentSession.getAttribute("questionList");
-        if (questionList == null) {
-            questionList = quizService.getQuizReview(quizId, currentUser.getId());
-        }
+        ArrayList<ArrayList<String>> questionList = quizService.getQuizReview(quizId, currentUser.getId());
 
         currentSession.setAttribute("questionList", questionList);
         request.setAttribute("quizId", quizId);
         request.setAttribute("questionNum", selectedQuestion);
+
+        if (currentSession.getAttribute("previousPage") == null) {
+            currentSession.setAttribute("previousPage", request.getHeader("referer"));
+        }
 
         request.setAttribute("pageItem", questionList.get(selectedQuestion));
         request.getRequestDispatcher("/auth/user/quiz/quiz-review.jsp").forward(request, response);

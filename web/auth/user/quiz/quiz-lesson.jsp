@@ -75,15 +75,15 @@
             <div class="row">
                 <div class="col-md-6">
                     <c:if test="${dao1.getMark(sessionScope.user.id, sessionScope.quizIdCuaDuyAnh)!= '--'}">
-                        <button type="button" class="btn btn-primary"> 
-                            <a style="color: white; text-decoration: none;"href="${path}/auth/user/user_quiz?operation=VIEWQUIZREVIEW&quizId=${quizIdCuaDuyAnh}">
+                        <button type="button" class="btn btn-primary">
+                            <a class="text-white text-decoration-none" href="${path}/auth/user/user_quiz?operation=VIEWQUIZREVIEW&quizId=${quizIdCuaDuyAnh}">
                                 View Feedback
                             </a>
                         </button>
                     </c:if>
                 </div>
                 <div class="col-md-6">
-                    <c:if test="${dao1.getMark(sessionScope.user.id, sessionScope.quizIdCuaDuyAnh)!='--'}"> 
+                    <c:if test="${dao1.getMark(sessionScope.user.id, sessionScope.quizIdCuaDuyAnh)!='--'}">
                         <span style="color: red; background-color: white; float: right;">
                             <a href="${path}/auth/user/user_quiz?operation=VIEWQUIZHANDLE&quizId=${quizIdCuaDuyAnh}">
                                 Try again
