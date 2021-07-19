@@ -338,6 +338,12 @@
                                     ${o.courseName}
                                 </a><br>
                                 <span>${o.tag}</span>
+                                <div class="d-flex">
+                                    <p style="text-decoration: line-through;color:#dd012d" class="card-text mr-2">$${o.price}</p>
+                                    <p class="card-text font-weight-bold">
+                                        $<fmt:formatNumber type="number" maxFractionDigits="2" value="${o.price * 0.8}" />
+                                    </p>
+                                </div>
                             </div>
                             <div style="margin-top: 7.2rem; margin-left: -1rem">
                                 <a class="sider-course-hover" href="course?courseId=${o.id}">
