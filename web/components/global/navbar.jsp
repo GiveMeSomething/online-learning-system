@@ -62,13 +62,6 @@
                                             </a>
                                         </li>
                                     </c:when>
-                                    <c:otherwise>
-                                        <li class="nav-hover nav-item">
-                                            <a href="${path}/auth/user/course" class="nav-link active" style="padding-top: 8px; padding-bottom: 8px">
-                                                Courses
-                                            </a>
-                                        </li>
-                                    </c:otherwise>
                                 </c:choose>
                             </c:if>
                             <li class="gap-3">
@@ -85,14 +78,14 @@
                                         <c:otherwise>
                                             <div class="">
                                                 <a href="#" id="shopping-cart" style="border-radius: 25px; padding: 12px 12px;;color: lightslategray">
-                                                    <i class="fas fa-shopping-cart fa-lg"></i>
+                                                   
                                                 </a>
-                                                <ul id="setting-dropdown-ul" >
+                                                <ul id="setting-dropdown-ul" style="margin-left: -1rem">
                                                     <li id="setting-dropdown-li">
                                                         <a href="#" style="border-radius: 25px; padding: 12px 12px; color: lightslategray" id="setting">
                                                             <i class="fas fa-cog fa-lg"></i>
                                                         </a>
-                                                        <ul id="setting-dropdown-sub-ul">
+                                                        <ul id="setting-dropdown-sub-ul" >
 
                                                             <c:if test="${sessionScope.isAdmin != true }">
                                                                 <li id="li-top">
@@ -109,12 +102,9 @@
                                                                     </li>
                                                                 </c:if>
                                                             </c:if>
-                                                            <li id="li-middle">
-                                                                <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">Log out</a>
-                                                            </li>
                                                             <c:if test="${sessionScope.isAdmin != true && sessionScope.isTeacher != true}">
                                                                 <li id="li-bottom">
-                                                                    <a href="${path}/auth/user/course?operation=VIEWMYCOURSE&userId=${user.getId()}" style="padding-bottom: 5px">My Course</a>
+                                                                    <a href="${path}/auth/user/course?operation=VIEWMYCOURSE&userId=${user.getId()}" style="padding-bottom: 5px; padding-top: .2rem">My Course</a>
                                                                 </li>
                                                             </c:if>
                                                             <c:if test="${sessionScope.isAdmin == true}">
@@ -122,6 +112,9 @@
                                                                     <a href="${path}/auth/admin" style="padding-bottom: 5px">Management</a>
                                                                 </li>
                                                             </c:if>
+                                                            <li id="li-middle">
+                                                                <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">Log out</a>
+                                                            </li>
                                                         </ul>
                                                     </li>
                                                 </ul>

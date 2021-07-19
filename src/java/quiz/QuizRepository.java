@@ -711,6 +711,26 @@ public class QuizRepository extends Repository {
         }
     }
 
+    public String getDuration(String quizId) throws SQLException {
+        this.connectDatabase();
+        String checkQuestionQuiz = "SELECT \n"
+                + "    duration\n"
+                + "FROM\n"
+                + "    db_ite1.quiz\n"
+                + "WHERE\n"
+                + "    id = ?;";
+        try (PreparedStatement statement = this.connection.prepareStatement(checkQuestionQuiz)) {
+            statement.setString(1, quizId);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                return result.getString(1);
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return "Chua get duoc duration";
+    }
+
     public String getMark(String userId, String quizId) throws SQLException {
         this.connectDatabase();
 

@@ -176,7 +176,6 @@ public class QuizController extends HttpServlet implements Controller {
         session.setAttribute("quizId", quizId);
         session.setAttribute("testTime", quiz.getDuration());
         HashMap<Integer, ArrayList<Integer>> getDataForQuestion = quizService.getDataForQuestion(quizId);
-
         ArrayList<Question> questions;
         ArrayList<Question> combination = new ArrayList<>();
 

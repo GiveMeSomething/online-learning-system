@@ -220,54 +220,6 @@
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
-                        <div class="d-flex align-items-center">
-                            <p class="mb-0 mr-3">Status</p>
-                            <c:if test="${sessionScope.user.status == 'ACTIVE'}">
-                                <input name="status"
-                                       type="radio"
-                                       id="active"
-                                       value="ACTIVE"
-                                       checked
-                                       data-value-missing="Can't be empty"
-                                       required/>
-                                <label style="margin-top: 7px" class="mr-3 ml-1" for="male">
-                                    Active
-                                </label><br>
-                                <div class="invalid-feedback"></div>
-                                <input name="status"
-                                       type="radio"
-                                       id="inactive"
-                                       value="INACTIVE"
-                                       data-value-missing="Can't be empty"
-                                       required/>
-                                <label style="margin-top: 7px" class="ml-1" for="female">
-                                    Inactive
-                                </label><br>
-                                <div class="invalid-feedback"></div>
-                            </c:if>
-
-                            <c:if test="${sessionScope.user.status == 'INACTIVE'}">
-                                <input name="status"
-                                       type="radio"
-                                       id="active"
-                                       value="ACTIVE"
-                                       data-value-missing="Can't be empty"
-                                       required>
-                                <label style="margin-top: 7px" class="mr-3 ml-1" for="male">
-                                    Active
-                                </label><br>
-                                <div class="invalid-feedback"></div>
-                                <input
-                                    checked type="radio" id="inactive"
-                                    name="status" value="INACTIVE">
-                                <label style="margin-top: 7px" class="ml-1" for="female">
-                                    Inactive
-                                </label><br>
-                                <div class="invalid-feedback"></div>
-                            </c:if>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label for="mobile">Mobile</label>
                         <input class="form-control"
                                name="mobile"
@@ -284,11 +236,6 @@
                     <button type="submit" class="btn btn-success">Update Information</button><br>
                 </form>
                 <br>
-            </div>
-            <div class="text-right mb-2 mt-4">
-                <a href="${path}/home">
-                    <button class="btn btn-success">Back</button>
-                </a>
             </div>
         </div>
         <jsp:include page="/components/global/footer.jsp"/>

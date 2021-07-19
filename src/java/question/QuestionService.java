@@ -5,7 +5,6 @@
  */
 package question;
 
-
 import common.entities.Level;
 import common.entities.Status;
 
@@ -13,10 +12,9 @@ import common.entities.Lesson;
 import common.entities.Question;
 import java.util.List;
 
-
 public class QuestionService {
-    private final QuestionRepository questionRepository;
 
+    private final QuestionRepository questionRepository;
 
     public QuestionService() {
         this.questionRepository = new QuestionRepository();
@@ -58,7 +56,6 @@ public class QuestionService {
         return null;
     }
 
-    
     public Question getQuestionDetails(int questionId) {
         try {
             return questionRepository.getQuestionDetails(questionId);
@@ -67,8 +64,8 @@ public class QuestionService {
         }
         return null;
     }
-    
-    public Question getAnswerOptionsByQuestionId(int questionId){
+
+    public Question getAnswerOptionsByQuestionId(int questionId) {
         try {
             return questionRepository.getAnswerOptionsByQuestionId(questionId);
         } catch (Exception e) {
@@ -76,65 +73,65 @@ public class QuestionService {
         }
         return null;
     }
-    
-    public boolean deleteAnswerOptions(String column,int questionId){
+
+    public boolean deleteAnswerOptions(String column, int questionId) {
         try {
-           return questionRepository.deleteAnswerOptions(column, questionId);
+            return questionRepository.deleteAnswerOptions(column, questionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
-    
-    public Question getAnswerDetail(String column,int questionId){
+
+    public Question getAnswerDetail(String column, int questionId) {
         try {
-            return questionRepository.getAnswerDetail(column,questionId);
+            return questionRepository.getAnswerDetail(column, questionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-    
-    public boolean updateAnswerOptions(String column,String content,int questionId){
+
+    public boolean updateAnswerOptions(String column, String content, int questionId) {
         try {
-           return questionRepository.updateAnswerOptions(column, content, questionId);
+            return questionRepository.updateAnswerOptions(column, content, questionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
-    
-    public List<Lesson> getLessonByCourseId(int courseId){
+
+    public List<Lesson> getLessonByCourseId(int courseId) {
         try {
-           return questionRepository.getLessonByCourseId(courseId);
+            return questionRepository.getLessonByCourseId(courseId);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-    
-    public boolean updateQuestionBankByQuestionId(int statusId,String content,String media,
-            String option1,String option2,String option3,String option4,String option5,String explaination,
-            String answer,int questionId) {
+
+    public boolean updateQuestionBankByQuestionId(int statusId, String content, String media,
+            String option1, String option2, String option3, String option4, String option5, String explaination,
+            String answer, int questionId) {
         try {
-          return questionRepository.updateQuestionBankByQuestionId(statusId, content, media,
-                   option1, option2, option3, option4, option5, explaination,answer, questionId);
+            return questionRepository.updateQuestionBankByQuestionId(statusId, content, media,
+                    option1, option2, option3, option4, option5, explaination, answer, questionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
-    
-    public boolean updateQuestionCourseDimLes(int courseId,int dimensionId,int lessonId,int questionId){
+
+    public boolean updateQuestionCourseDimLes(int courseId, int dimensionId, int lessonId, int questionId) {
         try {
-          return questionRepository.updateQuestionCourseDimLes(courseId, dimensionId, lessonId, questionId);
+            return questionRepository.updateQuestionCourseDimLes(courseId, dimensionId, lessonId, questionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
-    
-    public Question getAnswerByQuestionId(int questionId){
+
+    public Question getAnswerByQuestionId(int questionId) {
         try {
             return questionRepository.getAnswerByQuestionId(questionId);
         } catch (Exception e) {
@@ -142,34 +139,35 @@ public class QuestionService {
         }
         return null;
     }
-    
-    public boolean addAnswer(String column,String content,int questionId){
+
+    public boolean addAnswer(String column, String content, int questionId) {
         try {
-          return questionRepository.addAnswer(column, content, questionId);
+            return questionRepository.addAnswer(column, content, questionId);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
-    
+
     public int countAnswerOptions() {
         try {
-          return questionRepository.countAnswerOptions();
+            return questionRepository.countAnswerOptions();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
     }
+
     public boolean addQuestion(int status, String content, String media, String explaination, String answer, String option1,
-            String option2, String option3, String option4) {
+            String option2, String option3, String option4, String option5, int level_id, int course_id, int lesson_id) {
         try {
-            return questionRepository.addQuestion(status, content, media, explaination, answer, option1, option2, option3, option4);
+            return questionRepository.addQuestion(status, content, media, explaination, answer, option1, option2, option3, option4, option5, level_id, course_id, lesson_id);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
-    
+
     public boolean deleteQuestionById(int questionId) {
         try {
             return questionRepository.deleteQuestionById(questionId);

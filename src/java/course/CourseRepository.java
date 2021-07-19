@@ -1113,8 +1113,8 @@ public class CourseRepository extends Repository {
         }
 
     }
-    
-     public List<Course> getMyCourseSuccess(int userId) throws SQLException {
+
+    public List<Course> getMyCourseSuccess(int userId) throws SQLException {
         this.connectDatabase();
         String getMyCourseSuccess = "SELECT c.id, c.thumbnail, c.title, c.description FROM db_ite1.user_course uc "
                 + "inner join db_ite1.user u "
@@ -1199,4 +1199,41 @@ public class CourseRepository extends Repository {
         }
         return "Khong get duoc ten khoa hoc vi bi mat session";
     }
+
+    //search-from-home
+    public List<Course> searchHome(String searchName) throws SQLException {
+        this.connectDatabase();
+        String searchCourse = "SELECT * FROM db_ite1.course WHERE title LIKE ?";
+
+        List<Course> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
+            statement.setString(1, "%" + searchName + "%");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new Course(
+                        result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        0,
+                        result.getString("tag")
+                ));
+            }
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        CourseRepository repo = new CourseRepository();
+        try {
+            List<Course> list = repo.searchHome("a");
+            for (Course o : list) {
+                System.out.println(o);
+            }
+        } catch (Exception e) {
+        }
+    }
+
 }

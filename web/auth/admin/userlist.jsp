@@ -23,7 +23,7 @@
         <jsp:useBean id="dall" scope="page" class="auth.AuthRepository" />
         <style>
             .activepage{
-                background-color: red;
+                background-color: #000057;
             }
             .nutadd{
                 float: right;
@@ -125,16 +125,13 @@
                             <input type="text" name="searchtxt" placeholder="By name, email, mobile number" style="width: 500px; height: 2.4rem; border-radius: 5px; margin-right: 0.5rem; border: 1px solid black">
                         </div>
                         <div>
-                            <button class="btn btn-dark" type="submit">Search</button>
+                            <button class="btn btn-primary" type="submit">Search</button>
                         </div>
                     </div>
                 </form>
                 <form action="${path}/auth/admin/filter" method="GET">
-                    <div style=" width: 100%;
-                         height: auto;
-                         float: left;
-                         margin-bottom: 10px;">
-                        <span style="float: left; margin-left: 10px;">Gender</span>
+                    <div class="my-2">
+                        <span style="float: left; margin-left: 10px;"><b>Gender:</b></span>
                         <span style="float: left; margin-left: 10px;">
                             <input type="checkbox" onclick="this.form.submit()" name="gender" value="1" ${a1} > Male <br>
                         </span>
@@ -142,7 +139,7 @@
                               padding-right: 10px;">
                             <input type="checkbox" onclick="this.form.submit()" name = "gender" value="0" ${a0} > Female <br>
                         </span>
-                        <span style="float: left; margin-left: 10px;">Role</span>
+                        <span style="float: left; margin-left: 10px;"><b>Role:</b></span>
                         <span style="float: left; margin-left: 10px;">
                             <input type="checkbox" onclick="this.form.submit()" name="role" value="2" ${b2}> Student <br>
                         </span>
@@ -154,7 +151,7 @@
                               padding-right: 10px;">
                             <input type="checkbox" onclick="this.form.submit()" name="role" value="0" ${b0}> Admin <br>
                         </span>
-                        <span style="padding-left: 10px; float: left; padding-right: 10px;">Status</span>
+                        <span style="padding-left: 10px; float: left; padding-right: 10px;"><b>Status:</b></span>
                         <span style="float: left;padding-right: 10px;">
                             <input type="checkbox" onclick="this.form.submit()" name="status" value="1" ${c1} > Active <br>
                         </span>
@@ -164,7 +161,7 @@
                     </div>
                     <div class="container1">
                         <div class="bentrai col-md-10">
-                            <table id="myTable" class="table table-light table-striped" style="border: 1px solid black; border-collapse: collapse">
+                            <table id="myTable" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th onclick="sortTable(0)">
@@ -178,7 +175,7 @@
                                         <th onclick="sortTable(4)" scope="col"> Mobile</th>
                                         <th onclick="sortTable(5)" scope="col">Role</th>
                                         <th onclick="sortTable(6)" scope="col">Status</th>
-                                        <th scope="col">Action</th>
+                                        <th scope="col" colspan="2">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -202,18 +199,20 @@
                                             </td>
                                             <td>${o.status}</td>
                                             <td>
-                                                <button>
-                                                    <a href="${path}/auth/admin/viewuser?uid=${o.id}">View</a>
-                                                </button>
-                                                <button>
-                                                    <a href="${path}/auth/admin/edituser?uid=${o.id}">Edit</a>
-                                                </button>
+                                                <a class="btn btn-primary" href="${path}/auth/admin/viewuser?uid=${o.id}">
+                                                    View
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-success" href="${path}/auth/admin/edituser?uid=${o.id}">
+                                                    Edit
+                                                </a>
                                             </td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>
                             </table>
-                            <div class="nutadd">
+                            <div class="nutadd my-2">
                                 <a href="${path}/auth/admin/adduser.jsp">
                                     Add
                                 </a>
@@ -221,7 +220,7 @@
                             <div style="display: flex">
                                 <div class="pagination" style="display: inline-block;">
                                     <c:forEach var="i" begin="1" end="${endPage}">
-                                        <button value="${i}" class="${page==i?"activepage":""}" name="page" onclick="this.form.submit()">
+                                        <button value="${i}" class="${page==i?"activepage":""} btn btn-primary btn-sm text-light" name="page" onclick="this.form.submit()">
                                             ${i}
                                         </button>
                                     </c:forEach>

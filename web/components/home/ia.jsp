@@ -34,14 +34,9 @@
                             </div>
 
                             <div class="row mt-5"  style="margin-left: -25.7px">
-                                <div class="col-6 mr-1">
-                                    <a href="#" class="text-decoration-none">
-                                        <button class="btn btn-success">Checkout</button>
-                                    </a>
-                                </div>
-                                <div class="col-1">
-                                    <a href="#" class="text-decoration-none">
-                                        <button class="btn btn-primary">Register</button>
+                                <div class="col-6 ml-5">
+                                    <a href="course?courseId=${o.id}" class="text-decoration-none">
+                                        <button class="btn btn-success px-4" >View</button>
                                     </a>
                                 </div>
                             </div>
