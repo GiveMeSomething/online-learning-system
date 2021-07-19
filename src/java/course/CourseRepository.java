@@ -1223,33 +1223,14 @@ public class CourseRepository extends Repository {
             this.disconnectDatabase();
         }
     }
-    
-    public int countingHomeSearch(String searchName) throws SQLException {
-        this.connectDatabase();
-        String sql = "SELECT COUNT(*) AS count FROM db_ite1.course "
-                + "where title LIKE ?";
-        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
-            statement.setString(1, "%" + searchName + "%");
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                return result.getInt("count");
-            }
-
-        } finally {
-            this.disconnectDatabase();
-        }
-        return 0;
-    }
 
     public static void main(String[] args) throws Exception {
         CourseRepository repo = new CourseRepository();
         try {
-            int count = repo.countingHomeSearch("a");
-            System.out.println(count);
-//            List<Course> list = repo.searchHome("a");
-//            for (Course o : list) {
-//                System.out.println(o);
-//            }
+            List<Course> list = repo.searchHome("a");
+            for (Course o : list) {
+                System.out.println(o);
+            }
         } catch (Exception e) {
         }
     }
