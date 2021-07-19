@@ -94,9 +94,10 @@ public class HomeController extends HttpServlet {
 
     public void processInputForSearch(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String keyword = request.getParameter("searchCourse");
-        request.setAttribute("selectedKeyword", keyword);
         HttpSession session = request.getSession();
+        String keyword = request.getParameter("searchCourse");
+        session.setAttribute("selectedKeyword", keyword);
+        
 
         if (keyword == null || keyword.equals("")) {
             keyword = "";

@@ -321,7 +321,7 @@
     </section>
     <div style="margin-left: 3rem">
         <div class="ml-5">
-            <b>${sessionScope.course.size()}</b> subject(s) found for <b>"${selectedKeyword}"</b>
+            <b>${sessionScope.course.size()}</b> subject(s) found for <b>"${sessionScope.selectedKeyword}"</b>
         </div> 
         <section>
             <div class="mt-4 row" style="margin-left: -1rem">
