@@ -495,4 +495,23 @@ public class CourseService {
 
         return false;
     }
+    
+    public List<Course> searchHome(String searchName) {
+        try {
+            return courseRepository.searchHome(searchName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    public int countingHomeSearch(String searchName) {
+        try {
+            return courseRepository.countingHomeSearch(searchName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }

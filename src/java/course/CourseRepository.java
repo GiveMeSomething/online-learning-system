@@ -1199,4 +1199,59 @@ public class CourseRepository extends Repository {
         }
         return "Khong get duoc ten khoa hoc vi bi mat session";
     }
+    
+    //search-from-home
+   public List<Course> searchHome(String searchName) throws SQLException {
+        this.connectDatabase();
+        String searchCourse = "SELECT * FROM db_ite1.course WHERE title LIKE ?";
+        List<Course> list = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(searchCourse)) {
+            statement.setString(1, "%" + searchName + "%");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(new Course(
+                        result.getInt("id"),
+                        result.getString("thumbnail"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        0,
+                        result.getString("tag")
+                ));
+            }
+            return list;
+        } finally {
+            this.disconnectDatabase();
+        }
+    }
+   
+   public int countingHomeSearch(String searchName) throws SQLException {
+        this.connectDatabase();
+        String sql = "SELECT COUNT(*) AS count FROM db_ite1.course "
+                + "where title LIKE ?";
+        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+            statement.setString(1, "%" + searchName + "%");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("count");
+            }
+
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
+    }
+   
+    public static void main(String[] args) throws Exception {
+        CourseRepository repo = new CourseRepository();
+        try {
+            List<Course> list = repo.searchHome("a");
+            int list1 = repo.countingHomeSearch("a");
+            System.out.println(list1);
+            for (Course o : list) {
+                System.out.println(o);
+            }
+        } catch (Exception e) {
+        }
+    }
+
 }

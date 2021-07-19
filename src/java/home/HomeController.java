@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import slider.SliderService;
 
 /**
@@ -62,6 +63,28 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+        String operation = request.getParameter("operation");
+        if (operation.equals("SEARCHCOURSE")) {
+            homeSearch(request, response);
+        }
     }
+
+    private void homeSearch(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String searchName = request.getParameter("searchCourse");
+        HttpSession ses = request.getSession();
+        ses.setAttribute("searchName", searchName);
+        String index = request.getParameter("index");
+
+        List<Course> list = courseService.searchHome(searchName);
+        int count = courseService.countingHomeSearch(searchName);
+        List<Category> categoryList = courseService.getAllCategory();
+
+        request.setAttribute("categoryList", categoryList);
+        request.setAttribute("course", list);
+        request.setAttribute("count", count);
+        request.getRequestDispatcher("homeSearch.jsp").forward(request, response);
+    }
+    
+    
 }

@@ -33,6 +33,14 @@
                     </a>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav d-flex align-items-center">
+                            <li class="nav-item">
+                                <form action="home?operation=SEARCHCOURSE&&searchName=${sessionScope.searchName}"
+                                      class="d-flex" method="post">
+                                    <input name="searchCourse" class="form-control py-2"
+                                           type="search" placeholder="Search courses"/>
+                                    <div class="invalid-feedback"></div>
+                                </form>
+                            </li>
                             <li class="nav-item dropdown nav-hover">
                                 <a class="nav-link dropdown-toggle active" role="button" id="navbarDropdownButton" data-toggle="dropdown">
                                     Categories
@@ -443,4 +451,5 @@
             crossorigin="anonymous">
     </script>
     <script type="text/javascript" src="${path}/utilities/home-suggested-course.js"></script>
+    <script type="text/javascript" src="${path}/utilities/form-validatior.js"></script>
 </html>
