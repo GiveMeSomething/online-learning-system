@@ -46,6 +46,18 @@
                            required>
                 </div>
                 <div class="form-group">
+                    <label for="title">
+                        Title
+                    </label>
+                    <input name="title"
+                           type="text"
+                           class="form-control"
+                           id="title"
+                           value="${sliderDetail.title}"
+                           data-value-missing="Can't be empty"
+                           required>
+                </div>
+                <div class="form-group">
                     <label for="image">
                         Image
                     </label>
@@ -60,19 +72,6 @@
                         <img style="width: 100%;height:350px"
                              src="${path}/assets/bannerImg/${image}"/> 
                     </div>
-
-                </div>
-                <div class="form-group">
-                    <label for="title">
-                        Title
-                    </label>
-                    <input name="title"
-                           type="text"
-                           class="form-control"
-                           id="title"
-                           value="${sliderDetail.title}"
-                           data-value-missing="Can't be empty"
-                           required>
                 </div>
                 <div class="form-group">
                     <label for="title">
@@ -100,16 +99,17 @@
                         Notes
                     </label>
                     <textarea name="notes"
-                           type="text"
-                           class="form-control"
-                           id="notes"
-                           value="${sliderDetail.note}"
-                           placeholder="${sliderDetail.note}"
-                           data-value-missing="Can't be empty"
-                           required>${sliderDetail.note}</textarea>
+                              type="text"
+                              class="form-control"
+                              id="notes"
+                              value="${sliderDetail.note}"
+                              placeholder="${sliderDetail.note}"
+                              data-value-missing="Can't be empty"
+                              required>${sliderDetail.note}</textarea>
                 </div>
                 <button style="background-color: #FF8C00;color:white"
                         type="submit" class="btn btn-warning">Update Slider</button> 
+               
             </form>
             <!--UPLOAD SLIDER IMAGE-->
             <div style="width: 85%;margin: 0 auto">
@@ -134,7 +134,7 @@
                     <button class="btn btn-success">Back</button>
                 </a>
             </div>
-            
+
         </div>
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -148,5 +148,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
             integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
             crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="${path}/ckeditor/ckeditor/ckeditor.js"></script>
+    <script>
+                CKEDITOR.replace('notes');
     </script>
 </html>
