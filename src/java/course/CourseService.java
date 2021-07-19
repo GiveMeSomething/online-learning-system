@@ -505,13 +505,5 @@ public class CourseService {
 
         return null;
     }
-    public int countingHomeSearch(String searchName) {
-        try {
-            return courseRepository.countingHomeSearch(searchName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
 
 }

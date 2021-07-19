@@ -320,12 +320,9 @@
         </div>
     </section>
     <div style="margin-left: 3rem">
-        <div style="margin-left: 3rem">
-            <b>${count}</b> subject(s) found.
-        </div>
         <section>
             <div class="mt-4 row" style="margin-left: -1rem">
-                <c:forEach items="${course}" var="o">
+                <c:forEach items="${requestScope.pageItems}" var="o">
                     <div class="col-5 mr-1" style="margin-left: 2.2rem">
                         <div style="width: 100rem; display: flex; margin-left: .8rem">
                             <div style=" margin-right: 10px;height: 45px; margin-bottom: 6.5rem">
@@ -353,7 +350,25 @@
                 </c:forEach>
             </div>
         </section>
+        <nav aria-label="Page navigation example" class="ml-5">
+        <c:set var="contentSize" value="${sessionScope.course.size()}" />
+        <c:set var="maxPage" value="${contentSize % 8 == 0 ? contentSize / 8: ((contentSize - contentSize % 8) / 8) + 1}" />
+        <c:set var="currentPage" value="${pageContext.request.getParameter('page')}" />
+        <c:set var="prevPage" value="${currentPage == null ? 1 : currentPage - 1}" />
+        <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>
+        <ul class="pagination">
+            <c:forEach begin="1" end="${maxPage}" varStatus="counter">
+                <li class="page-item">
+                    <a class="page-link"
+                       href="${path}/home?operation=PAGINATION&page=${counter.index}">
+                        ${counter.index}
+                    </a>
+                </li>
+            </c:forEach>
+        </ul>
+    </nav>
     </div>
+    
     <jsp:include page="/components/global/footer.jsp"/>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

@@ -34,7 +34,7 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav d-flex align-items-center">
                             <li class="nav-item">
-                                <form action="home?operation=SEARCHCOURSE&&searchName=${sessionScope.searchName}"
+                                <form action="${path}/home?operation=SEARCHCOURSE&&searchName=${sessionScope.searchName}"
                                       class="d-flex" method="post">
                                     <input name="searchCourse" class="form-control py-2"
                                            type="search" placeholder="Search courses"/>
