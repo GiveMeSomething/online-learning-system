@@ -435,6 +435,8 @@
                         <jsp:include page="/components/home/featuredCourse.jsp"/>
                     </div>
                 </div>
+            </div>
+
         </section>
         <jsp:include page="/components/global/footer.jsp"/>
     </body>
