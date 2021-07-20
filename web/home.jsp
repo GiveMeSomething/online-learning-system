@@ -295,7 +295,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -313,7 +312,6 @@
             </div>
         </c:if>
         <!--  Banner-->
-
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active banner-margin-top" >
@@ -324,12 +322,10 @@
                             <span class="text-light banner-secondary">Let’s build a more connected, inclusive and flexible future together.</span><br>
                         </div>
                     </div>
-
                     <img class="d-block w-100" style="background-color: #000000;
                          height: 70vh;
                          opacity: 0.5;
                          background-blend-mode: overlay;" src="https://www.wellnessretreatsindia.com/wp-content/uploads/2017/09/nature-banner-1.jpg" alt="">
-
                 </div>
                 <c:forEach items="${sliderList}" var="o">    
                     <div class="carousel-item banner-margin-top" >
@@ -346,10 +342,7 @@
                         <a href="${o.backlink}">
                             <img class="d-block w-100" style="height: 70vh" src="${path}/assets/bannerImg/${o.image}" alt="">
                         </a>
-
-
                     </div>
-
                 </c:forEach> 
             </div>
             <a class="carousel-control-prev banner-btn" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -435,8 +428,7 @@
                         <jsp:include page="/components/home/featuredCourse.jsp"/>
                     </div>
                 </div>
-            </div>
-                    
+            </div>                   
         </section>
         <jsp:include page="/components/global/footer.jsp"/>
     </body>
