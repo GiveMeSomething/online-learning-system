@@ -436,7 +436,7 @@
                     </div>
                 </div>
             </div>
-
+                    
         </section>
         <jsp:include page="/components/global/footer.jsp"/>
     </body>
