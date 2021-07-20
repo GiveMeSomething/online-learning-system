@@ -35,98 +35,65 @@
     </head>
     <body>
         <div id="colorlib-page">
-            <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
-            <aside id="colorlib-aside" role="complementary" class="js-fullheight">
-                <nav id="colorlib-main-menu" role="navigation">
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="fashion.html">Fashion</a></li>
-                        <li class="colorlib-active"><a href="travel.html">Travel</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </nav>
-                <div class="colorlib-footer">
-                    <h1 id="colorlib-logo" class="mb-4"><a href="index.html" style="background-image:url(images/xbg_1.jpg.pagespeed.ic.fkgeUtddhh.webp)">Andrea <span>Moore</span></a></h1>
-                    <div class="mb-4">
-                        <h3>Subscribe for newsletter</h3>
-                        <form action="#" class="colorlib-subscribe-form">
-                            <div class="form-group d-flex">
-                                <div class="icon"><span class="icon-paper-plane"></span></div>
-                                <input type="text" class="form-control" placeholder="Enter Email Address">
-                            </div>
-                        </form>
-                    </div>
-                    <p class="pfooter">
-                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                    </p>
-                </div>
-            </aside>
-            <div id="colorlib-main">
-                <section class="ftco-section ftco-no-pt ftco-no-pb">
-                    <div class="container">
-                        <div class="row d-flex">
-                            <div class="col-lg-8 px-md-5 py-5">
-                                <div class="row pt-md-4">
-                                    <h1 class="mb-3">${post.title}</h1>
-                                    
+            <jsp:include page="../../components/global/sideBarForDuyAnh.jsp"></jsp:include>
+                <div id="colorlib-main">
+                    <section class="ftco-section ftco-no-pt ftco-no-pb">
+                        <div class="container">
+                            <div class="row d-flex">
+                                <div class="col-lg-8 px-md-5 py-5">
+                                    <div class="row pt-md-4">
+                                        <h1 class="mb-3">${post.title}</h1>
+
                                     <div>${post.description}</div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 sidebar ftco-animate bg-light pt-5">
+                            <div class="col-xl-4 sidebar ftco-animate bg-light pt-5">
                                 <div class="sidebar-box pt-md-4">
-                                    <form action="#" class="search-form">
-                                        <div class="form-group">
-                                            <span class="icon icon-search"></span>
-                                            <input type="text" class="form-control" placeholder="Type a keyword and hit enter">
+                                    <form class="search-form" method="POST" action="${path}/blog">
+                                        <div class="request-info">
+                                            <input name="previousPage" value="blogList.jsp" hidden="true" />
+                                            <div class="invalid-feedback"></div>
+                                            <input name="operation" value="SearchByTitle" hidden="true" />
+                                            <div class="invalid-feedback"></div>
                                         </div>
+                                        <div class="form-group">
+                                            <input class="form-control" type="search" name="title" 
+                                                   value="${title}" placeholder="Search" aria-label="Search">
+                                        </div>
+                                        <button style="position: absolute; top: 90px; right:50px" class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                                            <span class="fas fa-search"></span>
+                                        </button>
                                     </form>
                                 </div>
                                 <div class="sidebar-box ftco-animate">
                                     <h3 class="sidebar-heading">Categories</h3>
                                     <ul class="categories">
-                                        <li><a href="#">Fashion <span>(6)</span></a></li>
-                                        <li><a href="#">Technology <span>(8)</span></a></li>
-                                        <li><a href="#">Travel <span>(2)</span></a></li>
-                                        <li><a href="#">Food <span>(2)</span></a></li>
-                                        <li><a href="#">Photography <span>(7)</span></a></li>
+                                        <li>
+                                            <a href="${path}/blog">All</a>
+                                        </li>
+                                        <c:forEach items="${hmCategory}" var="c">
+                                            <li>
+                                                <a href="${path}/blog?operation=VIEWBLOGCATEGORY&categoryId=${c.key}">${c.value}</a>
+                                            </li>
+                                        </c:forEach>
                                     </ul>
                                 </div>
                                 <div class="sidebar-box ftco-animate">
-                                    <h3 class="sidebar-heading">Popular Articles</h3>
-                                    <div class="block-21 mb-4 d-flex">
-                                        <a class="blog-img mr-4" style="background-image:url(images/ximage_1.jpg.pagespeed.ic.bP9m1ezc08.webp)"></a>
-                                        <div class="text">
-                                            <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control</a></h3>
-                                            <div class="meta">
-                                                <div><a href="#"><span class="icon-calendar"></span> June 28, 2019</a></div>
-                                                <div><a href="#"><span class="icon-person"></span> Dave Lewis</a></div>
-                                                <div><a href="#"><span class="icon-chat"></span> 19</a></div>
+                                    <h3 class="sidebar-heading">Latest Articles</h3>
+                                    <c:forEach items="${latest}" var="p">
+                                        <div class="block-21 mb-4 d-flex">
+                                            <a class="blog-img mr-4" href="${path}/blog?operation=VIEWBLOGDETAIL&id=${p.key}" 
+                                               style="background-image:url(${p.value.thumbnail}); border-radius: 20px"></a>
+                                            <div class="text">
+                                                <h3 class="heading"><a href="${path}/blog?operation=VIEWBLOGDETAIL&id=${p.key}">${p.value.title}</a></h3>
+                                                <div class="meta">
+                                                    <div><i class="far fa-calendar-alt mr-2"></i> ${p.value.updatedDate}</div>
+                                                    <div><i class="far fa-folder mr-2"></i> ${p.value.categoryName}</div>
+                                                    <div><i class="fas fa-user-edit mr-2"></i> ${p.value.authorId}</div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="block-21 mb-4 d-flex">
-                                        <a class="blog-img mr-4" style="background-image:url(images/ximage_2.jpg.pagespeed.ic.Bj2SSShAni.webp)"></a>
-                                        <div class="text">
-                                            <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control</a></h3>
-                                            <div class="meta">
-                                                <div><a href="#"><span class="icon-calendar"></span> June 28, 2019</a></div>
-                                                <div><a href="#"><span class="icon-person"></span> Dave Lewis</a></div>
-                                                <div><a href="#"><span class="icon-chat"></span> 19</a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="block-21 mb-4 d-flex">
-                                        <a class="blog-img mr-4" style="background-image:url(images/ximage_3.jpg.pagespeed.ic.GG-cYs-yp6.webp)"></a>
-                                        <div class="text">
-                                            <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control</a></h3>
-                                            <div class="meta">
-                                                <div><a href="#"><span class="icon-calendar"></span> June 28, 2019</a></div>
-                                                <div><a href="#"><span class="icon-person"></span> Dave Lewis</a></div>
-                                                <div><a href="#"><span class="icon-chat"></span> 19</a></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </c:forEach>
                                 </div>
                             </div>
                         </div>
@@ -170,7 +137,7 @@
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag() {
-            dataLayer.push(arguments);
+                dataLayer.push(arguments);
             }
             gtag('js', new Date());
             gtag('config', 'UA-23581568-13');

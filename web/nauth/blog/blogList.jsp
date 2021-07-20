@@ -35,130 +35,13 @@
     </head>
     <body>
         <div id="colorlib-page">
-            <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
-            <aside id="colorlib-aside" role="complementary" class="js-fullheight">
-                <nav id="colorlib-main-menu" 
-                     role="navigation"
-                     class="navbar navbar-expand-xl " 
-                     style="margin: auto;">
-                    <a class="navbar-brand" style="font-size: 2rem;" href="${path}/home">
-                        <span style="color:blue">O</span>
-                        <span style="color:orange">L</span>
-                        <span style="color:green">S</span>
-                    </a>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav flex-column d-flex align-items-center">
-                            <li class="nav-item">
-                                <form action="course?operation=SEARCHCOURSE&&index=${tag}&&cID=${sessionScope.categoryId}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
-                                      class="d-flex" method="post">
-                                    <input name="searchCourse" class="form-control py-2"
-                                           type="search" placeholder="Search courses"/>
-                                    <div class="invalid-feedback"></div>
-                                </form>
-                            </li>
-                            <li class="nav-item dropdown nav-hover">
-                                <a class="nav-link dropdown-toggle active" role="button" id="navbarDropdownButton" data-toggle="dropdown">
-                                    Categories
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownButton">
-                                    <c:forEach items="${requestScope.categoryList}" var="o">
-                                        <a class="dropdown-item"
-                                           href="${path}/course?cID=${o.id}">
-                                            ${o.categoryName}
-                                        </a>
-                                    </c:forEach>
-                                </div>
-                            </li>
-                            <li class="nav-item nav-hover">
-                                <a class="nav-link active" aria-current="page" href="${path}/blog">Blogs</a>
-                            </li>
-                            <c:if test="${sessionScope.isAdmin != true}">
-                                <c:choose>
-                                    <c:when test="${sessionScope.isTeacher == true}">
-                                        <li class="nav-hover nav-item">
-                                            <a href="${path}/auth/teacher/subject" class="nav-link" style="padding-top: 8px; padding-bottom: 8px">
-                                                Management
-                                            </a>
-                                        </li>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <li class="nav-hover nav-item">
-                                            <a href="${path}/auth/user/course" class="nav-link active" style="padding-top: 8px; padding-bottom: 8px">
-                                                Courses
-                                            </a>
-                                        </li>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:if>
-                            <li class="gap-3">
-                                <div style="margin-top: 4.5px; white-space: nowrap">
-                                    <c:choose>
-                                        <c:when test="${sessionScope.user == null}">
-                                            <button type="button" class="btn btn-outline-primary py-2 px-3 mx-2" data-toggle="modal" data-target="#login-modal">
-                                                Log in
-                                            </button>
-                                            <button type="button" class="btn btn-secondary py-2 px-3 mx-2" data-toggle="modal" data-target="#register-modal">
-                                                Register
-                                            </button>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div class="">
-                                                <a href="#" id="shopping-cart" style="border-radius: 25px; padding: 12px 12px;;color: lightslategray">
-                                                    <i class="fas fa-shopping-cart fa-lg"></i>
-                                                </a>
-                                                <ul id="setting-dropdown-ul" >
-                                                    <li id="setting-dropdown-li">
-                                                        <a href="#" style="border-radius: 25px; padding: 12px 12px; color: lightslategray" id="setting">
-                                                            <i class="fas fa-cog fa-lg"></i>
-                                                        </a>
-                                                        <ul id="setting-dropdown-sub-ul">
-
-                                                            <c:if test="${sessionScope.isAdmin != true }">
-                                                                <li id="li-top">
-                                                                    <a href="${path}/auth/user/UserCourse?operation=" style="padding-top: 5px; padding-bottom: 5px">
-                                                                        My Registrations
-                                                                    </a>
-                                                                </li>
-                                                                <li id="li-middle">
-                                                                    <a href="${path}/auth/user">Account setting</a>
-                                                                </li>
-                                                                <c:if test="${sessionScope.isAdmin != true && sessionScope.isTeacher == true}">
-                                                                    <li id="li-bottom">
-                                                                        <a href="${path}/auth/admin" style="padding-bottom: 5px">Management</a>
-                                                                    </li>
-                                                                </c:if>
-                                                            </c:if>
-                                                            <li id="li-middle">
-                                                                <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">Log out</a>
-                                                            </li>
-                                                            <c:if test="${sessionScope.isAdmin != true && sessionScope.isTeacher != true}">
-                                                                <li id="li-bottom">
-                                                                    <a href="${path}/auth/user/course?operation=VIEWMYCOURSE&userId=${user.getId()}" style="padding-bottom: 5px">My Course</a>
-                                                                </li>
-                                                            </c:if>
-                                                            <c:if test="${sessionScope.isAdmin == true}">
-                                                                <li id="li-bottom">
-                                                                    <a href="${path}/auth/admin" style="padding-bottom: 5px">Management</a>
-                                                                </li>
-                                                            </c:if>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </aside>
-            <div id="colorlib-main">
-                <section class="ftco-section ftco-no-pt ftco-no-pb">
-                    <div class="container">
-                        <div class="row d-flex">
-                            <div class="col-xl-8 py-5 px-md-5">
-                                <div class="row pt-md-4">
+            <jsp:include page="../../components/global/sideBarForDuyAnh.jsp"></jsp:include>
+                <div id="colorlib-main">
+                    <section class="ftco-section ftco-no-pt ftco-no-pb">
+                        <div class="container">
+                            <div class="row d-flex">
+                                <div class="col-xl-8 py-5 px-md-5">
+                                    <div class="row pt-md-4">
                                     <c:forEach items="${hmPost}" var="p">
                                         <div class="col-md-12">
                                             <div class="blog-entry ftco-animate d-md-flex">
@@ -169,7 +52,7 @@
                                                     <div class="meta-wrap">
                                                         <p class="meta">
                                                             <span><i class="far fa-calendar-alt mr-2"></i>${p.updatedDate}</span>
-                                                            <span><a href="#"><i class="far fa-folder mr-2"></i>${p.categoryId}</a></span>
+                                                            <span><a href="${path}/blog?operation=VIEWBLOGCATEGORY&categoryId=${p.categoryId}"><i class="far fa-folder mr-2"></i>${p.categoryName}</a></span>
                                                             <span><i class="fas fa-user-edit mr-2"></i>${p.authorId}</span>
                                                         </p>
                                                     </div>
@@ -193,7 +76,7 @@
                                                 <c:if test="${requestScope.categoryId != null}">
                                                     <li class="page-item ${curPage == 1?"disabled":""}">
                                                         <a  class="page-link"
-                                                            href="blog?curPage=${curPage - 1}&operation=postByCategory&cateId=${requestScope.categoryId}" 
+                                                            href="blog?curPage=${curPage - 1}&operation=VIEWBLOGCATEGORY&cateId=${requestScope.categoryId}" 
                                                             tabindex="-1">&lt;</a>
                                                     </li>
                                                 </c:if>
@@ -213,7 +96,7 @@
                                                     <c:if test="${requestScope.categoryId != null}">
                                                         <li class="page-item ${curPage == i?"active":""}">
                                                             <a 
-                                                                href="blog?curPage=${i}&operation=postByCategory&cateId=${requestScope.categoryId}">${i}</a>
+                                                                href="blog?curPage=${i}&operation=VIEWBLOGCATEGORY&cateId=${requestScope.categoryId}">${i}</a>
                                                         </li>
                                                     </c:if>
                                                     <c:if test="${requestScope.categoryId == null && title != null}">
@@ -230,7 +113,7 @@
                                                 </c:if>
                                                 <c:if test="${requestScope.categoryId != null}">        
                                                     <li class="page-item ${curPage == nOfPage?"disabled":""}">
-                                                        <a class="page-link" href="blog?curPage=${curPage + 1}&operation=postByCategory&cateId=${requestScope.categoryId}">&gt;</a>
+                                                        <a class="page-link" href="blog?curPage=${curPage + 1}&operation=VIEWBLOGCATEGORY&cateId=${requestScope.categoryId}">&gt;</a>
                                                     </li>
                                                 </c:if>
                                                 <c:if test="${requestScope.categoryId == null && title != null}">        
@@ -264,9 +147,14 @@
                                 <div class="sidebar-box ftco-animate">
                                     <h3 class="sidebar-heading">Categories</h3>
                                     <ul class="categories">
+                                        <li>
+                                            <a href="${path}/blog">All</a>
+                                        </li>
                                         <c:forEach items="${hmCategory}" var="c">
-                                            <li><a href="${path}/blog?operation=VIEWBLOGCATEGORY&categoryId=${c.key}">${c.value} <span>(6)</span></a></li>
-                                            </c:forEach>
+                                            <li>
+                                                <a href="${path}/blog?operation=VIEWBLOGCATEGORY&categoryId=${c.key}">${c.value}</a>
+                                            </li>
+                                        </c:forEach>
                                     </ul>
                                 </div>
                                 <div class="sidebar-box ftco-animate">
@@ -279,7 +167,7 @@
                                                 <h3 class="heading"><a href="${path}/blog?operation=VIEWBLOGDETAIL&id=${p.key}">${p.value.title}</a></h3>
                                                 <div class="meta">
                                                     <div><i class="far fa-calendar-alt mr-2"></i> ${p.value.updatedDate}</div>
-                                                    <div><i class="far fa-folder mr-2"></i> ${p.value.categoryId}</div>
+                                                    <div><i class="far fa-folder mr-2"></i> ${p.value.categoryName}</div>
                                                     <div><i class="fas fa-user-edit mr-2"></i> ${p.value.authorId}</div>
                                                 </div>
                                             </div>

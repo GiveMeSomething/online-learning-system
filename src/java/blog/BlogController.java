@@ -48,6 +48,9 @@ public class BlogController extends HttpServlet implements Controller {
                 case "VIEWBLOGDETAIL":
                     getBlogDetail(request, response);
                     break;
+                case "SearchByTitle":
+                    getBlogByTitle(request, response);
+                    break;
                 case "VIEWBLOGCATEGORY":
                     getBlogPaginationByCategory(request, response);
                     break;
