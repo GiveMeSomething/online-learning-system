@@ -39,22 +39,22 @@
                                 ${pageItem.get(0)}
                             </div>
                             <div class="col-12 <c:if test='${pageItem.get(5).equals(pageItem.get(1).trim())}'>${color}</c:if> <c:if test='${pageItem.get(6).equals(pageItem.get(1).trim())}'>bg-success</c:if>">
-                                A. ${pageItem.get(1)}
+                                A. ${pageItem.get(1)} <c:if test='${pageItem.get(5).equals(pageItem.get(1).trim())}'>(Your answer)</c:if>
+                                </div>
+                                <div class="col-12 <c:if test='${pageItem.get(5).equals(pageItem.get(2).trim())}'>${color}</c:if> <c:if test='${pageItem.get(6).equals(pageItem.get(2).trim())}'>bg-success</c:if>">
+                                B. ${pageItem.get(2)} <c:if test='${pageItem.get(5).equals(pageItem.get(2).trim())}'>(Your answer)</c:if>
+                                </div>
+                                <div class="col-12 <c:if test='${pageItem.get(5).equals(pageItem.get(3).trim())}'>${color}</c:if> <c:if test='${pageItem.get(6).equals(pageItem.get(3).trim())}'>bg-success</c:if>">
+                                C. ${pageItem.get(3)} <c:if test='${pageItem.get(5).equals(pageItem.get(3).trim())}'>(Your answer)</c:if>
+                                </div>
+                                <div class="col-12 <c:if test='${pageItem.get(5).equals(pageItem.get(4).trim())}'>${color}</c:if> <c:if test='${pageItem.get(6).equals(pageItem.get(4).trim())}'>bg-success</c:if>">
+                                D. ${pageItem.get(4)} <c:if test='${pageItem.get(5).equals(pageItem.get(4).trim())}'>(Your answer)</c:if>
+                                </div>
                             </div>
-                            <div class="col-12 <c:if test='${pageItem.get(5).equals(pageItem.get(2).trim())}'>${color}</c:if> <c:if test='${pageItem.get(6).equals(pageItem.get(2).trim())}'>bg-success</c:if>">
-                                B. ${pageItem.get(2)}
-                            </div>
-                            <div class="col-12 <c:if test='${pageItem.get(5).equals(pageItem.get(3).trim())}'>${color}</c:if> <c:if test='${pageItem.get(6).equals(pageItem.get(3).trim())}'>bg-success</c:if>">
-                                C. ${pageItem.get(3)}
-                            </div>
-                            <div class="col-12 <c:if test='${pageItem.get(5).equals(pageItem.get(4).trim())}'>${color}</c:if> <c:if test='${pageItem.get(6).equals(pageItem.get(4).trim())}'>bg-success</c:if>">
-                                D. ${pageItem.get(4)}
-                            </div>
-                        </div>
-                        <div class="mt-5">
-                            <div class="row my-2">
-                                <div class="col-12">
-                                    <b>Answer:</b> ${pageItem.get(6)}
+                            <div class="mt-5">
+                                <div class="row my-2">
+                                    <div class="col-12">
+                                        <b>Answer:</b> ${pageItem.get(6)}
                                 </div>
                                 <div class="col-12">
                                     <c:choose>

@@ -1,5 +1,7 @@
 package course;
 
+import auth.AuthService;
+import common.entities.Account;
 import common.entities.Course;
 import java.io.IOException;
 import java.util.List;
@@ -8,11 +10,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import common.entities.Category;
+import common.entities.Gender;
 import common.entities.PricePackage;
+import common.entities.Role;
+import common.entities.Status;
 import common.entities.User;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
+import user.UserService;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -27,10 +33,15 @@ import javax.servlet.http.HttpSession;
 public class CourseController extends HttpServlet {
 
     private CourseService courseService;
+    private AuthService authService;
+    private UserService userService;
 
     @Override
     public void init() throws ServletException {
         courseService = new CourseService();
+
+        authService = new AuthService();
+        userService = new UserService();
     }
 
     @Override
@@ -255,7 +266,8 @@ public class CourseController extends HttpServlet {
         HttpSession currentSession = request.getSession();
 
         if (currentSession.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/nauth/down.jsp");
+            // Process for non-user (register, send email then register course to account)
+            processInputForRegister(request, response);
         } else {
             User currentUser = (User) currentSession.getAttribute("user");
             int courseId = 1;
@@ -281,5 +293,60 @@ public class CourseController extends HttpServlet {
             }
         }
 
+    }
+
+    private void processInputForRegister(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String email = request.getParameter("email");
+        String name = request.getParameter("fullname");
+        String mobile = request.getParameter("mobile");
+        Gender gender = Gender.valueOf(request.getParameter("gender"));
+        int courseId;
+        int pricePackageId;
+
+        try {
+            courseId = Integer.parseInt(request.getParameter("courseId"));
+        } catch (Exception e) {
+            response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+            return;
+        }
+
+        try {
+            pricePackageId = Integer.parseInt(request.getParameter("pricepkg"));
+        } catch (Exception e) {
+            response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
+            return;
+        }
+
+        Account account = new Account(email, "abc123", Role.STUDENT);
+        User user = new User(name, gender, email, Status.INACTIVE, mobile);
+
+        processGuestCourseRegister(request, response, account, user, courseId, pricePackageId);
+    }
+
+    private void processGuestCourseRegister(HttpServletRequest request, HttpServletResponse response, Account account, User user, int courseId, int pricePackageId)
+            throws ServletException, IOException {
+        Account userAccount = authService.getAccount(account.getEmail());
+        if (userAccount != null) {
+            response.sendRedirect(request.getContextPath() + "/nauth/authenticate/register-failed.jsp");
+        } else {
+            String userToken = authService.register(account);
+            if (userToken == null) {
+                return;
+            }
+
+            boolean isUserAdded = userService.addUser(user);
+            if (!isUserAdded) {
+                return;
+            }
+
+            boolean isRegister = courseService.registerCourse(userService.getUser(account.getEmail()).getId(), courseId, pricePackageId);
+            if (!isRegister) {
+                response.sendRedirect(request.getContextPath() + "/nauth/down.jsp");
+            } else {
+                String createNewAccount = "/email?operation=CREATENEWACCOUNT&receiver=" + account.getEmail();
+                request.getRequestDispatcher(createNewAccount).forward(request, response);
+            }
+        }
     }
 }

@@ -101,17 +101,11 @@ public class AuthController extends HttpServlet implements Controller {
     private void processLogin(HttpServletRequest request, HttpServletResponse response, String email, String password)
             throws ServletException, IOException {
         // Get token from cookies
-        String cookieToken = getToken(request);
+        String cookieToken = getToken(request, email);
         String forwardTo = request.getParameter("previousPage");
 
         Account userAccount = new Account(email, password);
         String accountToken = authService.login(userAccount);
-
-        if (accountToken == null) {
-            System.out.println(forwardTo);
-            this.forwardErrorMessage(request, response, "Login failed", forwardTo);
-            return;
-        }
 
         // Check if the user enter the right account but there is no token in cookie
         if (cookieToken == null || !cookieToken.equals(accountToken)) {
@@ -147,7 +141,7 @@ public class AuthController extends HttpServlet implements Controller {
         // Add new account and user. Then set token to user's browser's cookie
         String userToken = addAccount(request, response, userAccount, user);
         if (userToken != null) {
-            addTokenToCookie(response, userToken);
+            addTokenToCookie(response, userToken, user.getEmail());
 
             // Forward to send confirm email (using email and userToken)
             String confirmEmailPath = "/email?operation=CONFIRM&receiver=" + userAccount.getEmail() + "&token=" + userToken;
@@ -214,9 +208,9 @@ public class AuthController extends HttpServlet implements Controller {
         }
     }
 
-    private void addTokenToCookie(HttpServletResponse response, String token) {
+    private void addTokenToCookie(HttpServletResponse response, String token, String email) {
         // Put userToken into cookie for later authorization
-        Cookie userCookie = new Cookie("ols-token", token);
+        Cookie userCookie = new Cookie("ols-token-" + email.hashCode(), token);
         response.addCookie(userCookie);
     }
 
@@ -232,11 +226,11 @@ public class AuthController extends HttpServlet implements Controller {
         }
     }
 
-    private String getToken(HttpServletRequest request) {
+    private String getToken(HttpServletRequest request, String email) {
         Cookie userCookies[] = request.getCookies();
 
         // Get required token from user browser cookie
-        String requiredCookieName = "ols-token";
+        String requiredCookieName = "ols-token-" + email.hashCode();
         for (Cookie cookie : userCookies) {
             if (cookie.getName().equals(requiredCookieName)) {
                 return cookie.getValue();
