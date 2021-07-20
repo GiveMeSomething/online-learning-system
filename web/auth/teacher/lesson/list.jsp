@@ -67,11 +67,14 @@
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
                 </form>
-                <a href="${path}/auth/teacher/lesson?operation=VIEW">
+                <a href="${path}/auth/teacher/lesson?operation=VIEW&subjectId=${subjectId}">
                     <button class="btn btn-primary mx-5 m-2">
                         ADD NEW LESSON
                     </button>
                 </a>
+                <span class="text-danger text-uppercase font-weight-bold mx-4 d-flex align-items-center">
+                    ${mess}
+                </span>
             </div>
             <div class="row my-5">
                 <table class="table">
@@ -112,7 +115,7 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </div>
-                                    <a href="${path}/auth/teacher/lesson?operation=VIEW&lessonId=${item.id}" class="mx-2">
+                                    <a href="${path}/auth/teacher/lesson?operation=VIEW&lessonId=${item.id}&subjectId=${item.courseId}" class="mx-2">
                                         <button class="btn btn-sm btn-primary px-3 py-2">
                                             View and Edit
                                         </button>

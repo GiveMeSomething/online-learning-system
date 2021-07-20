@@ -120,9 +120,9 @@ public class QuizService {
         return null;
     }
 
-    public ArrayList<String> getDimensionTypeForEdit(int dimId) {
+    public ArrayList<String> getDimensionTypeForEdit(int dimId, int lessonId) {
         try {
-            return quizRepository.getDimensionTypeForEdit(dimId);
+            return quizRepository.getDimensionTypeForEdit(dimId, lessonId);
         } catch (Exception e) {
             e.printStackTrace();
         }

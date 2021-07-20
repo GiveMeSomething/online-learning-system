@@ -119,11 +119,10 @@ public class UserController extends HttpServlet implements Controller {
             String gender = request.getParameter("gender");
             String address = request.getParameter("address");
             String email = request.getParameter("email");
-            String status = request.getParameter("status");
             String mobile = request.getParameter("mobile");
 
             User userUpdate = new User(id, image, fullName, Gender.valueOf(gender), email,
-                    address, Status.valueOf(status), mobile);
+                    address, mobile);
             boolean isUpdate = userService.updateUserProfile(userUpdate);
             
             if (isUpdate) {

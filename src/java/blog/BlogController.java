@@ -171,8 +171,8 @@ public class BlogController extends HttpServlet implements Controller {
         if (curPage == null) {
             curPage = 1 + "";
         }
-        doPagination(request, response, totalPosts, Integer.parseInt(curPage), 4);
-        ArrayList<Post> hmPost = blogService.getPostsList(Integer.parseInt(curPage), 4);
+        doPagination(request, response, totalPosts, Integer.parseInt(curPage), 5);
+        ArrayList<Post> hmPost = blogService.getPostsList(Integer.parseInt(curPage), 5);
 
         request.setAttribute("hmCategory", hmCategory);
         request.setAttribute("hmPost", hmPost);
@@ -226,8 +226,8 @@ public class BlogController extends HttpServlet implements Controller {
         }
         int currentPage = Integer.parseInt(page);
         int totalPosts = blogService.getTotalPostsByCategory(Integer.parseInt(categoryID));
-        doPagination(request, response, totalPosts, Integer.parseInt(page), 4);
-        ArrayList<Post> hmPost = blogService.getPostsByCategory(Integer.parseInt(categoryID), currentPage, 4);
+        doPagination(request, response, totalPosts, Integer.parseInt(page), 5);
+        ArrayList<Post> hmPost = blogService.getPostsByCategory(Integer.parseInt(categoryID), currentPage, 5);
 
         request.setAttribute("hmCategory", hmCategory);
         request.setAttribute("hmPost", hmPost);
@@ -251,8 +251,8 @@ public class BlogController extends HttpServlet implements Controller {
         }
         int currentPage = Integer.parseInt(page);
         int totalPosts = blogService.getTotalPostsByTitle(title);
-        doPagination(request, response, totalPosts, currentPage, 4);
-        ArrayList<Post> hmPost = blogService.getPostsByTitle(title, currentPage, 4);
+        doPagination(request, response, totalPosts, currentPage, 5);
+        ArrayList<Post> hmPost = blogService.getPostsByTitle(title, currentPage, 5);
 
         request.setAttribute("hmCategory", hmCategory);
         request.setAttribute("hmPost", hmPost);

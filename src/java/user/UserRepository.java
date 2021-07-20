@@ -120,7 +120,6 @@ public class UserRepository extends Repository {
                 + "full_name=?, "
                 + "gender=?, "
                 + "address=?, "
-                + "status_id=?, "
                 + "mobile=? "
                 + "WHERE id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
@@ -128,9 +127,8 @@ public class UserRepository extends Repository {
             statement.setString(2, userUpdate.getName());
             statement.setInt(3, Gender.valueOf(userUpdate.getGender()));
             statement.setString(4, userUpdate.getAddress());
-            statement.setInt(5, Status.valueOf(userUpdate.getStatus()));
-            statement.setString(6, userUpdate.getMobile());
-            statement.setInt(7, userUpdate.getId());
+            statement.setString(5, userUpdate.getMobile());
+            statement.setInt(6, userUpdate.getId());
 
             if (statement.executeUpdate() > 0) {
                 return true;

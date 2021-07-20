@@ -134,6 +134,9 @@ public class AuthController extends HttpServlet implements Controller {
                 // Student or Teacher
                 session.setAttribute("isAdmin", false);
                 session.setAttribute("isTeacher", true);
+            } else {
+                session.setAttribute("isAdmin", false);
+                session.setAttribute("isTeacher", false);
             }
             response.sendRedirect(forwardTo);
         }
@@ -166,7 +169,7 @@ public class AuthController extends HttpServlet implements Controller {
             }
         }
         if (isChanged) {
-            response.sendRedirect("user");
+            this.forwardErrorMessage(request, response, "Change password successfully", forwardTo);
         } else {
             this.forwardErrorMessage(request, response, "Can't change password. Please check again later", forwardTo);
         }
