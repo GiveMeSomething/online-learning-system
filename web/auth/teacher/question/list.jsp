@@ -134,6 +134,8 @@
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
                 </form> 
+                <jsp:include page="/auth/teacher/question/ImportQuestion.jsp"/>
+
             </div>
             <div id="question-table">
 
@@ -217,7 +219,6 @@
                             Next
                         </a>
                     </li>
-                    <jsp:include page="/auth/teacher/question/ImportQuestion.jsp"/>
                 </ul>
             </nav>
             <div>

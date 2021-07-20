@@ -599,6 +599,9 @@ public class QuizRepository extends Repository {
     public ArrayList<ArrayList<String>> getQuizReview(int quizId, int userId) throws SQLException {
         this.connectDatabase();
 
+        System.out.println(quizId + ": quizId in QuizRepo");
+        System.out.println(userId + ": userId in QuizRepo");
+
         String sql = "select qb.content, "
                 + "       qb.option1, "
                 + "       qb.option2, "
@@ -616,12 +619,14 @@ public class QuizRepository extends Repository {
                 + "  and uq.attempt = ( "
                 + "    SELECT MAX(attempt) "
                 + "    from user_quiz uq2 "
-                + "    where uq2.quiz_id = uq.quiz_id "
+                + "    where uq2.quiz_id = ? and uq2.user_id = ? "
                 + "    group by uq2.quiz_id)";
 
         try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
             statement.setInt(1, quizId);
             statement.setInt(2, userId);
+            statement.setInt(3, quizId);
+            statement.setInt(4, userId);
 
             ArrayList<ArrayList<String>> questionList = new ArrayList<>();
             ResultSet result = statement.executeQuery();
@@ -717,6 +722,26 @@ public class QuizRepository extends Repository {
         } finally {
             this.disconnectDatabase();
         }
+    }
+
+    public String getDuration(String quizId) throws SQLException {
+        this.connectDatabase();
+        String checkQuestionQuiz = "SELECT \n"
+                + "    duration\n"
+                + "FROM\n"
+                + "    db_ite1.quiz\n"
+                + "WHERE\n"
+                + "    id = ?;";
+        try (PreparedStatement statement = this.connection.prepareStatement(checkQuestionQuiz)) {
+            statement.setString(1, quizId);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                return result.getString(1);
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return "Chua get duoc duration";
     }
 
     public String getMark(String userId, String quizId) throws SQLException {

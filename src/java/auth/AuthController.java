@@ -134,6 +134,9 @@ public class AuthController extends HttpServlet implements Controller {
                 // Student or Teacher
                 session.setAttribute("isAdmin", false);
                 session.setAttribute("isTeacher", true);
+            } else {
+                session.setAttribute("isAdmin", false);
+                session.setAttribute("isTeacher", false);
             }
             response.sendRedirect(forwardTo);
         }

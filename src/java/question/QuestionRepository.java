@@ -347,10 +347,11 @@ public class QuestionRepository extends Repository {
     }
 
     public boolean addQuestion(int status, String content, String media, String explaination, String answer, String option1,
-            String option2, String option3, String option4) throws SQLException {
+            String option2, String option3, String option4, String option5, int level_id, int course_id, int lesson_id) throws SQLException {
         this.connectDatabase();
-        String query = "INSERT INTO `db_ite1`.`questions_bank` (`status_id`, `content`, `media`, `explaination`, `answer`, `option1`, `option2`, `option3`, `option4`) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO `db_ite1`.`questions_bank` (`status_id`, `content`, `media`, `explaination`, "
+                + "`answer`, `option1`, `option2`, `option3`, `option4`, `option5`, `level_id`, `course_id`, `lesson_id`) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)";
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             statement.setInt(1, status);
             statement.setString(2, content);
@@ -361,6 +362,10 @@ public class QuestionRepository extends Repository {
             statement.setString(7, option2);
             statement.setString(8, option3);
             statement.setString(9, option4);
+            statement.setString(10, option5);
+            statement.setInt(11, level_id);
+            statement.setInt(12, course_id);
+            statement.setInt(13, lesson_id);
             if (statement.executeUpdate() > 0) {
                 return true;
             }
