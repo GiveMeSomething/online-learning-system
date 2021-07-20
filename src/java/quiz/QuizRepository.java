@@ -211,8 +211,8 @@ public class QuizRepository extends Repository {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 Lesson lesson = new Lesson();
-                lesson.setId(result.getInt("id"));
                 lesson.setName(result.getString("name"));
+                lesson.setId(result.getInt("id"));
                 getTopic.add(lesson);
             }
             return getTopic;
@@ -286,23 +286,36 @@ public class QuizRepository extends Repository {
         }
     }
 
-    public ArrayList<String> getDimensionTypeForEdit(int dimensionId) throws SQLException {
+    public ArrayList<String> getDimensionTypeForEdit(int dimensionId, int lessonId) throws SQLException {
         this.connectDatabase();
 
-        String questionByLesson = "select distinct d.name, dt.dimension_type_name from quiz_dimension_lesson  "
-                + "	join dimension d on quiz_dimension_lesson.dimension_id = d.id "
-                + "    join dimension_type dt on dt.id = d.type_id "
-                + "    where dimension_id = ?";
-        ArrayList<String> dimensionInfo = new ArrayList<>();
+        String sql1;
+        String sql2;
+        String sql3;
+        int type;
+        if (lessonId == 0) {
+            sql1 = "distinct d.name, dt.dimension_type_name as id";
+            sql2 = "dimension d ON quiz_dimension_lesson.dimension_id = d.id JOIN dimension_type dt ON dt.id = d.type_id";
+            sql3 = "dimension_id";
+            type = dimensionId;
+        } else {
+            sql1 = "distinct l.lesson_name as name, l.id";
+            sql2 = "lesson l ON quiz_dimension_lesson.lesson_id = l.id";
+            sql3 = "lesson_id";
+            type = lessonId;
+        }
+        String questionByLesson = "SELECT " + sql1 + " FROM quiz_dimension_lesson "
+                + "JOIN " + sql2 + " WHERE " + sql3 + " = ?";
+        ArrayList<String> info = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(questionByLesson)) {
-            statement.setInt(1, dimensionId);
+            statement.setInt(1, type);
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                dimensionInfo.add(result.getString("name"));
-                dimensionInfo.add(result.getString("dimension_type_name"));
+                info.add(result.getString("name"));
+                info.add(result.getString("id"));
             }
-            return dimensionInfo;
+            return info;
         } finally {
             this.disconnectDatabase();
         }

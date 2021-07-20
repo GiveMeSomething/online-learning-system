@@ -72,15 +72,28 @@ public class BlogRepository extends Repository {
     public HashMap<String, Post> getLatestPost() throws SQLException {
         this.connectDatabase();
 
-        String getLatestPosts = "SELECT * FROM post WHERE status_id = 1 ORDER BY updated_date desc LIMIT 3";
+        String getLatestPosts = "SELECT post.id, thumbnail, category_id, category_name, title, brief_info, description, \n"
+                + "	feature, post.status_id, full_name as name, DATE(updated_date) as updated_date \n"
+                + "	FROM post \n"
+                + "    JOIN category on post.category_id = category.id\n"
+                + "    JOIN user on user.id = post.author_id\n"
+                + "    WHERE post.status_id = 1 ORDER BY updated_date desc LIMIT 3";
         try (PreparedStatement statement = this.connection.prepareStatement(getLatestPosts)) {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                hmLatestPost.put(result.getString(1), new Post(result.getString("id"), result.getString("thumbnail"),
-                        result.getString("category_id"), result.getString("title"),
-                        result.getString("brief_info"), result.getString("description"),
-                        result.getString("feature"), result.getString("status_id"),
-                        result.getString("author_id"), result.getString("updated_date")));
+                Post post = new Post();
+                post.setPostId(result.getString("id"));
+                post.setThumbnail(result.getString("thumbnail"));
+                post.setCategoryId(result.getString("category_id"));
+                post.setCategoryName(result.getString("category_name"));
+                post.setTitle(result.getString("title"));
+                post.setBriefInfo(result.getString("brief_info"));
+                post.setDescription(result.getString("description"));
+                post.setFeature(result.getString("feature"));
+                post.setStatusId(result.getString("status_id"));
+                post.setAuthorId(result.getString("name"));
+                post.setUpdatedDate(result.getString("updated_date"));
+                hmLatestPost.put(result.getString(1), post);
             }
 
             return hmLatestPost;
@@ -151,23 +164,30 @@ public class BlogRepository extends Repository {
         this.connectDatabase();
 
         ArrayList<Post> posts = new ArrayList<>();
-        String getPostsList = "SELECT post.id, thumbnail, category_name as category, "
-                + "title, brief_info, description, feature, post.status_id, full_name as author_id, "
-                + "DATE(updated_date) as updated_date "
-                + "FROM post "
-                + "JOIN category ON category.id = post.category_id "
-                + "JOIN user ON post.author_id = user.id "
-                + "WHERE post.status_id = 1 LIMIT ?,?";
+        String getPostsList = "SELECT post.id, thumbnail, category_id, category_name, title, brief_info, description, \n"
+                + "	feature, post.status_id, full_name as name, DATE(updated_date) as updated_date \n"
+                + "	FROM post \n"
+                + "    JOIN category on post.category_id = category.id\n"
+                + "    JOIN user on user.id = post.author_id\n"
+                + "    WHERE post.status_id = 1 LIMIT ?,?";
         try (PreparedStatement statement = this.connection.prepareStatement(getPostsList)) {
             statement.setInt(1, (currentPage * postsPerPage) - postsPerPage);
             statement.setInt(2, postsPerPage);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                posts.add(new Post(result.getString("id"), result.getString("thumbnail"),
-                        result.getString("category"), result.getString("title"),
-                        result.getString("brief_info"), result.getString("description"),
-                        result.getString("feature"), result.getString("status_id"),
-                        result.getString("author_id"), result.getString("updated_date")));
+                Post post = new Post();
+                post.setPostId(result.getString("id"));
+                post.setThumbnail(result.getString("thumbnail"));
+                post.setCategoryId(result.getString("category_id"));
+                post.setCategoryName(result.getString("category_name"));
+                post.setTitle(result.getString("title"));
+                post.setBriefInfo(result.getString("brief_info"));
+                post.setDescription(result.getString("description"));
+                post.setFeature(result.getString("feature"));
+                post.setStatusId(result.getString("status_id"));
+                post.setAuthorId(result.getString("name"));
+                post.setUpdatedDate(result.getString("updated_date"));
+                posts.add(post);
             }
             return posts;
         } finally {
@@ -215,7 +235,12 @@ public class BlogRepository extends Repository {
         this.connectDatabase();
 
         ArrayList<Post> posts = new ArrayList<>();
-        String getPostsList = "SELECT * FROM post WHERE category_id = ? and status_id = 1 LIMIT ?,?";
+        String getPostsList = "SELECT post.id, thumbnail, category_id, category_name, title, brief_info, description, \n"
+                + "	feature, post.status_id, full_name as name, DATE(updated_date) as updated_date \n"
+                + "	FROM post \n"
+                + "    JOIN category on post.category_id = category.id\n"
+                + "    JOIN user on user.id = post.author_id\n"
+                + "    WHERE category_id = ? and post.status_id = 1 LIMIT ?,?";
         try (PreparedStatement statement = this.connection.prepareStatement(getPostsList)) {
             statement.setInt(1, cateId);
             statement.setInt(2, (currentPage * postsPerPage) - postsPerPage);
@@ -223,11 +248,19 @@ public class BlogRepository extends Repository {
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                posts.add(new Post(result.getString("id"), result.getString("thumbnail"),
-                        result.getString("category_id"), result.getString("title"),
-                        result.getString("brief_info"), result.getString("description"),
-                        result.getString("feature"), result.getString("status_id"),
-                        result.getString("author_id"), result.getString("updated_date")));
+                Post post = new Post();
+                post.setPostId(result.getString("id"));
+                post.setThumbnail(result.getString("thumbnail"));
+                post.setCategoryId(result.getString("category_id"));
+                post.setCategoryName(result.getString("category_name"));
+                post.setTitle(result.getString("title"));
+                post.setBriefInfo(result.getString("brief_info"));
+                post.setDescription(result.getString("description"));
+                post.setFeature(result.getString("feature"));
+                post.setStatusId(result.getString("status_id"));
+                post.setAuthorId(result.getString("name"));
+                post.setUpdatedDate(result.getString("updated_date"));
+                posts.add(post);
             }
 
             return posts;
@@ -241,7 +274,12 @@ public class BlogRepository extends Repository {
         this.connectDatabase();
 
         ArrayList<Post> posts = new ArrayList<>();
-        String getPostsList = "SELECT * FROM post WHERE title LIKE ? and status_id = 1 LIMIT ?,?";
+        String getPostsList = "SELECT post.id, thumbnail, category_id, category_name, title, brief_info, description, \n"
+                + "	feature, post.status_id, full_name as name, DATE(updated_date) as updated_date \n"
+                + "	FROM post \n"
+                + "    JOIN category on post.category_id = category.id\n"
+                + "    JOIN user on user.id = post.author_id\n"
+                + "    WHERE title LIKE ? and post.status_id = 1 LIMIT ?,?";
         try (PreparedStatement statement = this.connection.prepareStatement(getPostsList)) {
             statement.setString(1, "%" + title + "%");
             statement.setInt(2, (currentPage * postsPerPage) - postsPerPage);
@@ -249,13 +287,20 @@ public class BlogRepository extends Repository {
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                posts.add(new Post(result.getString("id"), result.getString("thumbnail"),
-                        result.getString("category_id"), result.getString("title"),
-                        result.getString("brief_info"), result.getString("description"),
-                        result.getString("feature"), result.getString("status_id"),
-                        result.getString("author_id"), result.getString("updated_date")));
+                Post post = new Post();
+                post.setPostId(result.getString("id"));
+                post.setThumbnail(result.getString("thumbnail"));
+                post.setCategoryId(result.getString("category_id"));
+                post.setCategoryName(result.getString("category_name"));
+                post.setTitle(result.getString("title"));
+                post.setBriefInfo(result.getString("brief_info"));
+                post.setDescription(result.getString("description"));
+                post.setFeature(result.getString("feature"));
+                post.setStatusId(result.getString("status_id"));
+                post.setAuthorId(result.getString("name"));
+                post.setUpdatedDate(result.getString("updated_date"));
+                posts.add(post);
             }
-
             return posts;
         } finally {
             this.disconnectDatabase();
@@ -437,6 +482,6 @@ public class BlogRepository extends Repository {
     // Test
     public static void main(String[] args) throws Exception {
         BlogRepository br = new BlogRepository();
-        br.hackSystem();
+        System.out.println(br.getPostsByTitle("t", 1, 1));
     }
 }

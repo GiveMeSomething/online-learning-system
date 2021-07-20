@@ -163,7 +163,7 @@ public class AuthController extends HttpServlet implements Controller {
             }
         }
         if (isChanged) {
-            response.sendRedirect("user");
+            this.forwardErrorMessage(request, response, "Change password successfully", forwardTo);
         } else {
             this.forwardErrorMessage(request, response, "Can't change password. Please check again later", forwardTo);
         }
