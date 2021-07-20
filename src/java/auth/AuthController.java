@@ -107,6 +107,11 @@ public class AuthController extends HttpServlet implements Controller {
         Account userAccount = new Account(email, password);
         String accountToken = authService.login(userAccount);
 
+        if (accountToken == null || accountToken.equals("")) {
+            response.sendRedirect(request.getContextPath() + "/" + forwardTo);
+            return;
+        }
+
         // Check if the user enter the right account but there is no token in cookie
         if (cookieToken == null || !cookieToken.equals(accountToken)) {
             String confirmEmailPath = "/email?operation=AUTH&receiver=" + email;

@@ -46,7 +46,6 @@ public class AuthRepository extends Repository {
                     return token;
                 }
             }
-
             return null;
         } finally {
             this.disconnectDatabase();
@@ -180,7 +179,7 @@ public class AuthRepository extends Repository {
         }
     }
 
-    // acc đang get thiếu cái role_id, mà giờ return ra cái account đang thiếu cái role_id, nhưng mà 
+    // acc đang get thiếu cái role_id, mà giờ return ra cái account đang thiếu cái role_id, nhưng mà
     // role id là int, còn contructor truyền vào là 1 cái Role(object) nên chưa biết get kiểu gì, t chưa bao giờ dùng ENUM kiểu này
     public Account getAccount(String userEmail) throws SQLException {
         this.connectDatabase();
@@ -206,7 +205,7 @@ public class AuthRepository extends Repository {
         }
     }
 
-       public int getRoleIdOK(String email) throws SQLException {
+    public int getRoleIdOK(String email) throws SQLException {
         this.connectDatabase();
         String getRoleId = "SELECT role_id FROM db_ite1.account where user_email = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(getRoleId)) {
