@@ -28,6 +28,7 @@
                 <div class="form-row">
                     <div class="mb-3 col-md-5">
                         <input hidden="true" value="${lesson.id}" name="lessonId"/>
+                        <input hidden="true" value="${subjectId}" name="subjectId"/>
                         <label for="lesson-name">Lesson Name</label>
                         <input class="form-control" name="lesson-name" value="${lesson.name}" type="text" id="lesson-name"
                                placeholder="Enter Lesson Name" data-value-missing="Can't be empty" required />
@@ -45,8 +46,8 @@
                     <div class="mb-3 col-md-5">
                         <label for="courses">Topic</label>
                         <select class="custom-select" name="course" id="courses" required>
-                            <c:forEach items="${course}" var="c">
-                                <option value="${c.key}" ${lesson.courseId == c.key ? "selected":""}>${c.value}</option>
+                            <c:forEach items="${courses}" var="c">
+                                <option value="${c.key}" ${course.id == c.key ? "selected":""}>${c.value}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -75,8 +76,8 @@
                                        class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label for="html-content">HTML content</label>
-                                <textarea class="form-control" id="html-content" name="html-content" required>${lesson.htmlContent}</textarea>
+                                <label for="html-content">Content</label>
+                                <textarea class="form-control ckeditor" id="html-content" name="html-content" required>${lesson.htmlContent}</textarea>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
@@ -92,8 +93,8 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="html-content">HTML content</label>
-                                <textarea class="form-control" id="html-content" name="html-quiz" required>${lesson.htmlContent}</textarea>
+                                <label for="html-content">Content</label>
+                                <textarea class="form-control ckeditor" id="html-content" name="html-quiz" required>${lesson.htmlContent}</textarea>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
@@ -110,8 +111,8 @@
                                class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label for="html-content">HTML content</label>
-                        <textarea class="form-control" id="html-content" name="html-content" required>${lesson.htmlContent}</textarea>
+                        <label for="html-content">Content</label>
+                        <textarea class="form-control ckeditor" id="html-content" name="html-content" required>${lesson.htmlContent}</textarea>
                         <div class="invalid-feedback"></div>
                     </div>
                 </div>
@@ -125,15 +126,15 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="html-content">HTML content</label>
-                        <textarea class="form-control" id="html-content" name="html-quiz" required>${lesson.htmlContent}</textarea>
+                        <label for="html-content">Content</label>
+                        <textarea class="form-control ckeditor" id="html-content" name="html-quiz" required>${lesson.htmlContent}</textarea>
                         <div class="invalid-feedback"></div>
                     </div>
                 </div>
                 <div class="form-row">
                     <button class="btn btn-primary col-md-1" type="submit">Submit</button>
                     <div class="col-md-10"></div>
-                    <a role="button" class="btn btn-secondary col-md-1 ">Cancel</a>
+                    <a role="button" href="${path}/auth/teacher/lesson?subjectId=${subjectId}" class="btn btn-secondary col-md-1 ">Cancel</a>
                 </div>
             </form>
         </div>
@@ -172,5 +173,9 @@
                 integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
         crossorigin="anonymous"></script>
         <script src="${path}/utilities/form-validator.js"></script>
+        <script type="text/javascript" src="${path}/ckeditor/ckeditor/ckeditor.js"></script>
+        <script>
+            CKEDITOR.replace('html-content');            
+        </script>
     </body>
 </html>

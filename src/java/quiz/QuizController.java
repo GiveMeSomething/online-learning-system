@@ -100,14 +100,13 @@ public class QuizController extends HttpServlet implements Controller {
         } else {
             switch (operation) {
                 case "ADDQUIZSETTING":
-                    quizId = request.getParameter("quizId");
-                    if (quizId == null || quizId.equalsIgnoreCase("")) {
+                    int type = Integer.parseInt(request.getParameter("type-control"));
+                    if (type == 0) {
                         HttpSession session = request.getSession();
                         System.out.println("vao add quiz setting");
                         Quiz quiz = (Quiz) session.getAttribute("quiz");
                         addQuizSetting(request, response, quiz);
                     } else {
-                        System.out.println("get in here");
                         updateQuizSetting(request, response);
                     }
                     break;
@@ -371,7 +370,7 @@ public class QuizController extends HttpServlet implements Controller {
         int selectedQuestion = 0;
 
         try {
-            quizId = Integer.parseInt(request.getParameter("userQuizId"));
+            quizId = Integer.parseInt(request.getParameter("quizId"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -555,6 +554,8 @@ public class QuizController extends HttpServlet implements Controller {
         HttpSession session = request.getSession();
         String forwardTo = "/auth/teacher/quiz";
         String typeInString = request.getParameter("type");
+        int quizId = Integer.parseInt(request.getParameter("quizId"));
+        Quiz newQuiz = quizService.getQuiz(quizId);
         int type;
         if (typeInString.equalsIgnoreCase("Group")) {
             type = 2;
@@ -571,17 +572,18 @@ public class QuizController extends HttpServlet implements Controller {
         if (type == 0) {
             String[] lessonId = request.getParameterValues("dimension-name");
             for (int i = 0; i < numberOfQues.length; i++) {
-                quizService.addNewQuizSetting(quiz, 0, Integer.parseInt(lessonId[i]), Integer.parseInt(numberOfQues[i]));
+                quizService.addNewQuizSetting(newQuiz, 0, Integer.parseInt(lessonId[i]), Integer.parseInt(numberOfQues[i]));
             }
         } else {
             String[] dimensionId = request.getParameterValues("dimension-name");
             for (int i = 0; i < numberOfQues.length; i++) {
                 if (numberOfQues[i] != null) {
-                    quizService.addNewQuizSetting(quiz, Integer.parseInt(dimensionId[i]), 0, Integer.parseInt(numberOfQues[i]));
+                    quizService.addNewQuizSetting(newQuiz, Integer.parseInt(dimensionId[i]), 0, Integer.parseInt(numberOfQues[i]));
                 }
             }
         }
         session.removeAttribute("quiz");
+        viewQuiz(request, response, quiz, "Add quiz Successfully");
     }
 
     public void updateQuizOverview(HttpServletRequest request, HttpServletResponse response)
@@ -664,12 +666,14 @@ public class QuizController extends HttpServlet implements Controller {
     public void viewQuiz(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
             throws ServletException, IOException {
         HashMap<Integer, Integer> questionPerDim = new HashMap<>();
+        int type = Integer.parseInt(request.getParameter("type"));
         HashMap<Integer, String> getHmCourse = courseService.getCourses();
         int countQuestion = quizService.countQuestion(quiz);
         int courseId = Integer.parseInt(request.getParameter("subjectId"));
         request.setAttribute("course", getHmCourse);
         request.setAttribute("courseId", courseId);
         request.setAttribute("quiz", quiz);
+        request.setAttribute("type", type);
         request.setAttribute("questionPerDimension", questionPerDim);
         request.setAttribute("questionNumber", countQuestion);
         request.getRequestDispatcher("/auth/teacher/quiz/detail.jsp").forward(request, response);
@@ -706,33 +710,20 @@ public class QuizController extends HttpServlet implements Controller {
 
     public void getDimensionByTypeForQuiz(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
             throws ServletException, IOException {
+        int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+        System.out.println(subjectId + " subjectId in dimension");
         HashMap<Integer, ArrayList<Integer>> dimension = quizService.getDataForQuestion(quiz.getId());
         HashMap<ArrayList<Integer>, ArrayList<String>> info = new HashMap<>();
         ArrayList<String> newInfo;
         Gson json = new Gson();
         for (Integer key : dimension.keySet()) {
-            if (dimension.get(key).get(0) == 0) {
-                newInfo = quizService.getDimensionTypeForEdit(dimension.get(key).get(1));
-                newInfo.add(dimension.get(key).get(2) + "");
-                info.put(dimension.get(key), newInfo);
-            } else {
-                newInfo = quizService.getDimensionTypeForEdit(dimension.get(key).get(0));
-                newInfo.add(dimension.get(key).get(2) + "");
-                info.put(dimension.get(key), newInfo);
-            }
+            newInfo = quizService.getDimensionTypeForEdit(dimension.get(key).get(0), dimension.get(key).get(1));
+            newInfo.add(dimension.get(key).get(2) + "");
+            System.out.println(newInfo);
+            info.put(dimension.get(key), newInfo);
         }
         String group = json.toJson(info);
         response.setContentType("text/html");
         response.getWriter().write(group);
     }
-
-//    public void getDimensionNameForQuiz(HttpServletRequest request, HttpServletResponse response, Quiz quiz)
-//            throws ServletException, IOException {
-//        ArrayList<Dimension> dimension = quizService.getDimensionTypeForEdit(quiz);
-//        System.out.println(dimension);
-//        Gson json = new Gson();
-//        String group = json.toJson(dimension);
-//        response.setContentType("text/html");
-//        response.getWriter().write(group);
-//    }
 }

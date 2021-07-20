@@ -116,7 +116,7 @@
                     </div>
                     <div class="add-lesson">
                         <a role="button" class="btn btn-success px-3 py-2"
-                           href="${path}/auth/user/user_quiz?operation=VIEW&subjectId=${requestScope.subjectId}">
+                           href="${path}/auth/user/user_quiz?operation=VIEW&subjectId=${requestScope.subjectId}&type=0">
                             Add New Quiz
                         </a>
                     </div>
@@ -149,7 +149,7 @@
                                 <td>${item.passRate}</td>
                                 <td>${item.quizType}</td>
                                 <td>
-                                    <a href="${path}/auth/user/user_quiz?operation=VIEW&quizId=${item.id}&subjectId=${subjectId}"
+                                    <a href="${path}/auth/user/user_quiz?operation=VIEW&quizId=${item.id}&subjectId=${subjectId}&type=1"
                                        class="d-flex align-items-center justify-content-center">
                                         <button class="btn btn-primary">
                                             View and Edit
