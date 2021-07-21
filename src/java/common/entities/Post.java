@@ -14,6 +14,7 @@ public class Post {
     private String postId;
     private String thumbnail;
     private String categoryId;
+    private String categoryName;
     private String title;
     private String briefInfo;
     private String description;
@@ -47,6 +48,14 @@ public class Post {
         this.statusId = statusId;
         this.authorId = authorId;
         this.updatedDate = updatedDate;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getAuthorId() {
@@ -131,7 +140,9 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{" + "postId=" + postId + ", thumbnail=" + thumbnail + ", categoryId=" + categoryId + ", title=" + title + ", briefInfo=" + briefInfo + ", description=" + description + ", feature=" + feature + ", statusId=" + statusId + ", authorId=" + authorId + ", updatedDate=" + updatedDate + '}';
+        return "Post{" + "postId=" + postId + ", thumbnail=" + thumbnail + ", categoryId=" + categoryId + ", categoryName=" + categoryName + ", title=" + title + ", briefInfo=" + briefInfo + ", description=" + description + ", feature=" + feature + ", statusId=" + statusId + ", authorId=" + authorId + ", updatedDate=" + updatedDate + '}';
     }
+
+    
 
 }

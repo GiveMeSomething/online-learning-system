@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Success</title>
+        <title>404 LOL</title>
         <!--        Bootstrap-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
               integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
@@ -24,8 +24,9 @@
     </head>
     <body>
         <div class="d-flex flex-column w-100 align-items-center justify-content-center" style="height: 100vh">
-            <h3>Register successful</h3>
-            <h4> Click <a href="${path}/home"> here </a> to return to Homepage and login
+            <h1>403 Forbidden</h1>
+            <h3>You are do not have the credentials to access this page</h3>
+            <h4>Click <a href="${path}/home"> here </a> to return to Homepage</h4>
         </div>
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

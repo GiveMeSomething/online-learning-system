@@ -22,88 +22,74 @@
               crossorigin="anonymous">
         <link rel="stylesheet" href="${path}/style/styles.css">
     </head>
-    <body>
+    <body style="font-size: 20px">
         <c:set var="pageItem" value="${requestScope.pageItem}" />
         <c:set var="currentQuestion" value="${requestScope.questionNum == null ? 1: requestScope.questionNum + 1}" />
         <c:set var="result" value="${pageItem.get(7).equals('1')}" />
-        <c:set var="color" value="${result == true ? 'bg-success': 'bg-danger'}" />
+        <c:set var="color" value="${result == true ? 'bg-success text-white': 'bg-danger text-white'}" />
         <jsp:include page="../../../components/global/navbar.jsp" />
         <div class="container my-5">
             <h2 class="my-3">Question Review</h2>
             <div class="row">
                 <div class="col-8">
                     <h3>Question no.${currentQuestion}</h3>
-                    <h3>
-                        ${pageItem.get(0)}
-                    </h3>
                     <div class="mt-5">
                         <div class="row my-2">
-                            <div class="col-6">
-                                <div class="card w-100" style="height: 25vh">
-                                    <div class="card-body <c:if test='${pageItem.get(5).equals(pageItem.get(1).trim())}'>${color}</c:if>">
-                                        ${pageItem.get(1)}
-                                    </div>
+                            <div class="font-weight-bold font-size-lg m-2">
+                                ${pageItem.get(0)}
+                            </div>
+                            <div class="col-12 <c:if test='${pageItem.get(5).equals(pageItem.get(1).trim())}'>${color}</c:if> <c:if test='${pageItem.get(6).equals(pageItem.get(1).trim())}'>bg-success</c:if>">
+                                A. ${pageItem.get(1)} <c:if test='${pageItem.get(5).equals(pageItem.get(1).trim())}'>(Your answer)</c:if>
+                                </div>
+                                <div class="col-12 <c:if test='${pageItem.get(5).equals(pageItem.get(2).trim())}'>${color}</c:if> <c:if test='${pageItem.get(6).equals(pageItem.get(2).trim())}'>bg-success</c:if>">
+                                B. ${pageItem.get(2)} <c:if test='${pageItem.get(5).equals(pageItem.get(2).trim())}'>(Your answer)</c:if>
+                                </div>
+                                <div class="col-12 <c:if test='${pageItem.get(5).equals(pageItem.get(3).trim())}'>${color}</c:if> <c:if test='${pageItem.get(6).equals(pageItem.get(3).trim())}'>bg-success</c:if>">
+                                C. ${pageItem.get(3)} <c:if test='${pageItem.get(5).equals(pageItem.get(3).trim())}'>(Your answer)</c:if>
+                                </div>
+                                <div class="col-12 <c:if test='${pageItem.get(5).equals(pageItem.get(4).trim())}'>${color}</c:if> <c:if test='${pageItem.get(6).equals(pageItem.get(4).trim())}'>bg-success</c:if>">
+                                D. ${pageItem.get(4)} <c:if test='${pageItem.get(5).equals(pageItem.get(4).trim())}'>(Your answer)</c:if>
                                 </div>
                             </div>
-                            <div class="col-6">
-                                <div class="card w-100" style="height: 25vh">
-                                    <div class="card-body <c:if test='${pageItem.get(5).equals(pageItem.get(2).trim())}'>${color}</c:if>">
-                                        ${pageItem.get(2)}
-                                    </div>
+                            <div class="mt-5">
+                                <div class="row my-2">
+                                    <div class="col-12">
+                                        <b>Answer:</b> ${pageItem.get(6)}
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row my-2">
-                            <div class="col-6">
-                                <div class="card w-100" style="height: 25vh">
-                                    <div class="card-body <c:if test='${pageItem.get(5).equals(pageItem.get(3).trim())}'>${color}</c:if>">
-                                        ${pageItem.get(3)}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="card w-100" style="height: 25vh">
-                                    <div class="card-body <c:if test='${pageItem.get(5).equals(pageItem.get(4).trim())}'>${color}</c:if>">
-                                        ${pageItem.get(4)}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-5">
-                            <div class="row my-2">
                                 <div class="col-12">
-                                    <h4>
-                                        <c:choose>
-                                            <c:when test="${result}">
-                                                You are correct. Point 1.0 / 1.0
-                                            </c:when>
-                                            <c:otherwise>
-                                                You are incorrect. Point 0.0 / 1.0
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </h4>
+                                    <c:choose>
+                                        <c:when test="${result}">
+                                            You are correct. Point 1.0 / 1.0
+                                        </c:when>
+                                        <c:otherwise>
+                                            You are incorrect. Point 0.0 / 1.0
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
                             <div class="row my-2">
                                 <div class="col-12">
-                                    <div class="card w-100">
-                                        <div class="card-body">
-                                            Explaination: ${pageItem.get(8)}
-                                        </div>
-                                    </div>
+                                    <b>Explanation:</b> ${pageItem.get(8)}
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
-                <div class="col-4 d-flex align-items-start justify-content-end">
+                <div class="col-4 d-flex flex-wrap align-items-start justify-content-end mt-5" style="flex-basis: 25%">
                     <c:forEach begin="0" items="${sessionScope.questionList}" varStatus="counter">
-                        <a href="${path}/auth/user/user_quiz?operation=VIEWQUIZREVIEW&questionNum=${counter.index}"
+                        <a href="${path}/auth/user/user_quiz?operation=VIEWQUIZREVIEW&quizId=${requestScope.quizId}&questionNum=${counter.index}"
                            class="btn btn-lg btn-outline-success text-decoration-none">
                             ${counter.index + 1}
                         </a>
+                        <c:if test="${(counter.index + 1) % 5 == 0}">
+                            <br/>
+                        </c:if>
                     </c:forEach>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12">
+                    <a class="btn btn-success" href="${sessionScope.previousPage}">Back to Lessons</a>
                 </div>
             </div>
         </div>

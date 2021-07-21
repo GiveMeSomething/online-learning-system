@@ -405,7 +405,7 @@
                                 <input name="previousPage" value="/course?courseId=${pageContext.request.getParameter('courseId')}" hidden="true" />
                                 <div class="invalid-feedback"></div>
                             </div>
-                            <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title">Login</h5>
@@ -423,7 +423,8 @@
                                                    placeholder="Enter your full name"
                                                    data-value-missing="Can't be empty"
                                                    required
-                                                   value="${sessionScope.user.name}"/>
+                                                   value="${sessionScope.user.name}"
+                                                   ${sessionScope.user != null ? 'readonly': ''}/>
                                             <div class="invalid-feedback"></div>
                                         </div>
                                         <div>
@@ -436,60 +437,53 @@
                                                    data-value-missing="Can't be empty"
                                                    required
                                                    value="${sessionScope.user.email}"
-                                                   ${sessionScope.user.email != null ? 'readonly': ''}/>
+                                                   ${sessionScope.user != null ? 'readonly': ''}/>
                                             <div class="invalid-feedback"></div>
                                         </div>
                                         <div>
                                             <label for="register-mobile">Mobile</label>
                                             <input class="form-control"
-                                                   name="password"
+                                                   name="mobile"
                                                    type="text"
                                                    id="register-mobile"
                                                    name="mobile"
                                                    placeholder="Enter mobile phone number"
                                                    data-value-missing="Can't be empty"
                                                    required
-                                                   value="${sessionScope.user.mobile}"/>
+                                                   value="${sessionScope.user.mobile}"
+                                                   ${sessionScope.user != null ? 'readonly': ''}/>
                                             <div class="invalid-feedback"></div>
                                         </div>
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="my-2">
                                                     <label>Gender</label>
-                                                    <div class="custom-control custom-radio custom-control">
-                                                        <input type="radio" id="male" name="gender" class="custom-control-input" value="MALE" checked>
-                                                        <label class="custom-control-label" for="male">Male</label>
-                                                        <div class="invalid-feedback"></div>
-                                                    </div>
-                                                    <div class="custom-control custom-radio custom-control">
-                                                        <input type="radio" id="female" name="gender" class="custom-control-input" value="FEMALE">
-                                                        <label class="custom-control-label" for="female">Female</label>
-                                                        <div class="invalid-feedback"></div>
-                                                    </div>
+                                                    <select name="gender" class="form-control" ${sessionScope.user != null ? 'disabled': ''}>
+                                                        <option value="MALE"
+                                                                ${
+                                                                (sessionScope.user != null && sessionScope.user.gender.toString() == 'MALE') ||
+                                                                    sessionScope.user == null ? 'selected': ''
+                                                                }>
+                                                            MALE
+                                                        </option>
+                                                        <option value="FEMALE"
+                                                                ${sessionScope.user != null && sessionScope.user.gender.toString() == 'FEMALE'}>
+                                                            FEMALE
+                                                        </option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-6">
                                                 <div class="my-2">
-                                                    <label>Price Package</label>
-                                                    <div class="custom-control custom-radio custom-control">
-                                                        <input type="radio" id="3-month" name="pricepkg" class="custom-control-input" value="1" checked>
-                                                        <label class="custom-control-label" for="3-month">3-month access package: $74.99</label>
-                                                        <div class="invalid-feedback"></div>
-                                                    </div>
-                                                    <div class="custom-control custom-radio custom-control">
-                                                        <input type="radio" id="6-month" name="pricepkg" class="custom-control-input" value="2">
-                                                        <label class="custom-control-label" for="6-month">6-month access package: $94.99</label>
-                                                        <div class="invalid-feedback"></div>
-                                                    </div>
-                                                    <div class="custom-control custom-radio custom-control">
-                                                        <input type="radio" id="no-month" name="pricepkg" class="custom-control-input" value="3">
-                                                        <label class="custom-control-label" for="no-month">Permanent package: $119.99</label>
-                                                        <div class="invalid-feedback"></div>
-                                                    </div>
+                                                    <label for="price-package">Price Packages</label>
+                                                    <select name="pricepkg" id="price-package" class="form-control">
+                                                        <c:forEach items="${requestScope.coursePackages}" var="package">
+                                                            <option value="${package.id}"><b>${package.name}:</b> ${package.price}</option>
+                                                        </c:forEach>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

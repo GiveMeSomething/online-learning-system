@@ -47,7 +47,8 @@
                         </div>
                         <input name="quizId" value="${quiz.id}" hidden/>
                         <input name="courseId" id="courseId" value="${courseId}" hidden/>
-                        <input name="subjectId" id="courseId" value="${courseId}" hidden/>
+                        <input name="subjectId" id="subjectId" value="${courseId}" hidden/>
+                        <input name="type" value="${type}" hidden/>
                         <div class="form-row">
                             <div class="mb-3 col-md-12">
                                 <label for="quiz-name">Quiz name</label>
@@ -64,7 +65,7 @@
                                         required>
                                     <c:forEach items="${course}" var="o">
                                         <option value="${o.key}" 
-                                                ${o.key == quiz.subjectId?"selected":""}>${o.value}</option>
+                                                ${o.key == courseId?"selected":""}>${o.value}</option>
                                     </c:forEach>
                                 </select>
                                 <div class="invalid-feedback"></div>
@@ -118,7 +119,7 @@
                         <div class="form-row">
                             <button class="btn btn-primary col-md-1" type="submit">Submit</button>
                             <div class="col-md-10"></div>
-                            <a role="button" href="${path}/auth/teacher/quiz" class="btn btn-secondary col-md-1 ">Cancel</a>
+                            <a role="button" href="${path}/auth/teacher/quiz?subjectId=${courseId}" class="btn btn-secondary col-md-1 ">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -133,6 +134,7 @@
                         </div>
                         <input value="${quiz.subjectId}" hidden name="subjectId"/>
                         <input value="${quiz.id}" hidden id="quizId" name="quizId"/>
+                        <input name="type-control" value="${type}" hidden/>
                         <div class="form-row">
                             <div class="mb-3">
                                 <label for="total-question">Total Questions</label>
@@ -205,7 +207,7 @@
                         <div class="form-row">
                             <button class="btn btn-primary col-md-1" type="submit" id="btn-submit-of-setting">Save</button>
                             <div class="col-md-10"></div>
-                            <a role="button" href="${path}/auth/teacher/quiz" class="btn btn-secondary col-md-1 ">Cancel</a>
+                            <a role="button" href="${path}/auth/teacher/quiz?subjectId=${courseId}" class="btn btn-secondary col-md-1 ">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -249,11 +251,13 @@
                         url: "/online-learning-system/auth/teacher/quiz",
                         method: "GET",
                         data: {operation: 'dimension',
-                            quizId: quizId},
+                            quizId: quizId,
+                            subjectId: $('#subjectId').val()},
                         success: function (data) {
                             console.log(data)
                             let dim = $.parseJSON(data);
                             $.each(dim, function (key, value) {
+                                console.log(value[1]);
                                 if ($('#group').val() === value[1]) {
                                     $('#group').prop("checked", true);
                                 } else if ($('#domain').val() === value[1]) {
@@ -261,7 +265,7 @@
                                 } else {
                                     $('#topic').prop("checked", true);
                                 }
-                                if (value[0] === 0) {
+                                if (key[0] === 0) {
                                     $('#myTable').append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option value="' + key[1] + '">' + value[1] + '</option></select></td><td><input type="text" class="form-control" name="number-of-question" value="' + value[2] + '" placeholder="Number of questions"></td><td><button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button></td></tr>');
                                 } else {
                                     $('#myTable').append('<tr><td><select class="group-question custom-select" name="dimension-name" required><option value="' + key[1] + '">' + value[0] + '</option></select></td><td><input type="text" class="form-control" name="number-of-question" value="' + value[2] + '" placeholder="Number of questions"></td><td><button type="button" class="btn btn-outline-primary btn-sm" id="delBtn">Delete</button></td></tr>');

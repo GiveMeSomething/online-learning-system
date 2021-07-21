@@ -43,9 +43,9 @@ public class LessonController extends HttpServlet implements Controller {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String operation = request.getParameter("operation");
-
+        String mess = "";
         if (operation == null) {
-            processGetLesson(request, response);
+            processGetLesson(request, response, mess);
         } else {
             switch (operation) {
                 case "VIEW":
@@ -129,7 +129,7 @@ public class LessonController extends HttpServlet implements Controller {
         }
     }
 
-    private void processGetLesson(HttpServletRequest request, HttpServletResponse response)
+    private void processGetLesson(HttpServletRequest request, HttpServletResponse response, String mess)
             throws ServletException, IOException {
         HttpSession currentSession = request.getSession();
 
@@ -153,6 +153,7 @@ public class LessonController extends HttpServlet implements Controller {
         ArrayList<Lesson> pageItems = this.getItemInPage(lessons, page);
         if (pageItems != null) {
             request.setAttribute("pageItems", pageItems);
+            request.setAttribute("subjectId", subjectId); // Add this attribute for Add lesson feature
             request.getRequestDispatcher("/auth/teacher/lesson/list.jsp").forward(request, response);
         } else {
             response.sendRedirect(request.getContextPath() + "/nauth/404.jsp");
@@ -330,13 +331,18 @@ public class LessonController extends HttpServlet implements Controller {
         LessonType lessonType = LessonType.valueOf(request.getParameter("type"));
         int order = Integer.parseInt(request.getParameter("order"));
         int courseId = Integer.parseInt(request.getParameter("course"));
-
+        String mess = "";
         if (lessonType.equals(LessonType.valueOf("SUBJECT_TOPIC"))) {
             Lesson lesson = new Lesson(lessonName, order, lessonType, courseId);
             if (lessonService.checkLessonExist(lesson) == null) {
                 if (lessonService.addLessonDetail(lesson)) {
-                    response.sendRedirect(request.getContextPath() + "/auth/teacher/lesson");
+                    mess = "Add successfully";
+                    request.setAttribute("mess", mess);
+                } else {
+                    mess = "Add successfully";
+                    request.setAttribute("mess", mess);
                 }
+                processGetLesson(request, response, mess);
             }
         } else if (lessonType.equals(LessonType.valueOf("LESSON"))) {
             String videoLink = request.getParameter("video-link");
@@ -344,8 +350,13 @@ public class LessonController extends HttpServlet implements Controller {
             Lesson lesson = new Lesson(lessonName, order, lessonType, courseId, videoLink, html);
             if (lessonService.checkLessonExist(lesson) == null) {
                 if (lessonService.addLessonDetail(lesson)) {
-                    response.sendRedirect(request.getContextPath() + "/auth/teacher/lesson");
+                    mess = "Add successfully";
+                    request.setAttribute("mess", mess);
+                } else {
+                    mess = "Add successfully";
+                    request.setAttribute("mess", mess);
                 }
+                processGetLesson(request, response, mess);
             }
         } else {
             int quizId = Integer.parseInt(request.getParameter("quiz"));
@@ -353,8 +364,13 @@ public class LessonController extends HttpServlet implements Controller {
             Lesson lesson = new Lesson(lessonName, order, lessonType, courseId, html, quizId);
             if (lessonService.checkLessonExist(lesson) == null) {
                 if (lessonService.addLessonDetail(lesson)) {
-                    response.sendRedirect(request.getContextPath() + "/auth/teacher/lesson");
+                    mess = "Add successfully";
+                    request.setAttribute("mess", mess);
+                } else {
+                    mess = "Add successfully";
+                    request.setAttribute("mess", mess);
                 }
+                processGetLesson(request, response, mess);
             }
         }
     }
@@ -370,27 +386,30 @@ public class LessonController extends HttpServlet implements Controller {
         request.setAttribute("lesson", lesson);
         if (lessonType.equals(LessonType.valueOf("SUBJECT_TOPIC"))) {
             lesson = new Lesson(lessonName, order, lessonType, courseId);
-            lessonService.updateLessonDetail(lesson, id);
         } else if (lessonType.equals(LessonType.valueOf("LESSON"))) {
             String videoLink = request.getParameter("video-link");
             String html = request.getParameter("html-content");
             lesson = new Lesson(lessonName, order, lessonType, courseId, videoLink, html);
-            lessonService.updateLessonDetail(lesson, id);
         } else {
             int quizId = Integer.parseInt(request.getParameter("quiz"));
             String html = request.getParameter("html-quiz");
             lesson = new Lesson(lessonName, order, lessonType, courseId, html, quizId);
-            lessonService.updateLessonDetail(lesson, id);
         }
-        response.sendRedirect(request.getContextPath() + "/auth/teacher/lesson");
+        lessonService.updateLessonDetail(lesson, id);
+        String mess = "Update successfully";
+        request.setAttribute("mess", mess);
+        processGetLesson(request, response, mess);
     }
 
     private void viewLesson(HttpServletRequest request, HttpServletResponse response, Lesson lesson)
             throws ServletException, IOException {
-        int courseId = 1;
+        int courseId = Integer.parseInt(request.getParameter("subjectId"));
         HashMap<Integer, String> getCourses = courseService.getCourses();
+        Course course = courseService.getCourse(courseId);
         HashMap<Integer, String> quizzesForLesson = quizService.getQuizForLesson(courseId);
-        request.setAttribute("course", getCourses);
+        request.setAttribute("courses", getCourses);
+        request.setAttribute("course", course);
+        request.setAttribute("subjectId", courseId);
         request.setAttribute("quiz", quizzesForLesson);
         request.setAttribute("lesson", lesson);
         request.getRequestDispatcher("/auth/teacher/lesson/detail.jsp").forward(request, response);
