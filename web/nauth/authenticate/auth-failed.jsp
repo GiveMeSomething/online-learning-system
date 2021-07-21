@@ -24,8 +24,8 @@
     </head>
     <body>
         <div class="d-flex flex-column w-100 align-items-center justify-content-center" style="height: 100vh">
-            <h3>Register successful</h3>
-            <h4> Click <a href="${path}/home"> here </a> to return to Homepage and login
+            <h3>Please check your email to confirm that is you that try to login.</h3>
+            <h4>Click <a href="${path}/home"> here </a> to return to Homepage and login
         </div>
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

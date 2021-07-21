@@ -87,7 +87,7 @@ public class EmailController extends HttpServlet implements Controller {
             String cryptPassword = request.getParameter("password");
 
             String token = authService.getToken(userEmail, cryptPassword);
-            addTokenToCookie(response, token);
+            addTokenToCookie(response, token, userEmail);
 
             response.sendRedirect(request.getContextPath() + "/nauth/authenticate/auth-success.jsp");
         } else {
@@ -118,7 +118,7 @@ public class EmailController extends HttpServlet implements Controller {
             } else {
                 System.out.println("not sent");
             }
-            response.sendRedirect(request.getContextPath() + "/auth/user/UserCourse?operation=");
+            response.sendRedirect(request.getContextPath() + "/nauth/authenticate/register-success.jsp");
         } else {
             response.sendRedirect("/home");
         }
@@ -159,12 +159,12 @@ public class EmailController extends HttpServlet implements Controller {
             System.out.println("Can't send");
         }
 
-        response.sendRedirect(request.getContextPath() + "/nauth/authenticate/auth-success.jsp");
+        response.sendRedirect(request.getContextPath() + "/nauth/authenticate/auth-failed.jsp");
     }
 
-    private void addTokenToCookie(HttpServletResponse response, String token) {
+    private void addTokenToCookie(HttpServletResponse response, String token, String email) {
         // Put userToken into cookie for later authorization
-        Cookie userCookie = new Cookie("ols-token", token);
+        Cookie userCookie = new Cookie("ols-token-" + email.hashCode(), token);
         response.addCookie(userCookie);
     }
 }
