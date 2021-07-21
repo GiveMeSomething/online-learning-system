@@ -25,7 +25,7 @@
     <body style="font-size: 20px">
         <c:set var="pageItem" value="${requestScope.pageItem}" />
         <c:set var="currentQuestion" value="${requestScope.questionNum == null ? 1: requestScope.questionNum + 1}" />
-        <c:set var="result" value="${pageItem.get(7).equals('1')}" />
+        <c:set var="result" value="${pageItem.get(5).equals(pageItem.get(6))}" />
         <c:set var="color" value="${result == true ? 'bg-success text-white': 'bg-danger text-white'}" />
         <jsp:include page="../../../components/global/navbar.jsp" />
         <div class="container my-5">
