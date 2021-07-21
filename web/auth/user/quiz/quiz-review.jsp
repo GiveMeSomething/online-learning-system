@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="col-12">
                                     <c:choose>
-                                        <c:when test="${result}">
+                                        <c:when test="${pageItem.get(5).trim().equals(pageItem.get(6))}">
                                             You are correct. Point 1.0 / 1.0
                                         </c:when>
                                         <c:otherwise>
