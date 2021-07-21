@@ -209,14 +209,11 @@ public class QuizController extends HttpServlet implements Controller {
 
     private void processQuizHandle(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String page = request.getParameter("page");
         int pages = Integer.parseInt(page);
-        System.out.println("day la pages in processQUizHandle " + pages);
         ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
-        if (session.getAttribute("answer") != null) {
-            System.out.println(session.getAttribute("answer"));
-        }
         int startItem = (pages - 1) * 1;
         int endItem = (startItem + 1) > questions.size() ? questions.size() : startItem + 1;
         doQuizHandle(request, response);
@@ -231,14 +228,13 @@ public class QuizController extends HttpServlet implements Controller {
 
     private void doQuizHandle(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         int page = Integer.parseInt(request.getParameter("thisPage"));
         int pageFromProcess = Integer.parseInt(request.getParameter("page"));
-        System.out.println("Day la page from doQuizHandle " + page);
         HashMap<String, Boolean> markedQuestion = getMarkedQuestion(request, response, page);
         System.out.println("Answer from doQUizHandle" + session.getAttribute("answer"));
         if (page != pageFromProcess) {
-            System.out.println("vao page != page");
             HashMap<String, String> userAnswer = getAnswer(request, response, page, pageFromProcess);
         }
     }
@@ -263,6 +259,7 @@ public class QuizController extends HttpServlet implements Controller {
 
     private HashMap<String, String> getAnswer(HttpServletRequest request, HttpServletResponse response, int page, int pageFromProcess)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
 
         String answer = request.getParameter("q" + (page));
@@ -281,6 +278,7 @@ public class QuizController extends HttpServlet implements Controller {
 
     private HashMap<String, String> getLastAnswer(HttpServletRequest request, HttpServletResponse response, int page)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String answer = request.getParameter("q" + (page));
         HashMap<String, String> userAnswers = new HashMap<>();
@@ -303,6 +301,7 @@ public class QuizController extends HttpServlet implements Controller {
     //After Press Score button
     private void getUserAnswer(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         int page = Integer.parseInt(request.getParameter("page"));
         ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
@@ -316,8 +315,6 @@ public class QuizController extends HttpServlet implements Controller {
         System.out.println("userQuizId from getUserAnswer" + userQuizId);
         questions = (ArrayList<Question>) session.getAttribute("question");
         HashMap<String, String> userAnswer = (HashMap<String, String>) session.getAttribute("answer");
-        System.out.println("answer " + userAnswer);
-        System.out.println("question " + questions);
         HashMap<String, Boolean> questionStatus = (HashMap<String, Boolean>) session.getAttribute("marked");
         for (int i = 0; i < questions.size(); i++) {
             String questionPage = (i + 1) + "";
@@ -329,9 +326,12 @@ public class QuizController extends HttpServlet implements Controller {
 
     private void checkUserAnswer(HttpServletRequest request, HttpServletResponse response, int userQuizId)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         HashMap<String, String> userAnswer = (HashMap<String, String>) session.getAttribute("answer");
         ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
+        System.out.println("answer " + userAnswer);
+        System.out.println("question " + questions);
         int countTrueAnswer = 0;
         for (int i = 0; i < questions.size(); i++) {
             int questionNumber = i + 1;
@@ -339,9 +339,10 @@ public class QuizController extends HttpServlet implements Controller {
                 countTrueAnswer++;
             }
         }
+        System.out.println(countTrueAnswer + " true ans");
+        System.out.println(questions.size() + " question size");
         float score = (float) countTrueAnswer / questions.size();
         System.out.println(score);
-        System.out.println(userQuizId);
         quizService.addMark(score, userQuizId);
         session.setAttribute("ketquacuoicung", score);
         session.setAttribute("answer", null);

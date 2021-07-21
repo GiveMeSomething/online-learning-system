@@ -109,7 +109,7 @@ public class CourseController extends HttpServlet {
             request.setAttribute("categoryList", categoryList);
             getMyCourse(request, response);
             getMyCourseSuccess(request, response);
-            request.getRequestDispatcher("auth/user/course/my-course.jsp").forward(request, response);
+            request.getRequestDispatcher("/auth/user/course/my-course.jsp").forward(request, response);
         }
     }
 
