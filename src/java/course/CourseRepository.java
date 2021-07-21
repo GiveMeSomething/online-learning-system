@@ -84,7 +84,8 @@ public class CourseRepository extends Repository {
                         new PricePackage(
                                 result.getInt("id"),
                                 result.getString("name"),
-                                result.getFloat("list_price")
+                                // Anhvd: t moi sua thanh Double, neu co loi thi bao t nhe
+                                result.getDouble("list_price")
                         )
                 );
             }

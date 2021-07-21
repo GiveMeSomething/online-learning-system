@@ -235,7 +235,6 @@ public class QuizController extends HttpServlet implements Controller {
         int page = Integer.parseInt(request.getParameter("thisPage"));
         int pageFromProcess = Integer.parseInt(request.getParameter("page"));
         HashMap<String, Boolean> markedQuestion = getMarkedQuestion(request, response, page);
-        System.out.println("Answer from doQUizHandle" + session.getAttribute("answer"));
         if (page != pageFromProcess) {
             HashMap<String, String> userAnswer = getAnswer(request, response, page, pageFromProcess);
         }
@@ -245,7 +244,6 @@ public class QuizController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         boolean mark = request.getParameter("mark") != null;
-        System.out.println("This is getMarked " + mark);
         HashMap<String, Boolean> marked = new HashMap<>();
 
         // getAttribute("marked") saves marked status
@@ -288,11 +286,9 @@ public class QuizController extends HttpServlet implements Controller {
             userAnswers = (HashMap<String, String>) session.getAttribute("answer");
             // Day la loi cua view all question
             userAnswers.put("" + page, answer);
-            System.out.println("get last ans khi ko null" + session.getAttribute("answer"));
         } else if (session.getAttribute("answer") == null) {
             userAnswers.put("" + page, answer);
             session.setAttribute("answer", userAnswers);
-            System.out.println("get last ans khi null" + session.getAttribute("answer"));
 
         }
         return userAnswers;
@@ -303,15 +299,12 @@ public class QuizController extends HttpServlet implements Controller {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         int page = Integer.parseInt(request.getParameter("page"));
-        ArrayList<Question> questions = (ArrayList<Question>) session.getAttribute("question");
-        System.out.println("size of ques in getuserAns " + questions.size());
-        if (page == questions.size()) {
-            session.setAttribute("marked", getMarkedQuestion(request, response, page));
-            session.setAttribute("answer", getLastAnswer(request, response, page));
-        }
+        ArrayList<Question> questions;
+        // Get answer at current question
+        session.setAttribute("marked", getMarkedQuestion(request, response, page));
+        session.setAttribute("answer", getLastAnswer(request, response, page));
         // get user_quiz_id from Quiz lesson
         int userQuizId = (Integer) session.getAttribute("userQuizId");
-        System.out.println("userQuizId from getUserAnswer" + userQuizId);
         questions = (ArrayList<Question>) session.getAttribute("question");
         HashMap<String, String> userAnswer = (HashMap<String, String>) session.getAttribute("answer");
         HashMap<String, Boolean> questionStatus = (HashMap<String, Boolean>) session.getAttribute("marked");
@@ -337,10 +330,7 @@ public class QuizController extends HttpServlet implements Controller {
                 countTrueAnswer++;
             }
         }
-        System.out.println(countTrueAnswer + " true ans");
-        System.out.println(questions.size() + " question size");
         float score = (float) countTrueAnswer / questions.size();
-        System.out.println(score);
         quizService.addMark(score, userQuizId);
         session.setAttribute("ketquacuoicung", score);
         session.setAttribute("answer", null);

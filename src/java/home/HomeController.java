@@ -45,6 +45,14 @@ public class HomeController extends HttpServlet {
         String operation = request.getParameter("operation");
 
         if (operation == null) {
+            String mess = request.getParameter("mess");
+            if(mess == null || mess.equalsIgnoreCase("")){
+                mess = "";
+            }else if(mess.equalsIgnoreCase("success")){
+                mess = "Change password successfully";
+            }else{
+                mess = "Failed! Please try again later!";
+            }
             List<Course> itCourse = courseService.getCourses("Software Engineering");
             List<Course> bizCourse = courseService.getCourses("Economy");
             List<Course> marCourse = courseService.getCourses("Digital Marketing");
@@ -53,7 +61,7 @@ public class HomeController extends HttpServlet {
             List<Course> langCourse = courseService.getCourses("Language");
             List<Course> studentsViewCourse = courseService.getFeaturedCourse();
             List<Slider> sliderList = sliderService.displaySliders();
-
+            request.setAttribute("errorMessage", mess);
             request.setAttribute("itCourse", itCourse);
             request.setAttribute("bizCourse", bizCourse);
             request.setAttribute("marCourse", marCourse);
@@ -89,6 +97,9 @@ public class HomeController extends HttpServlet {
         String operation = request.getParameter("operation");
         if (operation.equals("SEARCHCOURSE")) {
             processInputForSearch(request, response);
+        }else if(operation == null){
+            System.out.println("vao doPost");
+            doGet(request, response);
         }
     }
 
