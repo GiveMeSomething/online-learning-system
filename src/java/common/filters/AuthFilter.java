@@ -11,6 +11,7 @@ import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -40,6 +41,8 @@ public class AuthFilter implements Filter {
         HttpServletResponse pageResponse = (HttpServletResponse) response;
         HttpSession currentSession = pageRequest.getSession();
 
+        System.out.println(pageRequest.getRequestURL().toString());
+
         // To 'login' if user not yet logged in, else check token (authorization)
         User currentUser = getUser(currentSession);
         if (currentUser == null) {
@@ -63,10 +66,10 @@ public class AuthFilter implements Filter {
         User currentUser = (User) session.getAttribute("user");
         String token;
         try {
-            token = (String) session.getAttribute("ols-token");
+            token = (String) session.getAttribute("ols-token" + currentUser.getEmail().hashCode());
             if (token == null || token.equals("")) {
                 // Get token from cookie
-                token = getToken(request);
+                token = getToken(request, currentUser.getEmail());
                 if (authService.isValidToken(currentUser.getEmail(), token)) {
                     return token;
                 }
@@ -82,11 +85,11 @@ public class AuthFilter implements Filter {
     }
 
     // Get token from cookie
-    private String getToken(HttpServletRequest request) {
+    private String getToken(HttpServletRequest request, String email) {
         Cookie userCookies[] = request.getCookies();
 
         // Get required token from user browser cookie
-        String requiredCookieName = "ols-token";
+        String requiredCookieName = "ols-token" + email.hashCode();
         for (Cookie cookie : userCookies) {
             if (cookie.getName().equals(requiredCookieName)) {
                 return cookie.getValue();
