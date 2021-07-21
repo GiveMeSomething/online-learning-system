@@ -198,8 +198,11 @@ public class LessonController extends HttpServlet implements Controller {
         session.setAttribute("courseId", courseId);
         //THỬ NGHIỆM:
         for (int i = 0; i < lessonList.size() - 1; i++) {
-            int a = lessonList.get(i).getVideoLink().indexOf("embed/");
-            request.setAttribute("videoId" + (i + 1), lessonList.get(i).getVideoLink().substring(a + 6));
+            if (lessonList.get(i).getVideoLink() != null) {
+                int a = lessonList.get(i).getVideoLink().indexOf("embed/");
+                request.setAttribute("videoId" + (i + 1), lessonList.get(i).getVideoLink().substring(a + 6));
+            }
+
         }
 
         request.setAttribute("length", lessonList.size());
@@ -235,8 +238,10 @@ public class LessonController extends HttpServlet implements Controller {
         Lesson minIdLesson = lessonService.getMinLessonIdByCourseId(courseId);
         //THỬ NGHIỆM:
         for (int i = 0; i < lessonList.size() - 1; i++) {
-            int a = lessonList.get(i).getVideoLink().indexOf("embed/");
-            request.setAttribute("videoId" + (i + 1), lessonList.get(i).getVideoLink().substring(a + 6));
+            if (lessonList.get(i).getVideoLink() != null) {
+                int a = lessonList.get(i).getVideoLink().indexOf("embed/");
+                request.setAttribute("videoId" + (i + 1), lessonList.get(i).getVideoLink().substring(a + 6));
+            }
         }
         if (lessonId == minIdLesson.getId()) {
             Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
@@ -267,8 +272,10 @@ public class LessonController extends HttpServlet implements Controller {
         Lesson maxIdLesson = lessonService.getMaxLessonIdByCourseId(courseId);
         //THỬ NGHIỆM:
         for (int i = 0; i < lessonList.size() - 1; i++) {
-            int a = lessonList.get(i).getVideoLink().indexOf("embed/");
+            if(lessonList.get(i).getVideoLink() != null){
+                int a = lessonList.get(i).getVideoLink().indexOf("embed/");
             request.setAttribute("videoId" + (i + 1), lessonList.get(i).getVideoLink().substring(a + 6));
+            }
         }
         if (lessonId == maxIdLesson.getId()) {
             Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
