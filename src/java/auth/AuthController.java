@@ -160,7 +160,7 @@ public class AuthController extends HttpServlet implements Controller {
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("user");
 
-        String forwardTo = request.getParameter("previousPage");
+        String forwardTo = "/home";
         boolean isChanged = false;
 
         if (currentUser != null && newPassword.equals(confirmPassword)) {
