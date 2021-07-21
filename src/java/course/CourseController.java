@@ -109,7 +109,7 @@ public class CourseController extends HttpServlet {
             request.setAttribute("categoryList", categoryList);
             getMyCourse(request, response);
             getMyCourseSuccess(request, response);
-            request.getRequestDispatcher("auth/user/course/my-course.jsp").forward(request, response);
+            request.getRequestDispatcher("/auth/user/course/my-course.jsp").forward(request, response);
         }
     }
 
@@ -243,7 +243,6 @@ public class CourseController extends HttpServlet {
         List<Category> categoryList = courseService.getAllCategory();
         request.setAttribute("categoryList", categoryList);
         request.setAttribute("myCourse", myCourse);
-//        System.out.println(myCourse);
     }
 
     private void getMyCourseSuccess(HttpServletRequest request, HttpServletResponse response)
@@ -257,7 +256,6 @@ public class CourseController extends HttpServlet {
         List<Category> categoryList = courseService.getAllCategory();
         request.setAttribute("categoryList", categoryList);
         request.setAttribute("myCourseSucess", myCourseSucess);
-        System.out.println(myCourseSucess);
     }
 
     private void processRegisterCourse(HttpServletRequest request, HttpServletResponse response)

@@ -38,8 +38,7 @@ public class AuthController extends HttpServlet implements Controller {
 
         if (operation.equals("LOGOUT")) {
             HttpSession session = request.getSession();
-            session.setAttribute("isAdmin", false);
-            session.removeAttribute("user");
+            session.invalidate();
         }
         response.sendRedirect("home");
     }
