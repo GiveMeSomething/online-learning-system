@@ -151,14 +151,20 @@
                                  id="home"
                                  role="tabpanel"
                                  aria-labelledby="home-tab">
-                                <iframe width="800" height="500"
+                                <c:if test="${lessonDetail.videoLink == null}">
+                                    
+                                </c:if>
+                                <c:if test="${lessonDetail.videoLink != null}">
+                                   <iframe width="800" height="500"
                                         id="myVideo"
                                         src="${lessonDetail.videoLink}"
                                         title="YouTube video player" 
                                         frameborder="0"
                                         allow="accelerometer;autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowfullscreen
-                                        ></iframe>
+                                        ></iframe> 
+                                </c:if>
+                                
 
                                 <div class="d-flex mt-3 align-items-center" style="justify-content: flex-start">
                                     <a href="${path}/auth/user/course/lesson?operation=PREVIOUSLESSON&&lessonId=${sessionScope.lessonIdSession - 1}&&courseId=${sessionScope.courseId}">
@@ -190,7 +196,13 @@
                                  role="tabpanel"
                                  style="padding-right:20%"
                                  aria-labelledby="profile-tab">
-                                ${lessonDetail.htmlContent}
+                                <c:if test="${lessonDetail.htmlContent == null}">
+                                    
+                                </c:if>
+                                <c:if test="${lessonDetail.htmlContent != null}">
+                                    ${lessonDetail.htmlContent}
+                                </c:if>
+                                
                                 <div class="d-flex mt-3 align-items-center" style="justify-content: flex-start">
                                     <a href="${path}/auth/user/course/lesson?operation=PREVIOUSLESSON&&lessonId=${sessionScope.lessonIdSession - 1}&&courseId=${sessionScope.courseId}">
                                         <button ${disabled} ${sessionScope.lessonIdSession == minIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn mr-3">
