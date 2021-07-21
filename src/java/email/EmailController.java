@@ -55,7 +55,7 @@ public class EmailController extends HttpServlet implements Controller {
                 response.sendRedirect(request.getContextPath() + "/home");
             } else {
                 // Do something when active fail
-                response.sendRedirect("nauth/authenticate/register-failed.jsp");
+                response.sendRedirect(request.getContextPath() + "/nauth/authenticate/register-failed.jsp");
             }
 
         } else if (operation.equals("RESETPW")) {
@@ -140,7 +140,7 @@ public class EmailController extends HttpServlet implements Controller {
             System.out.println("Can't send");
         }
 
-        response.sendRedirect("nauth/authenticate/register-success.jsp");
+        response.sendRedirect(request.getContextPath() + "/nauth/authenticate/register-success.jsp");
     }
 
     public void processAuth(HttpServletRequest request, HttpServletResponse response)

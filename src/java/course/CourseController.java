@@ -62,7 +62,7 @@ public class CourseController extends HttpServlet {
                 request.setAttribute("categoryList", categoryList);
                 request.setAttribute("coursePackages", coursePackages);
 
-                request.getRequestDispatcher("nauth/course/detail.jsp").forward(request, response);
+                request.getRequestDispatcher("/nauth/course/detail.jsp").forward(request, response);
             } else if (categoryId != null) {
                 int categoryIndicator = Integer.parseInt(categoryId);
                 HttpSession session = request.getSession();
@@ -102,7 +102,7 @@ public class CourseController extends HttpServlet {
                 request.setAttribute("courseFeature", courseFeature);
                 session.removeAttribute("searchName");
                 request.setAttribute("id", idFeature);
-                request.getRequestDispatcher("nauth/course/list.jsp").forward(request, response);
+                request.getRequestDispatcher("/nauth/course/list.jsp").forward(request, response);
             }
         } else if (operation.equals("VIEWMYCOURSE")) {
             List<Category> categoryList = courseService.getAllCategory();
@@ -146,7 +146,7 @@ public class CourseController extends HttpServlet {
             request.setAttribute("tag", 1);
             request.setAttribute("course", list);
             request.setAttribute("courseFeature", courseFeature);
-            request.getRequestDispatcher("nauth/course/list.jsp").forward(request, response);
+            request.getRequestDispatcher("/nauth/course/list.jsp").forward(request, response);
         }
     }
 
@@ -243,7 +243,6 @@ public class CourseController extends HttpServlet {
         List<Category> categoryList = courseService.getAllCategory();
         request.setAttribute("categoryList", categoryList);
         request.setAttribute("myCourse", myCourse);
-//        System.out.println(myCourse);
     }
 
     private void getMyCourseSuccess(HttpServletRequest request, HttpServletResponse response)
@@ -257,7 +256,6 @@ public class CourseController extends HttpServlet {
         List<Category> categoryList = courseService.getAllCategory();
         request.setAttribute("categoryList", categoryList);
         request.setAttribute("myCourseSucess", myCourseSucess);
-        System.out.println(myCourseSucess);
     }
 
     private void processRegisterCourse(HttpServletRequest request, HttpServletResponse response)
