@@ -11,7 +11,6 @@ import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -64,19 +63,12 @@ public class AuthFilter implements Filter {
     private String getToken(HttpServletRequest request, HttpSession session) {
         // Check if token is in session, else get from cookie and auth
         User currentUser = (User) session.getAttribute("user");
-        Cookie[] cookies = request.getCookies();
         String token;
-        try {
-            token = getToken(request, currentUser.getEmail());
-            if (authService.isValidToken(currentUser.getEmail(), token)) {
-                return token;
-            }
-
-            return null;
-        } catch (ClassCastException e) {
-            System.out.println(e.getMessage() + " at AuthFilter ");
-            return null;
+        token = getToken(request, currentUser.getEmail());
+        if (authService.isValidToken(currentUser.getEmail(), token)) {
+            return token;
         }
+        return null;
     }
 
     // Get token from cookie
@@ -84,7 +76,7 @@ public class AuthFilter implements Filter {
         Cookie userCookies[] = request.getCookies();
 
         // Get required token from user browser cookie
-        String requiredCookieName = "ols-token" + email.hashCode();
+        String requiredCookieName = "ols-token-" + email.hashCode();
         for (Cookie cookie : userCookies) {
             if (cookie.getName().equals(requiredCookieName)) {
                 return cookie.getValue();
