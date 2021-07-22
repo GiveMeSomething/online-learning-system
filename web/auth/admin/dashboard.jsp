@@ -113,7 +113,7 @@
                         <div style="font-weight: bold">
                             <span style="font-size: 2rem; margin-left: -.2rem">$${totalProfit}</span><br>
                             <span style=" font-weight: normal; font-size: 1rem;">
-                                Total Profit
+                                Total Revenue
                             </span>
                         </div>
                     </div>
