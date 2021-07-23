@@ -46,7 +46,8 @@
                 <div class="form-row">
                     <div class="mb-3 col-md-5">
                         <label for="courses">Topic</label>
-                        <select class="custom-select" name="course" id="courses" required>
+                        <input hidden name="course" value="${course.id}">
+                        <select class="custom-select" disabled="true" id="courses" required>
                             <c:forEach items="${courses}" var="c">
                                 <option value="${c.key}" ${course.id == c.key ? "selected":""}>${c.value}</option>
                             </c:forEach>

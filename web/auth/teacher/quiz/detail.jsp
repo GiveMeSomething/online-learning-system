@@ -61,7 +61,8 @@
                         <div class="form-row">
                             <div class="mb-3 col-md-12">
                                 <label for="subject">Subject</label>
-                                <select class="custom-select" id="subject" name="subject-name" 
+                                <input hidden name="subject-name" value="${courseId}">
+                                <select class="custom-select" disabled="true" id="subject"
                                         required>
                                     <c:forEach items="${course}" var="o">
                                         <option value="${o.key}" 
