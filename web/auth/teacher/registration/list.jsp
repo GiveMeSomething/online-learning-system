@@ -30,8 +30,9 @@
         <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>
         <div class="container my-5">
             <div class="row">
-                <div class="d-flex justify-content-center align-items-center">
+                <div class="col-12 d-flex justify-content-between flex-row">
                     <h2>Registration List</h2>
+                    <h2 class="text-danger ml-auto">${mess}</h2>
                 </div>
             </div>
             <form action="${path}/auth/teacher/registration" method="POST" style="min-height: 70vh">

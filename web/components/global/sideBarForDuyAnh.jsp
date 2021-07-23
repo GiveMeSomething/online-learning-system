@@ -56,13 +56,6 @@
                                         </a>
                                     </li>
                                 </c:when>
-                                <c:otherwise>
-                                    <li class="nav-hover nav-item">
-                                        <a href="${path}/auth/user/course" class="nav-link active" style="padding-top: 8px; padding-bottom: 8px">
-                                            Courses
-                                        </a>
-                                    </li>
-                                </c:otherwise>
                             </c:choose>
                         </c:if>
                         <c:choose>
@@ -95,6 +88,11 @@
                     </ul>
                 </div>
             </nav>
+            <div class="sidebar-box subs-wrap d-flex flex-column img" style="background-image:url(images/xbg_1.jpg.pagespeed.ic.fkgeUtddhh.webp)">
+                <div class="overlay"></div>
+                <h3 class="my-4 sidebar-heading">May inspire you a bit</h3>
+                <p class="mb-4">Any fool can write code that a computer can understand. Good programmers write code that humans can understand.” – Martin Fowler</p>
+            </div>
         </aside>
         <!--modal-->
         <div class="container">

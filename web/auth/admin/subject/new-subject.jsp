@@ -120,6 +120,7 @@
                             reader.readAsDataURL(file);
                         }
                     }
+                    CKEDITOR.replace('description');
         </script>
     </body>
 </html>

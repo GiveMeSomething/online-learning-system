@@ -108,9 +108,9 @@
                             <div class="form-group">
                                 <label for="subjectName">Subject Name</label>
                                 <input class="form-control"
-                                       ${detail.user.id == sessionScope.user.id ?"":"disabled"}
                                        name="subjectName"
                                        type="text"
+                                       disabled
                                        <c:if test="${detail.title==null}">
                                            value="${course.courseName}"
                                        </c:if>
@@ -123,26 +123,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="package">Package</label><br>
-                                <c:choose>
-                                    <c:when test="${detail.user.id == null || detail.user.id == sessionScope.user.id}">
-                                        <select name="package" class="form-control">
-                                            <c:forEach items="${package}" var="p">
-                                                <option value="${p.id}" ${p.price == detail.totalCost?'selected':''}>${p.name} - ${p.price}$</option>
-                                            </c:forEach>
-                                        </select>
-                                    </c:when>
-                                    <c:when test="${detail.user.id != null}">
-                                        <input class="form-control"
-                                               ${detail.user.id == sessionScope.user.id || detail.user.id == null?"":"disabled"}
-                                               id="package"
-                                               name="package"
-                                               type="text"
-                                               id="package" 
-                                               value="${detail.packages}"
-                                               data-value-missing="Can't be empty"
-                                               required/>
-                                    </c:when>
-                                </c:choose>
+                                <select name="package" class="form-control">
+                                    <c:forEach items="${package}" var="p">
+                                        <option value="${p.id}" ${p.price == detail.totalCost?'selected':''}>${p.name} - ${p.price}$</option>
+                                    </c:forEach>
+                                </select>
                                 <div class="invalid-feedback"></div>
                             </div>
                             <c:if test="${detail.user.id != null}">
@@ -152,7 +137,7 @@
                                            name="validFrom"
                                            disabled
                                            type="text"
-                                           value="${detail.validFrom}"
+                                           placeholder="${detail.validFrom}"
                                            data-value-missing="Can't be empty"
                                            required/>
                                     <div class="invalid-feedback"></div>
@@ -182,12 +167,14 @@
                 </div>
                 <div class="d-flex mt-3 px-5 justify-content-end" id="button-area">
                     <button type="submit" class="btn btn-primary mr-4">Save</button>
-                    <c:if test="${sessionScope.isAdmin == true || sessionScope.isTeacher == true}">
-                        <a href="${path}/auth/teacher/registration?operation=VIEWALL" class="btn btn-secondary">Back</a>
-                    </c:if>
-                    <c:if test="${sessionScope.isAdmin == false || sessionScope.isTeacher == false}">
-                        <a href="${path}/auth/user/UserCourse?operation=" class="btn btn-secondary">Back</a>
-                    </c:if>
+                    <c:choose>
+                        <c:when test="${sessionScope.isAdmin == true || sessionScope.isTeacher == true}">
+                            <a href="${path}/auth/teacher/registration?operation=VIEWALL" class="btn btn-secondary">Back</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${path}/auth/user/UserCourse?operation=" class="btn btn-secondary">Back</a>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </form>
         </div>

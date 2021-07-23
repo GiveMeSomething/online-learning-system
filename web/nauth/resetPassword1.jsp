@@ -25,8 +25,8 @@
             </div>
         </c:if>
         <form action="${path}/authenticate" method="POST" 
-              class="needs-validation w-25 bg-light d-block" 
-              novalidate style="margin: auto;">
+              class="needs-validation shadow-lg w-25 bg-light p-3 d-block" 
+              novalidate style="margin: 150px auto 245px auto;">
             <div class="request-info">
                 <input name="previousPage" value="reset-password2.jsp" hidden="true" />
                 <div class="invalid-feedback"></div>
