@@ -318,7 +318,12 @@
             </div>
             <div  class="row" style="margin-left: .2rem; margin-top: 1rem; ">
                 <!--                        1-->
-                <c:forEach items="${myCourse}" var="o">
+                <c:forEach items="${myCourse}" var="o" varStatus="loop">
+                    
+                       <c:set var="property" value="${loop.index}"/> 
+                  
+                    
+                   
                     <div class="col-3" 
                          style="height: max-content;
                          margin-bottom: 2rem;">

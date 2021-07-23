@@ -18,6 +18,7 @@ import common.entities.User;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
+import lesson.LessonService;
 import user.UserService;
 
 /*
@@ -35,6 +36,7 @@ public class CourseController extends HttpServlet {
     private CourseService courseService;
     private AuthService authService;
     private UserService userService;
+    private LessonService lessonService;
 
     @Override
     public void init() throws ServletException {
@@ -42,6 +44,7 @@ public class CourseController extends HttpServlet {
 
         authService = new AuthService();
         userService = new UserService();
+        lessonService = new LessonService();
     }
 
     @Override
@@ -106,6 +109,17 @@ public class CourseController extends HttpServlet {
             }
         } else if (operation.equals("VIEWMYCOURSE")) {
             List<Category> categoryList = courseService.getAllCategory();
+            HttpSession currentSession = request.getSession();
+            int userId = ((User) currentSession.getAttribute("user")).getId();
+            List<Course> myCourseList = courseService.getMyCourse(userId);
+            for (int i = 0; i < myCourseList.size(); i++) {
+                double maxIdLesson = lessonService.getMaxLessonIdByCourseId(myCourseList.get(i).getId());
+                double doneLesson = lessonService.getDoneLessonByCourseId(myCourseList.get(i).getId());
+                double progress = ((double) doneLesson / maxIdLesson) * 100;
+                request.setAttribute("progress"+i, progress);
+            }
+            
+            request.setAttribute("size", myCourseList.size());
             request.setAttribute("categoryList", categoryList);
             getMyCourse(request, response);
             getMyCourseSuccess(request, response);
