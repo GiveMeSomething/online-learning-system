@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.sql.Date;
 import java.util.HashMap;
+import lesson.LessonService;
 
 public class CourseRepository extends Repository {
 
@@ -1127,6 +1128,7 @@ public class CourseRepository extends Repository {
         try (PreparedStatement statement = this.connection.prepareStatement(getMyCourseSuccess)) {
             statement.setInt(1, userId);
             ResultSet result = statement.executeQuery();
+            LessonService lessonService = new LessonService();
             while (result.next()) {
                 list.add(new Course(
                         result.getInt("id"),

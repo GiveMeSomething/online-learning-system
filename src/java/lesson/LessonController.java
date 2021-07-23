@@ -177,21 +177,20 @@ public class LessonController extends HttpServlet implements Controller {
     private void processViewUserLessonDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        int lessonId = 1;
-//        int courseId = Integer.parseInt(session.getAttribute("courseId") + "");
+        int lessonId = 0;
         int courseId = Integer.parseInt(request.getParameter("courseId"));
         session.setAttribute("courseId", courseId);
         if (request.getParameter("lessonId") != null) {
             lessonId = Integer.parseInt(request.getParameter("lessonId"));
         } else if (request.getParameter("lessonId") == null) {
-            Lesson minIdLesson = lessonService.getMinLessonIdByCourseId(courseId);
-            lessonId = minIdLesson.getId();
+              lessonId = 0;
         }
         List<Lesson> allLesson = lessonService.getAllLesson();
-        Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
+        Lesson lessonDetail = lessonService.getLessonsByCourseId(courseId).get(lessonId);
         request.setAttribute("lessonDetail", lessonDetail);
 
         List<Lesson> lessonList = lessonService.getLessonsByCourseId(courseId);
+
         session.setAttribute("lessonId", lessonId);
         session.setAttribute("courseId", courseId);
         request.setAttribute("lessonList", lessonList);
@@ -209,10 +208,10 @@ public class LessonController extends HttpServlet implements Controller {
         request.setAttribute("length", lessonList.size());
         request.setAttribute("lessonId", lessonId);
         Lesson minIdLesson = lessonService.getMinLessonIdByCourseId(courseId);
-        Lesson maxIdLesson = lessonService.getMaxLessonIdByCourseId(courseId);
-        if (lessonId == minIdLesson.getId()) {
+        int maxIdLesson = lessonService.getMaxLessonIdByCourseId(courseId) - 1;
+        if (lessonId == 0) {
             request.setAttribute("disabled", "disabled");
-        } else if (lessonId == maxIdLesson.getId()) {
+        } else if (lessonId == maxIdLesson) {
             request.setAttribute("disabledNext", "disabled");
         }
         PrintWriter out = response.getWriter();
@@ -244,18 +243,18 @@ public class LessonController extends HttpServlet implements Controller {
                 request.setAttribute("videoId" + (i + 1), lessonList.get(i).getVideoLink().substring(a + 6));
             }
         }
-        if (lessonId == minIdLesson.getId()) {
-            Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
+        if (lessonId == 0) {
+            Lesson lessonDetail = lessonService.getLessonsByCourseId(courseId).get(lessonId);
             request.setAttribute("lessonDetail", lessonDetail);
-            request.setAttribute("lessonId", minIdLesson.getId());
-            session.setAttribute("lessonIdSession", minIdLesson.getId());
+            request.setAttribute("lessonId", 0);
+            session.setAttribute("lessonIdSession", 0);
         } else {
-            Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
+            Lesson lessonDetail = lessonService.getLessonsByCourseId(courseId).get(lessonId);
             request.setAttribute("lessonDetail", lessonDetail);
             request.setAttribute("lessonId", lessonId);
             session.setAttribute("lessonIdSession", lessonId);
         }
-        request.setAttribute("minIdLesson", minIdLesson.getId());
+        request.setAttribute("minIdLesson", 0);
         request.getRequestDispatcher("/auth/user/course/lesson/detail.jsp").forward(request, response);
         //Chỉnh lại url auth/user/course/lesson/detail.jsp
     }
@@ -270,27 +269,27 @@ public class LessonController extends HttpServlet implements Controller {
         request.setAttribute("lessonList", lessonList);
         List<Lesson> allLesson = lessonService.getAllLesson();
         request.setAttribute("allLesson", allLesson);
-        Lesson maxIdLesson = lessonService.getMaxLessonIdByCourseId(courseId);
+        int maxIdLesson = lessonService.getMaxLessonIdByCourseId(courseId) - 1;
         //THỬ NGHIỆM:
         for (int i = 0; i < lessonList.size() - 1; i++) {
-            if(lessonList.get(i).getVideoLink() != null){
+            if (lessonList.get(i).getVideoLink() != null) {
                 int a = lessonList.get(i).getVideoLink().indexOf("embed/");
-            request.setAttribute("videoId" + (i + 1), lessonList.get(i).getVideoLink().substring(a + 6));
+                request.setAttribute("videoId" + (i + 1), lessonList.get(i).getVideoLink().substring(a + 6));
             }
         }
-        if (lessonId == maxIdLesson.getId()) {
-            Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
+        if (lessonId == maxIdLesson) {
+            Lesson lessonDetail = lessonService.getLessonsByCourseId(courseId).get(lessonId);
             request.setAttribute("lessonDetail", lessonDetail);
-            request.setAttribute("lessonId", maxIdLesson.getId());
-            session.setAttribute("lessonIdSession", maxIdLesson.getId());
+            request.setAttribute("lessonId", maxIdLesson);
+            session.setAttribute("lessonIdSession", maxIdLesson);
             request.setAttribute("disabledNext", "disabled");
         } else {
-            Lesson lessonDetail = lessonService.getLessonDetailByLessonId(lessonId);
+            Lesson lessonDetail = lessonService.getLessonsByCourseId(courseId).get(lessonId);
             request.setAttribute("lessonDetail", lessonDetail);
             request.setAttribute("lessonId", lessonId);
             session.setAttribute("lessonIdSession", lessonId);
         }
-        request.setAttribute("maxIdLesson", maxIdLesson.getId());
+        request.setAttribute("maxIdLesson", maxIdLesson);
         request.getRequestDispatcher("/auth/user/course/lesson/detail.jsp").forward(request, response);
         //Chỉnh lại url auth/user/course/lesson/detail.jsp
     }
