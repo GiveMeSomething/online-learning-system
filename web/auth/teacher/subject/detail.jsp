@@ -138,16 +138,12 @@
                                         <label style="margin-top: -.5rem; margin-right: .2rem">Status</label>
                                         <c:if test="${sessionScope.isAdmin  != null && sessionScope.isAdmin == true}">
                                             <select name="status" style="height: max-content">
-
                                                 <option value="1" ${detail.status=="PUBLISHED"?"selected":""}>Published</option>
                                                 <option value="0" ${detail.status=="UNPUBLISHED"?"selected":""}>Unpublished</option>
                                             </select>     
                                         </c:if>
-
-
                                         <c:if test="${sessionScope.isAdmin != true}">
                                             <select name="status" style="height: max-content" disabled>
-
                                                 <option value="1" ${detail.status=="PUBLISHED"?"selected":""}>Published</option>
                                                 <option value="0" ${detail.status=="UNPUBLISHED"?"selected":""}>Unpublished</option>
                                             </select>     
@@ -157,7 +153,15 @@
                                 </div>
                             </div>
                             <div id="upper-right" class="col-1">
-                                <img style="width: 25rem; margin-left: 3.5rem" src="${detail.imageLink}">
+                                <c:choose>
+                                    <c:when test="${empty detail.base64Image}">
+                                        <img style="width: 25rem; margin-left: 3.5rem" src="${detail.imageLink}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img style="width: 25rem; margin-left: 3.5rem"  width="150" height="250"
+                                             src="data:image/*;base64,${detail.base64Image}">
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                         <div id="lower" style="margin-left: 1rem;">
@@ -167,7 +171,6 @@
                             </div>
                             <div id="button-area">
                                 <button type="submit" class="btn btn-secondary">Submit</button>
-                                
                             </div>
                         </div>
                     </form>
@@ -288,8 +291,8 @@
                     </div>
                 </c:if>
             </div>
-             
-             <div class="text-right mb-2 mt-4">
+
+            <div class="text-right mb-2 mt-4">
                 <a href="${path}/auth/teacher/subject">
                     <button class="btn btn-success">Back</button>
                 </a>
@@ -311,6 +314,6 @@
     <script type="text/javascript" src="${path}/utilities/form-validator.js"></script>
     <script type="text/javascript" src="${path}/ckeditor/ckeditor/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace('editor');
+                CKEDITOR.replace('editor');
     </script>
 </html>

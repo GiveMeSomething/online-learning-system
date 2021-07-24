@@ -24,9 +24,13 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import common.utilities.Repository;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.util.Base64;
 import java.util.HashMap;
 import lesson.LessonService;
 
@@ -58,7 +62,6 @@ public class CourseRepository extends Repository {
                         result.getString("category_name"),
                         result.getString("description"),
                         result.getString("tag"));
-
             }
 
             return null;
@@ -738,9 +741,10 @@ public class CourseRepository extends Repository {
     }
 
 //    Subject part
-    public Course getSubject(int id) throws SQLException {
+    public Course getSubject(int id) throws SQLException, IOException {
         this.connectDatabase();
-        String getCourse = "SELECT c.id, c.thumbnail, c.title, c.description, ca.category_name, c.feature, c.status_id, c.owner "
+        String base64Image = null;
+        String getCourse = "SELECT c.id, c.thumbnail, c.title, c.description, ca.category_name, c.feature, c.status_id, c.owner, c.thumbnails "
                 + "FROM db_ite1.course c "
                 + "JOIN db_ite1.category ca "
                 + "ON ca.id = c.category_id "
@@ -752,17 +756,35 @@ public class CourseRepository extends Repository {
 
             ResultSet result = statement.executeQuery();
             if (result.next()) {
-                return new Course(
-                        result.getInt("id"),
+                Blob blob = result.getBlob("thumbnails");
+                if (blob != null) {
+                    InputStream inputStream = blob.getBinaryStream();
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[4096];
+                    int bytesRead = -1;
+
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+
+                    byte[] imageBytes = outputStream.toByteArray();
+
+                    base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+                    inputStream.close();
+                    outputStream.close();
+                }
+                Course course = new Course(result.getInt("id"),
                         result.getString("thumbnail"),
                         result.getString("title"),
                         result.getString("description"),
                         result.getInt("owner"),
                         result.getInt("status_id") == 0 ? CourseStatus.UNPUBLISHED : CourseStatus.PUBLISHED,
                         result.getString("category_name"),
-                        result.getBoolean("feature"));
+                        result.getBoolean("feature"), "");
+                course.setBase64Image(base64Image);
+                return course;
             }
-
         } finally {
             this.disconnectDatabase();
         }
@@ -1230,13 +1252,7 @@ public class CourseRepository extends Repository {
 
     public static void main(String[] args) throws Exception {
         CourseRepository repo = new CourseRepository();
-        try {
-            List<Course> list = repo.searchHome("a");
-            for (Course o : list) {
-                System.out.println(o);
-            }
-        } catch (Exception e) {
-        }
+        System.out.println(repo.getSubject(1));
     }
 
 }
