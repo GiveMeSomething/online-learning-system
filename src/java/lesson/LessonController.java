@@ -183,7 +183,7 @@ public class LessonController extends HttpServlet implements Controller {
         if (request.getParameter("lessonId") != null) {
             lessonId = Integer.parseInt(request.getParameter("lessonId"));
         } else if (request.getParameter("lessonId") == null) {
-              lessonId = 0;
+            lessonId = 0;
         }
         List<Lesson> allLesson = lessonService.getAllLesson();
         Lesson lessonDetail = lessonService.getLessonsByCourseId(courseId).get(lessonId);
@@ -366,7 +366,7 @@ public class LessonController extends HttpServlet implements Controller {
                     mess = "Add successfully";
                     request.setAttribute("mess", mess);
                 } else {
-                    mess = "Add successfully";
+                    mess = "Fail to add new lesson";
                     request.setAttribute("mess", mess);
                 }
                 processGetLesson(request, response, mess);
@@ -394,9 +394,16 @@ public class LessonController extends HttpServlet implements Controller {
             String html = request.getParameter("html-quiz");
             lesson = new Lesson(lessonName, order, lessonType, courseId, html, quizId);
         }
-        lessonService.updateLessonDetail(lesson, id);
+
+        boolean checkUpdate = lessonService.updateLessonDetail(lesson, id);
+
         String mess = "Update successfully";
-        request.setAttribute("mess", mess);
+        if (checkUpdate) {
+            request.setAttribute("mess", mess);
+        } else {
+            mess = "Fail to update";
+            request.setAttribute("mess", mess);
+        }
         processGetLesson(request, response, mess);
     }
 
