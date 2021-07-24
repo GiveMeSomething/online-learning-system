@@ -108,13 +108,22 @@ public class LessonService {
         return null;
     }
 
-    public Lesson getMaxLessonIdByCourseId(int courseId) {
+    public int getMaxLessonIdByCourseId(int courseId) {
         try {
             return lessonRepository.getMaxLessonIdByCourseId(courseId);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return 0;
+    }
+    
+    public int getDoneLessonByCourseId(int courseId) {
+        try {
+            return lessonRepository.getDoneLessonByCourseId(courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
     
     public boolean updateDoneLesson(String lessonId){

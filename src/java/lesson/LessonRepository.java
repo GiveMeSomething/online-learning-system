@@ -82,6 +82,8 @@ public class LessonRepository extends Repository {
                     statement.setString(1, lesson.getName());
                     statement.setInt(2, lesson.getOrder());
                     statement.setInt(3, lesson.getCourseId());
+                    statement.setInt(4, lesson.getOrder());
+                    statement.setInt(5, lesson.getCourseId());
 
                     return statement.executeUpdate() > 0;
                 } finally {
@@ -300,27 +302,34 @@ public class LessonRepository extends Repository {
         }
     }
 
-    public Lesson getMaxLessonIdByCourseId(int courseId) throws SQLException {
+    public int getMaxLessonIdByCourseId(int courseId) throws SQLException {
         this.connectDatabase();
-        String getLesson = "SELECT * FROM db_ite1.lesson where course_id = ? ORDER BY id DESC LIMIT 1";
+        String getLesson = "SELECT COUNT(lesson_name) AS count FROM db_ite1.lesson WHERE course_id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(getLesson)) {
             statement.setInt(1, courseId);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                return new Lesson(result.getInt("id"),
-                        result.getString("lesson_name"),
-                        result.getInt("order"),
-                        result.getInt("status_id") == 1 ? Status.ACTIVE : Status.INACTIVE,
-                        result.getInt("type_id") == 1 ? LessonType.SUBJECT_TOPIC
-                        : (result.getInt("type_id") == 2 ? LessonType.LESSON : LessonType.QUIZ),
-                        result.getInt("course_id"),
-                        result.getString("video_link"),
-                        result.getString("html_content"), result.getInt("quiz_id"));
+                return result.getInt("count");
             }
-            return null;
         } finally {
             this.disconnectDatabase();
         }
+        return 0;
+    }
+
+    public int getDoneLessonByCourseId(int courseId) throws SQLException {
+        this.connectDatabase();
+        String getLesson = "SELECT COUNT(*) AS count FROM db_ite1.lesson WHERE course_id = ? AND status_id = 1";
+        try (PreparedStatement statement = this.connection.prepareStatement(getLesson)) {
+            statement.setInt(1, courseId);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                return result.getInt("count");
+            }
+        } finally {
+            this.disconnectDatabase();
+        }
+        return 0;
     }
 
     public boolean updateDoneLesson(String lessonId) throws SQLException {
@@ -380,7 +389,7 @@ public class LessonRepository extends Repository {
 
     public static void main(String[] args) throws Exception {
         LessonRepository repo = new LessonRepository();
-        Lesson max = repo.getMaxLessonIdByCourseId(20);
-        System.out.println(max.getId());
+        int max = repo.getDoneLessonByCourseId(1);
+        System.out.println(max);
     }
 }

@@ -91,14 +91,14 @@ public class QuizRepository extends Repository {
 
         String sql = "";
         if (dimensionId == 0) {
-            sql = "AND lesson_id = ?";
+            sql = "AND qcdl.lesson_id = ?";
         } else if (lessonId == 0) {
-            sql = "AND dimension_id = ?";
+            sql = "AND qcdl.dimension_id = ?";
         }
         String getQuestion = "SELECT qcdl.question_id, option1, option2, option3, option4, option5, answer, explaination, content "
                 + "FROM db_ite1.question_course_dim_les qcdl "
                 + "JOIN questions_bank qb ON qcdl.question_id = qb.id "
-                + "WHERE course_id = ? " + sql + " AND level_id = ? ORDER BY RAND() LIMIT ?";
+                + "WHERE qcdl.course_id = ? " + sql + " AND level_id = ? ORDER BY RAND() LIMIT ?";
         ArrayList<Question> questions = new ArrayList<>();
 
         try (PreparedStatement statement = this.connection.prepareStatement(getQuestion)) {
@@ -179,7 +179,7 @@ public class QuizRepository extends Repository {
                 + "FROM db_ite1.question_course_dim_les qcdl JOIN dimension d "
                 + "ON qcdl.dimension_id = d.id "
                 + "JOIN questions_bank qb ON qb.id = qcdl.question_id "
-                + "WHERE course_id = ? AND d.type_id = ?";
+                + "WHERE qcdl.course_id = ? AND d.type_id = ?";
         ArrayList<Dimension> getHmDimesion = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(dimensionByType)) {
             statement.setInt(1, courseId);

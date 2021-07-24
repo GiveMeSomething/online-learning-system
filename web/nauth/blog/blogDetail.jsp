@@ -43,8 +43,14 @@
                                 <div class="col-lg-8 px-md-5 py-5">
                                     <div class="row pt-md-4">
                                         <h1 class="mb-3">${post.title}</h1>
-
-                                    <div>${post.description}</div>
+                                    <hr>
+                                    <span style="font-size: 90%" class="font-italic font-weight-light mr-2">by</span> 
+                                    <span class="text-uppercase font-weight-light">${post.authorId} |</span>
+                                    <span style="font-size: 90%" class="font-italic font-weight-light mx-2">published</span>
+                                    <span class="text-uppercase font-weight-light">${post.updatedDate}</span>
+                                    <div>
+                                        ${post.description}
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xl-4 sidebar ftco-animate bg-light pt-5">
@@ -60,7 +66,8 @@
                                             <input class="form-control" type="search" name="title" 
                                                    value="${title}" placeholder="Search" aria-label="Search">
                                         </div>
-                                        <button style="position: absolute; top: 90px; right:50px" class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                                        <button style="position: absolute; top: 90px; right:50px" 
+                                                class="btn btn-outline-success my-2 my-sm-0" type="submit">
                                             <span class="fas fa-search"></span>
                                         </button>
                                     </form>

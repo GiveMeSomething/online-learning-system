@@ -22,7 +22,6 @@ public class Course {
     private String category;
     private boolean feature;
     private String tag;
-
     public Course() {
     }
 
@@ -30,7 +29,7 @@ public class Course {
        this.id = id;
        this.category = category;
    }
-    
+
     public Course(int id, String imageLink, String courseName, float price, String description, int ownerId, CourseStatus status, String category, boolean feature, String tag) {
         this.id = id;
         this.imageLink = imageLink;
@@ -103,6 +102,14 @@ public class Course {
         this.feature = feature;
     }    
 
+    public Status getStatusSubject() {
+        return statusSubject;
+    }
+
+    public void setStatusSubject(Status statusSubject) {
+        this.statusSubject = statusSubject;
+    }
+    
     public int getId() {
         return id;
     }

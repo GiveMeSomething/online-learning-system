@@ -130,7 +130,6 @@ public class UserCourseController extends HttpServlet implements Controller {
             type = Integer.parseInt(request.getParameter("type"));
         }
         int courseId = Integer.parseInt(request.getParameter("courseId"));
-        System.out.println("CourseId " + courseId);
         CourseRegistation regisDetail = userCourseService.getRegistrationDetail(userId, courseId);
         Course course = courseService.getCourse(courseId);
         ArrayList<PricePackage> coursePack = courseService.getCoursePackage(courseId);
@@ -171,6 +170,7 @@ public class UserCourseController extends HttpServlet implements Controller {
             status = 1;
         }
         String email = request.getParameter("email");
+        User user = userService.getUser(email);
         if (request.getParameter("existCourseId") == null || request.getParameter("existCourseId").equals("")) {
             courseId = Integer.parseInt(request.getParameter("courseId"));
         } else {
@@ -179,19 +179,31 @@ public class UserCourseController extends HttpServlet implements Controller {
         String name = request.getParameter("full-name");
         String gender = request.getParameter("gender");
         String mobile = request.getParameter("mobile");
-        if (status == 2) {
-            changeToPaidCourse(request, response, courseId, name, gender, mobile, status);
+        String mess = "";
+        User newUser;
+        if (email == null) {
+            newUser = userService.getUser(request.getParameter("existEmail"));
         } else {
+            newUser = new User(user.getId(), "avatar_random.png",
+                    name, Gender.valueOf(gender), email, user.getAddress(), mobile);
+            boolean editUser = userService.updateUserProfile(newUser);
+        }
+        if (status == 2) {
+            changeToPaidCourse(request, response, courseId, status, mess);
+        } else if (status == 1) {
             notPaidYet(request, response, email, courseId, name, gender, mobile, status);
+        } else {
+            deleteRegistration(request, response);
         }
 
     }
 
     private void changeToPaidCourse(HttpServletRequest request, HttpServletResponse response,
-            int courseId, String name, String gender, String mobile, int status)
+            int courseId, int status, String mess)
             throws ServletException, IOException {
         //User does exist
         String email = request.getParameter("existEmail");
+        int price = Integer.parseInt(request.getParameter("package"));
         if (authService.getAccount(email) == null) {
             // Create new account
             Account account = new Account(email, "abc123", Role.STUDENT);
@@ -200,14 +212,19 @@ public class UserCourseController extends HttpServlet implements Controller {
             // Get id from new account
             int newId = userService.getUser(email).getId();
             userCourseService.updateStatus(newId, courseId, status);
-            System.out.println("email from changeToPaid: " + email);
             String createNewAccount = "/email?operation=CREATENEWACCOUNT&receiver=" + email;
             request.getRequestDispatcher(createNewAccount).forward(request, response);
         } else {
             User user = userService.getUser(email);
             int userId = user.getId();
-            userCourseService.updateStatus(userId, courseId, status);
-            response.sendRedirect(request.getContextPath() + "/auth/user/UserCourse?operation=");
+            boolean updateUser = userCourseService.updateRegistration(userId, courseId, price, request.getParameter("note"));
+            boolean updateStatus = userCourseService.updateStatus(userId, courseId, status);
+            if (updateUser && updateStatus) {
+                mess = "Successfull";
+            } else {
+                mess = "Failed";
+            }
+            response.sendRedirect(request.getContextPath() + "/auth/teacher/registration?operation=VIEWALL&mess=" + mess);
         }
     }
 
@@ -228,7 +245,6 @@ public class UserCourseController extends HttpServlet implements Controller {
                     userCourseService.updateRegistration(userId, courseId, price, note);
                 }
             } else {
-                System.out.println("this is " + email);
                 User user = new User(name, Gender.valueOf(gender), email, Status.ACTIVE, mobile);
                 userService.addUser(user);
                 int userId = userService.getUser(email).getId();
@@ -240,6 +256,19 @@ public class UserCourseController extends HttpServlet implements Controller {
             userCourseService.updateRegistration(userService.getUser(existEmail).getId(), courseId, price, note);
             response.sendRedirect(request.getContextPath() + "/auth/user/UserCourse?operation=");
         }
+    }
+
+    private void deleteRegistration(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String mess = "";
+        boolean updateStatus = userCourseService.updateStatus(Integer.parseInt(request.getParameter("userId")), 
+                Integer.parseInt(request.getParameter("courseId")), 0);
+        if (updateStatus) {
+            mess = "Successfull";
+        } else {
+            mess = "Failed";
+        }
+        response.sendRedirect(request.getContextPath() + "/auth/teacher/registration?operation=VIEWALL&mess=" + mess);
     }
 
     private void updateStatus(HttpServletRequest request, HttpServletResponse response, User u)
@@ -369,6 +398,7 @@ public class UserCourseController extends HttpServlet implements Controller {
         currentSession.setAttribute("selectedKeyword", keyword);
         currentSession.setAttribute("selectedFrom", fromString);
         currentSession.setAttribute("selectedTo", toString);
+        request.setAttribute("mess", request.getParameter("mess"));
 
         processGetAllRegistration(request, response, keyword, validFrom, validTo, orderBy);
     }

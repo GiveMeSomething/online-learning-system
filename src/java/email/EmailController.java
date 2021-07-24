@@ -66,7 +66,7 @@ public class EmailController extends HttpServlet implements Controller {
         } else if (operation.equals("RESETPW1")) {
             // This is middle space which navigate to operation RESETPW
             String resetEmail = request.getParameter("email");
-            request.setAttribute("email", email);
+            request.setAttribute("email", resetEmail);
 
             // Get reset path in AuthController through session
             HttpSession ses = request.getSession(false);

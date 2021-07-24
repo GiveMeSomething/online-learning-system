@@ -158,7 +158,6 @@ public class AuthController extends HttpServlet implements Controller {
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("user");
 
-        String forwardTo = request.getParameter("previousPage");
         boolean isChanged = false;
 
         if (currentUser != null && newPassword.equals(confirmPassword)) {
@@ -167,9 +166,9 @@ public class AuthController extends HttpServlet implements Controller {
             }
         }
         if (isChanged) {
-            this.forwardErrorMessage(request, response, "Change password successfully", forwardTo);
+            response.sendRedirect(request.getContextPath()+"/home?mess=success");
         } else {
-            this.forwardErrorMessage(request, response, "Can't change password. Please check again later", forwardTo);
+            response.sendRedirect(request.getContextPath()+"/home?mess=fail");
         }
     }
 
@@ -183,9 +182,9 @@ public class AuthController extends HttpServlet implements Controller {
             isChanged = authService.changePassword(email, newPassword);
         }
         if (isChanged) {
-            response.sendRedirect("home");
+            response.sendRedirect(request.getContextPath()+"/home?mess=success");
         } else {
-            this.forwardErrorMessage(request, response, "Can't change password. Please check again later", forwardTo);
+            response.sendRedirect(request.getContextPath()+"/home?mess=fail");
         }
     }
 

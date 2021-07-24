@@ -80,33 +80,18 @@
 
                                 </div>
                                 <hr/>
-                                <c:forEach items="${lessonList}" var="o">
+                                <c:forEach items="${lessonList}" var="o" varStatus="loop">
                                     <a style="height:60px;color:black;font-size:20px"
-                                       class="${lessonId == o.id ? "active":""}"
+                                       class="${lessonId == loop.index ? "active":""}"
                                        target="_top"
-                                       href="${path}/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&lessonId=${o.id}&&courseId=${sessionScope.courseId}">
+                                       href="${path}/auth/user/course/lesson?operation=VIEWUSERLESSONDETAIL&&lessonId=${loop.index}&&courseId=${sessionScope.courseId}">
                                         <div class="d-flex justify-content-between align-items-center">
-                                            ${o.id}. ${o.name}
+                                            ${o.name}
                                             <input ${o.status == 'ACTIVE' ? "checked":""} value="${o.status}${o.id}" name="doneLesson" class="mr-3" type="checkbox" style="width:18px;height:18px"/>
                                         </div>
-                                        <c:if test="${(o.id < 9 || o.id == 9) && o.id % 4 == 1}">
-                                            <small id="lesson1"></small>
+                                        <c:if test="${o.lessonType != 'QUIZ'}">
+                                            <small id="lesson${loop.index+1}"></small>
                                         </c:if>
-                                        <c:if test="${(o.id < 9 || o.id == 9) && o.id % 4 == 2}">
-                                            <small id="lesson2"></small>
-                                        </c:if>
-                                        <c:if test="${(o.id < 9 || o.id == 9) && o.id % 4 == 3}">
-                                            <small id="lesson3"></small>
-                                        </c:if> 
-                                        <c:if test="${(o.id > 9) && o.id % 4 == 2}">
-                                            <small id="lesson1"></small>
-                                        </c:if>
-                                        <c:if test="${(o.id > 9) && o.id % 4 == 3}">
-                                            <small id="lesson2"></small>
-                                        </c:if>
-                                        <c:if test="${(o.id > 9) && o.id % 4 == 0}">
-                                            <small id="lesson3"></small>
-                                        </c:if> 
                                     </a>
 
 
@@ -152,19 +137,19 @@
                                  role="tabpanel"
                                  aria-labelledby="home-tab">
                                 <c:if test="${lessonDetail.videoLink == null}">
-                                    
+
                                 </c:if>
                                 <c:if test="${lessonDetail.videoLink != null}">
-                                   <iframe width="800" height="500"
-                                        id="myVideo"
-                                        src="${lessonDetail.videoLink}"
-                                        title="YouTube video player" 
-                                        frameborder="0"
-                                        allow="accelerometer;autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowfullscreen
-                                        ></iframe> 
-                                </c:if>
-                                
+                                    <iframe width="800" height="500"
+                                            id="myVideo"
+                                            src="${lessonDetail.videoLink}"
+                                            title="YouTube video player" 
+                                            frameborder="0"
+                                            allow="accelerometer;autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen
+                                            ></iframe> 
+                                    </c:if>
+
 
                                 <div class="d-flex mt-3 align-items-center" style="justify-content: flex-start">
                                     <a href="${path}/auth/user/course/lesson?operation=PREVIOUSLESSON&&lessonId=${sessionScope.lessonIdSession - 1}&&courseId=${sessionScope.courseId}">
@@ -197,12 +182,12 @@
                                  style="padding-right:20%"
                                  aria-labelledby="profile-tab">
                                 <c:if test="${lessonDetail.htmlContent == null}">
-                                    
+
                                 </c:if>
                                 <c:if test="${lessonDetail.htmlContent != null}">
                                     ${lessonDetail.htmlContent}
                                 </c:if>
-                                
+
                                 <div class="d-flex mt-3 align-items-center" style="justify-content: flex-start">
                                     <a href="${path}/auth/user/course/lesson?operation=PREVIOUSLESSON&&lessonId=${sessionScope.lessonIdSession - 1}&&courseId=${sessionScope.courseId}">
                                         <button ${disabled} ${sessionScope.lessonIdSession == minIdLesson ? "disabled":""} style="background-color: #f6a208;color:white" class="btn mr-3">
@@ -221,7 +206,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </c:if>
 
@@ -232,27 +217,11 @@
                 </c:if>
 
 
-                <c:forEach items="${allLesson}" var="o">
-                    <c:if test="${(o.id < 9 || o.id == 9) && o.id % 4 == 1}">
-                        <div id="player1" style="display:none"></div>
-                    </c:if>
-                    <c:if test="${(o.id < 9 || o.id == 9) && o.id % 4 == 2}">
-                        <div id="player2" style="display:none"></div>
-                    </c:if>
-                    <c:if test="${(o.id < 9 || o.id == 9) && o.id % 4 == 3}">
-                        <div id="player3" style="display:none"></div>
-                    </c:if> 
-                    <c:if test="${(o.id > 9) && o.id % 4 == 2}">
-                        <div id="player1" style="display:none"></div>
-                    </c:if>
-                    <c:if test="${(o.id > 9) && o.id % 4 == 3}">
-                        <div id="player2" style="display:none"></div>
-                    </c:if>
-                    <c:if test="${(o.id > 9) && o.id % 4 == 0}">
-                        <div id="player3" style="display:none"></div>
-                    </c:if> 
 
-
+                <c:forEach items="${lessonList}" var="o" varStatus="loop">
+                    <c:if test="${o.lessonType != 'QUIZ'}">
+                        <div id="player${loop.index+1}" style="display:none"></div>
+                    </c:if>
                 </c:forEach>
             </div>
             <div class="text-right mb-2 mt-4 mr-5">
@@ -313,7 +282,7 @@
         var firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         function onYouTubeIframeAPIReady() {
-        <c:forEach begin="1" end="${lessonList.size()-1}" var="i">
+        <c:forEach begin="1" end="${lessonList.size()}" var="i">
             <c:set var="property" value="videoId"/>
             player = new YT.Player("player${i}", {
                 height: '390',
