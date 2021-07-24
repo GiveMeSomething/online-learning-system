@@ -44,16 +44,16 @@
                 <h5>${requestScope.errorMessage}</h5>
             </div>
         </c:if>
-         <div style="background:#FFFFF0; display:flex;" class="py-2">
+        <div style="background:#FFFFF0; display:flex;" class="py-2">
             <div>
-                <button id="openNav" class="openbtn" onclick="openNav()" style="background: #FFFFF0; color: black">&#9776;</button>  
+                <button id="openNav" class="openbtn" onclick="openNav()" style="background: #FFFFF0; color: black">&#9776;</button>
             </div>
             <div style="justify-content: center; margin-left: 37rem">
                 <a class="navbar-brand" style="font-size: 2.5rem;" href="${path}/home">
                     <span style="color:blue">O</span>
                     <span style="color:orange">L</span>
                     <span style="color:green">S</span>
-                </a> 
+                </a>
             </div>
             <div style="margin-left: 30rem; margin-top: 1rem">
                 <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">

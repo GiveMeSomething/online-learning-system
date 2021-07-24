@@ -148,6 +148,9 @@ public class LessonController extends HttpServlet implements Controller {
         ArrayList<Lesson> lessons = this.lessonService.getLessonList(subjectId, keyword);
         currentSession.setAttribute("lessonList", lessons);
 
+        request.setAttribute("selectedKeyword", keyword);
+        request.setAttribute("selectedSubject", subjectId);
+
         // Send data to the list page
         int page = this.processPageParameter(request, response, lessons.size());
         ArrayList<Lesson> pageItems = this.getItemInPage(lessons, page);

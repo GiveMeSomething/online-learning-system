@@ -75,16 +75,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4 d-flex flex-wrap align-items-start justify-content-end mt-5" style="flex-basis: 25%">
-                    <c:forEach begin="0" items="${sessionScope.questionList}" varStatus="counter">
-                        <a href="${path}/auth/user/user_quiz?operation=VIEWQUIZREVIEW&quizId=${requestScope.quizId}&questionNum=${counter.index}"
-                           class="btn btn-lg btn-outline-success text-decoration-none">
-                            ${counter.index + 1}
-                        </a>
-                        <c:if test="${(counter.index + 1) % 5 == 0}">
-                            <br/>
-                        </c:if>
-                    </c:forEach>
+                <div class="col-3 mt-5 ml-3 w-100">
+                    <div class="row">
+                        <c:forEach begin="0" items="${sessionScope.questionList}" varStatus="counter">
+                            <div class="col-3" style="padding: 0 !important">
+                                <a href="${path}/auth/user/user_quiz?operation=VIEWQUIZREVIEW&quizId=${requestScope.quizId}&questionNum=${counter.index}"
+                                   class="btn btn-lg btn-outline-success text-decoration-none w-100">
+                                    ${counter.index + 1}
+                                </a>
+                            </div>
+                        </c:forEach>
+                    </div>
                 </div>
             </div>
             <div class="row mt-5">

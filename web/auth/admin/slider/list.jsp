@@ -38,17 +38,17 @@
             <a href="${path}/auth/teacher/subject">Subject List</a>
             <hr>
             <a href="${path}/auth/admin/slider" style="background: white; color: black">Slider List</a>
-        </div> 
+        </div>
         <div style="background:#FFFFF0; display:flex;" class="py-2">
             <div>
-                <button id="openNav" class="openbtn" onclick="openNav()" style="background: #FFFFF0; color: black">&#9776;</button>  
+                <button id="openNav" class="openbtn" onclick="openNav()" style="background: #FFFFF0; color: black">&#9776;</button>
             </div>
             <div style="justify-content: center; margin-left: 37rem">
                 <a class="navbar-brand" style="font-size: 2.5rem;" href="${path}/home">
                     <span style="color:blue">O</span>
                     <span style="color:orange">L</span>
                     <span style="color:green">S</span>
-                </a> 
+                </a>
             </div>
             <div style="margin-left: 30rem; margin-top: 1rem">
                 <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">
@@ -112,7 +112,7 @@
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
                     <!--                    <div class="add-lesson">
-                                            <a role="button" class="btn btn-success px-3 py-2" 
+                                            <a role="button" class="btn btn-success px-3 py-2"
                                                href="path}/auth/teacher/subject?operation=TONEWSUBJECT">
                                                 Add new Subject
                                             </a>
@@ -140,10 +140,10 @@
                             <th>
                                 Title
                             </th>
-                            <th > 
+                            <th >
                                 Note
                             </th>
-                            <th > 
+                            <th >
                                 Backlink
                             </th>
                             <th >
