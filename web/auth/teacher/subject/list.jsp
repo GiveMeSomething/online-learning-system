@@ -38,6 +38,8 @@
             <a href="${path}/auth/teacher/subject" style="background: white; color: black">Subject List</a>
             <hr>
             <a href="${path}/auth/admin/slider" >Slider List</a>
+            <hr>
+            <a href="${path}/auth/teacher/registration?operation=VIEWALL">Registration List</a>
         </div>
         <c:if test="${requestScope.errorMessage != null}">
             <div class="d-flex w-100 align-items-center justify-content-end">
