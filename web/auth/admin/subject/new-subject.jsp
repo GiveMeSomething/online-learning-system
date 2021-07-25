@@ -105,6 +105,7 @@
                 integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
         crossorigin="anonymous"></script>
         <script type="text/javascript" src="${path}/utilities/form-validator.js"></script>
+        <script type="text/javascript" src="${path}/ckeditor/ckeditor/ckeditor.js"></script>
         <script type="text/javascript">
                     function previewFile() {
                         const preview = document.querySelector('img');
