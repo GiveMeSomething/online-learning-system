@@ -144,21 +144,23 @@
         </style>
     </head>
     <body>
-        <div id="mySidebar" class="sidebar">
-            <button id="closeNav" class="openbtn" onclick="closeNav()" style="display: none; margin-top: -4rem; margin-bottom: 2rem; margin-left: 13rem"><span style="text-transform: uppercase">X</span></button>
-            <!--<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
-            <a href="${path}/auth/admin" >User List</a>
-            <hr>
-            <a href="${path}/auth/admin/dashboard">Dashboard</a>
-            <hr>
-            <a href="${path}/auth/admin/admin_blog?operation=VIEWALLPOST" style="background: white; color: black">Post List</a>
-            <hr>
-            <a href="${path}/auth/teacher/subject">Subject List</a>
-            <hr>
-            <a href="${path}/auth/admin/slider" >Slider List</a>
-            <hr>
-            <a href="${path}/auth/teacher/registration?operation=VIEWALL">Registration List</a>
-        </div>
+        <c:if test="${sessionScope.isTeacher != true}">
+            <div id="mySidebar" class="sidebar">
+                <button id="closeNav" class="openbtn" onclick="closeNav()" style="display: none; margin-top: -4rem; margin-bottom: 2rem; margin-left: 13rem"><span style="text-transform: uppercase">X</span></button>
+                <!--<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
+                <a href="${path}/auth/admin" >User List</a>
+                <hr>
+                <a href="${path}/auth/admin/dashboard">Dashboard</a>
+                <hr>
+                <a href="${path}/auth/admin/admin_blog?operation=VIEWALLPOST" style="background: white; color: black">Post List</a>
+                <hr>
+                <a href="${path}/auth/teacher/subject">Subject List</a>
+                <hr>
+                <a href="${path}/auth/admin/slider" >Slider List</a>
+                <hr>
+                <a href="${path}/auth/teacher/registration?operation=VIEWALL">Registration List</a>
+            </div>
+        </c:if>
         <div style="background:#FFFFF0; display:flex;" class="py-2">
             <div>
                 <button id="openNav" class="openbtn" onclick="openNav()" style="background: #FFFFF0; color: black">&#9776;</button>  
