@@ -225,8 +225,8 @@
                                         </c:forEach>
                                     </div>
                                 </div>
-                                <a href="${path}/auth/admin/adduser.jsp" class="btn btn-success btn-lg">
-                                    Add
+                                <a href="${path}/auth/admin/adduser.jsp" class="btn btn-success px-3 py-2">
+                                    Add new user
                                 </a>
                             </div>
                         </div>

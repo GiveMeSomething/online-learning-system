@@ -38,6 +38,8 @@
             <a href="${path}/auth/teacher/subject">Subject List</a>
             <hr>
             <a href="${path}/auth/admin/slider">Slider List</a>
+            <hr>
+            <a href="${path}/auth/teacher/registration?operation=VIEWALL">Registration List</a>
         </div>
         <div style="background:#FFFFF0; display:flex;" class="py-2">
             <div>
