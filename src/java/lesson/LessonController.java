@@ -219,8 +219,8 @@ public class LessonController extends HttpServlet implements Controller {
         }
         PrintWriter out = response.getWriter();
         User u = (User) session.getAttribute("user");
-        request.setAttribute("quizIdCuaDuyAnh", quizService.getQuizIdTheoYeuCauCuaDuyAnh(lessonId) + "");
-        session.setAttribute("quizIdCuaDuyAnh", String.valueOf(quizService.getQuizIdTheoYeuCauCuaDuyAnh(lessonId)));
+        request.setAttribute("quizIdCuaDuyAnh", quizService.getQuizIdTheoYeuCauCuaDuyAnh(courseId) + "");
+        session.setAttribute("quizIdCuaDuyAnh", String.valueOf(quizService.getQuizIdTheoYeuCauCuaDuyAnh(courseId)));
         String videoId = "DxcpvaDglb4";
         request.setAttribute("videoId", videoId);
         session.setAttribute("lessonIdSession", lessonId);

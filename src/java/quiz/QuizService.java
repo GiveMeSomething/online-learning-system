@@ -31,9 +31,9 @@ public class QuizService {
         return false;
     }
 
-    public int getQuizIdTheoYeuCauCuaDuyAnh(int lessonId) {
+    public int getQuizIdTheoYeuCauCuaDuyAnh(int courseId) {
         try {
-            return quizRepository.getQuizIdTheoYeuCauCuaDuyAnh(lessonId);
+            return quizRepository.getQuizIdTheoYeuCauCuaDuyAnh(courseId);
         } catch (Exception e) {
         }
         return 0;

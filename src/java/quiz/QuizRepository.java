@@ -565,11 +565,12 @@ public class QuizRepository extends Repository {
         return 0;
     }
 
-    public int getQuizIdTheoYeuCauCuaDuyAnh(int lessonId) throws SQLException {
+    public int getQuizIdTheoYeuCauCuaDuyAnh(int courseId) throws SQLException {
         this.connectDatabase();
-        String questionCount = "SELECT quiz_id FROM db_ite1.lesson where id = ?";
+//        String questionCount = "SELECT quiz_id FROM db_ite1.lesson where id = ?";
+        String questionCount = "SELECT quiz_id FROM db_ite1.lesson WHERE type_id = 3 AND course_id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(questionCount)) {
-            statement.setInt(1, lessonId);
+            statement.setInt(1, courseId);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 return result.getInt(1);
