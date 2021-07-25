@@ -532,17 +532,18 @@ public class QuizRepository extends Repository {
     public int countQuestion(Quiz quiz) throws SQLException {
         this.connectDatabase();
 
-        String questionCount = "SELECT COUNT(question_id) as question FROM question_quiz WHERE quiz_id = ?";
+        int numberOfQuestion = 0;
+        String questionCount = "select number_of_question from quiz_dimension_lesson where quiz_id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(questionCount)) {
             statement.setInt(1, quiz.getId());
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                return result.getInt("question");
+                numberOfQuestion += result.getInt("number_of_question");
             }
         } finally {
             this.disconnectDatabase();
         }
-        return 0;
+        return numberOfQuestion;
     }
 
     public int getNumberOfQuestion(Quiz quiz, int dimensionId) throws SQLException {
@@ -783,6 +784,6 @@ public class QuizRepository extends Repository {
 
     public static void main(String[] args) throws SQLException {
         QuizRepository qr = new QuizRepository();
-        System.out.println(qr.getMark("35", "1"));
+        
     }
 }

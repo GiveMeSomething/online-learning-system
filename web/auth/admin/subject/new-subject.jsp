@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <label for="myfile">Select a file:</label>
-                <input type="file" onchange="previewFile()" accept="image/*" id="myfile" name="thumbnail" size="50"><br><br>
+                <input type="file" onchange="previewFile()" accept="image/*" id="myfile" name="thumbnail" size="50" required="true"><br><br>
                 <div class="form-row">
                     <div class="mb-3 col-md-6">
                         <label for="category">Category</label>

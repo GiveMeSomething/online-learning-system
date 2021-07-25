@@ -268,7 +268,7 @@ public class SubjectController extends HttpServlet implements Controller {
 
         Course course = new Course(subjectName, description, ownerId, status, category, feature);
         if (courseService.checkCourseExist(subjectName, Integer.parseInt(category)) != null) {
-            response.sendRedirect(request.getContextPath() + "/auth/teacher/subject?mess=Already%20had%20this%20Course");
+            response.sendRedirect(request.getContextPath() + "/auth/teacher/subject?mess=Fail%20To%20Add%20New%20Course");
         } else {
             courseService.addNewSubject(course, inputStream);
             // Navigating to subject list

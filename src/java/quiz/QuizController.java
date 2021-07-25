@@ -553,6 +553,7 @@ public class QuizController extends HttpServlet implements Controller {
         String forwardTo = "/auth/teacher/quiz";
         String typeInString = request.getParameter("type");
         int quizId = Integer.parseInt(request.getParameter("quizId"));
+        int subjectId = Integer.parseInt(request.getParameter("subjectId"));
         Quiz newQuiz = quizService.getQuiz(quizId);
         int type;
         if (typeInString.equalsIgnoreCase("Group")) {
@@ -581,7 +582,7 @@ public class QuizController extends HttpServlet implements Controller {
             }
         }
         session.removeAttribute("quiz");
-        viewQuiz(request, response, quiz, "Add quiz Successfully");
+        processInputForQuiz(request, response, "Add quiz successfully");
     }
 
     public void updateQuizOverview(HttpServletRequest request, HttpServletResponse response)
