@@ -82,8 +82,6 @@ public class LessonRepository extends Repository {
                     statement.setString(1, lesson.getName());
                     statement.setInt(2, lesson.getOrder());
                     statement.setInt(3, lesson.getCourseId());
-                    statement.setInt(4, lesson.getOrder());
-                    statement.setInt(5, lesson.getCourseId());
 
                     return statement.executeUpdate() > 0;
                 } finally {
