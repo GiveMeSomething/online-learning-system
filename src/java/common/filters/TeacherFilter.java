@@ -48,17 +48,22 @@ public class TeacherFilter implements Filter {
 
         if (user == null || user.getEmail() == null) {
             pageResponse.sendRedirect(pageRequest.getContextPath() + "/home");
+            return;
         }
 
         authService = new AuthService();
-        Account account = authService.getAccount(user.getEmail());
+        try {
+            Account account = authService.getAccount(user.getEmail());
 
-        // Admin can also access teacher's feature
-        if (account != null && (account.getRole() == Role.TEACHER || account.getRole() == Role.ADMIN)) {
-            chain.doFilter(request, response);
-        } else {
+            // Admin can also access teacher's feature
+            if (account != null && (account.getRole() == Role.TEACHER || account.getRole() == Role.ADMIN)) {
+                chain.doFilter(request, response);
+                return;
+            }
+
+            pageResponse.sendRedirect(pageRequest.getContextPath() + "/home");
+        } catch (Exception e) {
             pageResponse.sendRedirect(pageRequest.getContextPath() + "/home");
         }
     }
-
 }

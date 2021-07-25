@@ -51,10 +51,13 @@ public class AdminFilter implements Filter {
         }
 
         authService = new AuthService();
-        Account account = authService.getAccount(user.getEmail());
-        if (account.getRole() == Role.ADMIN) {
-            chain.doFilter(request, response);
-        } else {
+        try {
+            Account account = authService.getAccount(user.getEmail());
+            if (account.getRole() == Role.ADMIN) {
+                chain.doFilter(request, response);
+            }
+            pageResponse.sendRedirect(pageRequest.getContextPath() + "/home");
+        } catch (Exception e) {
             pageResponse.sendRedirect(pageRequest.getContextPath() + "/home");
         }
     }
