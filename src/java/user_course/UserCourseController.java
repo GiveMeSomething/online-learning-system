@@ -261,7 +261,7 @@ public class UserCourseController extends HttpServlet implements Controller {
     private void deleteRegistration(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String mess = "";
-        boolean updateStatus = userCourseService.updateStatus(Integer.parseInt(request.getParameter("userId")), 
+        boolean updateStatus = userCourseService.updateStatus(Integer.parseInt(request.getParameter("userId")),
                 Integer.parseInt(request.getParameter("courseId")), 0);
         if (updateStatus) {
             mess = "Successfull";
@@ -410,7 +410,7 @@ public class UserCourseController extends HttpServlet implements Controller {
 
         // Get current user (teacher/admin) id to get the according subject list
         int teacherId;
-        if (currentSession.getAttribute("isAdmin") != null) {
+        if (currentSession.getAttribute("isAdmin") != null && (Boolean) currentSession.getAttribute("isAdmin")) {
             teacherId = -1;
         } else {
             teacherId = ((User) currentSession.getAttribute("user")).getId();

@@ -46,6 +46,10 @@ public class TeacherFilter implements Filter {
 
         User user = (User) currentSession.getAttribute("user");
 
+        if (user == null || user.getEmail() == null) {
+            pageResponse.sendRedirect(pageRequest.getContextPath() + "/home");
+        }
+
         authService = new AuthService();
         Account account = authService.getAccount(user.getEmail());
 

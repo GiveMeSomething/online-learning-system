@@ -46,8 +46,12 @@ public class AdminFilter implements Filter {
         HttpSession currentSession = pageRequest.getSession();
 
         User user = (User) currentSession.getAttribute("user");
-        Account account = authService.getAccount(user.getEmail());
+        if (user == null || user.getEmail() == null) {
+            pageResponse.sendRedirect(pageRequest.getContextPath() + "/home");
+        }
 
+        authService = new AuthService();
+        Account account = authService.getAccount(user.getEmail());
         if (account.getRole() == Role.ADMIN) {
             chain.doFilter(request, response);
         } else {
