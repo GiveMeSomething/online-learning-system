@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                         </div>
-                        <form method="POST" action="${path}/auth/user/user_quiz">
+                        <form method="POST" id="myForm" name="myForm" action="${path}/auth/user/user_quiz">
                             <c:set var="prevPage" value="${currentPage == null ? 1 : currentPage - 1}" />
                             <c:set var="nextPage" value="${currentPage == null ? 2 : currentPage + 1}"/>
                             <div class="request-info">
@@ -174,6 +174,7 @@
                                         <div class="modal-footer">
                                             <button type="button" data-dismiss="modal" class="btn btn-outline-dark">Back</button>
                                             <button class="btn btn-primary border-success align-items-center btn-success"
+                                                    id="final-score-button"
                                                     type="submit"
                                                     formmethod="POST"
                                                     formaction="${path}/auth/user/user_quiz?operation=SUBMITQUIZ&page=${getCurrentPage}">
@@ -452,6 +453,7 @@
                     if (distance < 0) {
                         clearInterval(x);
                         document.getElementById("timer").innerHTML = "EXPIRED";
+                        $('#final-score-button').trigger('click');
                     }
                 }, 1000);
             });
