@@ -9,9 +9,10 @@ public class PricePackage {
 
     private int id;
     private String name;
-    private float price;
+    // Anhvd: moi sua thanh double
+    private double price;
 
-    public PricePackage(int id, String name, float price) {
+    public PricePackage(int id, String name, double price) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -33,11 +34,11 @@ public class PricePackage {
         this.name = name;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

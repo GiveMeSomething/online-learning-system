@@ -34,12 +34,12 @@ public class EmailService {
         }
         return false;
     }
-    
+
     // Test send email for resetting password
     public boolean sendResetPasswordEmail(String host, String port, String email, String password, String receiver, String token) {
         try {
             String subject = "OLS Reset Password";
-            String content = "http://localhost:8080/online-learning-system/email?work=RESETPW1&email=" + receiver+"&token="+token;
+            String content = "http://localhost:8080/online-learning-system/email?work=RESETPW1&email=" + receiver + "&token=" + token;
             Emailer.sendEmail(host, port, email, password, receiver, subject, content);
 
             return true;
@@ -47,6 +47,19 @@ public class EmailService {
             e.printStackTrace();
             return false;
         }
+    }
 
+    // Test send email
+    public boolean sendNewAccount(String host, String port, String email, String password, String receiver) {
+        try {
+            String subject = "OLS New Account Info";
+            String content = "Your Email:" + receiver + "\nYour Password: abc123\nPlease change your password as soon as you received this mail";
+            Emailer.sendEmail(host, port, email, password, receiver, subject, content);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

@@ -28,11 +28,30 @@
             <div class="row">
                 <div class="col-md-5">
                     <div class="w-75">
-                        <img class="mb-3" style="width: 90%"
-                             src="${sessionScope.user.image}" class="img-rounded img-responsive"><br>
+                        <img class="mb-3" style="width: 346px;height:336px;border-radius:50%;margin-top:-12%"
+                             src="${path}/assets/${image}" class="img-rounded img-responsive"><br>
                         <p class="text-center" style="color:#959fb2">
                             Email: ${sessionScope.user.email}
                         </p>
+                        <!--UPLOAD MEDIA-->
+                        <div style="width: 85%;margin: 0 auto;margin-bottom: 10px">
+                            <form class="mt-3" action="${path}/auth/user/?operation=UPLOADAVATAR" method="POST" enctype="multipart/form-data">
+                                <div class="d-flex align-items-center">
+                                    <label style="background: red;margin-bottom: 0;
+                                           text-align:center;padding:5px;width: 146px;height:34px;
+                                           border-radius:5px;color:white;font-size:17px" for="file-upload" class="custom-file-upload">
+                                        Upload Avatar
+                                        <input style="color:transparent;opacity: 0"
+                                               type="file" name="photo" value="" id="file-upload" /></label>
+                                    <div style="margin-left: 10px">
+                                        <button style="width: 146px;height: 34px;padding: 5px" class="btn btn-success" type="submit" value="Save">
+                                            Update Avatar
+                                        </button>            
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
                         <h4>Change your password</h3>
                             <form action="${path}/authenticate"
                                   method="POST"
@@ -80,7 +99,7 @@
                             </form>
                     </div>
                 </div>
-                <form action="${path}/user"
+                <form action="${path}/auth/user/"
                       method="POST"
                       class="col-md-7 needs-validation"
                       novalidate>
@@ -109,7 +128,7 @@
                                type="text"
                                id="image"
                                placeholder="Image url"
-                               value="${sessionScope.user.image}"
+                               value="${image}"
                                data-value-missing="Can't be empty"
                                required/>
                         <div class="invalid-feedback"></div>
@@ -199,54 +218,6 @@
                                data-value-missing="Can't be empty"
                                required/>
                         <div class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group">
-                        <div class="d-flex align-items-center">
-                            <p class="mb-0 mr-3">Status</p>
-                            <c:if test="${sessionScope.user.status == 'ACTIVE'}">
-                                <input name="status"
-                                       type="radio"
-                                       id="active"
-                                       value="ACTIVE"
-                                       checked
-                                       data-value-missing="Can't be empty"
-                                       required/>
-                                <label style="margin-top: 7px" class="mr-3 ml-1" for="male">
-                                    Active
-                                </label><br>
-                                <div class="invalid-feedback"></div>
-                                <input name="status"
-                                       type="radio"
-                                       id="inactive"
-                                       value="INACTIVE"
-                                       data-value-missing="Can't be empty"
-                                       required/>
-                                <label style="margin-top: 7px" class="ml-1" for="female">
-                                    Inactive
-                                </label><br>
-                                <div class="invalid-feedback"></div>
-                            </c:if>
-
-                            <c:if test="${sessionScope.user.status == 'INACTIVE'}">
-                                <input name="status"
-                                       type="radio"
-                                       id="active"
-                                       value="ACTIVE"
-                                       data-value-missing="Can't be empty"
-                                       required>
-                                <label style="margin-top: 7px" class="mr-3 ml-1" for="male">
-                                    Active
-                                </label><br>
-                                <div class="invalid-feedback"></div>
-                                <input
-                                    checked type="radio" id="inactive"
-                                    name="status" value="INACTIVE">
-                                <label style="margin-top: 7px" class="ml-1" for="female">
-                                    Inactive
-                                </label><br>
-                                <div class="invalid-feedback"></div>
-                            </c:if>
-                        </div>
                     </div>
                     <div class="form-group">
                         <label for="mobile">Mobile</label>

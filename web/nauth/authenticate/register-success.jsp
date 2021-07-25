@@ -24,7 +24,7 @@
     </head>
     <body>
         <div class="d-flex flex-column w-100 align-items-center justify-content-center" style="height: 100vh">
-            <h3>Register successful. Please check your email to activate account.</h3>
+            <h3>Register successful</h3>
             <h4> Click <a href="${path}/home"> here </a> to return to Homepage and login
         </div>
     </body>

@@ -19,32 +19,30 @@
     <body>
         <div id="mySidebar" class="sidebar">
             <!--<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
-            <a href="#" onclick="userRoleOn()">User Roles</a>
+            <a href="${path}/auth/admin">User List</a>
             <hr>
-            <a href="#" onclick="systemMenuOn()">System Menu</a>
+            <a href="${path}/auth/admin/dashboard" onclick="systemMenuOn()">Dashboard</a>
             <hr>
-            <a href="#" onclick="postCategoryOn()">Post Categories</a>
+            <a href="${path}/auth/admin/admin_blog?operation=VIEWALLPOST" onclick="postCategoryOn()">Post List</a>
             <hr>
-            <a href="#" onclick="subjectCategoryOn()">Subject Categories</a>
+            <a href="${path}/auth/teacher/subject" onclick="subjectCategoryOn()">Subject List</a>
             <hr>
-            <a href="#" onclick="testTypeOn()">Test Types</a>
+            <a href="${path}/auth/admin/slider" onclick="testTypeOn()">Slider List</a>
             <hr>
-            <a href="#" onclick="questionLevelOn()">Question Levels</a>
-            <hr>
-            <a href="#" onclick="lessonTypeOn()">Lesson Types</a>
-            <hr>
-            <a href="#" onclick="subjectDimensionOn()">Subject Dimension</a>
+            <a href="${path}/auth/teacher/lesson" onclick="lessonTypeOn()">Lesson List</a>
         </div>
         <div id="main">
             <button id="openNav" class="openbtn" onclick="openNav()">&#9776; Open Sidebar</button>
             <button id="closeNav" class="openbtn" onclick="closeNav()" style="display: none">&#9776; Close Sidebar</button>
             <div id="userRole" style="display: block">
-                <h1>Welcome to user role</h1>
-                <p>User Role's content</p>
+                <!--                                <h1>Welcome to user role</h1>
+                                                <p>User Role's content</p>-->
+
             </div>            
             <div id="systemMenu" style="display: none">
-                <h1>Welcome to System Menu</h1>
-                <p>System Menu's content</p>
+                <!--                <h1>Welcome to System Menu</h1>
+                                <p>System Menu's content</p>-->
+                <jsp:include page="/auth/admin/dashboard.jsp" />
             </div>          
             <div id="postCategory" style="display: none">
                 <h1>Welcome to Post Category</h1>
@@ -151,7 +149,7 @@
                 lessonType.style.display = 'none';
                 subjectDimension.style.display = 'none';
             }
-            
+
             function  testTypeOn() {
                 var userRole = document.getElementById('userRole');
                 var systemMenu = document.getElementById('systemMenu');
@@ -171,7 +169,7 @@
                 lessonType.style.display = 'none';
                 subjectDimension.style.display = 'none';
             }
-            
+
             function  questionLevelOn() {
                 var userRole = document.getElementById('userRole');
                 var systemMenu = document.getElementById('systemMenu');
@@ -191,7 +189,7 @@
                 lessonType.style.display = 'none';
                 subjectDimension.style.display = 'none';
             }
-            
+
             function  lessonTypeOn() {
                 var userRole = document.getElementById('userRole');
                 var systemMenu = document.getElementById('systemMenu');
@@ -211,7 +209,7 @@
                 lessonType.style.display = 'block';
                 subjectDimension.style.display = 'none';
             }
-            
+
             function  subjectDimensionOn() {
                 var userRole = document.getElementById('userRole');
                 var systemMenu = document.getElementById('systemMenu');
@@ -231,7 +229,7 @@
                 lessonType.style.display = 'none';
                 subjectDimension.style.display = 'block';
             }
-            
+
 
             /* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
             function openNav() {
@@ -241,36 +239,7 @@
                 document.getElementById("main").style.marginLeft = "250px";
             }
 
-            /* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
-            function closeNav() {
-                document.getElementById("openNav").style.display = "block";
-                document.getElementById("closeNav").style.display = "none";
-                document.getElementById("mySidebar").style.width = "0";
-                document.getElementById("main").style.marginLeft = "0";
-            }
-            function myAccFunc() {
-                var x = document.getElementById("demoAcc");
-                if (x.className.indexOf("w3-show") == -1) {
-                    x.className += " w3-show";
-                    x.previousElementSibling.className += " w3-black";
-                } else {
-                    x.className = x.className.replace(" w3-show", "");
-                    x.previousElementSibling.className =
-                            x.previousElementSibling.className.replace(" w3-black", "");
-                }
-            }
 
-            function myDropFunc() {
-                var x = document.getElementById("demoDrop");
-                if (x.className.indexOf("w3-show") == -1) {
-                    x.className += " w3-show";
-                    x.previousElementSibling.className += " w3-black";
-                } else {
-                    x.className = x.className.replace(" w3-show", "");
-                    x.previousElementSibling.className =
-                            x.previousElementSibling.className.replace(" w3-black", "");
-                }
-            }
         </script>
     </body>
 </html>

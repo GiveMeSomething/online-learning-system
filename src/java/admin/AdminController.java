@@ -103,13 +103,15 @@ public class AdminController extends HttpServlet {
         int roleId;
         if (roleName.equals("STUDENT")) {
             roleId = 2;
+        } else if (roleName.equals("ADMIN")) {
+            roleId = 0;
         } else {
             roleId = 1;
         }
         int id = dao.getNewId();
         dao.insertAccount(email, password, roleId);
         dao.insertUser(id, image, fullname, gender, email, address, status, mobile);
-      response.sendRedirect(request.getContextPath() + "/auth/admin");
+        response.sendRedirect(request.getContextPath() + "/auth/admin");
     }
 
     public void updateUser(HttpServletRequest request, HttpServletResponse response)

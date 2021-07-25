@@ -12,7 +12,6 @@ import common.entities.Status;
 import common.entities.User;
 import common.utilities.Controller;
 import java.io.IOException;
-import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -39,8 +38,7 @@ public class AuthController extends HttpServlet implements Controller {
 
         if (operation.equals("LOGOUT")) {
             HttpSession session = request.getSession();
-            session.setAttribute("isAdmin", false);
-            session.removeAttribute("user");
+            session.invalidate();
         }
         response.sendRedirect("home");
     }
@@ -74,20 +72,23 @@ public class AuthController extends HttpServlet implements Controller {
             String newPassword = request.getParameter("new-password");
             String confirmPassword = request.getParameter("confirm-password");
             processChangePassword(request, response, oldPassword, newPassword, confirmPassword);
-        }else if(operation.equals("RESETPW1")){
+        } else if (operation.equals("RESETPW1")) {
             // Test how this RESETPW1 works
             String email = request.getParameter("email");
-            String resetEmailPath = "/email?operation=RESETPW&receiver=" + email+"&token=";
+            if (authService.getAccount(email) == null) {
+                this.forwardErrorMessage(request, response, "Email cannot be found", "nauth/resetPassword1.jsp");
+            }
+            String resetEmailPath = "/email?operation=RESETPW&receiver=" + email + "&token=";
             String reset = "/email?work=RESETPW&email=" + email;
-            
+
             // Push reset into Session
             HttpSession ses = request.getSession();
             ses.setAttribute("resetPath", reset);
             // Set time for this session, hope this gonna work!
             ses.setMaxInactiveInterval(30);
-            
+
             request.getRequestDispatcher(resetEmailPath).forward(request, response);
-        }else if(operation.equals("RESETPW2")){
+        } else if (operation.equals("RESETPW2")) {
             // Test changing password
             String newPassword = request.getParameter("new-password");
             String confirmPassword = request.getParameter("confirm-password");
@@ -99,15 +100,14 @@ public class AuthController extends HttpServlet implements Controller {
     private void processLogin(HttpServletRequest request, HttpServletResponse response, String email, String password)
             throws ServletException, IOException {
         // Get token from cookies
-        String cookieToken = getToken(request);
+        String cookieToken = getToken(request, email);
         String forwardTo = request.getParameter("previousPage");
 
         Account userAccount = new Account(email, password);
         String accountToken = authService.login(userAccount);
 
-        if (accountToken == null) {
-            System.out.println(forwardTo);
-            this.forwardErrorMessage(request, response, "Login failed", forwardTo);
+        if (accountToken == null || accountToken.equals("")) {
+            response.sendRedirect(request.getContextPath() + "/" + forwardTo);
             return;
         }
 
@@ -116,7 +116,6 @@ public class AuthController extends HttpServlet implements Controller {
             String confirmEmailPath = "/email?operation=AUTH&receiver=" + email;
             request.getRequestDispatcher(confirmEmailPath).forward(request, response);
         } else {
-            // Process if login by admin account
             HttpSession session = request.getSession();
 
             User currentUser = userService.getUser(email);
@@ -125,12 +124,18 @@ public class AuthController extends HttpServlet implements Controller {
 
             if (userAccount.getRole() == Role.ADMIN) {
                 session.setAttribute("isAdmin", true);
+                session.setAttribute("isTeacher", false);
                 response.sendRedirect("auth/admin");
-            } else {
+                return;
+            } else if (userAccount.getRole() == Role.TEACHER) {
                 // Student or Teacher
                 session.setAttribute("isAdmin", false);
-                response.sendRedirect(forwardTo);
+                session.setAttribute("isTeacher", true);
+            } else {
+                session.setAttribute("isAdmin", false);
+                session.setAttribute("isTeacher", false);
             }
+            response.sendRedirect(forwardTo);
         }
     }
 
@@ -139,7 +144,7 @@ public class AuthController extends HttpServlet implements Controller {
         // Add new account and user. Then set token to user's browser's cookie
         String userToken = addAccount(request, response, userAccount, user);
         if (userToken != null) {
-            addTokenToCookie(response, userToken);
+            addTokenToCookie(response, userToken, user.getEmail());
 
             // Forward to send confirm email (using email and userToken)
             String confirmEmailPath = "/email?operation=CONFIRM&receiver=" + userAccount.getEmail() + "&token=" + userToken;
@@ -152,7 +157,6 @@ public class AuthController extends HttpServlet implements Controller {
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("user");
 
-        String forwardTo = request.getParameter("previousPage");
         boolean isChanged = false;
 
         if (currentUser != null && newPassword.equals(confirmPassword)) {
@@ -161,25 +165,26 @@ public class AuthController extends HttpServlet implements Controller {
             }
         }
         if (isChanged) {
-            response.sendRedirect("user");
+            response.sendRedirect(request.getContextPath() + "/home?mess=success");
         } else {
-            this.forwardErrorMessage(request, response, "Can't change password. Please check again later", forwardTo);
+            response.sendRedirect(request.getContextPath() + "/home?mess=fail");
         }
     }
-    
+
     //Vu Duy Anh: In Progress (bug: after changed password, still click to the link and change again)
     private void processResetPassword(HttpServletRequest request, HttpServletResponse response,
             String newPassword, String confirmPassword, String email) throws ServletException, IOException {
-        String forwardTo = request.getParameter("previousPage");
+        HttpSession session = request.getSession();
         boolean isChanged = false;
 
         if (authService.getAccount(email) != null && newPassword.equals(confirmPassword)) {
-                isChanged = authService.changePassword(email, newPassword);
+            isChanged = authService.changePassword(email, newPassword);
         }
         if (isChanged) {
-            response.sendRedirect("home");
+            session.removeAttribute("resetPath");
+            response.sendRedirect(request.getContextPath() + "/home?mess=success");
         } else {
-            this.forwardErrorMessage(request, response, "Can't change password. Please check again later", forwardTo);
+            response.sendRedirect(request.getContextPath() + "/home?mess=fail");
         }
     }
 
@@ -206,9 +211,9 @@ public class AuthController extends HttpServlet implements Controller {
         }
     }
 
-    private void addTokenToCookie(HttpServletResponse response, String token) {
+    private void addTokenToCookie(HttpServletResponse response, String token, String email) {
         // Put userToken into cookie for later authorization
-        Cookie userCookie = new Cookie("ols-token", token);
+        Cookie userCookie = new Cookie("ols-token-" + email.hashCode(), token);
         response.addCookie(userCookie);
     }
 
@@ -224,11 +229,11 @@ public class AuthController extends HttpServlet implements Controller {
         }
     }
 
-    private String getToken(HttpServletRequest request) {
+    private String getToken(HttpServletRequest request, String email) {
         Cookie userCookies[] = request.getCookies();
 
         // Get required token from user browser cookie
-        String requiredCookieName = "ols-token";
+        String requiredCookieName = "ols-token-" + email.hashCode();
         for (Cookie cookie : userCookies) {
             if (cookie.getName().equals(requiredCookieName)) {
                 return cookie.getValue();

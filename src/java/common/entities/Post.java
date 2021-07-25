@@ -14,6 +14,7 @@ public class Post {
     private String postId;
     private String thumbnail;
     private String categoryId;
+    private String categoryName;
     private String title;
     private String briefInfo;
     private String description;
@@ -25,17 +26,36 @@ public class Post {
     public Post() {
     }
 
+    public Post(String postId, String thumbnail, String categoryId, String title, String briefInfo, String description, String feature, String statusId) {
+        this.postId = postId;
+        this.thumbnail = thumbnail;
+        this.categoryId = categoryId;
+        this.title = title.trim();
+        this.briefInfo = briefInfo.trim();
+        this.description = description.trim();
+        this.feature = feature;
+        this.statusId = statusId;
+    }
+
     public Post(String postId, String thumbnail, String categoryId, String title, String briefInfo, String description, String feature, String statusId, String authorId, String updatedDate) {
         this.postId = postId;
         this.thumbnail = thumbnail;
         this.categoryId = categoryId;
         this.title = title;
         this.briefInfo = briefInfo;
-        this.description = description;
+        this.description = description.trim();
         this.feature = feature;
         this.statusId = statusId;
         this.authorId = authorId;
         this.updatedDate = updatedDate;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getAuthorId() {
@@ -95,7 +115,7 @@ public class Post {
     }
 
     public String getDescription() {
-        return description;
+        return description.trim();
     }
 
     public void setDescription(String description) {
@@ -120,8 +140,9 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{" + "postId=" + postId + ", thumbnail=" + thumbnail + ", categoryId=" + categoryId + ", title=" + title + ", briefInfo=" + briefInfo + ", description=" + description + ", feature=" + feature + ", statusId=" + statusId + ", authorId=" + authorId + ", updatedDate=" + updatedDate + '}';
+        return "Post{" + "postId=" + postId + ", thumbnail=" + thumbnail + ", categoryId=" + categoryId + ", categoryName=" + categoryName + ", title=" + title + ", briefInfo=" + briefInfo + ", description=" + description + ", feature=" + feature + ", statusId=" + statusId + ", authorId=" + authorId + ", updatedDate=" + updatedDate + '}';
     }
 
     
+
 }

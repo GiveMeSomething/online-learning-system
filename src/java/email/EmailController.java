@@ -7,8 +7,8 @@ package email;
 
 import auth.AuthService;
 import common.entities.Account;
+import common.utilities.Controller;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class EmailController extends HttpServlet {
+public class EmailController extends HttpServlet implements Controller {
 
     private String host;
     private String port;
@@ -44,7 +44,6 @@ public class EmailController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String operation = request.getParameter("work");
-
         if (operation.equals("CONFIRM")) {
             // Reads request data
             String userEmail = request.getParameter("email");
@@ -56,7 +55,7 @@ public class EmailController extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/home");
             } else {
                 // Do something when active fail
-                response.sendRedirect("nauth/authenticate/register-failed.jsp");
+                response.sendRedirect(request.getContextPath() + "/nauth/authenticate/register-failed.jsp");
             }
 
         } else if (operation.equals("RESETPW")) {
@@ -67,16 +66,18 @@ public class EmailController extends HttpServlet {
         } else if (operation.equals("RESETPW1")) {
             // This is middle space which navigate to operation RESETPW
             String resetEmail = request.getParameter("email");
-            request.setAttribute("email", email);
-            
+            request.setAttribute("email", resetEmail);
+
             // Get reset path in AuthController through session
             HttpSession ses = request.getSession(false);
+            if (ses == null) {
+                this.forwardErrorMessage(request, response, "this session has been expired", "nauth/resetPassword1.jsp");
+            }
             Object obj = ses.getAttribute("resetPath");
-            
+
             // Test if session ends, link will be expired or not
             if (obj == null) {
-                PrintWriter out = response.getWriter();
-                out.println("<h3>This link was expired</h3>");
+                this.forwardErrorMessage(request, response, "this link has been expired", "nauth/resetPassword1.jsp");
             } else {
                 request.getRequestDispatcher((String) obj).forward(request, response);
             }
@@ -86,9 +87,9 @@ public class EmailController extends HttpServlet {
             String cryptPassword = request.getParameter("password");
 
             String token = authService.getToken(userEmail, cryptPassword);
-            addTokenToCookie(response, token);
+            addTokenToCookie(response, token, userEmail);
 
-            response.sendRedirect(request.getContextPath() + "/home");
+            response.sendRedirect(request.getContextPath() + "/nauth/authenticate/auth-success.jsp");
         } else {
             response.sendRedirect(request.getContextPath() + "/home");
         }
@@ -99,33 +100,32 @@ public class EmailController extends HttpServlet {
             throws ServletException, IOException {
         // Get operation from request
         String operation = request.getParameter("operation");
-
         if (operation.equals("CONFIRM")) {
             // Reads request data
-            String inputEmail = request.getParameter("receiver");
-            String token = request.getParameter("token");
-            String forwardTo = request.getParameter("previousPage");
-            boolean isSent = emailService.sendConfirmEmail(host, port, email, password, inputEmail, token);
-
-            if (isSent) {
-                // Do something
-                System.out.println("Email sent");
-            } else {
-                // Do something else
-                System.out.println("Can't send");
-            }
-
-            response.sendRedirect(forwardTo);
+            processConfirm(request, response);
         } else if (operation.equals("RESETPW")) {
             // Test if send successfully
             String thisEmail = request.getParameter("email");
             String token = request.getParameter("token");
             boolean isSent = emailService.sendResetPasswordEmail(host, port, email, password, thisEmail, token);
+            if(isSent){
+                this.forwardErrorMessage(request, response, "Send email successfully", "nauth/resetPassword1.jsp");
+            }else{
+                response.sendRedirect(request.getContextPath() + "/home?mess=fail");
+            }
         } else if (operation.equals("AUTH")) {
             processAuth(request, response);
+        } else if (operation.equals("CREATENEWACCOUNT")) {
+            String newEmail = request.getParameter("receiver");
+            boolean isSent = emailService.sendNewAccount(host, port, email, password, newEmail);
+            if (isSent) {
+                System.out.println("sent");
+            } else {
+                System.out.println("not sent");
+            }
+            response.sendRedirect(request.getContextPath() + "/nauth/authenticate/register-success.jsp");
         } else {
             response.sendRedirect("/home");
-
         }
     }
 
@@ -145,7 +145,7 @@ public class EmailController extends HttpServlet {
             System.out.println("Can't send");
         }
 
-        response.sendRedirect("nauth/authenticate/register-success.jsp");
+        response.sendRedirect(request.getContextPath() + "/nauth/authenticate/register-success.jsp");
     }
 
     public void processAuth(HttpServletRequest request, HttpServletResponse response)
@@ -164,12 +164,12 @@ public class EmailController extends HttpServlet {
             System.out.println("Can't send");
         }
 
-        response.sendRedirect("nauth/authenticate/auth-success.jsp");
+        response.sendRedirect(request.getContextPath() + "/nauth/authenticate/auth-failed.jsp");
     }
 
-    private void addTokenToCookie(HttpServletResponse response, String token) {
+    private void addTokenToCookie(HttpServletResponse response, String token, String email) {
         // Put userToken into cookie for later authorization
-        Cookie userCookie = new Cookie("ols-token", token);
+        Cookie userCookie = new Cookie("ols-token-" + email.hashCode(), token);
         response.addCookie(userCookie);
     }
 }

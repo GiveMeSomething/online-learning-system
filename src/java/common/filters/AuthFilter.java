@@ -33,11 +33,14 @@ public class AuthFilter implements Filter {
 
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {
         HttpServletRequest pageRequest = (HttpServletRequest) request;
         HttpServletResponse pageResponse = (HttpServletResponse) response;
         HttpSession currentSession = pageRequest.getSession();
+
+        System.out.println(pageRequest.getRequestURL().toString());
 
         // To 'login' if user not yet logged in, else check token (authorization)
         User currentUser = getUser(currentSession);
@@ -46,9 +49,8 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        String token = getToken(pageRequest, currentSession);
-
         // If no token is found, send confirm email
+        String token = getToken(pageRequest, currentSession);
         if (token == null || token.equals("")) {
             String confirmEmailPath = pageRequest.getContextPath() + "/email?operation=AUTH&receiver=" + currentUser.getEmail();
             request.getRequestDispatcher(confirmEmailPath).forward(request, response);
@@ -62,31 +64,19 @@ public class AuthFilter implements Filter {
         // Check if token is in session, else get from cookie and auth
         User currentUser = (User) session.getAttribute("user");
         String token;
-        try {
-            token = (String) session.getAttribute("ols-token");
-            if (token == null || token.equals("")) {
-                // Get token from cookie
-                token = getToken(request);
-                if (authService.isValidToken(currentUser.getEmail(), token)) {
-                    return token;
-                }
-
-                return null;
-            }
-        } catch (ClassCastException e) {
-            System.out.println(e.getMessage() + " at AuthFilter ");
-            return null;
+        token = getToken(request, currentUser.getEmail());
+        if (authService.isValidToken(currentUser.getEmail(), token)) {
+            return token;
         }
-
-        return token;
+        return null;
     }
 
     // Get token from cookie
-    private String getToken(HttpServletRequest request) {
+    private String getToken(HttpServletRequest request, String email) {
         Cookie userCookies[] = request.getCookies();
 
         // Get required token from user browser cookie
-        String requiredCookieName = "ols-token";
+        String requiredCookieName = "ols-token-" + email.hashCode();
         for (Cookie cookie : userCookies) {
             if (cookie.getName().equals(requiredCookieName)) {
                 return cookie.getValue();

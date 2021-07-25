@@ -38,24 +38,24 @@
                                         ${o.courseName}
                                     </b><br>
                                     <span class="text-light banner-secondary">
-                                        ${o.description}
+                                        ${o.tag}
                                         <div style="margin-top:10px;background-color: #fce59b;width:80px;height:35px;color:#2b1b13;border-radius: 10px;text-align: center;line-height:30px;align-items: center">Best seller</div>
                                     </span><br/>
                                     <div class="row">
-                                        <a href="#" class="btn ml-3 mr-2"
+                                        <a href="course?courseId=${o.id}" class="btn ml-3 mr-2"
                                            style="background-color: #f53f34;color:white;border-radius:0px">
-                                            Check Out
+                                            More...
                                         </a>
-                                        <a href="#" class="btn"
-                                           style="background-color: #072b7d;color:white;border-radius:0px">
-                                            Register
-                                        </a>
+
                                     </div>
                                 </div>
                             </div>
-                            <img class="d-block w-100"
-                                 style="height: 500px"
-                                 src="${o.imageLink}" alt="First slide">
+                            <a href="course?courseId=${o.id}">
+                                <img class="d-block w-100"
+                                     style="height: 500px"
+                                     src="${o.imageLink}" alt="First slide"> 
+                            </a>
+
                         </div>
                     </c:forEach>
                 </div>
@@ -119,14 +119,14 @@
                     <h3>Other Courses</h3>
                     <div class="row">
                         <c:forEach items="${course}" var="o">
-                            <div class="col-3">
+                            <div class="col-3 mb-3">
                                 <div class="card h-100" style="font-size: 1rem; ">
                                     <a href="course?courseId=${o.id}">
                                         <img style="cursor: pointer" src="${o.imageLink}"
                                              class="card-img-top" alt="...">
                                     </a>
                                     <div class="card-body">
-                                        <div style="min-height: 27vh">
+                                        <div style="min-height: 25vh">
                                             <a href="course?courseId=${o.id}" style="text-decoration: none; color: black">
                                                 <h5 class="card-title" style="cursor: pointer">${o.courseName}</h5>
                                             </a>
@@ -140,21 +140,10 @@
                                                 ${o.tag}
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="d-flex flex-column justify-content-end align-items-center">
-                                                <div class="row">
-                                                    <div class="col-5 m-1">
-                                                        <a href="#" class="text-decoration-none">
-                                                            <button class="btn btn-success">Checkout</button>
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-5 m-1">
-                                                        <a href="#" class="text-decoration-none">
-                                                            <button class="btn btn-primary">Register</button>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div class="text-center">
+                                            <a href="course?courseId=${o.id}" class="text-decoration-none">
+                                                <button class="btn btn-success">More...</button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -166,7 +155,22 @@
             <div class="clearfix text-center">
                 <ul class="pagination justify-content-center mb-5">
                     <li class="page-item">
-                        <a style="color:#005b96" href="#" class="page-link">Previous</a>
+                        <c:choose>
+                            <c:when test="${tag > 1}">
+                                <a style="color:#005b96"
+                                   href="course?index=${tag-1}&&cID=${sessionScope.categoryId}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
+                                   class="page-link">
+                                    Previous
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <a style="color:#005b96"
+                                   href="course?index=${tag}&&cID=${sessionScope.categoryId}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
+                                   class="page-link">
+                                    Previous
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
                     </li>
                     <c:forEach begin="1" end="${end}" var="i">
                         <li class="page-item page-item-paging ${tag == i?"active":""}">
@@ -178,9 +182,22 @@
                         </li>
                     </c:forEach>
                     <li class="page-item">
-                        <a style="color:#005b96" href="#" class="page-link">
-                            Next
-                        </a>
+                        <c:choose>
+                            <c:when test="${end < (tag+1)}">
+                                <a style="color:#005b96"
+                                   href="course?index=${tag}&&cID=${sessionScope.categoryId}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
+                                   class="page-link">
+                                    Next
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <a style="color:#005b96"
+                                   href="course?index=${tag+1}&&cID=${sessionScope.categoryId}&&searchName=${sessionScope.searchName}&&price=${sessionScope.price}&&alpha=${sessionScope.alpha}"
+                                   class="page-link">
+                                    Next
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
                     </li>
                 </ul>
             </div>

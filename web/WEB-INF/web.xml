@@ -9,23 +9,23 @@
         <filter-name>AdminFilter</filter-name>
         <filter-class>common.filters.AdminFilter</filter-class>
     </filter>
-    <!--Servlet-->
     <filter>
         <filter-name>TeacherFilter</filter-name>
         <filter-class>common.filters.TeacherFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>TeacherFilter</filter-name>
-        <url-pattern>/teacher/*</url-pattern>
+        <url-pattern>/auth/teacher/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>AdminFilter</filter-name>
-        <url-pattern>/admin/*</url-pattern>
+        <url-pattern>/auth/admin/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
         <url-pattern>/auth/*</url-pattern>
     </filter-mapping>
+    <!--Servlet-->
     <servlet>
         <servlet-name>AuthController</servlet-name>
         <servlet-class>auth.AuthController</servlet-class>
@@ -50,7 +50,10 @@
         <servlet-name>BlogController</servlet-name>
         <servlet-class>blog.BlogController</servlet-class>
     </servlet>
-    <!--Servlet Mapping-->
+    <servlet>
+        <servlet-name>SubjectController</servlet-name>
+        <servlet-class>subject.SubjectController</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>QuestionController</servlet-name>
         <servlet-class>question.QuestionController</servlet-class>
@@ -60,12 +63,17 @@
         <servlet-class>quiz.QuizController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SubjectController</servlet-name>
-        <servlet-class>subject.SubjectController</servlet-class>
+        <servlet-name>UserCourseController</servlet-name>
+        <servlet-class>user_course.UserCourseController</servlet-class>
     </servlet>
+    <!--Servlet Mapping-->
     <servlet>
         <servlet-name>LessonController</servlet-name>
         <servlet-class>lesson.LessonController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SliderController</servlet-name>
+        <servlet-class>slider.SliderController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AuthController</servlet-name>
@@ -105,7 +113,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
-        <url-pattern>/user</url-pattern>
+        <url-pattern>/auth/user/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EmailController</servlet-name>
@@ -116,8 +124,41 @@
         <url-pattern>/course</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>CourseController</servlet-name>
+        <url-pattern>/auth/user/course</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>BlogController</servlet-name>
         <url-pattern>/blog</url-pattern>
+        <url-pattern>/auth/admin/blog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogController</servlet-name>
+        <url-pattern>/auth/admin/admin_blog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuestionController</servlet-name>
+        <url-pattern>/auth/teacher/question</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuizController</servlet-name>
+        <url-pattern>/auth/teacher/quiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuizController</servlet-name>
+        <url-pattern>/auth/user/user_quiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubjectController</servlet-name>
+        <url-pattern>/auth/teacher/subject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserCourseController</servlet-name>
+        <url-pattern>/auth/user/UserCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserCourseController</servlet-name>
+        <url-pattern>/auth/teacher/registration</url-pattern>
     </servlet-mapping>
     <!-- SMTP settings -->
     <context-param>
@@ -136,23 +177,21 @@
         <param-name>email_password</param-name>
         <param-value>se1501team1</param-value>
     </context-param>
-    <!-- Other Configurations -->
-    <servlet-mapping>
-        <servlet-name>QuestionController</servlet-name>
-        <url-pattern>/auth/teacher/question</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>QuizController</servlet-name>
-        <url-pattern>/auth/teacher/quiz</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SubjectController</servlet-name>
-        <url-pattern>/auth/teacher/subject</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LessonController</servlet-name>
         <url-pattern>/auth/teacher/lesson</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LessonController</servlet-name>
+        <url-pattern>/auth/user/course/lesson</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SliderController</servlet-name>
+        <url-pattern>/auth/admin/slider</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>home</welcome-file>
+    </welcome-file-list>
     <session-config>
         <session-timeout>
             30

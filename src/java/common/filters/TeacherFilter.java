@@ -7,6 +7,7 @@ package common.filters;
 
 import auth.AuthService;
 import common.entities.Account;
+import common.entities.Role;
 import common.entities.User;
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -29,7 +30,7 @@ public class TeacherFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        authService = new AuthService();
+
     }
 
     @Override
@@ -44,14 +45,25 @@ public class TeacherFilter implements Filter {
         HttpSession currentSession = pageRequest.getSession();
 
         User user = (User) currentSession.getAttribute("user");
-        Account account = authService.getAccount(user.getEmail());
 
-        // Admin can also access teacher's feature
-        if (account.getRole().toString().equals("TEACHER") || account.getRole().toString().equals("ADMIN")) {
-            doFilter(request, response, chain);
-        } else {
-            pageResponse.sendRedirect("home");
+        if (user == null || user.getEmail() == null) {
+            pageResponse.sendRedirect(pageRequest.getContextPath() + "/home");
+            return;
+        }
+
+        authService = new AuthService();
+        try {
+            Account account = authService.getAccount(user.getEmail());
+
+            // Admin can also access teacher's feature
+            if (account != null && (account.getRole() == Role.TEACHER || account.getRole() == Role.ADMIN)) {
+                chain.doFilter(request, response);
+                return;
+            }
+
+            pageResponse.sendRedirect(pageRequest.getContextPath() + "/home");
+        } catch (Exception e) {
+            pageResponse.sendRedirect(pageRequest.getContextPath() + "/home");
         }
     }
-
 }

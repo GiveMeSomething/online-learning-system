@@ -27,6 +27,16 @@ public class User {
         this.status = status;
         this.mobile = mobile;
     }
+    
+    public User(int id, String image,String name, Gender gender, String email, String address, String mobile) {
+        this.id = id;
+        this.image = image;
+        this.name = name;
+        this.gender = gender;
+        this.email = email;
+        this.address = address;
+        this.mobile = mobile;
+    }
 
     public User(int id, String image, String name, Gender gender, String email, String address, Status status, String mobile) {
         this.id = id;
@@ -37,6 +47,12 @@ public class User {
         this.address = address;
         this.status = status;
         this.mobile = mobile;
+    }
+
+    public User(int id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
     }
 
     public int getId() {

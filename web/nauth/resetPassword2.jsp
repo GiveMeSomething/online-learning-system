@@ -14,9 +14,11 @@
         <title>Reset Password</title>
     </head>
     <body>
+        <jsp:include page="../components/global/navbar.jsp"/>
         <form action="authenticate"
               method="POST"
-              class="needs-validation w-25 shadow"
+              class="needs-validation shadow-lg w-25 bg-light p-3 d-block"
+              style="margin: 120px auto 158px auto;"
               novalidate>
             <div class="request-info">
                 <input name="previousPage" value="nauth/resetPassword2.jsp" hidden="true" />
@@ -25,21 +27,22 @@
                 <div class="invalid-feedback"></div>
             </div>
             <input type="text" hidden name="email" value="${email}">
-            <div>
+            <div class="p-3">
                 <label for="new-password">New Password</label>
                 <input class="form-control" name="new-password" type="password" id="new-password"
                        placeholder="Enter New password" data-value-missing="Can't be empty" required />
                 <div class="invalid-feedback"></div>
             </div>
-            <div>
+            <div class="pb-3 px-3">
                 <label for="confirm-password">Confirm New Password</label>
                 <input class="form-control" name="confirm-password" type="password"
                        id="confirm-password" placeholder="Confirm New password"
                        data-value-missing="Can't be empty" required />
                 <div class="invalid-feedback"></div>
             </div>
-            <button type="submit" class="btn btn-primary">Change Password</button>
+            <button type="submit" class="btn btn-primary mx-3 my-3">Change Password</button>
         </form>
+        <jsp:include page="../components/global/footer.jsp"/>
     </body>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">

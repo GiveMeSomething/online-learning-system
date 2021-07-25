@@ -15,22 +15,20 @@
         <link href="css/newcss.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="${path}/style/setting.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <jsp:useBean id="dal" scope="page" class="user.UserRepository" />
         <jsp:useBean id="dall" scope="page" class="auth.AuthRepository" />
         <style>
+            .btn-outline-success:hover{
+                background-color: #5cb85c !important;
+                color: white !important;
+            }
             .activepage{
-                background-color: red;
-            }
-            .nutadd{
-                float: right;
-            }
-            .nutadd a{
-                text-decoration: none;
-                background-color: green;
-                padding: 15px 20px;
-                color: white;
-                border-radius: 10px;
+                background-color: #5cb85c;
+                color: white !important;
             }
             #myTable tr th{
                 cursor: pointer;
@@ -60,8 +58,8 @@
 
 
             .d-flex ul li:hover {
-                background-color: orange;
-                color:white;
+                background-color: #5cb85c;
+                color: white !important;
             }
             .py-2 a{
                 align-items: center;
@@ -71,48 +69,69 @@
         </style>
     </head>
     <body>
+
         <div id="container" class="d-flex">
-            <div id="sider" class="col-md-2  mx-4" style="background:#FFFFF0">
-                <li style="color: black ; font-size: 20px; list-style: none ; padding-left: 0.5rem; padding-top: 8rem" > <strong> Data Administration </strong><br>
-                    <ul >
-                        <li>  Manage User ></li>
-                        <li>
-                            <a href="${path}/auth/admin/setting.jsp ">
-                                Mangage Setting
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </div>
-            <div id="content-p" class="col-md-9">
-                <div style="background:#FFFFF0; align-item: center; display:flex; justify-content:center;  " class="py-2" id="screen-header">
-                    <a class="navbar-brand" style="font-size: 2.5rem;" href="${path}/home">
-                        <span style="color:blue">O</span>
-                        <span style="color:orange">L</span>
-                        <span style="color:green">S</span>
-                    </a>
+            <c:if test="${sessionScope.isTeacher != true}">
+                <div id="sider" class="col-md-2  mx-4" style="background:none">
+                    <div id="mySidebar" class="sidebar">
+                        <button id="closeNav" class="openbtn" onclick="closeNav()" style="display: none; margin-top: -4rem; margin-bottom: 2rem; margin-left: 13rem"><span style="text-transform: uppercase">X</span></button>
+                        <!--<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
+                        <a href="${path}/auth/admin" style="background: white; color: black">User List</a>
+                        <hr>
+                        <a href="${path}/auth/admin/dashboard">Dashboard</a>
+                        <hr>
+                        <a href="${path}/auth/admin/admin_blog?operation=VIEWALLPOST">Post List</a>
+                        <hr>
+                        <a href="${path}/auth/teacher/subject">Subject List</a>
+                        <hr>
+                        <a href="${path}/auth/admin/slider">Slider List</a>
+                        <hr>
+                        <a href="${path}/auth/teacher/registration?operation=VIEWALL">Registration List</a>
+                    </div>
                 </div>
-                <h1 id="user-list-title">
-                    <a href="home" style="padding-bottom: 15px;">
-                        MANAGE USERS
-                    </a>
-                </h1>
+            </c:if>
+            <div id="content-p" class="col-md-9">
+                <div style="background:#FFFFF0; align-item: center; display:flex;  " class="py-2" id="screen-header">
+                    <div>
+                        <button id="openNav" class="openbtn" onclick="openNav()" style="background: #FFFFF0; color: black">&#9776;</button>
+                    </div>
+                    <div style="justify-content: center; margin-left: 26.5rem">
+                        <a class="navbar-brand" style="font-size: 2.5rem;" href="${path}/home">
+                            <span style="color:blue">O</span>
+                            <span style="color:orange">L</span>
+                            <span style="color:green">S</span>
+                        </a>
+                    </div>
+
+                    <div style="margin-left: 19.5rem; margin-top: .5rem">
+                        <a href="${path}/authenticate?operation=LOGOUT" style="padding-bottom: 5px; padding-top: 5px; border-bottom: 1px solid lightgray">
+                            <button class="btn btn-secondary">Log out</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <h1 id="user-list-title">
+                        <a href="${path}/home" style="padding-bottom: 15px;text-decoration: none; color: black">
+                            MANAGE USERS
+                        </a>
+                    </h1>
+                </div>
                 <form action="${path}/auth/admin/search" method="GET">
-                    <div style="display: flex;padding-top: 20px;">
-                        <div>
-                            <input type="text" name="searchtxt" placeholder="By name, email, mobile number" style="width: 500px; height: 2.4rem; border-radius: 5px; margin-right: 0.5rem; border: 1px solid black">
+                    <div class="d-flex align-items-center w-100">
+                        <div class="row">
+                            <input type="text"
+                                   name="searchtxt"
+                                   placeholder="By name, email, mobile number"
+                                   class="form-control mx-2" style="width: 70vh">
                         </div>
                         <div>
-                            <button class="btn btn-dark" type="submit">Search</button>
+                            <button class="btn btn-primary mx-2" type="submit">Search</button>
                         </div>
                     </div>
                 </form>
                 <form action="${path}/auth/admin/filter" method="GET">
-                    <div style=" width: 100%;
-                         height: auto;
-                         float: left;
-                         margin-bottom: 10px;">
-                        <span style="float: left; margin-left: 10px;">Gender</span>
+                    <div class="my-3">
+                        <span style="float: left; margin-left: 10px;"><b>Gender:</b></span>
                         <span style="float: left; margin-left: 10px;">
                             <input type="checkbox" onclick="this.form.submit()" name="gender" value="1" ${a1} > Male <br>
                         </span>
@@ -120,7 +139,7 @@
                               padding-right: 10px;">
                             <input type="checkbox" onclick="this.form.submit()" name = "gender" value="0" ${a0} > Female <br>
                         </span>
-                        <span style="float: left; margin-left: 10px;">Role</span>
+                        <span style="float: left; margin-left: 10px;"><b>Role:</b></span>
                         <span style="float: left; margin-left: 10px;">
                             <input type="checkbox" onclick="this.form.submit()" name="role" value="2" ${b2}> Student <br>
                         </span>
@@ -132,7 +151,7 @@
                               padding-right: 10px;">
                             <input type="checkbox" onclick="this.form.submit()" name="role" value="0" ${b0}> Admin <br>
                         </span>
-                        <span style="padding-left: 10px; float: left; padding-right: 10px;">Status</span>
+                        <span style="padding-left: 10px; float: left; padding-right: 10px;"><b>Status:</b></span>
                         <span style="float: left;padding-right: 10px;">
                             <input type="checkbox" onclick="this.form.submit()" name="status" value="1" ${c1} > Active <br>
                         </span>
@@ -142,8 +161,8 @@
                     </div>
                     <div class="container1">
                         <div class="bentrai col-md-10">
-                            <table id="myTable" class="table table-light table-striped" style="border: 1px solid black; border-collapse: collapse">
-                                <thead>
+                            <table id="myTable" class="table my-5">
+                                <thead class="text-center">
                                     <tr>
                                         <th onclick="sortTable(0)">
                                             ID
@@ -156,12 +175,12 @@
                                         <th onclick="sortTable(4)" scope="col"> Mobile</th>
                                         <th onclick="sortTable(5)" scope="col">Role</th>
                                         <th onclick="sortTable(6)" scope="col">Status</th>
-                                        <th scope="col">Action</th>
+                                        <th scope="col" colspan="2">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:forEach var="o" items="${UserList}">
-                                        <tr>
+                                        <tr class="align-middle text-center">
                                             <td id="getit">${o.id}</td>
                                             <td>${o.name}</td>
                                             <td>${o.gender}</td>
@@ -180,35 +199,42 @@
                                             </td>
                                             <td>${o.status}</td>
                                             <td>
-                                                <button>
-                                                    <a href="${path}/auth/admin/viewuser?uid=${o.id}">View</a>
-                                                </button>
-                                                <button>
-                                                    <a href="${path}/auth/admin/edituser?uid=${o.id}">Edit</a>
-                                                </button>
+                                                <a class="btn btn-primary" href="${path}/auth/admin/viewuser?uid=${o.id}">
+                                                    View
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-success" href="${path}/auth/admin/edituser?uid=${o.id}">
+                                                    Edit
+                                                </a>
                                             </td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>
                             </table>
-                            <div class="nutadd">
-                                <a href="${path}/auth/admin/adduser.jsp">
-                                    Add
-                                </a>
-                            </div>
-                            <div style="display: flex">
+                            <div class="d-flex justify-content-between align-items-center">
                                 <div class="pagination" style="display: inline-block;">
-                                    <c:forEach var="i" begin="1" end="${endPage}">
-                                        <button value="${i}" class="${page==i?"activepage":""}" name="page" onclick="this.form.submit()">
-                                            ${i}
-                                        </button>
-                                    </c:forEach>
+                                    <div>
+                                        <c:forEach var="i" begin="1" end="${endPage}">
+                                            <button
+                                                value="${i}"
+                                                class="${page==i?"activepage":""} btn btn-outline-success"
+                                                name="page"
+                                                onclick="this.form.submit()">
+                                                ${i}
+                                            </button>
+                                        </c:forEach>
+                                    </div>
                                 </div>
+                                <a href="${path}/auth/admin/adduser.jsp" class="btn btn-success px-3 py-2">
+                                    Add new user
+                                </a>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
+        </div>
     </body>
     <script>
         function sortTable(n) {
@@ -278,6 +304,44 @@
                         switching = true;
                     }
                 }
+            }
+        }
+    </script>
+    <script>
+        function openNav() {
+            document.getElementById("openNav").style.color = "#FFFFF0";
+            document.getElementById("closeNav").style.display = "block";
+            document.getElementById("mySidebar").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("openNav").style.color = "black";
+            document.getElementById("closeNav").style.display = "none";
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+        function myAccFunc() {
+            var x = document.getElementById("demoAcc");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-black";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                        x.previousElementSibling.className.replace(" w3-black", "");
+            }
+        }
+
+        function myDropFunc() {
+            var x = document.getElementById("demoDrop");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-black";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                        x.previousElementSibling.className.replace(" w3-black", "");
             }
         }
     </script>
