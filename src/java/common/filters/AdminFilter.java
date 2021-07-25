@@ -7,6 +7,7 @@ package common.filters;
 
 import auth.AuthService;
 import common.entities.Account;
+import common.entities.Role;
 import common.entities.User;
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -41,15 +42,16 @@ public class AdminFilter implements Filter {
             FilterChain chain) throws IOException, ServletException {
         HttpServletRequest pageRequest = (HttpServletRequest) request;
         HttpServletResponse pageResponse = (HttpServletResponse) response;
+
         HttpSession currentSession = pageRequest.getSession();
 
         User user = (User) currentSession.getAttribute("user");
         Account account = authService.getAccount(user.getEmail());
 
-        if (account.getRole().toString().equals("ADMIN")) {
-            doFilter(request, response, chain);
+        if (account.getRole() == Role.ADMIN) {
+            chain.doFilter(request, response);
         } else {
-            pageResponse.sendRedirect("home");
+            pageResponse.sendRedirect(pageRequest.getContextPath() + "/home");
         }
     }
 }

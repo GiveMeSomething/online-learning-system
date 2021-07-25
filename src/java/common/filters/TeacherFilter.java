@@ -30,7 +30,7 @@ public class TeacherFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        authService = new AuthService();
+
     }
 
     @Override
@@ -45,13 +45,15 @@ public class TeacherFilter implements Filter {
         HttpSession currentSession = pageRequest.getSession();
 
         User user = (User) currentSession.getAttribute("user");
+
+        authService = new AuthService();
         Account account = authService.getAccount(user.getEmail());
 
         // Admin can also access teacher's feature
-        if (account.getRole() == Role.TEACHER || account.getRole() == Role.ADMIN) {
-            doFilter(request, response, chain);
+        if (account != null && (account.getRole() == Role.TEACHER || account.getRole() == Role.ADMIN)  {
+            chain.doFilter(request, response);
         } else {
-            pageResponse.sendRedirect("home");
+            pageResponse.sendRedirect(pageRequest.getContextPath() + "/home");
         }
     }
 

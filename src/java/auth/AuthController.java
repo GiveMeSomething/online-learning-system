@@ -116,7 +116,6 @@ public class AuthController extends HttpServlet implements Controller {
             String confirmEmailPath = "/email?operation=AUTH&receiver=" + email;
             request.getRequestDispatcher(confirmEmailPath).forward(request, response);
         } else {
-            // Process if login by admin account
             HttpSession session = request.getSession();
 
             User currentUser = userService.getUser(email);
@@ -166,9 +165,9 @@ public class AuthController extends HttpServlet implements Controller {
             }
         }
         if (isChanged) {
-            response.sendRedirect(request.getContextPath()+"/home?mess=success");
+            response.sendRedirect(request.getContextPath() + "/home?mess=success");
         } else {
-            response.sendRedirect(request.getContextPath()+"/home?mess=fail");
+            response.sendRedirect(request.getContextPath() + "/home?mess=fail");
         }
     }
 
@@ -182,9 +181,9 @@ public class AuthController extends HttpServlet implements Controller {
             isChanged = authService.changePassword(email, newPassword);
         }
         if (isChanged) {
-            response.sendRedirect(request.getContextPath()+"/home?mess=success");
+            response.sendRedirect(request.getContextPath() + "/home?mess=success");
         } else {
-            response.sendRedirect(request.getContextPath()+"/home?mess=fail");
+            response.sendRedirect(request.getContextPath() + "/home?mess=fail");
         }
     }
 
