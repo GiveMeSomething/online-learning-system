@@ -247,7 +247,6 @@ public class SubjectController extends HttpServlet implements Controller {
     }
 
     private void addNewSubject(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String forwardTo = request.getParameter("previousPage");
         String subjectName = request.getParameter("subject-name");
         String category = request.getParameter("category");
         CourseStatus status = CourseStatus.valueOf(request.getParameter("status"));
@@ -269,11 +268,11 @@ public class SubjectController extends HttpServlet implements Controller {
 
         Course course = new Course(subjectName, description, ownerId, status, category, feature);
         if (courseService.checkCourseExist(subjectName, Integer.parseInt(category)) != null) {
-            this.forwardErrorMessage(request, response, "Already had this course", forwardTo);
+            response.sendRedirect(request.getContextPath() + "/auth/teacher/subject?mess=Already%20had%20this%20Course");
         } else {
             courseService.addNewSubject(course, inputStream);
             // Navigating to subject list
-            response.sendRedirect(request.getContextPath() + "/auth/teacher/subject");
+            response.sendRedirect(request.getContextPath() + "/auth/teacher/subject?mess=Add%20Successfully");
         }
     }
 
@@ -295,7 +294,7 @@ public class SubjectController extends HttpServlet implements Controller {
         int categoryId = -1;
         String statusString = request.getParameter("status");
         Status status;
-
+        
         try {
             String category = request.getParameter("category");
             System.out.println(category);
@@ -314,6 +313,7 @@ public class SubjectController extends HttpServlet implements Controller {
         request.setAttribute("selectedCategory", categoryId);
         request.setAttribute("selectedStatus", statusString);
         request.setAttribute("selectedKeyword", keyword);
+        request.setAttribute("mess", request.getParameter("mess"));
 
         // We don't need to process status because null is consider as status's default value
         processGetSubject(request, response, keyword, categoryId, status);

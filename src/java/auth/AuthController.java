@@ -175,13 +175,14 @@ public class AuthController extends HttpServlet implements Controller {
     //Vu Duy Anh: In Progress (bug: after changed password, still click to the link and change again)
     private void processResetPassword(HttpServletRequest request, HttpServletResponse response,
             String newPassword, String confirmPassword, String email) throws ServletException, IOException {
-        String forwardTo = request.getParameter("previousPage");
+        HttpSession session = request.getSession();
         boolean isChanged = false;
 
         if (authService.getAccount(email) != null && newPassword.equals(confirmPassword)) {
             isChanged = authService.changePassword(email, newPassword);
         }
         if (isChanged) {
+            session.removeAttribute("resetPath");
             response.sendRedirect(request.getContextPath()+"/home?mess=success");
         } else {
             response.sendRedirect(request.getContextPath()+"/home?mess=fail");

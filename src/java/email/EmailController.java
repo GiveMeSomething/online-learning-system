@@ -108,6 +108,11 @@ public class EmailController extends HttpServlet implements Controller {
             String thisEmail = request.getParameter("email");
             String token = request.getParameter("token");
             boolean isSent = emailService.sendResetPasswordEmail(host, port, email, password, thisEmail, token);
+            if(isSent){
+                this.forwardErrorMessage(request, response, "Send email successfully", "nauth/resetPassword1.jsp");
+            }else{
+                response.sendRedirect(request.getContextPath() + "/home?mess=fail");
+            }
         } else if (operation.equals("AUTH")) {
             processAuth(request, response);
         } else if (operation.equals("CREATENEWACCOUNT")) {
