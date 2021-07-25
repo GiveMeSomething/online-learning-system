@@ -421,7 +421,7 @@
                         <jsp:include page="/components/home/language.jsp"/>
                     </div>
                     <div id="myDIV" style="margin-left: -0.5rem">
-                        <a class="btn2 " style="outline: none; font-weight: normal; font-size: 20px">Some of the best</a>
+                        <span style="outline: none; font-weight: normal; font-size: 20px">Some of the best</span>
                     </div>
                     <!--                students are viewing-->
                     <div  style="display: block; margin-top: -2rem">
