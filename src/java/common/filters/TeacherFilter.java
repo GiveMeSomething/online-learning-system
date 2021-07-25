@@ -50,7 +50,7 @@ public class TeacherFilter implements Filter {
         Account account = authService.getAccount(user.getEmail());
 
         // Admin can also access teacher's feature
-        if (account != null && (account.getRole() == Role.TEACHER || account.getRole() == Role.ADMIN)  {
+        if (account != null && (account.getRole() == Role.TEACHER || account.getRole() == Role.ADMIN)) {
             chain.doFilter(request, response);
         } else {
             pageResponse.sendRedirect(pageRequest.getContextPath() + "/home");

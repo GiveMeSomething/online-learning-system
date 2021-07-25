@@ -65,8 +65,9 @@
         </div>
         <div class="container my-2">
             <div class="row">
-                <div class="d-flex justify-content-center align-items-center">
+                <div class="col-12 d-flex justify-content-between align-items-center">
                     <h2>Subjects List</h2>
+                    <h2 class="font-weight-bold text-danger">${requestScope.mess}</h2>
                 </div>
             </div>
             <div class="row">
