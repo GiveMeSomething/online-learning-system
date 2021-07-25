@@ -71,24 +71,25 @@
     <body>
 
         <div id="container" class="d-flex">
-            <div id="sider" class="col-md-2  mx-4" style="background:none">
-                <div id="mySidebar" class="sidebar">
-                    <button id="closeNav" class="openbtn" onclick="closeNav()" style="display: none; margin-top: -4rem; margin-bottom: 2rem; margin-left: 13rem"><span style="text-transform: uppercase">X</span></button>
-                    <!--<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
-                    <a href="${path}/auth/admin" style="background: white; color: black">User List</a>
-                    <hr>
-                    <a href="${path}/auth/admin/dashboard">Dashboard</a>
-                    <hr>
-                    <a href="${path}/auth/admin/admin_blog?operation=VIEWALLPOST">Post List</a>
-                    <hr>
-                    <a href="${path}/auth/teacher/subject">Subject List</a>
-                    <hr>
-                    <a href="${path}/auth/admin/slider">Slider List</a>
-                    <hr>
-                    <a href="${path}/auth/teacher/registration?operation=VIEWALL">Registration List</a>
+            <c:if test="${sessionScope.isTeacher != true}">
+                <div id="sider" class="col-md-2  mx-4" style="background:none">
+                    <div id="mySidebar" class="sidebar">
+                        <button id="closeNav" class="openbtn" onclick="closeNav()" style="display: none; margin-top: -4rem; margin-bottom: 2rem; margin-left: 13rem"><span style="text-transform: uppercase">X</span></button>
+                        <!--<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
+                        <a href="${path}/auth/admin" style="background: white; color: black">User List</a>
+                        <hr>
+                        <a href="${path}/auth/admin/dashboard">Dashboard</a>
+                        <hr>
+                        <a href="${path}/auth/admin/admin_blog?operation=VIEWALLPOST">Post List</a>
+                        <hr>
+                        <a href="${path}/auth/teacher/subject">Subject List</a>
+                        <hr>
+                        <a href="${path}/auth/admin/slider">Slider List</a>
+                        <hr>
+                        <a href="${path}/auth/teacher/registration?operation=VIEWALL">Registration List</a>
+                    </div>
                 </div>
-            </div>
-
+            </c:if>
             <div id="content-p" class="col-md-9">
                 <div style="background:#FFFFF0; align-item: center; display:flex;  " class="py-2" id="screen-header">
                     <div>
@@ -233,6 +234,7 @@
                     </div>
                 </form>
             </div>
+        </div>
     </body>
     <script>
         function sortTable(n) {
